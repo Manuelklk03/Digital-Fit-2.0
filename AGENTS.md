@@ -86,6 +86,8 @@ Ciclo: **implementar → comprobar → Codex revisa → analizar y corregir hall
 
 GitHub Flow: rama por cambio desde `main`, Conventional Commits en español, PR, merge y borrado de rama. El agente redacta el mensaje de commit completo (título, línea en blanco, lista con `- `); **Manuel hace los commits, push, PR y merge** salvo petición expresa. Excepción acordada (2026-10-26): las tareas de **preparación** que Manuel encargue en automático (configuración del repositorio, documentación de arranque) las cierra el agente con commits y PR. El desarrollo del proyecto sigue el modo guiado. Tags solo con indicación de Manuel. Detalle en [docs/git-workflow.md](docs/git-workflow.md).
 
+**Sin atribución a la IA** (Manuel, 2026-11-01): ningún commit, merge, PR ni comentario incluye `Co-Authored-By` de una IA, «Generated with …» ni nada que indique que lo hizo un agente.
+
 ## Continuidad entre Claude, Codex y otras IA
 
 - `AGENTS.md` contiene las reglas comunes; `CLAUDE.md` lo importa. No mantengas copias divergentes.

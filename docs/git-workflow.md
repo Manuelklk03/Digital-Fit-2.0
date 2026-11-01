@@ -86,6 +86,8 @@ docker run --rm --network digital-fit-proyecto_default -v "%cd%:/src:ro" -v digi
 | `Frontend (Angular)` | Node 22, `npm ci`, tests con cobertura (`lcov`) y `npm run build` |
 | `Frontend (lint)` | Node 22, `npm ci` y `npm run lint` (ESLint): falla con errores, los avisos no bloquean |
 | `SonarQube` | Espera a los dos primeros (`needs`), descarga sus informes (artefactos) y analiza el proyecto en SonarQube Cloud con `sonar-project.properties`. En las PR falla si el Quality Gate falla (bloquea el merge); en `main` solo actualiza el panel y la insignia, sin romper la CI |
+| `Docker (compose)` | Construye las imágenes y levanta la aplicación completa con `docker compose up`; prueba de humo: la API responde 401 sin sesión a través de nginx, se sirven las rutas de Angular y ningún contenedor se ejecuta como root |
+| `Publicar imagen backend` / `frontend` | Solo en push a `main` o tag `v*`, con todo lo anterior en verde (salvo Sonar, que no bloquea en `main`): sube a Docker Hub `<usuario>/digital-fit-backend` y `<usuario>/digital-fit-frontend` con las etiquetas `latest`, `sha-xxxxxxx` y la versión del tag (`v2.0.0` → `2.0.0`). Usa los secretos `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN`; en las PR aparece como *skipping* |
 
 El resultado aparece en la PR como checks. Ver una ejecución desde la terminal: `gh pr checks <número> --watch` o `gh run view <id> --log`.
 
@@ -142,7 +144,7 @@ En GitHub: **Tags → v1.0.0 → Download ZIP**.
 
 **Aplicada el 2026-11-01** (verificada con la respuesta de la API): solo merge commits, borrado de ramas al fusionar y `main` protegida (solo por PR, también para administradores, sin force push ni borrado). Desde entonces, cualquier cambio en `main`, incluida la documentación, entra por PR.
 
-**Checks obligatorios (tarea 1B.3, 2026-11-01).** Una PR solo se puede fusionar con los cuatro jobs de la CI en verde (`Backend (Maven)`, `Frontend (Angular)`, `Frontend (lint)` y, desde 1B.4, `SonarQube`) y con la rama al día con `main` (`strict`). Los checks están ligados a la app de GitHub Actions (`app_id` 15368), así que ningún otro servicio puede publicar un check con el mismo nombre. Comprobado con una PR de prueba (#32) con un `debugger;`: el lint falló, la PR quedó `BLOCKED` y `gh pr merge` se negó a fusionarla. Si `main` avanza mientras tu PR está abierta: `gh pr update-branch <número>` (o el botón *Update branch*) y esperar a que la CI vuelva a pasar.
+**Checks obligatorios (tarea 1B.3, 2026-11-01).** Una PR solo se puede fusionar con los cinco checks de la CI en verde (`Backend (Maven)`, `Frontend (Angular)`, `Frontend (lint)`, desde 1B.4 `SonarQube` y desde 1B.5 `Docker (compose)`) y con la rama al día con `main` (`strict`). Los checks están ligados a la app de GitHub Actions (`app_id` 15368), así que ningún otro servicio puede publicar un check con el mismo nombre. Comprobado con una PR de prueba (#32) con un `debugger;`: el lint falló, la PR quedó `BLOCKED` y `gh pr merge` se negó a fusionarla. Si `main` avanza mientras tu PR está abierta: `gh pr update-branch <número>` (o el botón *Update branch*) y esperar a que la CI vuelva a pasar.
 
 Si se cambia el nombre de un job en `ci.yml`, hay que actualizar también esta lista; si no, GitHub esperará un check que ya no existe y bloqueará todas las PR.
 
@@ -161,7 +163,8 @@ gh api -X PUT repos/Manuelklk03/Digital-Fit-Proyecto/branches/main/protection --
       { "context": "Backend (Maven)", "app_id": 15368 },
       { "context": "Frontend (Angular)", "app_id": 15368 },
       { "context": "Frontend (lint)", "app_id": 15368 },
-      { "context": "SonarQube", "app_id": 15368 }
+      { "context": "SonarQube", "app_id": 15368 },
+      { "context": "Docker (compose)", "app_id": 15368 }
     ]
   },
   "enforce_admins": true,
