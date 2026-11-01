@@ -2,12 +2,13 @@
 
 Última actualización: **2026-11-01** (Claude Code).
 
-> **2026-11-01:** Manuel adelanta DevOps (fase 1B del roadmap) y autoriza el modo automático para ella y para las tareas de la fase 1 que la desbloquean (1.5–1.9). Decisiones D4 (PostgreSQL), D7 (SonarQube Cloud), D8 (Docker Hub) y D9 (Vercel/Netlify + backend en contenedor + PostgreSQL gestionado). Hechas: PR #23 (1.3, 1.4), configuración de GitHub (1.5) y limpieza del repositorio (1.6). Orden pendiente: 1.7 → 1.8 → 1.9 → 1B.1–1B.5.
+> **2026-11-01:** Manuel adelanta DevOps (fase 1B) y autoriza el modo automático para ella y para la fase 1. Fase 1 cerrada (PR #23–#29: documentación, limpieza, tests del frontend, Docker verificado, PostgreSQL, Spring Boot 4.1.2, Angular 22). Fase 1B en curso: **1B.1 CI hecha** (PR #30).
 
 ## Resumen
 
-- **Fase activa:** 1 — Auditoría, GitHub Flow, `v1.0.0`, limpieza y documentación ([roadmap](roadmap.md#fase-1--auditoría-github-flow-v100-limpieza-y-documentación)).
-- **Rama de trabajo:** ninguna abierta tras la PR de `chore/repo-hygiene`. `main` está protegida: todo entra por PR.
+- **Fase activa:** 1B — DevOps: CI/CD, Docker y calidad ([roadmap](roadmap.md#fase-1b--devops-cicd-docker-y-calidad)).
+- **Rama de trabajo:** ninguna abierta tras cada merge. `main` está protegida: todo entra por PR.
+- **CI:** `.github/workflows/ci.yml` (backend con PostgreSQL + frontend). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, método de análisis GitHub Actions (según Manuel), secreto `SONAR_TOKEN` guardado en el repositorio (verificado con `gh secret list`).
 - **Versión publicada:** `v1.0.0` (tag anotado, ver abajo). `v2.0.0` no existe todavía.
 - **Despliegue público:** ninguno.
@@ -67,8 +68,7 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. Fase 1 cerrada. Siguiente: **1B.1** (`ci/github-actions`).
-2. Fase 1B (DevOps), en automático.
+1. **1B.2** (`ci/eslint`), después 1B.3 (checks obligatorios), 1B.4 (Sonar), 1B.5 (Docker Hub) y 1B.7 (healthcheck), en automático.
 3. Rediseño: mapa tipo Google Maps, i18n y SEO registrados como tareas 3.6–3.9 (D10, D11), en modo mixto.
 
 ## Cómo actualizar este archivo
