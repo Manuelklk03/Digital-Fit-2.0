@@ -8,6 +8,7 @@
 
 - [ ] Frontend: `npm run build`
 - [ ] Frontend: `npx ng test --watch=false`
+- [ ] Frontend: `npm run lint` (sin errores)
 - [ ] Backend: `mvnw -DskipTests package` (o con Docker)
 - [ ] Backend: `mvnw test` (necesita PostgreSQL: `docker compose up -d postgres`)
 - [ ] `docker compose up --build` y recorrido afectado probado a mano

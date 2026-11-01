@@ -59,6 +59,7 @@ La plantilla está en [.github/pull_request_template.md](../.github/pull_request
 |---|---|---|
 | Frontend: build | `npm run build` | `Frontend/digital-fit-frontend` |
 | Frontend: tests | `npx ng test --watch=false` | `Frontend/digital-fit-frontend` |
+| Frontend: lint | `npm run lint` (0 errores; los avisos de `any` y OnPush son deuda conocida) | `Frontend/digital-fit-frontend` |
 | Backend: compilar | `mvnw.cmd -DskipTests package` (CMD), `.\mvnw.cmd …` (PowerShell) o `sh ./mvnw …` (Git Bash/Linux/macOS) | `Backend/digital-fit` |
 | Backend: tests | `mvnw.cmd test` (mismas variantes) — el único test (`contextLoads`) necesita PostgreSQL accesible (`docker compose up -d postgres`) | `Backend/digital-fit` |
 | Todo junto | `docker compose up --build` | raíz |
@@ -83,8 +84,9 @@ docker run --rm --network digital-fit-proyecto_default -v "%cd%:/src:ro" -v digi
 |---|---|
 | `Backend (Maven)` | Java 25 y `./mvnw -B verify` contra un PostgreSQL 17 levantado como *service container* |
 | `Frontend (Angular)` | Node 22, `npm ci`, `npm test -- --watch=false` y `npm run build` |
+| `Frontend (lint)` | Node 22, `npm ci` y `npm run lint` (ESLint): falla con errores, los avisos no bloquean |
 
-El resultado aparece en la PR como checks. Ver una ejecución desde la terminal: `gh pr checks <número> --watch` o `gh run view <id> --log`. Lint, Sonar y la obligatoriedad de los checks llegan en las tareas 1B.2–1B.4.
+El resultado aparece en la PR como checks. Ver una ejecución desde la terminal: `gh pr checks <número> --watch` o `gh run view <id> --log`. Sonar y la obligatoriedad de los checks llegan en las tareas 1B.3 y 1B.4.
 
 ## Versionado
 
