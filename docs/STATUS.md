@@ -39,8 +39,8 @@ Mensajes de commit y pasos de publicación: ver [Siguiente paso](#siguiente-paso
 | Frontend `npm ci` | Correcto (aviso de scripts de instalación de `msgpackr-extract`) |
 | Frontend `npm run build` | **Correcto** con 3 avisos: `detalle-privado.css` y `detalle-publico.css` superan en 15 B el presupuesto de 4 kB; `leaflet` no es ESM |
 | Frontend `npx ng test --watch=false` | **Correcto el 2026-11-01** (tarea 1.7): 51/51. Los specs importaban nombres de clase inexistentes y no daban router ni `HttpClient` a los componentes |
-| Backend compilación | **No ejecutada**: Java/Maven no están en el PATH y Docker Desktop no estaba arrancado → tarea 1.8 |
-| `docker compose up --build` | No ejecutado (mismo motivo) |
+| Backend compilación | **Correcta el 2026-11-01** (tarea 1.8), dentro de la imagen Docker (`mvn package -DskipTests`). `mvn test` sin ejecutar todavía: lo hará la CI (1B.1) |
+| `docker compose up --build` | **Correcto el 2026-11-01**: 3 contenedores en marcha. Recorrido por nginx (`localhost:4200/api`) con un usuario nuevo: registro 201 → login 200 → `/auth/me` → catálogo → copiar entrenamiento 201 → registrar en historial 201 → nueva sesión con el historial conservado; sin sesión, 401; rutas de Angular servidas por nginx (200). El historial espera el campo `duracionEnMinutos` |
 | Documentación | Enlaces internos y comandos revisados a mano contra el código |
 | Revisión de Codex | Ver [Revisiones](#revisiones) |
 
@@ -63,7 +63,7 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **1.8** (compilar y arrancar con Docker), **1.9** (PostgreSQL), **1.10** (Spring Boot 4.1) y **1.11** (Angular 22), en automático.
+1. **1.9** (PostgreSQL), **1.10** (Spring Boot 4.1) y **1.11** (Angular 22), en automático.
 2. Fase 1B (DevOps), en automático.
 3. Rediseño: mapa tipo Google Maps, i18n y SEO registrados como tareas 3.6–3.9 (D10, D11), en modo mixto.
 
