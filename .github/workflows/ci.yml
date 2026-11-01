@@ -172,19 +172,18 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # --wait espera a que todos los servicios pasen su healthcheck (falla si alguno no lo logra).
       - name: Construir y levantar la aplicación
-        run: docker compose up -d --build
+        run: docker compose up -d --build --wait --wait-timeout 180
 
       # Prueba de humo: la aplicación completa responde a través de nginx, como en producción.
       - name: Prueba de humo
         run: |
-          for i in $(seq 1 30); do
-            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:4200/api/auth/me || true)
-            [ "$code" = "401" ] && break
-            sleep 5
-          done
+          code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:4200/api/auth/me)
           echo "API a través de nginx (sin sesión): $code"
           test "$code" = "401"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/actuator/health)" = "200"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/actuator/env)" != "200"
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:4200/)" = "200"
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:4200/mis-entrenamientos)" = "200"
           echo "Usuario del backend: $(docker compose exec -T backend id -u), del frontend: $(docker compose exec -T frontend id -u)"

@@ -31,6 +31,13 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    # Spring tarda unos segundos en arrancar; hasta entonces nginx daría 502.
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
 
   frontend:
     build:
@@ -40,7 +47,13 @@ services:
     ports:
       - "4200:8080"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
 volumes:
   digital_fit_postgres_data:

@@ -29,6 +29,9 @@ public class SecurityConfig {
                         // Todo lo relacionado con login, registro y usuario actual queda permitido
                         .requestMatchers("/api/auth/**").permitAll()
 
+                        // Healthcheck de Docker/Compose: solo {"status":"UP"}, sin detalles
+                        .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
+
                         // Panel admin protegido
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 

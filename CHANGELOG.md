@@ -8,6 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Healthchecks en Docker Compose (`/actuator/health` público en el backend; el frontend espera a que el backend esté sano), que elimina el 502 de los primeros segundos. La prueba de humo de la CI usa `docker compose up --wait`.
 - Entrega continua: en cada merge a `main` y en cada tag `v*` la CI publica las imágenes de backend y frontend en Docker Hub. Prueba de humo con Docker Compose en cada PR.
 - Análisis de calidad con SonarQube Cloud en la CI, con cobertura de JaCoCo (backend) y Vitest (frontend); el Quality Gate *Sonar way* es un check obligatorio. Insignia en el README.
 - ESLint con `angular-eslint` (`npm run lint`) y job de lint en la CI. Corregidos los errores del código existente (interfaces de ciclo de vida, accesibilidad del selector de estrellas, `inject()`); `any` y OnPush quedan como avisos hasta la fase 5.

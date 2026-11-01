@@ -17,7 +17,7 @@ Credenciales: sin `.env`, Compose usa `digitalfit`/`digitalfit` (solo desarrollo
 | Servicio | URL / puerto | Notas |
 |---|---|---|
 | Frontend (nginx) | http://localhost:4200 | nginx (puerto 8080 dentro del contenedor, sin root) reenvía `/api/` al backend |
-| Backend | http://localhost:8080 | |
+| Backend | http://localhost:8080 | /actuator/health responde `{"status":"UP"}` sin sesión; el resto de Actuator está protegido |
 | PostgreSQL 17 | `localhost:5433` | base `digital_fit`; usuario y contraseña de `.env` o `digitalfit` |
 
 Al arrancar, Hibernate crea o actualiza las tablas a partir de las entidades (`ddl-auto=update`) y `data.sql` inserta el catálogo base y dos usuarios de ejemplo (`admin1` y `usuario1`) con `ON CONFLICT DO NOTHING`, así que reiniciar no duplica datos. Las contraseñas de esos usuarios no están documentadas en el repositorio; para probar, registra un usuario nuevo desde la aplicación.
@@ -61,6 +61,7 @@ npm start                       # ng serve en http://localhost:4200
 
 | Síntoma | Causa probable | Solución |
 |---|---|---|
+| El navegador recibe 502 al arrancar | Antes del healthcheck, nginx recibía peticiones antes de que Spring estuviera listo | Ya no ocurre: Compose arranca el frontend solo cuando `/actuator/health` del backend responde. Si falla, mira `docker compose ps` y `docker compose logs backend` |
 | El backend no conecta con PostgreSQL | Base parada o credenciales distintas | `docker compose up -d postgres`; revisa `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`. Si cambiaste `.env` después de crear el volumen, PostgreSQL conserva el usuario antiguo: `docker compose down -v` (borra los datos) |
 | Tablas o datos base no aparecen | Error en JPA o en `data.sql` (los errores de `data.sql` se ignoran por `continue-on-error=true`) | Revisa la consola del backend y `logs/digitalfit.log` |
 | El frontend no arranca | Faltan dependencias | `npm ci` en `Frontend/digital-fit-frontend` |

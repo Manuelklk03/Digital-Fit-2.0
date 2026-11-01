@@ -11,7 +11,7 @@
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, método de análisis GitHub Actions (según Manuel), secreto `SONAR_TOKEN` guardado en el repositorio (verificado con `gh secret list`).
 - **Versión publicada:** `v1.0.0` (tag anotado, ver abajo). `v2.0.0` no existe todavía.
-- **Despliegue público:** ninguno.
+- **Despliegue público:** ninguno. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`, etiquetas `latest` y `sha-xxxxxxx`) desde la CI en cada merge a `main`; verificadas el 2026-11-02 con la API de Docker Hub.
 - **Modo de trabajo:** guiado por defecto (decisión de Manuel, 2026-10-26; ver `AGENTS.md`). La preparación de esta entrega (tag, limpieza y documentación) se hizo en automático porque el encargo inicial lo autorizaba expresamente. Las tareas siguientes empiezan solo cuando Manuel lo indique y, salvo que pida otra cosa, de forma guiada.
 
 ## Versión original `v1.0.0`
@@ -69,8 +69,8 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **1B.7** (healthcheck), en automático.
-3. Rediseño: mapa tipo Google Maps, i18n y SEO registrados como tareas 3.6–3.9 (D10, D11), en modo mixto.
+1. Fase 1B cerrada. Siguiente: fase 2 (viabilidad del despliegue gratuito, tareas 2.1–2.4), que necesita decisiones de Manuel sobre cuentas y proveedores.
+2. Rediseño: mapa tipo Google Maps, i18n y SEO registrados como tareas 3.6–3.9 (D10, D11), en modo mixto.
 
 ## Cómo actualizar este archivo
 
