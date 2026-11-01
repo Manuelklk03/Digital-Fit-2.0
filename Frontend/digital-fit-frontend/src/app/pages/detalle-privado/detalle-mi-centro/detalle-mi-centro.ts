@@ -1,7 +1,7 @@
 import { MisCentrosService } from './../../../services/centros/mis-centros-service';
 import { Footer } from './../../../components/footer/footer';
 import { HeaderComponent } from './../../../components/header/header';
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-selector';
 
@@ -12,7 +12,7 @@ import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-se
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './detalle-mi-centro.css',
 })
-export class DetalleMiCentroComponent {
+export class DetalleMiCentroComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private misCentrosService = inject(MisCentrosService);

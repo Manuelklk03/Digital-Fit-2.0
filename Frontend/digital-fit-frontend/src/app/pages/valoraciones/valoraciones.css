@@ -117,7 +117,8 @@
     gap: 8px;
 }
 
-.grupo-campo label {
+.grupo-campo label,
+.grupo-campo .etiqueta-campo {
     font-weight: bold;
     color: var(--color-azul-oscuro);
 }

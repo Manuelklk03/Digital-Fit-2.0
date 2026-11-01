@@ -2,7 +2,7 @@ import { HeaderComponent } from './../../../components/header/header';
 import { Footer } from './../../../components/footer/footer';
 import { MisEntrenamientosService } from './../../../services/entrenamientos/mis-entrenamientos-service';
 import { HistorialEntrenamientosService } from './../../../services/entrenamientos/historial-entrenamientos';
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './detalle-mis-entrenamientos.css',
 })
-export class DetalleMiEntrenamientoComponent {
+export class DetalleMiEntrenamientoComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private misEntrenamientosService = inject(MisEntrenamientosService);

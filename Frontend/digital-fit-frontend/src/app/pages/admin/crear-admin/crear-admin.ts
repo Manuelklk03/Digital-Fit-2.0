@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
@@ -13,7 +13,7 @@ import { AdminService } from '../../../services/admin/admin-service';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './crear-admin.css',
 })
-export class CrearAdminComponent {
+export class CrearAdminComponent implements OnInit {
   private authService = inject(AuthService);
   private adminService = inject(AdminService);
   private router = inject(Router);

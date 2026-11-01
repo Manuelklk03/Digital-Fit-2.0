@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { EntrenamientosComunidadService } from '../../../../services/entrenamientos/entrenamiento-comunidad-service';
 import { MisEntrenamientosService } from '../../../../services/entrenamientos/mis-entrenamientos-service';
@@ -13,7 +13,7 @@ import { Footer } from '../../../../components/footer/footer';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './detalle-entrenamiento-comunidad.css',
 })
-export class DetalleEntrenamientoComunidadComponent {
+export class DetalleEntrenamientoComunidadComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private entrenamientosComunidadService = inject(EntrenamientosComunidadService);

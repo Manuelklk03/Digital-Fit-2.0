@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -16,7 +16,7 @@ import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selec
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './privados.css',
 })
-export class PrivadosComponent {
+export class PrivadosComponent implements OnInit {
   private privadosService = inject(PrivadosService);
   private misCentrosService = inject(MisCentrosService);
   private adminCentrosPrivadosBaseService = inject(AdminCentrosPrivadosBaseService);

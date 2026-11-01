@@ -1,7 +1,7 @@
 import { MisEntrenamientosService } from './../../../services/entrenamientos/mis-entrenamientos-service';
 import { Footer } from './../../../components/footer/footer';
 import { HeaderComponent } from './../../../components/header/header';
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './mis-entrenamientos.css',
 })
-export class MisEntrenamientosComponent {
+export class MisEntrenamientosComponent implements OnInit {
   private misEntrenamientosService = inject(MisEntrenamientosService);
   private cdr = inject(ChangeDetectorRef);
 

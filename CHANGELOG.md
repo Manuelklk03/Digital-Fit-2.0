@@ -8,6 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- ESLint con `angular-eslint` (`npm run lint`) y job de lint en la CI. Corregidos los errores del código existente (interfaces de ciclo de vida, accesibilidad del selector de estrellas, `inject()`); `any` y OnPush quedan como avisos hasta la fase 5.
 - Integración continua con GitHub Actions (`ci.yml`): tests y build de backend (con PostgreSQL) y frontend en cada PR y en `main`; insignia de estado en el README.
 - Documentación para la renovación 2.0: `AGENTS.md`, `CLAUDE.md` y `docs/` (estado, roadmap, arquitectura, sistema de diseño, despliegue, flujo con IA y flujo de Git).
 - GitHub Flow como flujo de trabajo y plantilla de pull request.
