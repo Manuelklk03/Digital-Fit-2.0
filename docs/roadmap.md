@@ -34,7 +34,7 @@ Dependencias: 1.5–1.11. Adelantada el 2026-11-01 (decisión de Manuel, prácti
 | 1B.2 [P] | **Hecha (2026-11-01).** `ci/eslint`: `angular-eslint` en el frontend, `npm run lint` y job `lint` en la CI. Lo corregible con `--fix` se corrige; las reglas que exigen reescribir (p. ej. `no-explicit-any`, P7) quedan en `warn` hasta la fase 5. En el backend, Sonar (D7) hace de linter |
 | 1B.3 [P] | **Hecha (2026-11-01).** Protección de `main` con los checks de CI obligatorios |
 | 1B.4 [P] | **Hecha (2026-11-01, opción A: *Sonar way*).** `ci/sonarqube`: cobertura (JaCoCo en backend, vitest en frontend) y análisis en SonarQube Cloud con Quality Gate obligatorio (D7). Organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` (guardado) |
-| 1B.5 [P] | `ci/docker-publish`: en cada merge a `main` y tag `v*`, construir y publicar las imágenes en Docker Hub (`latest`, SHA corto y versión) (D8) y avisar al backend desplegado con su *deploy hook* (D9). Secretos `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN` y `RENDER_DEPLOY_HOOK` (o el del proveedor elegido) |
+| 1B.5 [P] | `ci/docker-publish`: endurecer los Dockerfiles con lo que marca Sonar (usuario sin privilegios, `npm ci --ignore-scripts` si el build lo permite, versiones fijas); en cada merge a `main` y tag `v*`, construir y publicar las imágenes en Docker Hub (`latest`, SHA corto y versión) (D8) y avisar al backend desplegado con su *deploy hook* (D9). Secretos `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN` y `RENDER_DEPLOY_HOOK` (o el del proveedor elegido) |
 | 1B.6 [+] | Compose de producción que use las imágenes de Docker Hub en lugar de `build:` |
 | 1B.7 [P] | *Healthcheck* del backend (Actuator `/actuator/health`) en Compose y `depends_on: service_healthy` en el frontend: hoy nginx puede recibir peticiones antes de que Spring arranque y devuelve 502 unos segundos |
 
@@ -77,7 +77,7 @@ Dependencias: 2.2 (autenticación y base de datos decididas). Puede solaparse co
 
 | ID | Tarea |
 |---|---|
-| 4.1 [P] | Seguridad: CSRF o modelo de token según D2, cookies `Secure`/`SameSite`, CORS por entorno (P2, P3) |
+| 4.1 [P] | Seguridad: sanear los datos que se registran en los logs (17 avisos de *log injection* de Sonar); CSRF o modelo de token según D2, cookies `Secure`/`SameSite`, CORS por entorno (P2, P3) |
 | 4.2 [P] | Tests de integración de permisos: usuario A no lee ni modifica recursos de B; `/api/admin/**` solo ADMIN |
 | 4.3 [P] | Errores uniformes con `ProblemDetail` (P5) y validación completa de DTOs |
 | 4.4 [P] | Flyway con migración inicial y datos de demostración separados; `ddl-auto=validate` en producción (P4, D3) |
