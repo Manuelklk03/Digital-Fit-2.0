@@ -8,6 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Entrega continua: en cada merge a `main` y en cada tag `v*` la CI publica las imágenes de backend y frontend en Docker Hub. Prueba de humo con Docker Compose en cada PR.
 - Análisis de calidad con SonarQube Cloud en la CI, con cobertura de JaCoCo (backend) y Vitest (frontend); el Quality Gate *Sonar way* es un check obligatorio. Insignia en el README.
 - ESLint con `angular-eslint` (`npm run lint`) y job de lint en la CI. Corregidos los errores del código existente (interfaces de ciclo de vida, accesibilidad del selector de estrellas, `inject()`); `any` y OnPush quedan como avisos hasta la fase 5.
 - Integración continua con GitHub Actions (`ci.yml`): tests y build de backend (con PostgreSQL) y frontend en cada PR y en `main`; insignia de estado en el README.
@@ -20,7 +21,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Cambiado
 
-- `main` exige los tres checks de la CI en verde y la rama al día para fusionar.
+- Imágenes Docker sin root (usuario `app` en el backend, `nginx-unprivileged` en el puerto 8080 en el frontend) y `npm ci --ignore-scripts`.
+- `main` exige los checks de la CI en verde (cinco desde 1B.5) y la rama al día para fusionar.
 - Spring Boot 4.0.6 → 4.1.2.
 - Angular 21 → 22.2.4 y TypeScript 5.9 → 6.0.3, con las migraciones de `ng update` que mantienen el comportamiento anterior.
 - Base de datos: PostgreSQL 17 en lugar de MySQL 8 (driver, URL, Compose en el puerto 5433 y `data.sql` con `ON CONFLICT DO NOTHING`). Credenciales por `.env` (plantilla en `.env.example`).

@@ -16,7 +16,7 @@ Credenciales: sin `.env`, Compose usa `digitalfit`/`digitalfit` (solo desarrollo
 
 | Servicio | URL / puerto | Notas |
 |---|---|---|
-| Frontend (nginx) | http://localhost:4200 | nginx reenvía `/api/` al backend |
+| Frontend (nginx) | http://localhost:4200 | nginx (puerto 8080 dentro del contenedor, sin root) reenvía `/api/` al backend |
 | Backend | http://localhost:8080 | |
 | PostgreSQL 17 | `localhost:5433` | base `digital_fit`; usuario y contraseña de `.env` o `digitalfit` |
 

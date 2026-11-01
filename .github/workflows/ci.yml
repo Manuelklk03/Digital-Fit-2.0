@@ -1,4 +1,5 @@
-# Integración continua: compila y prueba backend y frontend en cada PR y en main.
+# Integración y entrega continua: prueba backend y frontend en cada PR y en main,
+# y publica las imágenes en Docker Hub en cada push a main y en cada tag v*.
 name: CI
 
 on:
@@ -6,6 +7,7 @@ on:
     branches: [main]
   push:
     branches: [main]
+    tags: ['v*']
   workflow_dispatch:
 
 # Un push nuevo a la misma rama cancela la ejecución anterior, que ya no sirve.
@@ -132,8 +134,10 @@ jobs:
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
-    # Espera a los tests para usar sus informes de cobertura.
+    # Espera a los tests para usar sus informes de cobertura. Los tags no se analizan:
+    # su código ya se analizó en main.
     needs: [backend, frontend]
+    if: ${{ !startsWith(github.ref, 'refs/tags/') }}
 
     steps:
       - uses: actions/checkout@v5
@@ -160,3 +164,80 @@ jobs:
         with:
           args: >
             -Dsonar.qualitygate.wait=${{ github.event_name == 'pull_request' }}
+
+  docker:
+    name: Docker (compose)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Construir y levantar la aplicación
+        run: docker compose up -d --build
+
+      # Prueba de humo: la aplicación completa responde a través de nginx, como en producción.
+      - name: Prueba de humo
+        run: |
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:4200/api/auth/me || true)
+            [ "$code" = "401" ] && break
+            sleep 5
+          done
+          echo "API a través de nginx (sin sesión): $code"
+          test "$code" = "401"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:4200/)" = "200"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:4200/mis-entrenamientos)" = "200"
+          echo "Usuario del backend: $(docker compose exec -T backend id -u), del frontend: $(docker compose exec -T frontend id -u)"
+          test "$(docker compose exec -T backend id -u)" != "0"
+          test "$(docker compose exec -T frontend id -u)" != "0"
+
+      - name: Logs de los contenedores
+        if: failure()
+        run: docker compose logs --no-color --tail 100
+
+      - name: Parar la aplicación
+        if: always()
+        run: docker compose down -v
+
+  publish:
+    name: Publicar imagen ${{ matrix.imagen }}
+    runs-on: ubuntu-latest
+    # Solo en push (merge a main o tag v*) y con todas las comprobaciones en verde.
+    if: github.event_name == 'push'
+    needs: [backend, frontend, lint, docker]
+    strategy:
+      matrix:
+        include:
+          - imagen: backend
+            contexto: Backend/digital-fit
+          - imagen: frontend
+            contexto: Frontend/digital-fit-frontend
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: docker/setup-buildx-action@v4
+
+      - uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Etiquetas: latest (main), sha-xxxxxxx (cada commit) y 2.0.0 (tag v2.0.0).
+      - id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/digital-fit-${{ matrix.imagen }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,format=short
+            type=semver,pattern={{version}}
+
+      - uses: docker/build-push-action@v7
+        with:
+          context: ${{ matrix.contexto }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=${{ matrix.imagen }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.imagen }}
