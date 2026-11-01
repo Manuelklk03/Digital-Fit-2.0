@@ -18,7 +18,7 @@ Aplicación web para organizar el entrenamiento: encontrar centros deportivos y 
 |---|---|
 | Frontend | Angular 21, TypeScript 5.9, RxJS, Leaflet |
 | Backend | Java 25, Spring Boot 4, Spring Security, Spring Data JPA |
-| Base de datos | MySQL 8 |
+| Base de datos | PostgreSQL 17 |
 | Entorno | Docker Compose, nginx |
 
 Arquitectura y decisiones: [docs/architecture.md](docs/architecture.md).
@@ -35,7 +35,7 @@ docker compose up --build
 |---|---|
 | Aplicación | http://localhost:4200 |
 | API | http://localhost:8080 |
-| MySQL | `localhost:3307` |
+| PostgreSQL | `localhost:5433` |
 
 Para parar: `docker compose down`. La primera vez la base de datos se crea y se rellena sola con el catálogo de ejemplo; registra un usuario para entrar.
 
@@ -47,7 +47,7 @@ Ejecución sin Docker, variables de entorno y problemas frecuentes: [docs/deploy
 Backend/digital-fit/             API Spring Boot
 Frontend/digital-fit-frontend/   Aplicación Angular
 docs/                            Estado, roadmap, arquitectura, diseño, despliegue y flujos de trabajo
-docker-compose.yml               MySQL + backend + frontend
+docker-compose.yml               PostgreSQL + backend + frontend
 ```
 
 ## Contribuir

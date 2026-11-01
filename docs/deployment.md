@@ -8,31 +8,33 @@ Requisitos: Docker Desktop **en marcha** (si no, `docker` responde «failed to c
 
 ```bash
 docker compose up --build      # desde la raíz del repositorio
-docker compose down            # parar (los datos de MySQL se conservan en el volumen)
-docker compose down -v         # parar y BORRAR los datos de MySQL
+docker compose down            # parar (los datos de PostgreSQL se conservan en el volumen)
+docker compose down -v         # parar y BORRAR los datos de PostgreSQL
 ```
+
+Credenciales: sin `.env`, Compose usa `digitalfit`/`digitalfit` (solo desarrollo). Para cambiarlas, copia `.env.example` como `.env` en la raíz y edítalo; `.env` no se versiona.
 
 | Servicio | URL / puerto | Notas |
 |---|---|---|
 | Frontend (nginx) | http://localhost:4200 | nginx reenvía `/api/` al backend |
 | Backend | http://localhost:8080 | |
-| MySQL | `localhost:3307` | usuario `root`, contraseña `root` (solo desarrollo) |
+| PostgreSQL 17 | `localhost:5433` | base `digital_fit`; usuario y contraseña de `.env` o `digitalfit` |
 
-Al arrancar, Hibernate crea o actualiza las tablas a partir de las entidades (`ddl-auto=update`) y `data.sql` inserta el catálogo base y dos usuarios de ejemplo (`admin1` y `usuario1`). Sus contraseñas no están documentadas en el repositorio; para probar, registra un usuario nuevo desde la aplicación.
+Al arrancar, Hibernate crea o actualiza las tablas a partir de las entidades (`ddl-auto=update`) y `data.sql` inserta el catálogo base y dos usuarios de ejemplo (`admin1` y `usuario1`) con `ON CONFLICT DO NOTHING`, así que reiniciar no duplica datos. Las contraseñas de esos usuarios no están documentadas en el repositorio; para probar, registra un usuario nuevo desde la aplicación.
 
-Limitación conocida: los `context` de `docker-compose.yml` usan `\` (`./Backend\digital-fit`), que funciona en Windows pero no en Linux/macOS (P9).
+Consultar la base de datos: `docker exec -it digital-fit-postgres psql -U digitalfit -d digital_fit`.
 
 ## 2. Ejecución local sin Docker
 
-Requisitos: JDK 25, Node.js `^20.19`, `^22.12` o `>=24` (lo exige Angular CLI 21) con npm y MySQL 8 en marcha.
+Requisitos: JDK 25, Node.js `^20.19`, `^22.12` o `>=24` (lo exige Angular CLI 21) con npm y PostgreSQL en marcha. Lo más sencillo es levantar solo la base con Compose: `docker compose up -d postgres`.
 
-**Base de datos.** Basta con que el servidor MySQL esté activo: la base `digital_fit` se crea sola (`createDatabaseIfNotExist=true`). La conexión se configura con variables de entorno; si no existen, se usan los valores por defecto de `application.properties`:
+**Base de datos.** La conexión se configura con variables de entorno; si no existen, se usan los valores por defecto de `application.properties`, que apuntan al PostgreSQL de Compose:
 
 | Variable | Por defecto |
 |---|---|
-| `DB_URL` | `jdbc:mysql://localhost:3306/digital_fit?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=Europe/Madrid` |
-| `DB_USERNAME` | `root` |
-| `DB_PASSWORD` | `root` |
+| `DB_URL` | `jdbc:postgresql://localhost:5433/digital_fit` |
+| `DB_USERNAME` | `digitalfit` |
+| `DB_PASSWORD` | `digitalfit` |
 
 **Backend**
 
@@ -43,7 +45,7 @@ mvnw.cmd spring-boot:run        # Windows, CMD
 sh ./mvnw spring-boot:run       # Linux/macOS/Git Bash
 ```
 
-`mvnw` está versionado sin permiso de ejecución (`100644`), por eso se lanza con `sh`.
+En Linux/macOS también funciona `./mvnw` (es ejecutable desde la tarea 1.6).
 
 **Frontend**
 
@@ -59,11 +61,11 @@ npm start                       # ng serve en http://localhost:4200
 
 | Síntoma | Causa probable | Solución |
 |---|---|---|
-| El backend no conecta con MySQL | MySQL parado o credenciales distintas | Arranca MySQL; revisa `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` |
+| El backend no conecta con PostgreSQL | Base parada o credenciales distintas | `docker compose up -d postgres`; revisa `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`. Si cambiaste `.env` después de crear el volumen, PostgreSQL conserva el usuario antiguo: `docker compose down -v` (borra los datos) |
 | Tablas o datos base no aparecen | Error en JPA o en `data.sql` (los errores de `data.sql` se ignoran por `continue-on-error=true`) | Revisa la consola del backend y `logs/digitalfit.log` |
 | El frontend no arranca | Faltan dependencias | `npm ci` en `Frontend/digital-fit-frontend` |
 | El frontend no recibe datos | Backend parado, otro puerto, CORS (solo admite `http://localhost:4200`) o falta de proxy en `ng serve` | Arranca el backend en 8080; usa Docker Compose |
-| Puerto ocupado (3307, 4200, 8080) | Otra aplicación lo usa | Ciérrala o cambia el puerto en `docker-compose.yml` |
+| Puerto ocupado (5433, 4200, 8080) | Otra aplicación lo usa | Ciérrala o cambia el puerto en `docker-compose.yml` |
 | `docker` no conecta con la API | Docker Desktop no está iniciado | Inicia Docker Desktop y espera a que el motor esté listo |
 
 ## 4. Despliegue público (fase 2)
@@ -76,7 +78,7 @@ Para cada candidato se registrará, a partir de su documentación oficial y con 
 |---|---|---|
 | Frontend estático | Cloudflare Pages, Netlify, Vercel, GitHub Pages | _pendiente_ |
 | Backend (contenedor Java) | Render, Koyeb, Fly.io, Google Cloud Run | _pendiente_ |
-| MySQL | Aiven for MySQL, TiDB Cloud Serverless (compatible con MySQL) | _pendiente_ |
+| PostgreSQL | Neon, Supabase, Render Postgres | _pendiente_ |
 
 Puntos que condicionan la elección:
 
