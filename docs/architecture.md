@@ -22,8 +22,8 @@ En Docker Compose, nginx sirve el frontend en el puerto 4200 y reenvía `/api/` 
 
 | Pieza | Versión (archivos) |
 |---|---|
-| Angular / CLI | `^21.2.0` / `^21.2.2` |
-| TypeScript | `~5.9.2` |
+| Angular / CLI | `^22.2.4` / `^22.2.5` |
+| TypeScript | `~6.0.3` |
 | RxJS | `~7.8.0` |
 | Leaflet / leaflet-control-geocoder | `^1.9.4` / `^3.3.1` |
 | Vitest (tests de Angular) | `^4.0.8` |
