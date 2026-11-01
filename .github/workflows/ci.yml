@@ -57,6 +57,20 @@ jobs:
       - name: Compilar y ejecutar tests
         run: ./mvnw -B verify
 
+      # JAR de las dependencias (Spring, Lombok...) para que Sonar resuelva sus tipos.
+      - name: Copiar dependencias para Sonar
+        run: ./mvnw -B -q dependency:copy-dependencies -DincludeScope=test -DoutputDirectory=target/dependency
+
+      # Clases compiladas, dependencias y cobertura de JaCoCo para el job de SonarQube.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: backend-analisis
+          path: |
+            Backend/digital-fit/target/classes
+            Backend/digital-fit/target/dependency
+            Backend/digital-fit/target/site/jacoco/jacoco.xml
+          retention-days: 1
+
   frontend:
     name: Frontend (Angular)
     runs-on: ubuntu-latest
@@ -76,8 +90,18 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
-      - name: Tests
-        run: npm test -- --watch=false
+      - name: Tests con cobertura
+        run: npm test -- --watch=false --coverage --coverage-reporters=lcov
+
+      # lcov escribe rutas relativas al frontend (src/...); Sonar analiza desde la raíz del repo.
+      - name: Ajustar rutas de cobertura para Sonar
+        run: sed -i 's#^SF:#SF:Frontend/digital-fit-frontend/#' coverage/digital-fit-frontend/lcov.info
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontend-cobertura
+          path: Frontend/digital-fit-frontend/coverage/digital-fit-frontend/lcov.info
+          retention-days: 1
 
       - name: Build de producción
         run: npm run build
@@ -104,3 +128,34 @@ jobs:
       # Falla con errores; los avisos (deuda de la v1) se muestran pero no bloquean.
       - name: ESLint
         run: npm run lint
+
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    # Espera a los tests para usar sus informes de cobertura.
+    needs: [backend, frontend]
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # Historial completo: Sonar lo usa para saber qué líneas son código nuevo.
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: backend-analisis
+          path: Backend/digital-fit/target
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend-cobertura
+          path: Frontend/digital-fit-frontend/coverage/digital-fit-frontend
+
+      # Lee sonar-project.properties. Con qualitygate.wait el job falla si el Quality Gate falla.
+      - uses: SonarSource/sonarqube-scan-action@v8
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+        with:
+          args: >
+            -Dsonar.qualitygate.wait=true
