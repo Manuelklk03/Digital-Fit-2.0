@@ -21,6 +21,20 @@ Dependencias: ninguna.
 
 Aceptación: `v1.0.0` publicado y verificado; `main` sin materiales académicos; documentación coherente con el código; `ng test` y la compilación del backend en verde y registrados en STATUS.
 
+## Fase 1B — DevOps: CI/CD, Docker y calidad
+
+Dependencias: 1.5–1.8. Adelantada el 2026-11-01 (decisión de Manuel, práctica del bootcamp): con el pipeline montado primero, todas las PR de las fases siguientes pasan por la CI. Tareas en **modo automático**: las hace el agente (rama, commits, PR y merge) y después las explica.
+
+| ID | Tarea |
+|---|---|
+| 1B.1 [P] | `ci/github-actions`: workflow `ci.yml` en cada PR y push a `main`: backend `mvn verify` con MySQL como *service container*; frontend `npm ci`, `build` y `test` |
+| 1B.2 [P] | Protección de `main` con los checks de CI obligatorios |
+| 1B.3 [P] | `ci/sonarqube`: cobertura (JaCoCo en backend, vitest en frontend) y análisis en SonarQube Cloud con Quality Gate obligatorio (D7). Secreto `SONAR_TOKEN` |
+| 1B.4 [P] | `ci/docker-publish`: en cada merge a `main` y tag `v*`, construir y publicar las imágenes en Docker Hub (`latest`, SHA corto y versión) (D8). Secretos `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN` |
+| 1B.5 [+] | Compose de producción que use las imágenes de Docker Hub en lugar de `build:` |
+
+Aceptación: una PR de prueba muestra los checks de CI y Sonar en verde; tras el merge, las imágenes aparecen en Docker Hub con sus tags.
+
 ## Fase 2 — Viabilidad del despliegue gratuito
 
 Dependencias: 1.8. **Se resuelve antes de invertir en el resto de la renovación.**
@@ -82,7 +96,7 @@ Dependencias: fases 4 y 5.
 
 | ID | Tarea |
 |---|---|
-| 6.1 [P] | GitHub Actions: build y tests de frontend y backend en cada PR |
+| 6.1 [P] | Añadir a la CI de la fase 1B los tests nuevos (integración, E2E) |
 | 6.2 [P] | Pruebas E2E de los recorridos principales (Playwright) |
 | 6.3 [P] | Revisión de seguridad y de rendimiento (Lighthouse, tamaño del bundle) |
 | 6.4 [P] | Revisión completa con Codex y corrección de hallazgos |

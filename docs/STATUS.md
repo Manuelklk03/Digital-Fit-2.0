@@ -1,6 +1,8 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-10-26** (Claude Code).
+Última actualización: **2026-11-01** (Claude Code).
+
+> **2026-11-01:** Manuel adelanta DevOps (fase 1B del roadmap) y autoriza el modo automático para ella y para las tareas de la fase 1 que la desbloquean (1.5–1.8). Decisiones D7 (SonarQube Cloud) y D8 (Docker Hub). Orden: merge de la PR #23 → configuración de GitHub (1.5) → 1.6 → 1.7 → 1.8 → 1B.1–1B.4.
 
 ## Resumen
 

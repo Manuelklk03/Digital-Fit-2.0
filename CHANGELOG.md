@@ -12,6 +12,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 - GitHub Flow como flujo de trabajo y plantilla de pull request.
 - Modo de trabajo guiado para las IA: Manuel escribe el código y la IA explica paso a paso; la IA solo edita en tareas autorizadas.
 - Configuración de Claude Code del proyecto (`.claude/settings.json`).
+- Fase 1B (DevOps) en el roadmap: CI con GitHub Actions, SonarQube Cloud y publicación de imágenes en Docker Hub.
 
 ### Cambiado
 

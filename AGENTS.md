@@ -39,6 +39,7 @@ Si aparece un error durante el modo guiado, explica su causa y la corrección pa
 
 - La autorización cubre **solo la tarea solicitada**. Resuelve los detalles rutinarios dentro de ella, pero no amplíes el alcance ni empieces otras tareas o fases.
 - Al terminar, explica qué archivos cambiaste, para qué sirven y cómo lo comprobaste. Después vuelve al modo guiado.
+- Autorización permanente (Manuel, 2026-11-01): las tareas de la **fase 1B (DevOps)** y las de la fase 1 que la desbloquean se hacen en automático, incluidos rama, commits, PR y merge. Los tokens los guarda Manuel como secretos de GitHub (`gh secret set`); nunca se piden en el chat.
 
 ### Reglas generales
 

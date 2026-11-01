@@ -138,3 +138,5 @@ Propuesta; cada punto se confirma en su fase.
 | D4 | Mantener MySQL | Es la base prevista; cambiar obliga a revisar SQL y `data.sql` | Si no hay MySQL gratuito estable, evaluar PostgreSQL con sus costes | Pendiente (fase 2) |
 | D5 | Materiales académicos fuera de 2.0, conservados en `v1.0.0` | La rama de trabajo debe ser un proyecto profesional | Se consultan con `git show v1.0.0` | Aceptada (2026-10-26) |
 | D6 | Librerías de UI compatibles con Angular (sin React) | Evitar dos frameworks en el cliente | shadcn/ui y React Bits solo como referencia visual | Aceptada (2026-10-26) |
+| D7 | SonarQube Cloud para el análisis de calidad | Gratis en repositorios públicos y accesible desde GitHub Actions (un SonarQube local no lo es) | Token `SONAR_TOKEN` como secreto de GitHub; Quality Gate como check de PR | Aceptada (2026-11-01) |
+| D8 | Imágenes publicadas en Docker Hub desde GitHub Actions | Despliegue reproducible a partir de imágenes versionadas | Token de Docker Hub como secreto de GitHub, nunca en el repositorio | Aceptada (2026-11-01) |
