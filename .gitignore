@@ -1,0 +1,11 @@
+# Logs de Spring Boot (logging.file.name=logs/digitalfit.log)
+*.log
+logs/
+
+# Variables de entorno locales (secretos)
+.env
+.env.*
+!.env.example
+
+# Estado local de herramientas de IA
+.omc/
