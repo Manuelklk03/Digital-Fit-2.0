@@ -18,7 +18,7 @@ Dependencias: ninguna.
 | 1.6 [P] | `chore/repo-hygiene`: `.gitignore` en la raíz, dejar de versionar los tres `.log` (P8), `mvnw` ejecutable (P14), rutas de Compose con `/` (P9) | Hecha (2026-11-01) |
 | 1.7 [P] | `test/fix-frontend-specs`: que `ng test` compile y pase (23 errores en 22 specs) | Hecha (2026-11-01): 51/51 tests en verde |
 | 1.8 [P] | Comprobar el backend: compilar y arrancar con Docker; ejecutar `docker compose up --build` y el recorrido login → crear entrenamiento → historial | Hecha (2026-11-01) |
-| 1.9 [P] | `refactor/postgresql`: migrar de MySQL a PostgreSQL (D4): driver, URL, imagen `postgres` en Compose, `data.sql` con `ON CONFLICT DO NOTHING`, `.env.example` para las credenciales; repetir el recorrido de 1.8 | Pendiente |
+| 1.9 [P] | `refactor/postgresql`: migrar de MySQL a PostgreSQL (D4): driver, URL, imagen `postgres` en Compose, `data.sql` con `ON CONFLICT DO NOTHING`, `.env.example` para las credenciales; repetir el recorrido de 1.8 | Hecha (2026-11-01) |
 | 1.10 [P] | `chore/upgrade-spring-boot`: Spring Boot 4.0.6 → 4.1.x (última estable; 4.1.2 el 2026-11-01) | Pendiente |
 | 1.11 [P] | `chore/upgrade-angular`: Angular 21 → 22 con `ng update` (22.2.4 el 2026-11-01); tests y build en verde | Pendiente |
 
@@ -45,7 +45,7 @@ Dependencias: 1.8. **Se resuelve antes de invertir en el resto de la renovación
 
 | ID | Tarea |
 |---|---|
-| 2.1 [P] | Investigar planes vigentes en documentación oficial: frontend estático (Cloudflare Pages, Netlify, Vercel, GitHub Pages), backend en contenedor (Render, Koyeb, Fly.io, Google Cloud Run…), MySQL gestionado (Aiven, TiDB Cloud Serverless…). Registrar en [deployment.md](deployment.md) límites, memoria, suspensión, persistencia, tarjeta y caducidad. Separar planes gratuitos de pruebas temporales |
+| 2.1 [P] | Investigar planes vigentes en documentación oficial: frontend estático (Cloudflare Pages, Netlify, Vercel, GitHub Pages), backend en contenedor (Render, Koyeb, Fly.io, Google Cloud Run…), PostgreSQL gestionado (Aiven, TiDB Cloud Serverless…). Registrar en [deployment.md](deployment.md) límites, memoria, suspensión, persistencia, tarjeta y caducidad. Separar planes gratuitos de pruebas temporales |
 | 2.2 [P] | Decidir el alojamiento y el modelo de autenticación (D2) y la base de datos (D4) en [architecture.md](architecture.md#4-registro-de-decisiones) |
 | 2.3 [P] | Configuración por entorno: perfiles `dev`/`prod`, variables para base de datos, CORS y cookies; corregir rutas de Compose (P3, P9) |
 | 2.4 [P] | **Prueba mínima real**: desplegar backend + base de datos + un frontend mínimo y verificar registro, login, crear un recurso propio, cerrar sesión, volver a entrar y comprobar que persiste |
@@ -86,7 +86,7 @@ Dependencias: 2.2 (autenticación y base de datos decididas). Puede solaparse co
 | 4.8 [+] | Paginación y ordenación en listados (P6); revisar consultas N+1 y transacciones |
 | 4.9 [+] | Retirar dependencias sin uso (Thymeleaf, Actuator si no se usa para `health`) |
 
-Aceptación: tests de backend en verde (con MySQL o Testcontainers), permisos cubiertos, sin secretos en el repositorio.
+Aceptación: tests de backend en verde (con PostgreSQL o Testcontainers), permisos cubiertos, sin secretos en el repositorio.
 
 ## Fase 5 — Renovación del frontend por recorridos
 

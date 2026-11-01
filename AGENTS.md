@@ -4,7 +4,7 @@
 
 Digital-Fit es una aplicación web para organizar el entrenamiento: centros privados y lugares públicos con mapa, entrenamientos base, propios y de la comunidad, historial, estadísticas, valoraciones y soporte con panel de administración. Nació como proyecto final de DAW (conservado en el tag `v1.0.0`) y se está renovando como **Digital-Fit 2.0**: una aplicación profesional, publicada en una URL pública gratuita y presentada como proyecto de portfolio.
 
-Stack: Angular 21 + TypeScript 5.9 (frontend), Spring Boot 4 + Java 25 (backend), MySQL 8, Docker Compose. Detalle en [docs/architecture.md](docs/architecture.md).
+Stack: Angular 21 + TypeScript 5.9 (frontend), Spring Boot 4 + Java 25 (backend), PostgreSQL 17, Docker Compose. Detalle en [docs/architecture.md](docs/architecture.md).
 
 El avance real está en [docs/STATUS.md](docs/STATUS.md). Léelo en cada sesión y contrástalo con el repositorio. No supongas que existen rutas, scripts, tests o un despliegue porque aparezcan en la documentación: mandan los archivos actuales y las instrucciones vigentes de Manuel.
 

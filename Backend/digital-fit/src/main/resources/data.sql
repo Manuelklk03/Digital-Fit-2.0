@@ -1,5 +1,5 @@
 -- Insertar datos de entrenamientos base
-INSERT IGNORE INTO
+INSERT INTO
     entrenamientos_base (
         nombre,
         descripcion,
@@ -76,10 +76,10 @@ VALUES (
         'RECUPERACION',
         'PRINCIPIANTE',
         20
-    );
+    ) ON CONFLICT DO NOTHING;
 
 --Centros privados
-INSERT IGNORE INTO
+INSERT INTO
     centros_privados_base (
         nombre,
         direccion,
@@ -149,10 +149,10 @@ VALUES (
         'Centro premium con piscina y spa.',
         39.4561,
         -0.3468
-    );
+    ) ON CONFLICT DO NOTHING;
 
 -- Lugares Publicos:
-INSERT IGNORE INTO
+INSERT INTO
     lugares_publicos_base (
         nombre,
         direccion,
@@ -242,9 +242,9 @@ VALUES (
         39.4805,
         -0.3872,
         'CIRCUITO_CICLISMO'
-    );
+    ) ON CONFLICT DO NOTHING;
 
-INSERT IGNORE INTO
+INSERT INTO
     usuarios (
         email,
         password,
@@ -256,9 +256,9 @@ VALUES (
         '$2a$10$S3tQwJZtrEyaQkdbdptvxe.dvxr6yosKlbUHgWa.EPSYviqUesNbq',
         'ADMIN',
         'admin1'
-    );
+    ) ON CONFLICT DO NOTHING;
 
-INSERT IGNORE INTO
+INSERT INTO
     usuarios (
         email,
         password,
@@ -270,4 +270,4 @@ VALUES (
         '$2a$10$DxFOrgNejnzMThd6HhM4.O0LCSMmtXmzcGN5SoTeIV.WbaRBkrnkW',
         'USER',
         'usuario1'
-    );
+    ) ON CONFLICT DO NOTHING;

@@ -60,7 +60,7 @@ La plantilla está en [.github/pull_request_template.md](../.github/pull_request
 | Frontend: build | `npm run build` | `Frontend/digital-fit-frontend` |
 | Frontend: tests | `npx ng test --watch=false` | `Frontend/digital-fit-frontend` |
 | Backend: compilar | `mvnw.cmd -DskipTests package` (CMD), `.\mvnw.cmd …` (PowerShell) o `sh ./mvnw …` (Git Bash/Linux/macOS) | `Backend/digital-fit` |
-| Backend: tests | `mvnw.cmd test` (mismas variantes) — el único test (`contextLoads`) necesita MySQL accesible | `Backend/digital-fit` |
+| Backend: tests | `mvnw.cmd test` (mismas variantes) — el único test (`contextLoads`) necesita PostgreSQL accesible (`docker compose up -d postgres`) | `Backend/digital-fit` |
 | Todo junto | `docker compose up --build` | raíz |
 
 Sin Java local, el backend se compila con Docker:

@@ -9,7 +9,7 @@
 - [ ] Frontend: `npm run build`
 - [ ] Frontend: `npx ng test --watch=false`
 - [ ] Backend: `mvnw -DskipTests package` (o con Docker)
-- [ ] Backend: `mvnw test` (necesita MySQL)
+- [ ] Backend: `mvnw test` (necesita PostgreSQL: `docker compose up -d postgres`)
 - [ ] `docker compose up --build` y recorrido afectado probado a mano
 - [ ] Cambios visuales: móvil, escritorio, teclado, contraste y movimiento reducido
 - [ ] No aplica (solo documentación): enlaces y comandos revisados

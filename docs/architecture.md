@@ -8,7 +8,7 @@ Este documento separa **lo que existe** (comprobado en el código el 2026-10-26,
 Navegador ──► Frontend Angular (SPA)
                  │  peticiones /api/... con cookie de sesión
                  ▼
-            Backend Spring Boot ──► MySQL 8
+            Backend Spring Boot ──► PostgreSQL 17
                  │
                  └──► Nominatim (geocodificación inversa)
 Navegador ──► teselas de OpenStreetMap y Nominatim (búsqueda) directamente
@@ -29,7 +29,7 @@ En Docker Compose, nginx sirve el frontend en el puerto 4200 y reenvía `/api/` 
 | Vitest (tests de Angular) | `^4.0.8` |
 | Spring Boot (parent) | `4.0.6` |
 | Java | `25` |
-| MySQL (Compose) | `8.0` |
+| PostgreSQL (Compose) | `17-alpine` |
 | Node (Dockerfile del frontend) | `22-alpine` |
 
 ### Backend (`Backend/digital-fit`)
@@ -76,7 +76,7 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 
 **Errores.** `GlobalExceptionHandler` devuelve texto plano (400/403/404) y, para la validación de DTOs, un mapa `campo → mensaje`. No hay un formato de error único.
 
-**Otros.** Actuator y Thymeleaf están en el `pom.xml` sin uso aparente en la API. Logs en `logs/digitalfit.log`; tres `.log` están versionados por error (`Backend/logs/`, `Backend/digital-fit/logs/` y `Backend/digital-fit/src/main/java/com/example/digital_fit/logs/`). Un único test: `contextLoads` (necesita MySQL).
+**Otros.** Actuator y Thymeleaf están en el `pom.xml` sin uso aparente en la API. Logs en `logs/digitalfit.log`. Un único test: `contextLoads` (necesita PostgreSQL).
 
 ### Frontend (`Frontend/digital-fit-frontend`)
 
@@ -95,7 +95,7 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 
 ### Docker
 
-`docker-compose.yml` levanta `mysql:8.0` (puerto 3307 en el host, credenciales `root/root` de desarrollo), backend (8080) y frontend con nginx (4200 → 80). Los `context` usan `/`, válidos en Windows, Linux y macOS.
+`docker-compose.yml` levanta `postgres:17-alpine` (puerto 5433 en el host, credenciales de `.env` o `digitalfit` en desarrollo), backend (8080) y frontend con nginx (4200 → 80). Los `context` usan `/`, válidos en Windows, Linux y macOS.
 
 ### Problemas detectados (no corregidos todavía)
 
@@ -117,7 +117,7 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 
 Propuesta; cada punto se confirma en su fase.
 
-- **Mismo stack**: Angular, TypeScript, Spring Boot, MySQL. No hay motivo, por ahora, para cambiarlo. Si el alojamiento gratuito de MySQL resulta inviable, se planteará como decisión aparte (ver D4).
+- **Mismo stack**: Angular, TypeScript, Spring Boot. La base de datos pasa a PostgreSQL (D4).
 - **Despliegue separado**: frontend estático en un CDN, backend en un contenedor y base de datos gestionada (fase 2).
 - **Configuración por entornos**: perfiles de Spring (`dev`, `prod`) y variables de entorno para URL de la base de datos, credenciales, orígenes permitidos y cookies.
 - **Autenticación**: se conserva la sesión con cookie si el dominio lo permite; con frontend y API en dominios distintos exige `SameSite=None; Secure` y CSRF activado con token. La alternativa es servir ambos bajo el mismo dominio con un proxy. Se decide en la fase 2 según el alojamiento real (D2).

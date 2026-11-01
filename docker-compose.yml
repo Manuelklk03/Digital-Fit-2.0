@@ -1,17 +1,18 @@
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: digital-fit-mysql
+  postgres:
+    image: postgres:17-alpine
+    container_name: digital-fit-postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: digital_fit
+      POSTGRES_DB: digital_fit
+      POSTGRES_USER: ${DB_USERNAME:-digitalfit}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-digitalfit}
     ports:
-      - "3307:3306"
+      - "5433:5432"
     volumes:
-      - digital_fit_mysql_data:/var/lib/mysql
+      - digital_fit_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -22,13 +23,13 @@ services:
     container_name: digital-fit-backend
     restart: always
     environment:
-      DB_URL: jdbc:mysql://mysql:3306/digital_fit?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Europe/Madrid
-      DB_USERNAME: root
-      DB_PASSWORD: root
+      DB_URL: jdbc:postgresql://postgres:5432/digital_fit
+      DB_USERNAME: ${DB_USERNAME:-digitalfit}
+      DB_PASSWORD: ${DB_PASSWORD:-digitalfit}
     ports:
       - "8080:8080"
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
 
   frontend:
@@ -42,4 +43,4 @@ services:
       - backend
 
 volumes:
-  digital_fit_mysql_data:
+  digital_fit_postgres_data:
