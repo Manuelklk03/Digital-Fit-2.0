@@ -1,5 +1,7 @@
 # Digital-Fit
 
+[![CI](https://github.com/Manuelklk03/Digital-Fit-Proyecto/actions/workflows/ci.yml/badge.svg)](https://github.com/Manuelklk03/Digital-Fit-Proyecto/actions/workflows/ci.yml)
+
 Aplicación web para organizar el entrenamiento: encontrar centros deportivos y lugares públicos donde entrenar, guardar y seguir rutinas, registrar lo que haces y ver tu progreso.
 
 > **Estado: en renovación hacia Digital-Fit 2.0.** La versión actual funciona en local con Docker. Todavía no hay una versión publicada en internet. El plan está en el [roadmap](docs/roadmap.md) y el punto exacto en [STATUS](docs/STATUS.md).

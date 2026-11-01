@@ -77,7 +77,14 @@ docker run --rm --network digital-fit-proyecto_default -v "%cd%:/src:ro" -v digi
 
 (ejecutado en CMD desde `Backend/digital-fit`; en Git Bash, `MSYS_NO_PATHCONV=1` y `$(pwd -W)` en lugar de `%cd%`).
 
-Lint, comprobación de formato y CI en GitHub Actions están en el roadmap; hasta que existan, no aparecen como checks obligatorios.
+**CI (GitHub Actions).** [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) ejecuta en cada PR hacia `main`, en cada push a `main` y a mano (pestaña *Actions → CI → Run workflow*) dos jobs en paralelo:
+
+| Job | Qué hace |
+|---|---|
+| `Backend (Maven)` | Java 25 y `./mvnw -B verify` contra un PostgreSQL 17 levantado como *service container* |
+| `Frontend (Angular)` | Node 22, `npm ci`, `npm test -- --watch=false` y `npm run build` |
+
+El resultado aparece en la PR como checks. Ver una ejecución desde la terminal: `gh pr checks <número> --watch` o `gh run view <id> --log`. Lint, Sonar y la obligatoriedad de los checks llegan en las tareas 1B.2–1B.4.
 
 ## Versionado
 

@@ -1,0 +1,83 @@
+# Integración continua: compila y prueba backend y frontend en cada PR y en main.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Un push nuevo a la misma rama cancela la ejecución anterior, que ya no sirve.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    name: Backend (Maven)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Backend/digital-fit
+
+    # PostgreSQL de usar y tirar para los tests, igual que en docker-compose.yml.
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: digital_fit
+          POSTGRES_USER: digitalfit
+          POSTGRES_PASSWORD: digitalfit
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U digitalfit -d digital_fit"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DB_URL: jdbc:postgresql://localhost:5432/digital_fit
+      DB_USERNAME: digitalfit
+      DB_PASSWORD: digitalfit
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+
+      - name: Compilar y ejecutar tests
+        run: ./mvnw -B verify
+
+  frontend:
+    name: Frontend (Angular)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Frontend/digital-fit-frontend
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: Frontend/digital-fit-frontend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Tests
+        run: npm test -- --watch=false
+
+      - name: Build de producción
+        run: npm run build
