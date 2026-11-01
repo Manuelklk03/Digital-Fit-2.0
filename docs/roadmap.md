@@ -19,7 +19,7 @@ Dependencias: ninguna.
 | 1.7 [P] | `test/fix-frontend-specs`: que `ng test` compile y pase (23 errores en 22 specs) | Hecha (2026-11-01): 51/51 tests en verde |
 | 1.8 [P] | Comprobar el backend: compilar y arrancar con Docker; ejecutar `docker compose up --build` y el recorrido login → crear entrenamiento → historial | Hecha (2026-11-01) |
 | 1.9 [P] | `refactor/postgresql`: migrar de MySQL a PostgreSQL (D4): driver, URL, imagen `postgres` en Compose, `data.sql` con `ON CONFLICT DO NOTHING`, `.env.example` para las credenciales; repetir el recorrido de 1.8 | Hecha (2026-11-01) |
-| 1.10 [P] | `chore/upgrade-spring-boot`: Spring Boot 4.0.6 → 4.1.x (última estable; 4.1.2 el 2026-11-01) | Pendiente |
+| 1.10 [P] | `chore/upgrade-spring-boot`: Spring Boot 4.0.6 → 4.1.x (última estable; 4.1.2 el 2026-11-01) | Hecha (2026-11-01): 4.1.2 |
 | 1.11 [P] | `chore/upgrade-angular`: Angular 21 → 22 con `ng update` (22.2.4 el 2026-11-01); tests y build en verde | Pendiente |
 
 Aceptación: `v1.0.0` publicado y verificado; `main` sin materiales académicos; documentación coherente con el código; `ng test` y la compilación del backend en verde y registrados en STATUS.
