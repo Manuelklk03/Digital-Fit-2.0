@@ -12,26 +12,28 @@ Dependencias: ninguna.
 |---|---|---|
 | 1.1 [P] | Auditoría inicial de repositorio, código, herramientas y documentación | Hecha (2026-10-26) |
 | 1.2 [P] | Historial de `main` reconstruido con GitHub Flow (PR #1–#22) , mensajes reescritos, contraseña retirada del historial y tag anotado `v1.0.0` sobre `218f26d`, publicado y verificado | Hecha (2026-10-26) |
-| 1.3 [P] | Retirar materiales académicos (rama `chore/v2-start`) | Preparada, pendiente de commit/PR |
-| 1.4 [P] | Documentación base: AGENTS, CLAUDE, STATUS, roadmap, arquitectura, diseño, despliegue, IA, Git, CHANGELOG, README, plantilla de PR | Preparada, pendiente de commit/PR |
-| 1.5 [P] | Configurar GitHub: proteger `main`, borrar ramas al fusionar (comandos en [git-workflow.md](git-workflow.md#configuración-pendiente-manuel)) | Pendiente (Manuel) |
-| 1.6 [P] | `chore/repo-hygiene`: dejar de versionar los tres `.log` y añadirlos a `.gitignore` (P8); marcar `mvnw` como ejecutable con `git update-index --chmod=+x` (P14) | Pendiente |
+| 1.3 [P] | Retirar materiales académicos (rama `chore/v2-start`) | Hecha (PR #23, 2026-11-01) |
+| 1.4 [P] | Documentación base: AGENTS, CLAUDE, STATUS, roadmap, arquitectura, diseño, despliegue, IA, Git, CHANGELOG, README, plantilla de PR | Hecha (PR #23, 2026-11-01) |
+| 1.5 [P] | Configurar GitHub: proteger `main`, borrar ramas al fusionar (ver [git-workflow.md](git-workflow.md#configuración-del-repositorio)) | Hecha (2026-11-01) |
+| 1.6 [P] | `chore/repo-hygiene`: `.gitignore` en la raíz, dejar de versionar los tres `.log` (P8), `mvnw` ejecutable (P14), rutas de Compose con `/` (P9) | Hecha (2026-11-01) |
 | 1.7 [P] | `test/fix-frontend-specs`: que `ng test` compile y pase (23 errores en 22 specs) | Pendiente |
 | 1.8 [P] | Comprobar el backend: compilar y arrancar con Docker; ejecutar `docker compose up --build` y el recorrido login → crear entrenamiento → historial | Pendiente (Docker Desktop no estaba en marcha) |
+| 1.9 [P] | `refactor/postgresql`: migrar de MySQL a PostgreSQL (D4): driver, URL, imagen `postgres` en Compose, `data.sql` con `ON CONFLICT DO NOTHING`, `.env.example` para las credenciales; repetir el recorrido de 1.8 | Pendiente |
 
 Aceptación: `v1.0.0` publicado y verificado; `main` sin materiales académicos; documentación coherente con el código; `ng test` y la compilación del backend en verde y registrados en STATUS.
 
 ## Fase 1B — DevOps: CI/CD, Docker y calidad
 
-Dependencias: 1.5–1.8. Adelantada el 2026-11-01 (decisión de Manuel, práctica del bootcamp): con el pipeline montado primero, todas las PR de las fases siguientes pasan por la CI. Tareas en **modo automático**: las hace el agente (rama, commits, PR y merge) y después las explica.
+Dependencias: 1.5–1.9. Adelantada el 2026-11-01 (decisión de Manuel, práctica del bootcamp): con el pipeline montado primero, todas las PR de las fases siguientes pasan por la CI. Tareas en **modo automático**: las hace el agente (rama, commits, PR y merge) y después las explica.
 
 | ID | Tarea |
 |---|---|
-| 1B.1 [P] | `ci/github-actions`: workflow `ci.yml` en cada PR y push a `main`: backend `mvn verify` con MySQL como *service container*; frontend `npm ci`, `build` y `test` |
-| 1B.2 [P] | Protección de `main` con los checks de CI obligatorios |
-| 1B.3 [P] | `ci/sonarqube`: cobertura (JaCoCo en backend, vitest en frontend) y análisis en SonarQube Cloud con Quality Gate obligatorio (D7). Secreto `SONAR_TOKEN` |
-| 1B.4 [P] | `ci/docker-publish`: en cada merge a `main` y tag `v*`, construir y publicar las imágenes en Docker Hub (`latest`, SHA corto y versión) (D8). Secretos `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN` |
-| 1B.5 [+] | Compose de producción que use las imágenes de Docker Hub en lugar de `build:` |
+| 1B.1 [P] | `ci/github-actions`: workflow `ci.yml` en cada PR y push a `main`: backend `mvn verify` con PostgreSQL como *service container*; frontend `npm ci`, `build` y `test` |
+| 1B.2 [P] | `ci/eslint`: `angular-eslint` en el frontend, `npm run lint` y job `lint` en la CI. Lo corregible con `--fix` se corrige; las reglas que exigen reescribir (p. ej. `no-explicit-any`, P7) quedan en `warn` hasta la fase 5. En el backend, Sonar (D7) hace de linter |
+| 1B.3 [P] | Protección de `main` con los checks de CI obligatorios |
+| 1B.4 [P] | `ci/sonarqube`: cobertura (JaCoCo en backend, vitest en frontend) y análisis en SonarQube Cloud con Quality Gate obligatorio (D7). Organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` (guardado) |
+| 1B.5 [P] | `ci/docker-publish`: en cada merge a `main` y tag `v*`, construir y publicar las imágenes en Docker Hub (`latest`, SHA corto y versión) (D8) y avisar al backend desplegado con su *deploy hook* (D9). Secretos `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN` y `RENDER_DEPLOY_HOOK` (o el del proveedor elegido) |
+| 1B.6 [+] | Compose de producción que use las imágenes de Docker Hub en lugar de `build:` |
 
 Aceptación: una PR de prueba muestra los checks de CI y Sonar en verde; tras el merge, las imágenes aparecen en Docker Hub con sus tags.
 
@@ -100,7 +102,7 @@ Dependencias: fases 4 y 5.
 | 6.2 [P] | Pruebas E2E de los recorridos principales (Playwright) |
 | 6.3 [P] | Revisión de seguridad y de rendimiento (Lighthouse, tamaño del bundle) |
 | 6.4 [P] | Revisión completa con Codex y corrección de hallazgos |
-| 6.5 [+] | Lint y formato como checks (ESLint para Angular, Prettier) |
+| 6.5 [+] | Formato como check (Prettier); ESLint ya está desde 1B.2 |
 
 ## Fase 7 — Publicación y versión estable 2.0
 

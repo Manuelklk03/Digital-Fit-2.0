@@ -18,7 +18,7 @@ services:
 
   backend:
     build:
-      context: ./Backend\digital-fit
+      context: ./Backend/digital-fit
     container_name: digital-fit-backend
     restart: always
     environment:
@@ -33,7 +33,7 @@ services:
 
   frontend:
     build:
-      context: ./Frontend\digital-fit-frontend
+      context: ./Frontend/digital-fit-frontend
     container_name: digital-fit-frontend
     restart: always
     ports:

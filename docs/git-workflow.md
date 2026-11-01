@@ -113,9 +113,9 @@ git archive --format=zip -o digital-fit-v1.0.0.zip v1.0.0   # copia comprimida
 
 En GitHub: **Tags → v1.0.0 → Download ZIP**.
 
-## Configuración pendiente (Manuel)
+## Configuración del repositorio
 
-Comprobado el 2026-10-26, después de la reconstrucción: `main` **no está protegida**, el repositorio **no borra las ramas al fusionar** y `branch.main.mergeoptions` no está definido. Para igualarlo con ValveDex (son cambios en la configuración de GitHub, por eso no los aplica el agente):
+**Aplicada el 2026-11-01** (verificada con la respuesta de la API): solo merge commits, borrado de ramas al fusionar y `main` protegida (solo por PR, también para administradores, sin force push ni borrado). Desde entonces, cualquier cambio en `main`, incluida la documentación, entra por PR. Comandos usados, por si hay que repetirlos en otro repositorio:
 
 ```bash
 # Borrar la rama al fusionar y permitir solo merge commits
