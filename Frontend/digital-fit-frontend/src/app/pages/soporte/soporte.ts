@@ -1,5 +1,5 @@
 import { SoporteService } from './../../services/soporte';
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth-service';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './soporte.css',
 })
-export class SoporteComponent {
+export class SoporteComponent implements OnInit {
   private soporteService = inject(SoporteService);
   private authService = inject(AuthService);
   private router = inject(Router);

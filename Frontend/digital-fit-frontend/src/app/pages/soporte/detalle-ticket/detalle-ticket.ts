@@ -3,7 +3,7 @@ import {
   Component,
   inject,
   OnDestroy,
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, OnInit,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './detalle-ticket.css',
 })
-export class DetalleTicketComponent implements OnDestroy {
+export class DetalleTicketComponent implements OnDestroy, OnInit {
   private route = inject(ActivatedRoute);
   private soporteService = inject(SoporteService);
   private authService = inject(AuthService);

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
@@ -18,7 +18,7 @@ import { MisLugaresService } from '../../../services/publicos/mis-lugares';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './historial-entrenamientos.css',
 })
-export class HistorialEntrenamientosComponent {
+export class HistorialEntrenamientosComponent implements OnInit {
   private historialService = inject(HistorialEntrenamientosService);
   private entrenamientosService = inject(EntrenamientosService);
   private misEntrenamientosService = inject(MisEntrenamientosService);

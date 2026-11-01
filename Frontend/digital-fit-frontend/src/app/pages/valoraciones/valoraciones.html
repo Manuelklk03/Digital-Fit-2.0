@@ -53,9 +53,10 @@
       </div>
 
       <div class="grupo-campo">
-        <label>Puntuación</label>
+        <span id="etiqueta-puntuacion" class="etiqueta-campo">Puntuación</span>
 
-        <div class="selector-estrellas" (mouseleave)="quitarHoverEstrella()">
+        <div class="selector-estrellas" role="group" aria-labelledby="etiqueta-puntuacion"
+          (mouseleave)="quitarHoverEstrella()">
           @for (estrella of estrellas; track estrella) {
           <button type="button" class="estrella" [class.estrella-activa]="estrellaActiva(estrella)"
             (click)="seleccionarEstrella(estrella)" (mouseenter)="activarHoverEstrella(estrella)"

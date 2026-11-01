@@ -7,6 +7,7 @@ import {
   Output,
   ViewChild,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core';
 import * as L from 'leaflet';
 import { FormsModule } from '@angular/forms';
@@ -48,7 +49,7 @@ export class MapaSelectorComponent implements AfterViewInit {
     L.latLng(40.79, 0.56),
   );
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   ngAfterViewInit(): void {
     this.configurarIconosLeaflet();

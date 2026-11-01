@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
@@ -14,7 +14,7 @@ import { AuthService } from '../../../services/auth-service';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './detalle-entrenamiento-base.css',
 })
-export class DetalleEntrenamientoComponent {
+export class DetalleEntrenamientoComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);

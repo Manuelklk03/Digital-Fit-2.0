@@ -2,7 +2,7 @@ import { AuthService } from './../../../../services/auth-service';
 import { AdminSoporteService } from './../../../../services/admin/admin-soporte-service';
 import { Footer } from './../../../../components/footer/footer';
 import { HeaderComponent } from './../../../../components/header/header';
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -13,7 +13,7 @@ import { Router, RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './soporte-admin.css',
 })
-export class AdminSoporteComponent {
+export class AdminSoporteComponent implements OnInit {
   private adminSoporteService = inject(AdminSoporteService);
   private authService = inject(AuthService);
   private router = inject(Router);

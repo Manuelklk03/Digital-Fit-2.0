@@ -6,7 +6,7 @@ import {
   Component,
   inject,
   OnDestroy,
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -19,7 +19,7 @@ import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-se
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './mis-centros.css',
 })
-export class MisCentrosComponent implements OnDestroy {
+export class MisCentrosComponent implements OnDestroy, OnInit {
   private misCentrosService = inject(MisCentrosService);
   private cdr = inject(ChangeDetectorRef);
 

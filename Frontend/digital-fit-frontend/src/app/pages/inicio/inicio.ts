@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header';
@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth-service';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './inicio.css',
 })
-export class InicioComponent {
+export class InicioComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);

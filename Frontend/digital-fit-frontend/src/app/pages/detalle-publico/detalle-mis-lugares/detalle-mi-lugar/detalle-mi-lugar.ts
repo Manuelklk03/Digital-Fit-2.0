@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../../components/header/header';
 import { Footer } from '../../../../components/footer/footer';
@@ -12,7 +12,7 @@ import { MapaSelectorComponent } from '../../../../components/mapa-selector/mapa
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './detalle-mi-lugar.css',
 })
-export class DetalleMiLugarComponent {
+export class DetalleMiLugarComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private misLugaresService = inject(MisLugaresService);

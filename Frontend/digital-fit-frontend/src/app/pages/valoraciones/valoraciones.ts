@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
@@ -20,7 +20,7 @@ import { MisLugaresService } from '../../services/publicos/mis-lugares';
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './valoraciones.css',
 })
-export class ValoracionesComponent {
+export class ValoracionesComponent implements OnInit {
   private valoracionesService = inject(ValoracionesService);
   private entrenamientosService = inject(EntrenamientosService);
   private misEntrenamientosService = inject(MisEntrenamientosService);
