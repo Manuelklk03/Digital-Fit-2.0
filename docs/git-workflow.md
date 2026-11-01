@@ -69,6 +69,12 @@ Sin Java local, el backend se compila con Docker:
 docker run --rm -v "%cd%:/src:ro" maven:3.9.15-eclipse-temurin-25-alpine sh -c "cp -r /src /app && cd /app && mvn -q -B -DskipTests package"
 ```
 
+Y los tests, contra el PostgreSQL de Compose (`docker compose up -d postgres` antes). El volumen `digitalfit-m2` guarda las dependencias de Maven entre ejecuciones:
+
+```bash
+docker run --rm --network digital-fit-proyecto_default -v "%cd%:/src:ro" -v digitalfit-m2:/root/.m2 -e DB_URL=jdbc:postgresql://postgres:5432/digital_fit maven:3.9.15-eclipse-temurin-25-alpine sh -c "cp -r /src /app && cd /app && mvn -B test"
+```
+
 (ejecutado en CMD desde `Backend/digital-fit`; en Git Bash, `MSYS_NO_PATHCONV=1` y `$(pwd -W)` en lugar de `%cd%`).
 
 Lint, comprobación de formato y CI en GitHub Actions están en el roadmap; hasta que existan, no aparecen como checks obligatorios.

@@ -27,7 +27,7 @@ En Docker Compose, nginx sirve el frontend en el puerto 4200 y reenvía `/api/` 
 | RxJS | `~7.8.0` |
 | Leaflet / leaflet-control-geocoder | `^1.9.4` / `^3.3.1` |
 | Vitest (tests de Angular) | `^4.0.8` |
-| Spring Boot (parent) | `4.0.6` |
+| Spring Boot (parent) | `4.1.2` |
 | Java | `25` |
 | PostgreSQL (Compose) | `17-alpine` |
 | Node (Dockerfile del frontend) | `22-alpine` |
