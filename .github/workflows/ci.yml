@@ -57,12 +57,17 @@ jobs:
       - name: Compilar y ejecutar tests
         run: ./mvnw -B verify
 
-      # Clases compiladas y cobertura de JaCoCo para el job de SonarQube.
+      # JAR de las dependencias (Spring, Lombok...) para que Sonar resuelva sus tipos.
+      - name: Copiar dependencias para Sonar
+        run: ./mvnw -B -q dependency:copy-dependencies -DincludeScope=test -DoutputDirectory=target/dependency
+
+      # Clases compiladas, dependencias y cobertura de JaCoCo para el job de SonarQube.
       - uses: actions/upload-artifact@v4
         with:
           name: backend-analisis
           path: |
             Backend/digital-fit/target/classes
+            Backend/digital-fit/target/dependency
             Backend/digital-fit/target/site/jacoco/jacoco.xml
           retention-days: 1
 
