@@ -81,3 +81,26 @@ jobs:
 
       - name: Build de producción
         run: npm run build
+
+  lint:
+    name: Frontend (lint)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Frontend/digital-fit-frontend
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: Frontend/digital-fit-frontend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      # Falla con errores; los avisos (deuda de la v1) se muestran pero no bloquean.
+      - name: ESLint
+        run: npm run lint
