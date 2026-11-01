@@ -82,11 +82,21 @@ docker run --rm --network digital-fit-proyecto_default -v "%cd%:/src:ro" -v digi
 
 | Job | Qué hace |
 |---|---|
-| `Backend (Maven)` | Java 25 y `./mvnw -B verify` contra un PostgreSQL 17 levantado como *service container* |
-| `Frontend (Angular)` | Node 22, `npm ci`, `npm test -- --watch=false` y `npm run build` |
+| `Backend (Maven)` | Java 25 y `./mvnw -B verify` contra un PostgreSQL 17 levantado como *service container*; cobertura con JaCoCo |
+| `Frontend (Angular)` | Node 22, `npm ci`, tests con cobertura (`lcov`) y `npm run build` |
 | `Frontend (lint)` | Node 22, `npm ci` y `npm run lint` (ESLint): falla con errores, los avisos no bloquean |
+| `SonarQube` | Espera a los dos primeros (`needs`), descarga sus informes (artefactos) y analiza el proyecto en SonarQube Cloud con `sonar-project.properties`. Falla si el Quality Gate falla |
 
-El resultado aparece en la PR como checks. Ver una ejecución desde la terminal: `gh pr checks <número> --watch` o `gh run view <id> --log`. Sonar y la obligatoriedad de los checks llegan en las tareas 1B.3 y 1B.4.
+El resultado aparece en la PR como checks. Ver una ejecución desde la terminal: `gh pr checks <número> --watch` o `gh run view <id> --log`.
+
+**SonarQube Cloud.** Proyecto `Manuelklk03_Digital-Fit-Proyecto` en la organización `manuelklk03`; token en el secreto `SONAR_TOKEN`. Quality Gate *Sonar way* (decisión de Manuel, 2026-11-01): el **código nuevo** de cada PR no puede añadir bugs ni vulnerabilidades, debe tener los *Security Hotspots* revisados, menos de un 3 % de duplicación y **al menos un 80 % de cobertura**. La deuda de la v1 no bloquea, pero cada línea nueva con lógica necesita tests. Sonar no aplica las condiciones de cobertura y duplicación si el código nuevo tiene menos de 20 líneas. Resultados: en el comentario que Sonar deja en la PR o en `https://sonarcloud.io/dashboard?id=Manuelklk03_Digital-Fit-Proyecto`.
+
+Cobertura en local:
+
+```bash
+cd Frontend/digital-fit-frontend && npm test -- --watch=false --coverage   # informe en coverage/
+# Backend: mvn verify (comando con Docker más arriba) → target/site/jacoco/index.html
+```
 
 ## Versionado
 
@@ -132,7 +142,7 @@ En GitHub: **Tags → v1.0.0 → Download ZIP**.
 
 **Aplicada el 2026-11-01** (verificada con la respuesta de la API): solo merge commits, borrado de ramas al fusionar y `main` protegida (solo por PR, también para administradores, sin force push ni borrado). Desde entonces, cualquier cambio en `main`, incluida la documentación, entra por PR.
 
-**Checks obligatorios (tarea 1B.3, 2026-11-01).** Una PR solo se puede fusionar con los tres jobs de la CI en verde (`Backend (Maven)`, `Frontend (Angular)` y `Frontend (lint)`) y con la rama al día con `main` (`strict`). Los checks están ligados a la app de GitHub Actions (`app_id` 15368), así que ningún otro servicio puede publicar un check con el mismo nombre. Comprobado con una PR de prueba (#32) con un `debugger;`: el lint falló, la PR quedó `BLOCKED` y `gh pr merge` se negó a fusionarla. Si `main` avanza mientras tu PR está abierta: `gh pr update-branch <número>` (o el botón *Update branch*) y esperar a que la CI vuelva a pasar.
+**Checks obligatorios (tarea 1B.3, 2026-11-01).** Una PR solo se puede fusionar con los cuatro jobs de la CI en verde (`Backend (Maven)`, `Frontend (Angular)`, `Frontend (lint)` y, desde 1B.4, `SonarQube`) y con la rama al día con `main` (`strict`). Los checks están ligados a la app de GitHub Actions (`app_id` 15368), así que ningún otro servicio puede publicar un check con el mismo nombre. Comprobado con una PR de prueba (#32) con un `debugger;`: el lint falló, la PR quedó `BLOCKED` y `gh pr merge` se negó a fusionarla. Si `main` avanza mientras tu PR está abierta: `gh pr update-branch <número>` (o el botón *Update branch*) y esperar a que la CI vuelva a pasar.
 
 Si se cambia el nombre de un job en `ci.yml`, hay que actualizar también esta lista; si no, GitHub esperará un check que ya no existe y bloqueará todas las PR.
 
@@ -150,7 +160,8 @@ gh api -X PUT repos/Manuelklk03/Digital-Fit-Proyecto/branches/main/protection --
     "checks": [
       { "context": "Backend (Maven)", "app_id": 15368 },
       { "context": "Frontend (Angular)", "app_id": 15368 },
-      { "context": "Frontend (lint)", "app_id": 15368 }
+      { "context": "Frontend (lint)", "app_id": 15368 },
+      { "context": "SonarQube", "app_id": 15368 }
     ]
   },
   "enforce_admins": true,

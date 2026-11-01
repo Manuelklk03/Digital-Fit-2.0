@@ -1,6 +1,7 @@
 # Digital-Fit
 
 [![CI](https://github.com/Manuelklk03/Digital-Fit-Proyecto/actions/workflows/ci.yml/badge.svg)](https://github.com/Manuelklk03/Digital-Fit-Proyecto/actions/workflows/ci.yml)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=Manuelklk03_Digital-Fit-Proyecto&metric=alert_status)](https://sonarcloud.io/dashboard?id=Manuelklk03_Digital-Fit-Proyecto)
 
 Aplicación web para organizar el entrenamiento: encontrar centros deportivos y lugares públicos donde entrenar, guardar y seguir rutinas, registrar lo que haces y ver tu progreso.
 
