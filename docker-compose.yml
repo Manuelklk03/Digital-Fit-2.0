@@ -38,7 +38,7 @@ services:
     container_name: digital-fit-frontend
     restart: always
     ports:
-      - "4200:80"
+      - "4200:8080"
     depends_on:
       - backend
 

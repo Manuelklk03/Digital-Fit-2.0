@@ -12,9 +12,14 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:25.0.3_9-jre-alpine
 
+# Usuario sin privilegios: si alguien explota la aplicación, no es root en el contenedor.
+RUN addgroup -S app && adduser -S app -G app
+
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build --chown=app:app /app/target/*.jar app.jar
+
+USER app
 
 EXPOSE 8080
 
