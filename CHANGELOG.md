@@ -19,6 +19,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Cambiado
 
+- `main` exige los tres checks de la CI en verde y la rama al día para fusionar.
 - Spring Boot 4.0.6 → 4.1.2.
 - Angular 21 → 22.2.4 y TypeScript 5.9 → 6.0.3, con las migraciones de `ng update` que mantienen el comportamiento anterior.
 - Base de datos: PostgreSQL 17 en lugar de MySQL 8 (driver, URL, Compose en el puerto 5433 y `data.sql` con `ON CONFLICT DO NOTHING`). Credenciales por `.env` (plantilla en `.env.example`).

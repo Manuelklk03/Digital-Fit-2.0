@@ -8,7 +8,7 @@
 
 - **Fase activa:** 1B — DevOps: CI/CD, Docker y calidad ([roadmap](roadmap.md#fase-1b--devops-cicd-docker-y-calidad)).
 - **Rama de trabajo:** ninguna abierta tras cada merge. `main` está protegida: todo entra por PR.
-- **CI:** `.github/workflows/ci.yml` (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
+- **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3 (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, método de análisis GitHub Actions (según Manuel), secreto `SONAR_TOKEN` guardado en el repositorio (verificado con `gh secret list`).
 - **Versión publicada:** `v1.0.0` (tag anotado, ver abajo). `v2.0.0` no existe todavía.
 - **Despliegue público:** ninguno.
@@ -68,7 +68,7 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **1B.3** (checks obligatorios), 1B.4 (Sonar), 1B.5 (Docker Hub) y 1B.7 (healthcheck), en automático.
+1. **1B.4** (Sonar), 1B.5 (Docker Hub) y 1B.7 (healthcheck), en automático.
 3. Rediseño: mapa tipo Google Maps, i18n y SEO registrados como tareas 3.6–3.9 (D10, D11), en modo mixto.
 
 ## Cómo actualizar este archivo

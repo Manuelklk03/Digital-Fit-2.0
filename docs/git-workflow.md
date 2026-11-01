@@ -130,16 +130,29 @@ En GitHub: **Tags → v1.0.0 → Download ZIP**.
 
 ## Configuración del repositorio
 
-**Aplicada el 2026-11-01** (verificada con la respuesta de la API): solo merge commits, borrado de ramas al fusionar y `main` protegida (solo por PR, también para administradores, sin force push ni borrado). Desde entonces, cualquier cambio en `main`, incluida la documentación, entra por PR. Comandos usados, por si hay que repetirlos en otro repositorio:
+**Aplicada el 2026-11-01** (verificada con la respuesta de la API): solo merge commits, borrado de ramas al fusionar y `main` protegida (solo por PR, también para administradores, sin force push ni borrado). Desde entonces, cualquier cambio en `main`, incluida la documentación, entra por PR.
+
+**Checks obligatorios (tarea 1B.3, 2026-11-01).** Una PR solo se puede fusionar con los tres jobs de la CI en verde (`Backend (Maven)`, `Frontend (Angular)` y `Frontend (lint)`) y con la rama al día con `main` (`strict`). Los checks están ligados a la app de GitHub Actions (`app_id` 15368), así que ningún otro servicio puede publicar un check con el mismo nombre. Comprobado con una PR de prueba (#32) con un `debugger;`: el lint falló, la PR quedó `BLOCKED` y `gh pr merge` se negó a fusionarla. Si `main` avanza mientras tu PR está abierta: `gh pr update-branch <número>` (o el botón *Update branch*) y esperar a que la CI vuelva a pasar.
+
+Si se cambia el nombre de un job en `ci.yml`, hay que actualizar también esta lista; si no, GitHub esperará un check que ya no existe y bloqueará todas las PR.
+
+Comandos usados, por si hay que repetirlos en otro repositorio:
 
 ```bash
 # Borrar la rama al fusionar y permitir solo merge commits
 gh api -X PATCH repos/Manuelklk03/Digital-Fit-Proyecto -F delete_branch_on_merge=true -F allow_squash_merge=false -F allow_rebase_merge=false
 
-# Proteger main: solo por PR (0 aprobaciones), también para administradores, sin force push ni borrado
+# Proteger main: solo por PR (0 aprobaciones) y con los checks de la CI, también para administradores, sin force push ni borrado
 gh api -X PUT repos/Manuelklk03/Digital-Fit-Proyecto/branches/main/protection --input - <<'EOF'
 {
-  "required_status_checks": null,
+  "required_status_checks": {
+    "strict": true,
+    "checks": [
+      { "context": "Backend (Maven)", "app_id": 15368 },
+      { "context": "Frontend (Angular)", "app_id": 15368 },
+      { "context": "Frontend (lint)", "app_id": 15368 }
+    ]
+  },
   "enforce_admins": true,
   "required_pull_request_reviews": { "required_approving_review_count": 0 },
   "restrictions": null,

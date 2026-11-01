@@ -32,7 +32,7 @@ Dependencias: 1.5–1.11. Adelantada el 2026-11-01 (decisión de Manuel, prácti
 |---|---|
 | 1B.1 [P] | **Hecha (2026-11-01, PR #30).** `ci/github-actions`: workflow `ci.yml` en cada PR y push a `main`: backend `mvn verify` con PostgreSQL como *service container*; frontend `npm ci`, `build` y `test` |
 | 1B.2 [P] | **Hecha (2026-11-01).** `ci/eslint`: `angular-eslint` en el frontend, `npm run lint` y job `lint` en la CI. Lo corregible con `--fix` se corrige; las reglas que exigen reescribir (p. ej. `no-explicit-any`, P7) quedan en `warn` hasta la fase 5. En el backend, Sonar (D7) hace de linter |
-| 1B.3 [P] | Protección de `main` con los checks de CI obligatorios |
+| 1B.3 [P] | **Hecha (2026-11-01).** Protección de `main` con los checks de CI obligatorios |
 | 1B.4 [P] | `ci/sonarqube`: cobertura (JaCoCo en backend, vitest en frontend) y análisis en SonarQube Cloud con Quality Gate obligatorio (D7). Organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` (guardado) |
 | 1B.5 [P] | `ci/docker-publish`: en cada merge a `main` y tag `v*`, construir y publicar las imágenes en Docker Hub (`latest`, SHA corto y versión) (D8) y avisar al backend desplegado con su *deploy hook* (D9). Secretos `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN` y `RENDER_DEPLOY_HOOK` (o el del proveedor elegido) |
 | 1B.6 [+] | Compose de producción que use las imágenes de Docker Hub en lugar de `build:` |
