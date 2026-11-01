@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header';
@@ -9,10 +9,10 @@ import { AuthService } from '../../services/auth-service';
   selector: 'app-inicio',
   imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './inicio.html',
-  styleUrl: './inicio.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './inicio.css',
 })
 export class InicioComponent {
-
   private authService = inject(AuthService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -29,12 +29,13 @@ export class InicioComponent {
       }
     });
 
-    this.authService.me()
+    this.authService
+      .me()
       .pipe(
         finalize(() => {
           this.cargando = false;
           this.cdr.detectChanges();
-        })
+        }),
       )
       .subscribe({
         next: (usuario: any) => {
@@ -43,7 +44,7 @@ export class InicioComponent {
         },
         error: () => {
           this.router.navigate(['/login']);
-        }
+        },
       });
   }
 

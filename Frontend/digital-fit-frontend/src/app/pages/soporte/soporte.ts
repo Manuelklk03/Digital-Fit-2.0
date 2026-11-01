@@ -1,5 +1,5 @@
 import { SoporteService } from './../../services/soporte';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -10,10 +10,10 @@ import { AuthService } from '../../services/auth-service';
   selector: 'app-soporte',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink],
   templateUrl: './soporte.html',
-  styleUrl: './soporte.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './soporte.css',
 })
 export class SoporteComponent {
-
   private soporteService = inject(SoporteService);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -48,7 +48,7 @@ export class SoporteComponent {
       },
       error: () => {
         this.router.navigate(['/login']);
-      }
+      },
     });
   }
 
@@ -60,7 +60,7 @@ export class SoporteComponent {
 
     const nuevoTicket = {
       asunto: this.asunto,
-      mensaje: this.mensaje
+      mensaje: this.mensaje,
     };
 
     this.soporteService.crearTicket(nuevoTicket).subscribe({
@@ -72,7 +72,7 @@ export class SoporteComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo enviar el ticket.', 'error');
-      }
+      },
     });
   }
 
@@ -86,7 +86,7 @@ export class SoporteComponent {
       error: (err: any) => {
         console.error('ERROR TICKETS:', err);
         this.abrirPopup('No se pudieron cargar los tickets.', 'error');
-      }
+      },
     });
   }
 
@@ -98,7 +98,7 @@ export class SoporteComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el ticket.', 'error');
-      }
+      },
     });
   }
 

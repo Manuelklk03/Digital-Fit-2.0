@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
@@ -12,10 +12,10 @@ import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selec
   selector: 'app-detalle-privado',
   imports: [HeaderComponent, Footer, RouterLink, MapaSelectorComponent],
   templateUrl: './detalle-privado.html',
-  styleUrl: './detalle-privado.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './detalle-privado.css',
 })
 export class DetallePrivadoComponent {
-
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -41,7 +41,7 @@ export class DetallePrivadoComponent {
       },
       error: () => {
         this.router.navigate(['/login']);
-      }
+      },
     });
   }
 
@@ -56,7 +56,7 @@ export class DetallePrivadoComponent {
       error: (err: any) => {
         console.error('ERROR DETALLE CENTRO PRIVADO:', err);
         this.abrirPopup('No se pudo cargar el detalle del centro.', 'error');
-      }
+      },
     });
   }
 
@@ -83,7 +83,7 @@ export class DetallePrivadoComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo añadir a mis centros.', 'error');
-      }
+      },
     });
   }
 
@@ -102,7 +102,7 @@ export class DetallePrivadoComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el centro privado base.', 'error');
-      }
+      },
     });
   }
 

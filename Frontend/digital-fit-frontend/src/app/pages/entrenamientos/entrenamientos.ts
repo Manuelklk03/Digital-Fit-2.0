@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -12,10 +12,10 @@ import { AuthService } from '../../services/auth-service';
   selector: 'app-entrenamientos',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink],
   templateUrl: './entrenamientos.html',
-  styleUrl: './entrenamientos.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './entrenamientos.css',
 })
 export class EntrenamientosComponent {
-
   private entrenamientosService = inject(EntrenamientosService);
   private misEntrenamientosService = inject(MisEntrenamientosService);
   private adminEntrenamientosBaseService = inject(AdminEntrenamientosBaseService);
@@ -49,7 +49,7 @@ export class EntrenamientosComponent {
       },
       error: () => {
         this.cargarEntrenamientos();
-      }
+      },
     });
   }
 
@@ -62,7 +62,7 @@ export class EntrenamientosComponent {
       error: (err: any) => {
         console.error('ERROR ENTRENAMIENTOS BASE:', err);
         this.abrirPopup('No se pudieron cargar los entrenamientos base.', 'error');
-      }
+      },
     });
   }
 
@@ -79,24 +79,28 @@ export class EntrenamientosComponent {
     }
 
     if (this.tipoBusqueda === 'categoria') {
-      this.entrenamientosService.getEntrenamientosFiltrados(texto, undefined, undefined, undefined).subscribe({
-        next: (data: any[]) => {
-          this.entrenamientos = data;
-          this.cdr.detectChanges();
-        },
-        error: (err: any) => console.error('ERROR FILTRO CATEGORIA:', err)
-      });
+      this.entrenamientosService
+        .getEntrenamientosFiltrados(texto, undefined, undefined, undefined)
+        .subscribe({
+          next: (data: any[]) => {
+            this.entrenamientos = data;
+            this.cdr.detectChanges();
+          },
+          error: (err: any) => console.error('ERROR FILTRO CATEGORIA:', err),
+        });
       return;
     }
 
     if (this.tipoBusqueda === 'nivel') {
-      this.entrenamientosService.getEntrenamientosFiltrados(undefined, texto, undefined, undefined).subscribe({
-        next: (data: any[]) => {
-          this.entrenamientos = data;
-          this.cdr.detectChanges();
-        },
-        error: (err: any) => console.error('ERROR FILTRO NIVEL:', err)
-      });
+      this.entrenamientosService
+        .getEntrenamientosFiltrados(undefined, texto, undefined, undefined)
+        .subscribe({
+          next: (data: any[]) => {
+            this.entrenamientos = data;
+            this.cdr.detectChanges();
+          },
+          error: (err: any) => console.error('ERROR FILTRO NIVEL:', err),
+        });
       return;
     }
 
@@ -108,23 +112,27 @@ export class EntrenamientosComponent {
         return;
       }
 
-      this.entrenamientosService.getEntrenamientosFiltrados(undefined, undefined, duracion, undefined).subscribe({
+      this.entrenamientosService
+        .getEntrenamientosFiltrados(undefined, undefined, duracion, undefined)
+        .subscribe({
+          next: (data: any[]) => {
+            this.entrenamientos = data;
+            this.cdr.detectChanges();
+          },
+          error: (err: any) => console.error('ERROR FILTRO DURACION:', err),
+        });
+      return;
+    }
+
+    this.entrenamientosService
+      .getEntrenamientosFiltrados(undefined, undefined, undefined, texto)
+      .subscribe({
         next: (data: any[]) => {
           this.entrenamientos = data;
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO DURACION:', err)
+        error: (err: any) => console.error('ERROR FILTRO NOMBRE:', err),
       });
-      return;
-    }
-
-    this.entrenamientosService.getEntrenamientosFiltrados(undefined, undefined, undefined, texto).subscribe({
-      next: (data: any[]) => {
-        this.entrenamientos = data;
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => console.error('ERROR FILTRO NOMBRE:', err)
-    });
   }
 
   alCambiarBusqueda(): void {
@@ -143,20 +151,25 @@ export class EntrenamientosComponent {
       descripcion: this.descripcion,
       categoria: this.categoria,
       nivel: this.nivel,
-      duracionEnMinutos: this.duracionEnMinutos
+      duracionEnMinutos: this.duracionEnMinutos,
     };
 
     if (this.editandoId !== null) {
-      this.adminEntrenamientosBaseService.actualizarEntrenamientoBase(this.editandoId, payload).subscribe({
-        next: () => {
-          this.abrirPopup('Entrenamiento base actualizado correctamente.', 'exito');
-          this.limpiarFormulario();
-          this.cargarEntrenamientos();
-        },
-        error: (err: any) => {
-          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo actualizar el entrenamiento base.'), 'error');
-        }
-      });
+      this.adminEntrenamientosBaseService
+        .actualizarEntrenamientoBase(this.editandoId, payload)
+        .subscribe({
+          next: () => {
+            this.abrirPopup('Entrenamiento base actualizado correctamente.', 'exito');
+            this.limpiarFormulario();
+            this.cargarEntrenamientos();
+          },
+          error: (err: any) => {
+            this.abrirPopup(
+              this.obtenerMensajeError(err, 'No se pudo actualizar el entrenamiento base.'),
+              'error',
+            );
+          },
+        });
     } else {
       this.adminEntrenamientosBaseService.crearEntrenamientoBase(payload).subscribe({
         next: () => {
@@ -165,8 +178,11 @@ export class EntrenamientosComponent {
           this.cargarEntrenamientos();
         },
         error: (err: any) => {
-          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo crear el entrenamiento base.'), 'error');
-        }
+          this.abrirPopup(
+            this.obtenerMensajeError(err, 'No se pudo crear el entrenamiento base.'),
+            'error',
+          );
+        },
       });
     }
   }
@@ -188,7 +204,7 @@ export class EntrenamientosComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el entrenamiento base.', 'error');
-      }
+      },
     });
   }
 
@@ -198,8 +214,11 @@ export class EntrenamientosComponent {
         this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
       },
       error: (err: any) => {
-        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'), 'error');
-      }
+        this.abrirPopup(
+          this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'),
+          'error',
+        );
+      },
     });
   }
 
@@ -221,8 +240,10 @@ export class EntrenamientosComponent {
       return 'Sin categoría';
     }
 
-    return categoria.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return categoria
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   mostrarNivelLegible(nivel: string): string {
@@ -230,8 +251,10 @@ export class EntrenamientosComponent {
       return 'Sin nivel';
     }
 
-    return nivel.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return nivel
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

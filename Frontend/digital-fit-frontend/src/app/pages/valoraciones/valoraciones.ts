@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
@@ -17,10 +17,10 @@ import { MisLugaresService } from '../../services/publicos/mis-lugares';
   selector: 'app-valoraciones',
   imports: [HeaderComponent, Footer, FormsModule],
   templateUrl: './valoraciones.html',
-  styleUrl: './valoraciones.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './valoraciones.css',
 })
 export class ValoracionesComponent {
-
   private valoracionesService = inject(ValoracionesService);
   private entrenamientosService = inject(EntrenamientosService);
   private misEntrenamientosService = inject(MisEntrenamientosService);
@@ -83,15 +83,17 @@ export class ValoracionesComponent {
       },
       error: (err: any) => {
         console.error('ERROR MIS VALORACIONES:', err);
-        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudieron cargar tus valoraciones.'), 'error');
-      }
+        this.abrirPopup(
+          this.obtenerMensajeError(err, 'No se pudieron cargar tus valoraciones.'),
+          'error',
+        );
+      },
     });
   }
 
   cargarValoracionesPublicas(): void {
-    const categoria = this.filtroValoracionesPublicas === 'TODOS'
-      ? null
-      : this.filtroValoracionesPublicas;
+    const categoria =
+      this.filtroValoracionesPublicas === 'TODOS' ? null : this.filtroValoracionesPublicas;
 
     this.valoracionesService.getValoracionesPublicas(categoria).subscribe({
       next: (data: any[]) => {
@@ -101,7 +103,7 @@ export class ValoracionesComponent {
       error: (err: any) => {
         console.error('ERROR VALORACIONES PUBLICAS:', err);
         this.valoracionesPublicas = [];
-      }
+      },
     });
   }
 
@@ -116,7 +118,7 @@ export class ValoracionesComponent {
         this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR ENTRENAMIENTOS BASE:', err)
+      error: (err: any) => console.error('ERROR ENTRENAMIENTOS BASE:', err),
     });
 
     this.misEntrenamientosService.getMisEntrenamientos().subscribe({
@@ -125,7 +127,7 @@ export class ValoracionesComponent {
         this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR MIS ENTRENAMIENTOS:', err)
+      error: (err: any) => console.error('ERROR MIS ENTRENAMIENTOS:', err),
     });
 
     this.historialEntrenamientosService.getHistorial().subscribe({
@@ -134,7 +136,7 @@ export class ValoracionesComponent {
         this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR HISTORIAL:', err)
+      error: (err: any) => console.error('ERROR HISTORIAL:', err),
     });
 
     this.entrenamientosComunidadService.getEntrenamientosComunidad().subscribe({
@@ -143,7 +145,7 @@ export class ValoracionesComponent {
         this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR ENTRENAMIENTOS COMUNIDAD:', err)
+      error: (err: any) => console.error('ERROR ENTRENAMIENTOS COMUNIDAD:', err),
     });
 
     this.privadosService.getCentrosPrivados().subscribe({
@@ -152,7 +154,7 @@ export class ValoracionesComponent {
         this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR CENTROS BASE:', err)
+      error: (err: any) => console.error('ERROR CENTROS BASE:', err),
     });
 
     this.misCentrosService.getMisCentros().subscribe({
@@ -161,7 +163,7 @@ export class ValoracionesComponent {
         this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR MIS CENTROS:', err)
+      error: (err: any) => console.error('ERROR MIS CENTROS:', err),
     });
 
     this.publicosService.getLugaresPublicos().subscribe({
@@ -170,7 +172,7 @@ export class ValoracionesComponent {
         this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR LUGARES BASE:', err)
+      error: (err: any) => console.error('ERROR LUGARES BASE:', err),
     });
 
     this.misLugaresService.getMisLugares().subscribe({
@@ -179,7 +181,7 @@ export class ValoracionesComponent {
         this.intentarSeleccionAutomatica();
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR MIS LUGARES:', err)
+      error: (err: any) => console.error('ERROR MIS LUGARES:', err),
     });
   }
 
@@ -199,26 +201,46 @@ export class ValoracionesComponent {
     }
   }
 
-  getOpcionesActuales(): { grupo: string, tipoReal: string, items: any[] }[] {
+  getOpcionesActuales(): { grupo: string; tipoReal: string; items: any[] }[] {
     if (this.categoriaContenido === 'ENTRENAMIENTOS') {
       return [
-        { grupo: 'Entrenamientos base', tipoReal: 'ENTRENAMIENTO_BASE', items: this.entrenamientosBase },
-        { grupo: 'Mis entrenamientos', tipoReal: 'ENTRENAMIENTO_USUARIO', items: this.misEntrenamientos },
-        { grupo: 'Entrenamientos del historial', tipoReal: 'HISTORIAL_ENTRENAMIENTO', items: this.historialEntrenamientos },
-        { grupo: 'Entrenamientos comunidad', tipoReal: 'ENTRENAMIENTO_COMUNIDAD', items: this.entrenamientosComunidad }
+        {
+          grupo: 'Entrenamientos base',
+          tipoReal: 'ENTRENAMIENTO_BASE',
+          items: this.entrenamientosBase,
+        },
+        {
+          grupo: 'Mis entrenamientos',
+          tipoReal: 'ENTRENAMIENTO_USUARIO',
+          items: this.misEntrenamientos,
+        },
+        {
+          grupo: 'Entrenamientos del historial',
+          tipoReal: 'HISTORIAL_ENTRENAMIENTO',
+          items: this.historialEntrenamientos,
+        },
+        {
+          grupo: 'Entrenamientos comunidad',
+          tipoReal: 'ENTRENAMIENTO_COMUNIDAD',
+          items: this.entrenamientosComunidad,
+        },
       ];
     }
 
     if (this.categoriaContenido === 'CENTROS_PRIVADOS') {
       return [
-        { grupo: 'Centros privados base', tipoReal: 'CENTRO_PRIVADO_BASE', items: this.centrosBase },
-        { grupo: 'Mis centros', tipoReal: 'CENTRO_PRIVADO_USUARIO', items: this.misCentros }
+        {
+          grupo: 'Centros privados base',
+          tipoReal: 'CENTRO_PRIVADO_BASE',
+          items: this.centrosBase,
+        },
+        { grupo: 'Mis centros', tipoReal: 'CENTRO_PRIVADO_USUARIO', items: this.misCentros },
       ];
     }
 
     return [
       { grupo: 'Lugares públicos base', tipoReal: 'LUGAR_PUBLICO_BASE', items: this.lugaresBase },
-      { grupo: 'Mis lugares', tipoReal: 'LUGAR_PUBLICO_USUARIO', items: this.misLugares }
+      { grupo: 'Mis lugares', tipoReal: 'LUGAR_PUBLICO_USUARIO', items: this.misLugares },
     ];
   }
 
@@ -290,11 +312,15 @@ export class ValoracionesComponent {
 
     const nuevaValoracion = {
       puntuacion: this.puntuacion,
-      comentario: this.comentario
+      comentario: this.comentario,
     };
 
     this.valoracionesService
-      .crearOActualizarValoracion(this.tipoContenidoReal, this.contenidoSeleccionadoId, nuevaValoracion)
+      .crearOActualizarValoracion(
+        this.tipoContenidoReal,
+        this.contenidoSeleccionadoId,
+        nuevaValoracion,
+      )
       .subscribe({
         next: () => {
           this.abrirPopup('Valoración guardada correctamente.', 'exito');
@@ -306,8 +332,11 @@ export class ValoracionesComponent {
         },
         error: (err: any) => {
           console.error('ERROR GUARDAR VALORACION:', err);
-          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo guardar la valoración.'), 'error');
-        }
+          this.abrirPopup(
+            this.obtenerMensajeError(err, 'No se pudo guardar la valoración.'),
+            'error',
+          );
+        },
       });
   }
 
@@ -321,7 +350,7 @@ export class ValoracionesComponent {
       error: (err: any) => {
         console.error('ERROR BORRAR VALORACION:', err);
         this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo borrar la valoración.'), 'error');
-      }
+      },
     });
   }
 

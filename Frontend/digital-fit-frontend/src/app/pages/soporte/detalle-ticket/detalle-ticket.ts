@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
@@ -10,10 +16,10 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-detalle-ticket',
   imports: [HeaderComponent, Footer, RouterLink, FormsModule],
   templateUrl: './detalle-ticket.html',
-  styleUrl: './detalle-ticket.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './detalle-ticket.css',
 })
 export class DetalleTicketComponent implements OnDestroy {
-
   private route = inject(ActivatedRoute);
   private soporteService = inject(SoporteService);
   private authService = inject(AuthService);
@@ -49,7 +55,7 @@ export class DetalleTicketComponent implements OnDestroy {
       },
       error: () => {
         this.router.navigate(['/login']);
-      }
+      },
     });
   }
 
@@ -68,7 +74,7 @@ export class DetalleTicketComponent implements OnDestroy {
       },
       error: (err: any) => {
         console.error('ERROR DETALLE TICKET:', err);
-      }
+      },
     });
   }
 
@@ -76,12 +82,14 @@ export class DetalleTicketComponent implements OnDestroy {
     this.soporteService.getMensajesTicket(this.ticketId).subscribe({
       next: (data: any[]) => {
         this.mensajes = data;
-        this.adminHaRespondido = this.mensajes.some((mensaje: any) => mensaje.emisorRol === 'ADMIN');
+        this.adminHaRespondido = this.mensajes.some(
+          (mensaje: any) => mensaje.emisorRol === 'ADMIN',
+        );
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('ERROR MENSAJES TICKET:', err);
-      }
+      },
     });
   }
 
@@ -101,7 +109,7 @@ export class DetalleTicketComponent implements OnDestroy {
       },
       error: (err: any) => {
         console.error('ERROR ENVIAR MENSAJE USUARIO:', err);
-      }
+      },
     });
   }
 

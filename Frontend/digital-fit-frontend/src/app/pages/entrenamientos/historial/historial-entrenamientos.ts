@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
@@ -15,10 +15,10 @@ import { MisLugaresService } from '../../../services/publicos/mis-lugares';
   selector: 'app-historial-entrenamientos',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink],
   templateUrl: './historial-entrenamientos.html',
-  styleUrl: './historial-entrenamientos.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './historial-entrenamientos.css',
 })
 export class HistorialEntrenamientosComponent {
-
   private historialService = inject(HistorialEntrenamientosService);
   private entrenamientosService = inject(EntrenamientosService);
   private misEntrenamientosService = inject(MisEntrenamientosService);
@@ -68,7 +68,7 @@ export class HistorialEntrenamientosComponent {
       error: (err: any) => {
         console.error('ERROR HISTORIAL:', err);
         this.abrirPopup('No se pudo cargar el historial.', 'error');
-      }
+      },
     });
   }
 
@@ -78,7 +78,7 @@ export class HistorialEntrenamientosComponent {
         this.entrenamientosBase = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR ENTRENAMIENTOS BASE:', err)
+      error: (err: any) => console.error('ERROR ENTRENAMIENTOS BASE:', err),
     });
 
     this.misEntrenamientosService.getMisEntrenamientos().subscribe({
@@ -86,7 +86,7 @@ export class HistorialEntrenamientosComponent {
         this.misEntrenamientos = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR MIS ENTRENAMIENTOS:', err)
+      error: (err: any) => console.error('ERROR MIS ENTRENAMIENTOS:', err),
     });
 
     this.privadosService.getCentrosPrivados().subscribe({
@@ -94,7 +94,7 @@ export class HistorialEntrenamientosComponent {
         this.centrosBase = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR CENTROS BASE:', err)
+      error: (err: any) => console.error('ERROR CENTROS BASE:', err),
     });
 
     this.misCentrosService.getMisCentros().subscribe({
@@ -102,7 +102,7 @@ export class HistorialEntrenamientosComponent {
         this.misCentros = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR MIS CENTROS:', err)
+      error: (err: any) => console.error('ERROR MIS CENTROS:', err),
     });
 
     this.publicosService.getLugaresPublicos().subscribe({
@@ -110,7 +110,7 @@ export class HistorialEntrenamientosComponent {
         this.lugaresBase = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR LUGARES BASE:', err)
+      error: (err: any) => console.error('ERROR LUGARES BASE:', err),
     });
 
     this.misLugaresService.getMisLugares().subscribe({
@@ -118,7 +118,7 @@ export class HistorialEntrenamientosComponent {
         this.misLugares = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR MIS LUGARES:', err)
+      error: (err: any) => console.error('ERROR MIS LUGARES:', err),
     });
   }
 
@@ -142,7 +142,7 @@ export class HistorialEntrenamientosComponent {
       centroPrivadoUsuarioId: null,
       fecha: this.formatearFechaParaBackend(this.fecha),
       duracionEnMinutos: this.duracionEnMinutos,
-      notas: this.notas
+      notas: this.notas,
     };
 
     const [tipoEntrenamiento, idEntrenamiento] = this.entrenamientoSeleccionado.split('-');
@@ -175,7 +175,7 @@ export class HistorialEntrenamientosComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo guardar el registro.', 'error');
-      }
+      },
     });
   }
 
@@ -187,7 +187,7 @@ export class HistorialEntrenamientosComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el registro.', 'error');
-      }
+      },
     });
   }
 
@@ -202,7 +202,9 @@ export class HistorialEntrenamientosComponent {
     this.historialFiltrado = this.historial.filter((registro: any) => {
       const entrenamiento = (registro.entrenamiento || '').toLowerCase();
       const ubicacion = (registro.ubicacion || '').toLowerCase();
-      const tipoEntrenamiento = this.mostrarTipoEntrenamiento(registro.tipoEntrenamiento).toLowerCase();
+      const tipoEntrenamiento = this.mostrarTipoEntrenamiento(
+        registro.tipoEntrenamiento,
+      ).toLowerCase();
       const tipoUbicacion = this.mostrarTipoUbicacion(registro.tipoUbicacion).toLowerCase();
       const notas = (registro.notas || '').toLowerCase();
       const fecha = (registro.fecha || '').toLowerCase();

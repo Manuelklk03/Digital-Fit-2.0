@@ -1,7 +1,13 @@
 import { MisCentrosService } from './../../../services/centros/mis-centros-service';
 import { Footer } from './../../../components/footer/footer';
 import { HeaderComponent } from './../../../components/header/header';
-import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-selector';
@@ -10,10 +16,10 @@ import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-se
   selector: 'app-mis-centros',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink, MapaSelectorComponent],
   templateUrl: './mis-centros.html',
-  styleUrl: './mis-centros.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './mis-centros.css',
 })
 export class MisCentrosComponent implements OnDestroy {
-
   private misCentrosService = inject(MisCentrosService);
   private cdr = inject(ChangeDetectorRef);
 
@@ -34,7 +40,8 @@ export class MisCentrosComponent implements OnDestroy {
   mostrarFormularioMapa = false;
 
   autocompletando = false;
-  textoAutocompletado = 'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
+  textoAutocompletado =
+    'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
   private autocompletadoTimeout: any;
 
   mostrarPopup = false;
@@ -65,7 +72,7 @@ export class MisCentrosComponent implements OnDestroy {
       error: (err: any) => {
         console.error('ERROR MIS CENTROS:', err);
         this.abrirPopup('No se pudieron cargar tus centros.', 'error');
-      }
+      },
     });
   }
 
@@ -83,7 +90,7 @@ export class MisCentrosComponent implements OnDestroy {
           this.centros = data;
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO DIRECCION MIS CENTROS:', err)
+        error: (err: any) => console.error('ERROR FILTRO DIRECCION MIS CENTROS:', err),
       });
       return;
     }
@@ -101,7 +108,7 @@ export class MisCentrosComponent implements OnDestroy {
           this.centros = data;
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO PRECIO MIS CENTROS:', err)
+        error: (err: any) => console.error('ERROR FILTRO PRECIO MIS CENTROS:', err),
       });
       return;
     }
@@ -111,7 +118,7 @@ export class MisCentrosComponent implements OnDestroy {
         this.centros = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR FILTRO NOMBRE MIS CENTROS:', err)
+      error: (err: any) => console.error('ERROR FILTRO NOMBRE MIS CENTROS:', err),
     });
   }
 
@@ -135,7 +142,8 @@ export class MisCentrosComponent implements OnDestroy {
     this.latitud = 39.4699;
     this.longitud = -0.3763;
     this.autocompletando = false;
-    this.textoAutocompletado = 'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
+    this.textoAutocompletado =
+      'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
     this.mostrarFormularioMapa = true;
   }
 
@@ -147,7 +155,7 @@ export class MisCentrosComponent implements OnDestroy {
     this.descripcion = '';
   }
 
-  actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
+  actualizarUbicacion(evento: { latitud: number; longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
 
@@ -194,9 +202,10 @@ export class MisCentrosComponent implements OnDestroy {
         this.limpiarCamposAutocompletables();
 
         this.autocompletando = false;
-        this.textoAutocompletado = 'No se pudo autocompletar la ubicación. Puedes completar los campos manualmente.';
+        this.textoAutocompletado =
+          'No se pudo autocompletar la ubicación. Puedes completar los campos manualmente.';
         this.cdr.detectChanges();
-      }
+      },
     });
   }
 
@@ -209,7 +218,7 @@ export class MisCentrosComponent implements OnDestroy {
       precioMensual: this.precioMensual,
       descripcion: this.descripcion,
       latitud: this.latitud,
-      longitud: this.longitud
+      longitud: this.longitud,
     };
 
     this.misCentrosService.crearCentroDesdeMaps(payload).subscribe({
@@ -220,7 +229,7 @@ export class MisCentrosComponent implements OnDestroy {
       },
       error: () => {
         this.abrirPopup('No se pudo guardar el centro.', 'error');
-      }
+      },
     });
   }
 
@@ -236,7 +245,7 @@ export class MisCentrosComponent implements OnDestroy {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el centro.', 'error');
-      }
+      },
     });
   }
 

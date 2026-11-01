@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
@@ -12,10 +12,10 @@ import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-se
   selector: 'app-detalle-publico',
   imports: [HeaderComponent, Footer, RouterLink, MapaSelectorComponent],
   templateUrl: './detalle-publico.html',
-  styleUrl: './detalle-publico.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './detalle-publico.css',
 })
 export class DetallePublicoComponent {
-
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -41,7 +41,7 @@ export class DetallePublicoComponent {
       },
       error: () => {
         this.router.navigate(['/login']);
-      }
+      },
     });
   }
 
@@ -56,7 +56,7 @@ export class DetallePublicoComponent {
       error: (err: any) => {
         console.error('ERROR DETALLE LUGAR PUBLICO:', err);
         this.abrirPopup('No se pudo cargar el detalle del lugar.', 'error');
-      }
+      },
     });
   }
 
@@ -69,8 +69,10 @@ export class DetallePublicoComponent {
       return 'Sin tipo';
     }
 
-    return tipo.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return tipo
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   formatearUbicacion(latitud: number, longitud: number): string {
@@ -92,7 +94,7 @@ export class DetallePublicoComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo añadir a mis lugares.', 'error');
-      }
+      },
     });
   }
 
@@ -111,7 +113,7 @@ export class DetallePublicoComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el lugar público base.', 'error');
-      }
+      },
     });
   }
 

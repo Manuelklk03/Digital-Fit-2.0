@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from '../../../../components/header/header';
 import { Footer } from '../../../../components/footer/footer';
@@ -10,10 +16,10 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-admin-detalle-ticket',
   imports: [HeaderComponent, Footer, FormsModule],
   templateUrl: './admin-detalle-ticket.html',
-  styleUrl: './admin-detalle-ticket.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './admin-detalle-ticket.css',
 })
 export class AdminDetalleTicketComponent implements OnDestroy {
-
   private route = inject(ActivatedRoute);
   private adminSoporteService = inject(AdminSoporteService);
   private authService = inject(AuthService);
@@ -48,7 +54,7 @@ export class AdminDetalleTicketComponent implements OnDestroy {
       },
       error: () => {
         this.router.navigate(['/login']);
-      }
+      },
     });
   }
 
@@ -68,7 +74,7 @@ export class AdminDetalleTicketComponent implements OnDestroy {
       error: (err: any) => {
         console.error('ERROR DETALLE TICKET ADMIN:', err);
         this.abrirPopup('No se pudo cargar el ticket.', 'error');
-      }
+      },
     });
   }
 
@@ -80,7 +86,7 @@ export class AdminDetalleTicketComponent implements OnDestroy {
       },
       error: (err: any) => {
         console.error('ERROR MENSAJES TICKET ADMIN:', err);
-      }
+      },
     });
   }
 
@@ -97,7 +103,7 @@ export class AdminDetalleTicketComponent implements OnDestroy {
       },
       error: () => {
         this.abrirPopup('No se pudo actualizar el estado.', 'error');
-      }
+      },
     });
   }
 
@@ -114,7 +120,7 @@ export class AdminDetalleTicketComponent implements OnDestroy {
       },
       error: () => {
         this.abrirPopup('No se pudo enviar el mensaje.', 'error');
-      }
+      },
     });
   }
 
@@ -132,7 +138,7 @@ export class AdminDetalleTicketComponent implements OnDestroy {
       },
       error: () => {
         this.abrirPopup('Solo se pueden borrar tickets cerrados.', 'error');
-      }
+      },
     });
   }
 

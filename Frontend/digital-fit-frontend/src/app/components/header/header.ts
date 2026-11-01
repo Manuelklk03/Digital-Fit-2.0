@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 
@@ -6,10 +6,10 @@ import { AuthService } from '../../services/auth-service';
   selector: 'app-header',
   imports: [RouterLink],
   templateUrl: './header.html',
-  styleUrl: './header.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './header.css',
 })
 export class HeaderComponent {
-
   private authService = inject(AuthService);
   private router = inject(Router);
 
@@ -26,7 +26,7 @@ export class HeaderComponent {
       },
       error: () => {
         this.usuarioActual = null;
-      }
+      },
     });
   }
 
@@ -34,7 +34,7 @@ export class HeaderComponent {
     this.authService.logout().subscribe({
       next: () => {
         this.router.navigate(['/login']);
-      }
+      },
     });
   }
 

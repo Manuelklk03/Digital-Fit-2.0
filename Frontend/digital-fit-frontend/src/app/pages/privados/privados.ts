@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -13,10 +13,10 @@ import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selec
   selector: 'app-privados',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink, MapaSelectorComponent],
   templateUrl: './privados.html',
-  styleUrl: './privados.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './privados.css',
 })
 export class PrivadosComponent {
-
   private privadosService = inject(PrivadosService);
   private misCentrosService = inject(MisCentrosService);
   private adminCentrosPrivadosBaseService = inject(AdminCentrosPrivadosBaseService);
@@ -53,7 +53,7 @@ export class PrivadosComponent {
       },
       error: () => {
         this.cargarCentros();
-      }
+      },
     });
   }
 
@@ -66,7 +66,7 @@ export class PrivadosComponent {
       error: (err: any) => {
         console.error('ERROR CENTROS PRIVADOS BASE:', err);
         this.abrirPopup('No se pudieron cargar los centros privados base.', 'error');
-      }
+      },
     });
   }
 
@@ -88,7 +88,7 @@ export class PrivadosComponent {
           this.centros = data;
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO DIRECCION CENTROS BASE:', err)
+        error: (err: any) => console.error('ERROR FILTRO DIRECCION CENTROS BASE:', err),
       });
       return;
     }
@@ -106,7 +106,7 @@ export class PrivadosComponent {
           this.centros = data;
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO PRECIO CENTROS BASE:', err)
+        error: (err: any) => console.error('ERROR FILTRO PRECIO CENTROS BASE:', err),
       });
       return;
     }
@@ -116,7 +116,7 @@ export class PrivadosComponent {
         this.centros = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR FILTRO NOMBRE CENTROS BASE:', err)
+      error: (err: any) => console.error('ERROR FILTRO NOMBRE CENTROS BASE:', err),
     });
   }
 
@@ -130,7 +130,7 @@ export class PrivadosComponent {
     this.cargarCentros();
   }
 
-  actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
+  actualizarUbicacion(evento: { latitud: number; longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
   }
@@ -144,20 +144,25 @@ export class PrivadosComponent {
       precioMensual: this.precioMensual,
       descripcion: this.descripcion,
       latitud: this.latitud,
-      longitud: this.longitud
+      longitud: this.longitud,
     };
 
     if (this.editandoId !== null) {
-      this.adminCentrosPrivadosBaseService.actualizarCentroPrivadoBase(this.editandoId, payload).subscribe({
-        next: () => {
-          this.abrirPopup('Centro privado base actualizado correctamente.', 'exito');
-          this.limpiarFormulario();
-          this.cargarCentros();
-        },
-        error: (err: any) => {
-          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo actualizar el centro privado base.'), 'error');
-        }
-      });
+      this.adminCentrosPrivadosBaseService
+        .actualizarCentroPrivadoBase(this.editandoId, payload)
+        .subscribe({
+          next: () => {
+            this.abrirPopup('Centro privado base actualizado correctamente.', 'exito');
+            this.limpiarFormulario();
+            this.cargarCentros();
+          },
+          error: (err: any) => {
+            this.abrirPopup(
+              this.obtenerMensajeError(err, 'No se pudo actualizar el centro privado base.'),
+              'error',
+            );
+          },
+        });
     } else {
       this.adminCentrosPrivadosBaseService.crearCentroPrivadoBase(payload).subscribe({
         next: () => {
@@ -166,8 +171,11 @@ export class PrivadosComponent {
           this.cargarCentros();
         },
         error: (err: any) => {
-          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo crear el centro privado base.'), 'error');
-        }
+          this.abrirPopup(
+            this.obtenerMensajeError(err, 'No se pudo crear el centro privado base.'),
+            'error',
+          );
+        },
       });
     }
   }
@@ -191,8 +199,11 @@ export class PrivadosComponent {
         this.cargarCentros();
       },
       error: (err: any) => {
-        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo borrar el centro privado base.'), 'error');
-      }
+        this.abrirPopup(
+          this.obtenerMensajeError(err, 'No se pudo borrar el centro privado base.'),
+          'error',
+        );
+      },
     });
   }
 
@@ -203,7 +214,7 @@ export class PrivadosComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo añadir a mis centros.', 'error');
-      }
+      },
     });
   }
 

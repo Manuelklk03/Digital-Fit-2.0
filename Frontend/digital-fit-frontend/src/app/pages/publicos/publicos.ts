@@ -1,5 +1,5 @@
 import { MisLugaresService } from './../../services/publicos/mis-lugares';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -13,10 +13,10 @@ import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selec
   selector: 'app-publicos',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink, MapaSelectorComponent],
   templateUrl: './publicos.html',
-  styleUrl: './publicos.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './publicos.css',
 })
 export class PublicosComponent {
-
   private publicosService = inject(PublicosService);
   private misLugaresService = inject(MisLugaresService);
   private adminLugaresPublicosBaseService = inject(AdminLugaresPublicosBaseService);
@@ -55,7 +55,7 @@ export class PublicosComponent {
       },
       error: () => {
         this.cargarLugares();
-      }
+      },
     });
   }
 
@@ -68,7 +68,7 @@ export class PublicosComponent {
       error: (err: any) => {
         console.error('ERROR LUGARES PUBLICOS BASE:', err);
         this.abrirPopup('No se pudieron cargar los lugares públicos base.', 'error');
-      }
+      },
     });
   }
 
@@ -90,7 +90,7 @@ export class PublicosComponent {
           this.lugares = data;
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO DIRECCION LUGARES BASE:', err)
+        error: (err: any) => console.error('ERROR FILTRO DIRECCION LUGARES BASE:', err),
       });
       return;
     }
@@ -101,7 +101,7 @@ export class PublicosComponent {
           this.lugares = data;
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO TIPO LUGARES BASE:', err)
+        error: (err: any) => console.error('ERROR FILTRO TIPO LUGARES BASE:', err),
       });
       return;
     }
@@ -111,7 +111,7 @@ export class PublicosComponent {
         this.lugares = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR FILTRO NOMBRE LUGARES BASE:', err)
+      error: (err: any) => console.error('ERROR FILTRO NOMBRE LUGARES BASE:', err),
     });
   }
 
@@ -125,7 +125,7 @@ export class PublicosComponent {
     this.cargarLugares();
   }
 
-  actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
+  actualizarUbicacion(evento: { latitud: number; longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
   }
@@ -139,20 +139,25 @@ export class PublicosComponent {
       horario: this.horario,
       latitud: this.latitud,
       longitud: this.longitud,
-      tipo: this.tipo
+      tipo: this.tipo,
     };
 
     if (this.editandoId !== null) {
-      this.adminLugaresPublicosBaseService.actualizarLugarPublicoBase(this.editandoId, payload).subscribe({
-        next: () => {
-          this.abrirPopup('Lugar público base actualizado correctamente.', 'exito');
-          this.limpiarFormulario();
-          this.cargarLugares();
-        },
-        error: (err: any) => {
-          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo actualizar el lugar público base.'), 'error');
-        }
-      });
+      this.adminLugaresPublicosBaseService
+        .actualizarLugarPublicoBase(this.editandoId, payload)
+        .subscribe({
+          next: () => {
+            this.abrirPopup('Lugar público base actualizado correctamente.', 'exito');
+            this.limpiarFormulario();
+            this.cargarLugares();
+          },
+          error: (err: any) => {
+            this.abrirPopup(
+              this.obtenerMensajeError(err, 'No se pudo actualizar el lugar público base.'),
+              'error',
+            );
+          },
+        });
     } else {
       this.adminLugaresPublicosBaseService.crearLugarPublicoBase(payload).subscribe({
         next: () => {
@@ -161,8 +166,11 @@ export class PublicosComponent {
           this.cargarLugares();
         },
         error: (err: any) => {
-          this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo crear el lugar público base.'), 'error');
-        }
+          this.abrirPopup(
+            this.obtenerMensajeError(err, 'No se pudo crear el lugar público base.'),
+            'error',
+          );
+        },
       });
     }
   }
@@ -186,8 +194,11 @@ export class PublicosComponent {
         this.cargarLugares();
       },
       error: (err: any) => {
-        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo borrar el lugar público base.'), 'error');
-      }
+        this.abrirPopup(
+          this.obtenerMensajeError(err, 'No se pudo borrar el lugar público base.'),
+          'error',
+        );
+      },
     });
   }
 
@@ -198,7 +209,7 @@ export class PublicosComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo añadir a mis lugares.', 'error');
-      }
+      },
     });
   }
 
@@ -223,8 +234,10 @@ export class PublicosComponent {
       return 'Sin tipo';
     }
 
-    return tipo.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return tipo
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   formatearUbicacion(latitud: number, longitud: number): string {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { EstadisticasService } from '../../services/estadisticas/estadisticas-service';
@@ -7,10 +7,10 @@ import { EstadisticasService } from '../../services/estadisticas/estadisticas-se
   selector: 'app-estadisticas',
   imports: [HeaderComponent, Footer],
   templateUrl: './estadisticas.html',
-  styleUrl: './estadisticas.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './estadisticas.css',
 })
 export class EstadisticasComponent {
-
   private estadisticasService = inject(EstadisticasService);
   private cdr = inject(ChangeDetectorRef);
 
@@ -38,7 +38,7 @@ export class EstadisticasComponent {
         this.mensajeError = 'No se pudieron cargar las estadísticas.';
         this.cargando = false;
         this.cdr.detectChanges();
-      }
+      },
     });
   }
 

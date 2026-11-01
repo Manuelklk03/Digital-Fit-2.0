@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { MisLugaresService } from '../../../services/publicos/mis-lugares';
@@ -10,10 +16,10 @@ import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-se
   selector: 'app-mis-lugares',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink, MapaSelectorComponent],
   templateUrl: './mis-lugares.html',
-  styleUrl: './mis-lugares.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './mis-lugares.css',
 })
 export class MisLugaresComponent implements OnDestroy {
-
   private misLugaresService = inject(MisLugaresService);
   private cdr = inject(ChangeDetectorRef);
 
@@ -34,7 +40,8 @@ export class MisLugaresComponent implements OnDestroy {
   mostrarFormularioMapa = false;
 
   autocompletando = false;
-  textoAutocompletado = 'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
+  textoAutocompletado =
+    'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
   private autocompletadoTimeout: any;
 
   mostrarPopup = false;
@@ -65,7 +72,7 @@ export class MisLugaresComponent implements OnDestroy {
       error: (err: any) => {
         console.error('ERROR MIS LUGARES:', err);
         this.abrirPopup('No se pudieron cargar tus lugares.', 'error');
-      }
+      },
     });
   }
 
@@ -83,7 +90,7 @@ export class MisLugaresComponent implements OnDestroy {
           this.lugares = data;
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO DIRECCION MIS LUGARES:', err)
+        error: (err: any) => console.error('ERROR FILTRO DIRECCION MIS LUGARES:', err),
       });
       return;
     }
@@ -94,7 +101,7 @@ export class MisLugaresComponent implements OnDestroy {
           this.lugares = data;
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO TIPO MIS LUGARES:', err)
+        error: (err: any) => console.error('ERROR FILTRO TIPO MIS LUGARES:', err),
       });
       return;
     }
@@ -104,7 +111,7 @@ export class MisLugaresComponent implements OnDestroy {
         this.lugares = data;
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('ERROR FILTRO NOMBRE MIS LUGARES:', err)
+      error: (err: any) => console.error('ERROR FILTRO NOMBRE MIS LUGARES:', err),
     });
   }
 
@@ -128,7 +135,8 @@ export class MisLugaresComponent implements OnDestroy {
     this.longitud = -0.3763;
     this.tipo = 'PARQUE_PUBLICO';
     this.autocompletando = false;
-    this.textoAutocompletado = 'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
+    this.textoAutocompletado =
+      'Selecciona una ubicación en el mapa para rellenar los datos automáticamente.';
     this.mostrarFormularioMapa = true;
   }
 
@@ -140,7 +148,7 @@ export class MisLugaresComponent implements OnDestroy {
     this.tipo = 'PARQUE_PUBLICO';
   }
 
-  actualizarUbicacion(evento: { latitud: number, longitud: number }): void {
+  actualizarUbicacion(evento: { latitud: number; longitud: number }): void {
     this.latitud = evento.latitud;
     this.longitud = evento.longitud;
 
@@ -187,9 +195,10 @@ export class MisLugaresComponent implements OnDestroy {
         this.limpiarCamposAutocompletables();
 
         this.autocompletando = false;
-        this.textoAutocompletado = 'No se pudo autocompletar la ubicación. Puedes completar los campos manualmente.';
+        this.textoAutocompletado =
+          'No se pudo autocompletar la ubicación. Puedes completar los campos manualmente.';
         this.cdr.detectChanges();
-      }
+      },
     });
   }
 
@@ -202,7 +211,7 @@ export class MisLugaresComponent implements OnDestroy {
       horario: this.horario,
       latitud: this.latitud,
       longitud: this.longitud,
-      tipo: this.tipo
+      tipo: this.tipo,
     };
 
     this.misLugaresService.crearLugarDesdeMaps(payload).subscribe({
@@ -213,7 +222,7 @@ export class MisLugaresComponent implements OnDestroy {
       },
       error: () => {
         this.abrirPopup('No se pudo guardar el lugar.', 'error');
-      }
+      },
     });
   }
 
@@ -229,7 +238,7 @@ export class MisLugaresComponent implements OnDestroy {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el lugar.', 'error');
-      }
+      },
     });
   }
 
@@ -238,8 +247,10 @@ export class MisLugaresComponent implements OnDestroy {
       return 'Sin tipo';
     }
 
-    return tipo.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return tipo
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   formatearUbicacion(latitud: number, longitud: number): string {

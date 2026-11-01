@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import * as L from 'leaflet';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -8,17 +17,17 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './mapa-selector.html',
-  styleUrl: './mapa-selector.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './mapa-selector.css',
 })
 export class MapaSelectorComponent implements AfterViewInit {
-
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef<HTMLDivElement>;
 
   @Input() latitud: number | null = null;
   @Input() longitud: number | null = null;
   @Input() soloVista = false;
 
-  @Output() ubicacionSeleccionada = new EventEmitter<{ latitud: number, longitud: number }>();
+  @Output() ubicacionSeleccionada = new EventEmitter<{ latitud: number; longitud: number }>();
 
   private map!: L.Map;
   private marker: L.Marker | null = null;
@@ -36,10 +45,10 @@ export class MapaSelectorComponent implements AfterViewInit {
 
   private readonly limitesComunidadValenciana = L.latLngBounds(
     L.latLng(37.84, -1.58),
-    L.latLng(40.79, 0.56)
+    L.latLng(40.79, 0.56),
   );
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   ngAfterViewInit(): void {
     this.configurarIconosLeaflet();
@@ -52,7 +61,7 @@ export class MapaSelectorComponent implements AfterViewInit {
       shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
-      shadowSize: [41, 41]
+      shadowSize: [41, 41],
     });
 
     L.Marker.prototype.options.icon = iconDefault;
@@ -77,12 +86,12 @@ export class MapaSelectorComponent implements AfterViewInit {
       doubleClickZoom: !this.soloVista,
       boxZoom: !this.soloVista,
       keyboard: !this.soloVista,
-      touchZoom: !this.soloVista
+      touchZoom: !this.soloVista,
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
-      noWrap: true
+      noWrap: true,
     }).addTo(this.map);
 
     this.map.on('dragend zoomend', () => {
@@ -107,7 +116,7 @@ export class MapaSelectorComponent implements AfterViewInit {
 
         this.ubicacionSeleccionada.emit({
           latitud: nuevaLat,
-          longitud: nuevaLng
+          longitud: nuevaLng,
         });
       });
     }
@@ -139,7 +148,7 @@ export class MapaSelectorComponent implements AfterViewInit {
       `${texto}, Castellón, Comunidad Valenciana, España`,
       `${texto}, Castelló, Comunitat Valenciana, España`,
       `${texto}, Comunidad Valenciana, España`,
-      texto
+      texto,
     ];
 
     this.buscarConFallback(consultas, 0);
@@ -148,7 +157,9 @@ export class MapaSelectorComponent implements AfterViewInit {
   private buscarConFallback(consultas: string[], indice: number): void {
     if (indice >= consultas.length) {
       this.buscando = false;
-      this.mostrarMensaje('No se ha encontrado la ubicación. Prueba con una dirección más concreta.');
+      this.mostrarMensaje(
+        'No se ha encontrado la ubicación. Prueba con una dirección más concreta.',
+      );
       return;
     }
 
@@ -182,7 +193,7 @@ export class MapaSelectorComponent implements AfterViewInit {
 
         this.ubicacionSeleccionada.emit({
           latitud: lat,
-          longitud: lng
+          longitud: lng,
         });
 
         this.buscando = false;
@@ -194,7 +205,7 @@ export class MapaSelectorComponent implements AfterViewInit {
         setTimeout(() => {
           this.buscarConFallback(consultas, indice + 1);
         }, 1200);
-      }
+      },
     });
   }
 
@@ -223,7 +234,10 @@ export class MapaSelectorComponent implements AfterViewInit {
     this.marker = L.marker([lat, lng]).addTo(this.map);
   }
 
-  private coordenadasValidas(latitud: number | null | undefined, longitud: number | null | undefined): boolean {
+  private coordenadasValidas(
+    latitud: number | null | undefined,
+    longitud: number | null | undefined,
+  ): boolean {
     if (latitud === null || latitud === undefined || longitud === null || longitud === undefined) {
       return false;
     }
