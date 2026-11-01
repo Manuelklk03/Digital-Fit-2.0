@@ -38,7 +38,7 @@ Mensajes de commit y pasos de publicación: ver [Siguiente paso](#siguiente-paso
 |---|---|
 | Frontend `npm ci` | Correcto (aviso de scripts de instalación de `msgpackr-extract`) |
 | Frontend `npm run build` | **Correcto** con 3 avisos: `detalle-privado.css` y `detalle-publico.css` superan en 15 B el presupuesto de 4 kB; `leaflet` no es ESM |
-| Frontend `npx ng test --watch=false` | **Falla** (código 1): 23 errores de compilación en 22 de los 51 `.spec.ts` (18 TS2305, 3 TS2724, 1 TS2307, 1 importación sin resolver). Preexistente en `v1.0.0` → tarea 1.7 |
+| Frontend `npx ng test --watch=false` | **Correcto el 2026-11-01** (tarea 1.7): 51/51. Los specs importaban nombres de clase inexistentes y no daban router ni `HttpClient` a los componentes |
 | Backend compilación | **No ejecutada**: Java/Maven no están en el PATH y Docker Desktop no estaba arrancado → tarea 1.8 |
 | `docker compose up --build` | No ejecutado (mismo motivo) |
 | Documentación | Enlaces internos y comandos revisados a mano contra el código |
@@ -63,9 +63,9 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **1.7** `test/fix-frontend-specs`, **1.8** (compilar y arrancar con Docker) y **1.9** (PostgreSQL), en automático.
+1. **1.8** (compilar y arrancar con Docker), **1.9** (PostgreSQL), **1.10** (Spring Boot 4.1) y **1.11** (Angular 22), en automático.
 2. Fase 1B (DevOps), en automático.
-3. Plan del rediseño de mapas, i18n y SEO pedido por Manuel el 2026-11-01: pendiente de sus decisiones antes de registrarlo en el roadmap.
+3. Rediseño: mapa tipo Google Maps, i18n y SEO registrados como tareas 3.6–3.9 (D10, D11), en modo mixto.
 
 ## Cómo actualizar este archivo
 

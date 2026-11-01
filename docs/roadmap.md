@@ -16,15 +16,17 @@ Dependencias: ninguna.
 | 1.4 [P] | Documentación base: AGENTS, CLAUDE, STATUS, roadmap, arquitectura, diseño, despliegue, IA, Git, CHANGELOG, README, plantilla de PR | Hecha (PR #23, 2026-11-01) |
 | 1.5 [P] | Configurar GitHub: proteger `main`, borrar ramas al fusionar (ver [git-workflow.md](git-workflow.md#configuración-del-repositorio)) | Hecha (2026-11-01) |
 | 1.6 [P] | `chore/repo-hygiene`: `.gitignore` en la raíz, dejar de versionar los tres `.log` (P8), `mvnw` ejecutable (P14), rutas de Compose con `/` (P9) | Hecha (2026-11-01) |
-| 1.7 [P] | `test/fix-frontend-specs`: que `ng test` compile y pase (23 errores en 22 specs) | Pendiente |
+| 1.7 [P] | `test/fix-frontend-specs`: que `ng test` compile y pase (23 errores en 22 specs) | Hecha (2026-11-01): 51/51 tests en verde |
 | 1.8 [P] | Comprobar el backend: compilar y arrancar con Docker; ejecutar `docker compose up --build` y el recorrido login → crear entrenamiento → historial | Pendiente (Docker Desktop no estaba en marcha) |
 | 1.9 [P] | `refactor/postgresql`: migrar de MySQL a PostgreSQL (D4): driver, URL, imagen `postgres` en Compose, `data.sql` con `ON CONFLICT DO NOTHING`, `.env.example` para las credenciales; repetir el recorrido de 1.8 | Pendiente |
+| 1.10 [P] | `chore/upgrade-spring-boot`: Spring Boot 4.0.6 → 4.1.x (última estable; 4.1.2 el 2026-11-01) | Pendiente |
+| 1.11 [P] | `chore/upgrade-angular`: Angular 21 → 22 con `ng update` (22.2.4 el 2026-11-01); tests y build en verde | Pendiente |
 
 Aceptación: `v1.0.0` publicado y verificado; `main` sin materiales académicos; documentación coherente con el código; `ng test` y la compilación del backend en verde y registrados en STATUS.
 
 ## Fase 1B — DevOps: CI/CD, Docker y calidad
 
-Dependencias: 1.5–1.9. Adelantada el 2026-11-01 (decisión de Manuel, práctica del bootcamp): con el pipeline montado primero, todas las PR de las fases siguientes pasan por la CI. Tareas en **modo automático**: las hace el agente (rama, commits, PR y merge) y después las explica.
+Dependencias: 1.5–1.11. Adelantada el 2026-11-01 (decisión de Manuel, práctica del bootcamp): con el pipeline montado primero, todas las PR de las fases siguientes pasan por la CI. Tareas en **modo automático**: las hace el agente (rama, commits, PR y merge) y después las explica.
 
 | ID | Tarea |
 |---|---|
@@ -61,6 +63,10 @@ Dependencias: fase 2 decidida.
 | 3.3 [P] | Dirección visual con `frontend-stack` → propuestas comparables y una pantalla representativa aprobada ([design-system.md](design-system.md)) |
 | 3.4 [P] | Tokens (color, tipografía, espaciado, radios, movimiento) y componentes base en Angular |
 | 3.5 [+] | Evaluar librerías (GSAP, Lenis, Angular CDK/Spartan…) con los criterios de [design-system.md](design-system.md#dependencias-de-interfaz) |
+| 3.6 [P] | Página **Explorar** al estilo de Google Maps (D10): buscar dirección con autocompletado o «usar mi ubicación», y ver a la vez gimnasios, centros deportivos, piscinas y zonas de calistenia cercanos en mapa y lista ordenada por distancia; filtros por tipo y radio; «buscar en esta zona» al mover el mapa; ficha y «guardar en mis centros». Sustituye al selector de un solo punto, que queda solo para añadir lugares a mano |
+| 3.7 [P] | Backend de búsqueda (D10): endpoint por zona que consulta Overpass por etiquetas de OSM (`leisure=fitness_centre`, `sports_centre`, `fitness_station`, `swimming_pool`…), con caché y límite de peticiones; geocodificación por el backend (fin de las llamadas a Nominatim desde el navegador, P11); identificador OSM en los lugares guardados |
+| 3.8 [P] | i18n español (por defecto) + inglés (D11), con URLs por idioma y `hreflang` |
+| 3.9 [P] | SEO: páginas públicas pregeneradas (`@angular/ssr` en modo estático), `title` y `description` por página, `sitemap.xml`, `robots.txt`, JSON-LD (`ExerciseGym`) y `noindex` en las páginas privadas |
 
 Aceptación: pantalla representativa aprobada, revisada en móvil, escritorio, teclado, contraste y movimiento reducido; antislop sin hallazgos graves.
 
