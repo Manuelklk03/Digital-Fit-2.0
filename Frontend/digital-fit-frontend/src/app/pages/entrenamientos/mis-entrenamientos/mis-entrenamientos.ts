@@ -1,7 +1,7 @@
 import { MisEntrenamientosService } from './../../../services/entrenamientos/mis-entrenamientos-service';
 import { Footer } from './../../../components/footer/footer';
 import { HeaderComponent } from './../../../components/header/header';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -9,10 +9,10 @@ import { RouterLink } from '@angular/router';
   selector: 'app-mis-entrenamientos',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink],
   templateUrl: './mis-entrenamientos.html',
-  styleUrl: './mis-entrenamientos.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './mis-entrenamientos.css',
 })
 export class MisEntrenamientosComponent {
-
   private misEntrenamientosService = inject(MisEntrenamientosService);
   private cdr = inject(ChangeDetectorRef);
 
@@ -45,7 +45,7 @@ export class MisEntrenamientosComponent {
       error: (err: any) => {
         console.error('ERROR MIS ENTRENAMIENTOS:', err);
         this.abrirPopup('No se pudieron cargar tus entrenamientos.', 'error');
-      }
+      },
     });
   }
 
@@ -58,24 +58,28 @@ export class MisEntrenamientosComponent {
     }
 
     if (this.tipoBusqueda === 'categoria') {
-      this.misEntrenamientosService.getMisEntrenamientosFiltrados(texto, undefined, undefined, undefined).subscribe({
-        next: (data: any[]) => {
-          this.entrenamientos = data;
-          this.cdr.detectChanges();
-        },
-        error: (err: any) => console.error('ERROR FILTRO CATEGORIA MIS ENTRENAMIENTOS:', err)
-      });
+      this.misEntrenamientosService
+        .getMisEntrenamientosFiltrados(texto, undefined, undefined, undefined)
+        .subscribe({
+          next: (data: any[]) => {
+            this.entrenamientos = data;
+            this.cdr.detectChanges();
+          },
+          error: (err: any) => console.error('ERROR FILTRO CATEGORIA MIS ENTRENAMIENTOS:', err),
+        });
       return;
     }
 
     if (this.tipoBusqueda === 'nivel') {
-      this.misEntrenamientosService.getMisEntrenamientosFiltrados(undefined, texto, undefined, undefined).subscribe({
-        next: (data: any[]) => {
-          this.entrenamientos = data;
-          this.cdr.detectChanges();
-        },
-        error: (err: any) => console.error('ERROR FILTRO NIVEL MIS ENTRENAMIENTOS:', err)
-      });
+      this.misEntrenamientosService
+        .getMisEntrenamientosFiltrados(undefined, texto, undefined, undefined)
+        .subscribe({
+          next: (data: any[]) => {
+            this.entrenamientos = data;
+            this.cdr.detectChanges();
+          },
+          error: (err: any) => console.error('ERROR FILTRO NIVEL MIS ENTRENAMIENTOS:', err),
+        });
       return;
     }
 
@@ -87,23 +91,27 @@ export class MisEntrenamientosComponent {
         return;
       }
 
-      this.misEntrenamientosService.getMisEntrenamientosFiltrados(undefined, undefined, duracion, undefined).subscribe({
+      this.misEntrenamientosService
+        .getMisEntrenamientosFiltrados(undefined, undefined, duracion, undefined)
+        .subscribe({
+          next: (data: any[]) => {
+            this.entrenamientos = data;
+            this.cdr.detectChanges();
+          },
+          error: (err: any) => console.error('ERROR FILTRO DURACION MIS ENTRENAMIENTOS:', err),
+        });
+      return;
+    }
+
+    this.misEntrenamientosService
+      .getMisEntrenamientosFiltrados(undefined, undefined, undefined, texto)
+      .subscribe({
         next: (data: any[]) => {
           this.entrenamientos = data;
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO DURACION MIS ENTRENAMIENTOS:', err)
+        error: (err: any) => console.error('ERROR FILTRO NOMBRE MIS ENTRENAMIENTOS:', err),
       });
-      return;
-    }
-
-    this.misEntrenamientosService.getMisEntrenamientosFiltrados(undefined, undefined, undefined, texto).subscribe({
-      next: (data: any[]) => {
-        this.entrenamientos = data;
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => console.error('ERROR FILTRO NOMBRE MIS ENTRENAMIENTOS:', err)
-    });
   }
 
   alCambiarBusqueda(): void {
@@ -122,7 +130,7 @@ export class MisEntrenamientosComponent {
       descripcion: this.descripcion,
       categoria: this.categoria,
       nivel: this.nivel,
-      duracionEnMinutos: this.duracionEnMinutos
+      duracionEnMinutos: this.duracionEnMinutos,
     };
 
     this.misEntrenamientosService.crearEntrenamiento(nuevoEntrenamiento).subscribe({
@@ -137,7 +145,7 @@ export class MisEntrenamientosComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo crear el entrenamiento.', 'error');
-      }
+      },
     });
   }
 
@@ -149,7 +157,7 @@ export class MisEntrenamientosComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el entrenamiento.', 'error');
-      }
+      },
     });
   }
 
@@ -158,8 +166,10 @@ export class MisEntrenamientosComponent {
       return 'Sin categoría';
     }
 
-    return categoria.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return categoria
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   mostrarNivelLegible(nivel: string): string {
@@ -167,8 +177,10 @@ export class MisEntrenamientosComponent {
       return 'Sin nivel';
     }
 
-    return nivel.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return nivel
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

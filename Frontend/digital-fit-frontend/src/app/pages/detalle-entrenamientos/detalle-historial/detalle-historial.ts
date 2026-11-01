@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
@@ -8,10 +8,10 @@ import { HistorialEntrenamientosService } from '../../../services/entrenamientos
   selector: 'app-detalle-historial-entrenamiento',
   imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './detalle-historial.html',
-  styleUrl: './detalle-historial.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './detalle-historial.css',
 })
 export class DetalleHistorialEntrenamientoComponent {
-
   private route = inject(ActivatedRoute);
   private historialService = inject(HistorialEntrenamientosService);
   private cdr = inject(ChangeDetectorRef);
@@ -28,7 +28,7 @@ export class DetalleHistorialEntrenamientoComponent {
       },
       error: (err: any) => {
         console.error('ERROR DETALLE HISTORIAL:', err);
-      }
+      },
     });
   }
 

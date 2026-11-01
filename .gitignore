@@ -9,3 +9,6 @@ logs/
 
 # Estado local de herramientas de IA
 .omc/
+
+# Capturas temporales de Playwright MCP
+.playwright-mcp/

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
@@ -11,10 +11,10 @@ import { AuthService } from '../../../services/auth-service';
   selector: 'app-detalle-entrenamiento-base',
   imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './detalle-entrenamiento-base.html',
-  styleUrl: './detalle-entrenamiento-base.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './detalle-entrenamiento-base.css',
 })
 export class DetalleEntrenamientoComponent {
-
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -40,7 +40,7 @@ export class DetalleEntrenamientoComponent {
       },
       error: () => {
         this.router.navigate(['/login']);
-      }
+      },
     });
   }
 
@@ -55,7 +55,7 @@ export class DetalleEntrenamientoComponent {
       error: (err: any) => {
         console.error('ERROR DETALLE ENTRENAMIENTO BASE:', err);
         this.abrirPopup('No se pudo cargar el detalle del entrenamiento.', 'error');
-      }
+      },
     });
   }
 
@@ -73,8 +73,11 @@ export class DetalleEntrenamientoComponent {
         this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
       },
       error: (err: any) => {
-        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'), 'error');
-      }
+        this.abrirPopup(
+          this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'),
+          'error',
+        );
+      },
     });
   }
 
@@ -93,7 +96,7 @@ export class DetalleEntrenamientoComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el entrenamiento base.', 'error');
-      }
+      },
     });
   }
 
@@ -102,8 +105,10 @@ export class DetalleEntrenamientoComponent {
       return 'Sin categoría';
     }
 
-    return categoria.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return categoria
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   mostrarNivelLegible(nivel: string): string {
@@ -111,8 +116,10 @@ export class DetalleEntrenamientoComponent {
       return 'Sin nivel';
     }
 
-    return nivel.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return nivel
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

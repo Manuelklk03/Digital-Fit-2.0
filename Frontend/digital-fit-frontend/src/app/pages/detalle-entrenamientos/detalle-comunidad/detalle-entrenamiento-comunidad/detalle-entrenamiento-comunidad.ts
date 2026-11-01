@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { EntrenamientosComunidadService } from '../../../../services/entrenamientos/entrenamiento-comunidad-service';
 import { MisEntrenamientosService } from '../../../../services/entrenamientos/mis-entrenamientos-service';
@@ -10,10 +10,10 @@ import { Footer } from '../../../../components/footer/footer';
   selector: 'app-detalle-entrenamiento-comunidad',
   imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './detalle-entrenamiento-comunidad.html',
-  styleUrl: './detalle-entrenamiento-comunidad.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './detalle-entrenamiento-comunidad.css',
 })
 export class DetalleEntrenamientoComunidadComponent {
-
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private entrenamientosComunidadService = inject(EntrenamientosComunidadService);
@@ -37,7 +37,7 @@ export class DetalleEntrenamientoComunidadComponent {
       },
       error: () => {
         this.cargarDetalle();
-      }
+      },
     });
   }
 
@@ -52,7 +52,7 @@ export class DetalleEntrenamientoComunidadComponent {
       error: (err: any) => {
         console.error('ERROR DETALLE ENTRENAMIENTO COMUNIDAD:', err);
         this.abrirPopup('No se pudo cargar el detalle del entrenamiento.', 'error');
-      }
+      },
     });
   }
 
@@ -70,8 +70,11 @@ export class DetalleEntrenamientoComunidadComponent {
         this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
       },
       error: (err: any) => {
-        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'), 'error');
-      }
+        this.abrirPopup(
+          this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'),
+          'error',
+        );
+      },
     });
   }
 
@@ -80,18 +83,20 @@ export class DetalleEntrenamientoComunidadComponent {
       return;
     }
 
-    this.entrenamientosComunidadService.borrarEntrenamientoComunidad(this.entrenamiento.id).subscribe({
-      next: () => {
-        this.abrirPopup('Entrenamiento borrado correctamente.', 'exito');
+    this.entrenamientosComunidadService
+      .borrarEntrenamientoComunidad(this.entrenamiento.id)
+      .subscribe({
+        next: () => {
+          this.abrirPopup('Entrenamiento borrado correctamente.', 'exito');
 
-        setTimeout(() => {
-          this.router.navigate(['/entrenamientos-comunidad']);
-        }, 1200);
-      },
-      error: () => {
-        this.abrirPopup('No se pudo borrar el entrenamiento.', 'error');
-      }
-    });
+          setTimeout(() => {
+            this.router.navigate(['/entrenamientos-comunidad']);
+          }, 1200);
+        },
+        error: () => {
+          this.abrirPopup('No se pudo borrar el entrenamiento.', 'error');
+        },
+      });
   }
 
   mostrarCategoriaLegible(categoria: string): string {
@@ -99,7 +104,9 @@ export class DetalleEntrenamientoComunidadComponent {
       return 'Sin categoría';
     }
 
-    return categoria.replaceAll('_', ' ').toLowerCase()
+    return categoria
+      .replaceAll('_', ' ')
+      .toLowerCase()
       .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
@@ -108,7 +115,9 @@ export class DetalleEntrenamientoComunidadComponent {
       return 'Sin nivel';
     }
 
-    return nivel.replaceAll('_', ' ').toLowerCase()
+    return nivel
+      .replaceAll('_', ' ')
+      .toLowerCase()
       .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 

@@ -3,7 +3,7 @@ import { Footer } from './../../../components/footer/footer';
 import { AuthService } from './../../../services/auth-service';
 import { EntrenamientosComunidadService } from './../../../services/entrenamientos/entrenamiento-comunidad-service';
 import { MisEntrenamientosService } from './../../../services/entrenamientos/mis-entrenamientos-service';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -11,10 +11,10 @@ import { RouterLink } from '@angular/router';
   selector: 'app-entrenamientos-comunidad',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink],
   templateUrl: './entrenamientos-comunidad.html',
-  styleUrl: './entrenamientos-comunidad.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './entrenamientos-comunidad.css',
 })
 export class EntrenamientosComunidadComponent {
-
   private entrenamientosComunidadService = inject(EntrenamientosComunidadService);
   private misEntrenamientosService = inject(MisEntrenamientosService);
   private authService = inject(AuthService);
@@ -50,7 +50,7 @@ export class EntrenamientosComunidadComponent {
       },
       error: () => {
         this.cargarEntrenamientosComunidad();
-      }
+      },
     });
   }
 
@@ -64,17 +64,17 @@ export class EntrenamientosComunidadComponent {
       error: (err: any) => {
         console.error('ERROR ENTRENAMIENTOS COMUNIDAD:', err);
         this.abrirPopup('No se pudieron cargar los entrenamientos de comunidad.', 'error');
-      }
+      },
     });
   }
 
   separarEntrenamientos(): void {
-    this.misEntrenamientosSubidos = this.entrenamientos.filter(
-      (entrenamiento: any) => this.esMio(entrenamiento)
+    this.misEntrenamientosSubidos = this.entrenamientos.filter((entrenamiento: any) =>
+      this.esMio(entrenamiento),
     );
 
     this.entrenamientosRestoComunidad = this.entrenamientos.filter(
-      (entrenamiento: any) => !this.esMio(entrenamiento)
+      (entrenamiento: any) => !this.esMio(entrenamiento),
     );
   }
 
@@ -95,7 +95,7 @@ export class EntrenamientosComunidadComponent {
             this.separarEntrenamientos();
             this.cdr.detectChanges();
           },
-          error: (err: any) => console.error('ERROR FILTRO CATEGORIA COMUNIDAD:', err)
+          error: (err: any) => console.error('ERROR FILTRO CATEGORIA COMUNIDAD:', err),
         });
       return;
     }
@@ -109,7 +109,7 @@ export class EntrenamientosComunidadComponent {
             this.separarEntrenamientos();
             this.cdr.detectChanges();
           },
-          error: (err: any) => console.error('ERROR FILTRO NIVEL COMUNIDAD:', err)
+          error: (err: any) => console.error('ERROR FILTRO NIVEL COMUNIDAD:', err),
         });
       return;
     }
@@ -131,7 +131,7 @@ export class EntrenamientosComunidadComponent {
             this.separarEntrenamientos();
             this.cdr.detectChanges();
           },
-          error: (err: any) => console.error('ERROR FILTRO DURACION COMUNIDAD:', err)
+          error: (err: any) => console.error('ERROR FILTRO DURACION COMUNIDAD:', err),
         });
       return;
     }
@@ -144,7 +144,7 @@ export class EntrenamientosComunidadComponent {
           this.separarEntrenamientos();
           this.cdr.detectChanges();
         },
-        error: (err: any) => console.error('ERROR FILTRO NOMBRE COMUNIDAD:', err)
+        error: (err: any) => console.error('ERROR FILTRO NOMBRE COMUNIDAD:', err),
       });
   }
 
@@ -168,20 +168,22 @@ export class EntrenamientosComunidadComponent {
       descripcion: this.descripcion,
       categoria: this.categoria,
       nivel: this.nivel,
-      duracionEnMinutos: this.duracionEnMinutos
+      duracionEnMinutos: this.duracionEnMinutos,
     };
 
     if (this.editandoId !== null) {
-      this.entrenamientosComunidadService.actualizarEntrenamientoComunidad(this.editandoId, payload).subscribe({
-        next: () => {
-          this.abrirPopup('Entrenamiento actualizado correctamente.', 'exito');
-          this.limpiarFormulario();
-          this.cargarEntrenamientosComunidad();
-        },
-        error: () => {
-          this.abrirPopup('No se pudo actualizar el entrenamiento.', 'error');
-        }
-      });
+      this.entrenamientosComunidadService
+        .actualizarEntrenamientoComunidad(this.editandoId, payload)
+        .subscribe({
+          next: () => {
+            this.abrirPopup('Entrenamiento actualizado correctamente.', 'exito');
+            this.limpiarFormulario();
+            this.cargarEntrenamientosComunidad();
+          },
+          error: () => {
+            this.abrirPopup('No se pudo actualizar el entrenamiento.', 'error');
+          },
+        });
     } else {
       this.entrenamientosComunidadService.crearEntrenamientoComunidad(payload).subscribe({
         next: () => {
@@ -191,7 +193,7 @@ export class EntrenamientosComunidadComponent {
         },
         error: () => {
           this.abrirPopup('No se pudo crear el entrenamiento de comunidad.', 'error');
-        }
+        },
       });
     }
   }
@@ -213,7 +215,7 @@ export class EntrenamientosComunidadComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el entrenamiento.', 'error');
-      }
+      },
     });
   }
 
@@ -223,8 +225,11 @@ export class EntrenamientosComunidadComponent {
         this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
       },
       error: (err: any) => {
-        this.abrirPopup(this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'), 'error');
-      }
+        this.abrirPopup(
+          this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'),
+          'error',
+        );
+      },
     });
   }
 
@@ -246,7 +251,9 @@ export class EntrenamientosComunidadComponent {
       return 'Sin categoría';
     }
 
-    return categoria.replaceAll('_', ' ').toLowerCase()
+    return categoria
+      .replaceAll('_', ' ')
+      .toLowerCase()
       .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
@@ -255,7 +262,9 @@ export class EntrenamientosComunidadComponent {
       return 'Sin nivel';
     }
 
-    return nivel.replaceAll('_', ' ').toLowerCase()
+    return nivel
+      .replaceAll('_', ' ')
+      .toLowerCase()
       .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 

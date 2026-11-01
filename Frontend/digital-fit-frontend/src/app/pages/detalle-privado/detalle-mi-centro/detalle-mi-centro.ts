@@ -1,7 +1,7 @@
 import { MisCentrosService } from './../../../services/centros/mis-centros-service';
 import { Footer } from './../../../components/footer/footer';
 import { HeaderComponent } from './../../../components/header/header';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-selector';
 
@@ -9,10 +9,10 @@ import { MapaSelectorComponent } from '../../../components/mapa-selector/mapa-se
   selector: 'app-detalle-mi-centro',
   imports: [HeaderComponent, Footer, RouterLink, MapaSelectorComponent],
   templateUrl: './detalle-mi-centro.html',
-  styleUrl: './detalle-mi-centro.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './detalle-mi-centro.css',
 })
 export class DetalleMiCentroComponent {
-
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private misCentrosService = inject(MisCentrosService);
@@ -36,7 +36,7 @@ export class DetalleMiCentroComponent {
       error: (err: any) => {
         console.error('ERROR DETALLE MI CENTRO:', err);
         this.abrirPopup('No se pudo cargar el detalle del centro.', 'error');
-      }
+      },
     });
   }
 
@@ -55,7 +55,7 @@ export class DetalleMiCentroComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el centro.', 'error');
-      }
+      },
     });
   }
 

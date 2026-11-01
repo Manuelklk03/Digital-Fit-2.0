@@ -2,7 +2,7 @@ import { AuthService } from './../../../../services/auth-service';
 import { AdminSoporteService } from './../../../../services/admin/admin-soporte-service';
 import { Footer } from './../../../../components/footer/footer';
 import { HeaderComponent } from './../../../../components/header/header';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -10,10 +10,10 @@ import { Router, RouterLink } from '@angular/router';
   selector: 'app-admin-soporte',
   imports: [HeaderComponent, Footer, FormsModule, RouterLink],
   templateUrl: './soporte-admin.html',
-  styleUrl: './soporte-admin.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './soporte-admin.css',
 })
 export class AdminSoporteComponent {
-
   private adminSoporteService = inject(AdminSoporteService);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -42,7 +42,7 @@ export class AdminSoporteComponent {
       },
       error: () => {
         this.router.navigate(['/login']);
-      }
+      },
     });
   }
 
@@ -56,7 +56,7 @@ export class AdminSoporteComponent {
       error: (err: any) => {
         console.error('ERROR TICKETS ADMIN:', err);
         this.abrirPopup('No se pudieron cargar los tickets.', 'error');
-      }
+      },
     });
   }
 
@@ -68,7 +68,7 @@ export class AdminSoporteComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo actualizar el estado.', 'error');
-      }
+      },
     });
   }
 
@@ -80,7 +80,7 @@ export class AdminSoporteComponent {
       },
       error: () => {
         this.abrirPopup('Solo se pueden borrar tickets cerrados.', 'error');
-      }
+      },
     });
   }
 
@@ -114,10 +114,12 @@ export class AdminSoporteComponent {
         return estado.includes(texto);
       }
 
-      return asunto.includes(texto)
-        || mensaje.includes(texto)
-        || fecha.includes(texto)
-        || estado.includes(texto);
+      return (
+        asunto.includes(texto) ||
+        mensaje.includes(texto) ||
+        fecha.includes(texto) ||
+        estado.includes(texto)
+      );
     });
   }
 

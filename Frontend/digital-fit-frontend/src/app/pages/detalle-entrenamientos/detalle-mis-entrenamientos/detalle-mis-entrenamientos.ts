@@ -2,17 +2,17 @@ import { HeaderComponent } from './../../../components/header/header';
 import { Footer } from './../../../components/footer/footer';
 import { MisEntrenamientosService } from './../../../services/entrenamientos/mis-entrenamientos-service';
 import { HistorialEntrenamientosService } from './../../../services/entrenamientos/historial-entrenamientos';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-detalle-mi-entrenamiento',
   imports: [HeaderComponent, Footer, RouterLink],
   templateUrl: './detalle-mis-entrenamientos.html',
-  styleUrl: './detalle-mis-entrenamientos.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './detalle-mis-entrenamientos.css',
 })
 export class DetalleMiEntrenamientoComponent {
-
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private misEntrenamientosService = inject(MisEntrenamientosService);
@@ -38,7 +38,7 @@ export class DetalleMiEntrenamientoComponent {
       error: (err: any) => {
         console.error('ERROR DETALLE MI ENTRENAMIENTO:', err);
         this.abrirPopup('No se pudo cargar el detalle del entrenamiento.', 'error');
-      }
+      },
     });
   }
 
@@ -58,7 +58,7 @@ export class DetalleMiEntrenamientoComponent {
       centroPrivadoUsuarioId: null,
       fecha: this.obtenerFechaActualParaBackend(),
       duracionEnMinutos: this.entrenamiento.duracionEnMinutos ?? 0,
-      notas: 'Entrenamiento realizado desde el detalle de "Mis entrenamientos".'
+      notas: 'Entrenamiento realizado desde el detalle de "Mis entrenamientos".',
     };
 
     this.historialEntrenamientosService.crearRegistro(payload).subscribe({
@@ -70,7 +70,7 @@ export class DetalleMiEntrenamientoComponent {
         console.error('ERROR CREAR HISTORIAL DESDE DETALLE:', err);
         this.guardandoHistorial = false;
         this.abrirPopup('No se pudo registrar el entrenamiento en el historial.', 'error');
-      }
+      },
     });
   }
 
@@ -89,7 +89,7 @@ export class DetalleMiEntrenamientoComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el entrenamiento.', 'error');
-      }
+      },
     });
   }
 
@@ -111,8 +111,10 @@ export class DetalleMiEntrenamientoComponent {
       return 'Sin categoría';
     }
 
-    return categoria.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return categoria
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   mostrarNivelLegible(nivel: string): string {
@@ -120,8 +122,10 @@ export class DetalleMiEntrenamientoComponent {
       return 'Sin nivel';
     }
 
-    return nivel.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return nivel
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   abrirPopup(texto: string, tipo: 'exito' | 'error'): void {

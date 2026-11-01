@@ -16,7 +16,7 @@ Aplicación web para organizar el entrenamiento: encontrar centros deportivos y 
 
 | Parte | Stack |
 |---|---|
-| Frontend | Angular 21, TypeScript 5.9, RxJS, Leaflet |
+| Frontend | Angular 22, TypeScript 6.0, RxJS, Leaflet |
 | Backend | Java 25, Spring Boot 4, Spring Security, Spring Data JPA |
 | Base de datos | PostgreSQL 17 |
 | Entorno | Docker Compose, nginx |

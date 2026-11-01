@@ -26,7 +26,7 @@ Consultar la base de datos: `docker exec -it digital-fit-postgres psql -U digita
 
 ## 2. Ejecución local sin Docker
 
-Requisitos: JDK 25, Node.js `^20.19`, `^22.12` o `>=24` (lo exige Angular CLI 21) con npm y PostgreSQL en marcha. Lo más sencillo es levantar solo la base con Compose: `docker compose up -d postgres`.
+Requisitos: JDK 25, Node.js `^22.22.3`, `^24.15.0` o `>=26` (lo exige Angular CLI 22) con npm y PostgreSQL en marcha. Lo más sencillo es levantar solo la base con Compose: `docker compose up -d postgres`.
 
 **Base de datos.** La conexión se configura con variables de entorno; si no existen, se usan los valores por defecto de `application.properties`, que apuntan al PostgreSQL de Compose:
 

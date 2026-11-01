@@ -20,7 +20,7 @@ Dependencias: ninguna.
 | 1.8 [P] | Comprobar el backend: compilar y arrancar con Docker; ejecutar `docker compose up --build` y el recorrido login → crear entrenamiento → historial | Hecha (2026-11-01) |
 | 1.9 [P] | `refactor/postgresql`: migrar de MySQL a PostgreSQL (D4): driver, URL, imagen `postgres` en Compose, `data.sql` con `ON CONFLICT DO NOTHING`, `.env.example` para las credenciales; repetir el recorrido de 1.8 | Hecha (2026-11-01) |
 | 1.10 [P] | `chore/upgrade-spring-boot`: Spring Boot 4.0.6 → 4.1.x (última estable; 4.1.2 el 2026-11-01) | Hecha (2026-11-01): 4.1.2 |
-| 1.11 [P] | `chore/upgrade-angular`: Angular 21 → 22 con `ng update` (22.2.4 el 2026-11-01); tests y build en verde | Pendiente |
+| 1.11 [P] | `chore/upgrade-angular`: Angular 21 → 22 con `ng update` (22.2.4 el 2026-11-01); tests y build en verde | Hecha (2026-11-01): 22.2.4, TypeScript 6.0.3 |
 
 Aceptación: `v1.0.0` publicado y verificado; `main` sin materiales académicos; documentación coherente con el código; `ng test` y la compilación del backend en verde y registrados en STATUS.
 
@@ -36,6 +36,7 @@ Dependencias: 1.5–1.11. Adelantada el 2026-11-01 (decisión de Manuel, prácti
 | 1B.4 [P] | `ci/sonarqube`: cobertura (JaCoCo en backend, vitest en frontend) y análisis en SonarQube Cloud con Quality Gate obligatorio (D7). Organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` (guardado) |
 | 1B.5 [P] | `ci/docker-publish`: en cada merge a `main` y tag `v*`, construir y publicar las imágenes en Docker Hub (`latest`, SHA corto y versión) (D8) y avisar al backend desplegado con su *deploy hook* (D9). Secretos `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN` y `RENDER_DEPLOY_HOOK` (o el del proveedor elegido) |
 | 1B.6 [+] | Compose de producción que use las imágenes de Docker Hub en lugar de `build:` |
+| 1B.7 [P] | *Healthcheck* del backend (Actuator `/actuator/health`) en Compose y `depends_on: service_healthy` en el frontend: hoy nginx puede recibir peticiones antes de que Spring arranque y devuelve 502 unos segundos |
 
 Aceptación: una PR de prueba muestra los checks de CI y Sonar en verde; tras el merge, las imágenes aparecen en Docker Hub con sus tags.
 

@@ -43,6 +43,7 @@ Mensajes de commit y pasos de publicación: ver [Siguiente paso](#siguiente-paso
 | `docker compose up --build` | **Correcto el 2026-11-01**: 3 contenedores en marcha. Recorrido por nginx (`localhost:4200/api`) con un usuario nuevo: registro 201 → login 200 → `/auth/me` → catálogo → copiar entrenamiento 201 → registrar en historial 201 → nueva sesión con el historial conservado; sin sesión, 401; rutas de Angular servidas por nginx (200). El historial espera el campo `duracionEnMinutos` |
 | Backend `mvn test` (2026-11-01) | **Correcto** (1/1, `contextLoads`) contra el PostgreSQL de Compose, con Spring Boot 4.0.6 y después con 4.1.2. Comando en [git-workflow.md](git-workflow.md#checklist-de-pr) |
 | Spring Boot 4.1.2 (tarea 1.10, 2026-11-01) | **Correcto**: compila sin avisos de API obsoleta, arranca en ~6 s y supera el recorrido (registro, login, entrenamiento, historial, estadísticas); usuario `USER` en `/api/admin` → 403, sin sesión → 401 |
+| Angular 22.2.4 (tarea 1.11, 2026-11-01) | **Correcto**: `ng update` con migraciones que conservan el comportamiento de la v21 (`ChangeDetectionStrategy.Eager` en los componentes, `provideHttpClient(withXhr())`, dos diagnósticos nuevos silenciados) y TypeScript 6.0.3. Tests 51/51, build correcto (bundle inicial 901 kB, antes 874 kB). Navegador real (Playwright) con la imagen Docker: login, catálogo de 10 entrenamientos, añadir uno y verlo en «Mis entrenamientos». Node 22.23 de `node:22-alpine` cumple el mínimo (`^22.22.3`) |
 | PostgreSQL (tarea 1.9, 2026-11-01) | **Correcto**: `postgres:17-alpine` sano; `data.sql` carga 10 entrenamientos, 6 centros, 8 lugares y 2 usuarios, y al reiniciar no duplica (`ON CONFLICT DO NOTHING`); mismo recorrido superado, más `/api/estadisticas` (las 3 consultas nativas funcionan sin cambios). Únicos avisos: Hibernate intenta borrar restricciones que aún no existen al crear las tablas (inofensivo). Volumen e imagen de MySQL borrados a petición de Manuel |
 | Documentación | Enlaces internos y comandos revisados a mano contra el código |
 | Revisión de Codex | Ver [Revisiones](#revisiones) |
@@ -66,7 +67,7 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **1.11** (Angular 22), en automático.
+1. Fase 1 cerrada. Siguiente: **1B.1** (`ci/github-actions`).
 2. Fase 1B (DevOps), en automático.
 3. Rediseño: mapa tipo Google Maps, i18n y SEO registrados como tareas 3.6–3.9 (D10, D11), en modo mixto.
 

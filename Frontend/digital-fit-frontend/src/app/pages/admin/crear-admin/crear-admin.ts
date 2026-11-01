@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
@@ -10,10 +10,10 @@ import { AdminService } from '../../../services/admin/admin-service';
   selector: 'app-crear-admin',
   imports: [HeaderComponent, Footer, FormsModule],
   templateUrl: './crear-admin.html',
-  styleUrl: './crear-admin.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './crear-admin.css',
 })
 export class CrearAdminComponent {
-
   private authService = inject(AuthService);
   private adminService = inject(AdminService);
   private router = inject(Router);
@@ -36,7 +36,7 @@ export class CrearAdminComponent {
       },
       error: () => {
         this.router.navigate(['/login']);
-      }
+      },
     });
   }
 
@@ -49,7 +49,7 @@ export class CrearAdminComponent {
     const nuevoAdmin = {
       username: this.username,
       email: this.email,
-      password: this.password
+      password: this.password,
     };
 
     this.adminService.crearAdmin(nuevoAdmin).subscribe({
@@ -61,7 +61,7 @@ export class CrearAdminComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo crear el admin.', 'error');
-      }
+      },
     });
   }
 

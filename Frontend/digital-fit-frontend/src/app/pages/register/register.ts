@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -9,10 +9,10 @@ import { AuthService } from '../../services/auth-service';
   selector: 'app-register',
   imports: [FormsModule, RouterLink, HeaderComponent, Footer],
   templateUrl: './register.html',
-  styleUrl: './register.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './register.css',
 })
 export class RegisterComponent {
-
   private authService = inject(AuthService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -37,7 +37,7 @@ export class RegisterComponent {
     const nuevoUsuario = {
       username: this.username,
       email: this.email,
-      password: this.password
+      password: this.password,
     };
 
     this.cargando = true;
@@ -60,7 +60,7 @@ export class RegisterComponent {
       error: () => {
         this.cargando = false;
         this.abrirPopup('No se pudo registrar el usuario.', 'error');
-      }
+      },
     });
   }
 

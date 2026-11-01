@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../../components/header/header';
 import { Footer } from '../../../../components/footer/footer';
@@ -9,10 +9,10 @@ import { MapaSelectorComponent } from '../../../../components/mapa-selector/mapa
   selector: 'app-detalle-mi-lugar',
   imports: [HeaderComponent, Footer, RouterLink, MapaSelectorComponent],
   templateUrl: './detalle-mi-lugar.html',
-  styleUrl: './detalle-mi-lugar.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './detalle-mi-lugar.css',
 })
 export class DetalleMiLugarComponent {
-
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private misLugaresService = inject(MisLugaresService);
@@ -36,7 +36,7 @@ export class DetalleMiLugarComponent {
       error: (err: any) => {
         console.error('ERROR DETALLE MI LUGAR:', err);
         this.abrirPopup('No se pudo cargar el detalle del lugar.', 'error');
-      }
+      },
     });
   }
 
@@ -55,7 +55,7 @@ export class DetalleMiLugarComponent {
       },
       error: () => {
         this.abrirPopup('No se pudo borrar el lugar.', 'error');
-      }
+      },
     });
   }
 
@@ -64,8 +64,10 @@ export class DetalleMiLugarComponent {
       return 'Sin tipo';
     }
 
-    return tipo.replaceAll('_', ' ').toLowerCase()
-      .replace(/\b\w/g, letra => letra.toUpperCase());
+    return tipo
+      .replaceAll('_', ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (letra) => letra.toUpperCase());
   }
 
   formatearUbicacion(latitud: number, longitud: number): string {

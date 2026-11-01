@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -9,10 +9,10 @@ import { AuthService } from '../../services/auth-service';
   selector: 'app-login',
   imports: [FormsModule, RouterLink, HeaderComponent, Footer],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './login.css',
 })
 export class LoginComponent {
-
   private authService = inject(AuthService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
@@ -50,13 +50,13 @@ export class LoginComponent {
           error: () => {
             this.cargando = false;
             this.abrirPopup('Error al recuperar la sesión.', 'error');
-          }
+          },
         });
       },
       error: () => {
         this.cargando = false;
         this.abrirPopup('Usuario o contraseña incorrectos.', 'error');
-      }
+      },
     });
   }
 
