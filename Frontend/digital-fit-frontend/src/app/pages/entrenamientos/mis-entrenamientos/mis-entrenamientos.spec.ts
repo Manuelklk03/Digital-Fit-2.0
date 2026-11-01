@@ -1,17 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { MisEntrenamientos } from './mis-entrenamientos';
+import { MisEntrenamientosComponent } from './mis-entrenamientos';
 
-describe('MisEntrenamientos', () => {
-  let component: MisEntrenamientos;
-  let fixture: ComponentFixture<MisEntrenamientos>;
+describe('MisEntrenamientosComponent', () => {
+  let component: MisEntrenamientosComponent;
+  let fixture: ComponentFixture<MisEntrenamientosComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MisEntrenamientos],
+      imports: [MisEntrenamientosComponent],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MisEntrenamientos);
+    fixture = TestBed.createComponent(MisEntrenamientosComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

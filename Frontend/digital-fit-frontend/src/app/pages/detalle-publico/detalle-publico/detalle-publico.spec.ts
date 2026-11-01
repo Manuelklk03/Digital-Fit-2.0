@@ -1,17 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { DetallePublico } from './detalle-publico';
+import { DetallePublicoComponent } from './detalle-publico';
 
-describe('DetallePublico', () => {
-  let component: DetallePublico;
-  let fixture: ComponentFixture<DetallePublico>;
+describe('DetallePublicoComponent', () => {
+  let component: DetallePublicoComponent;
+  let fixture: ComponentFixture<DetallePublicoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetallePublico],
+      imports: [DetallePublicoComponent],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DetallePublico);
+    fixture = TestBed.createComponent(DetallePublicoComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

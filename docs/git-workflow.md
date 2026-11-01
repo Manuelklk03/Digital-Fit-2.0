@@ -58,7 +58,7 @@ La plantilla está en [.github/pull_request_template.md](../.github/pull_request
 | Parte | Comando | Desde |
 |---|---|---|
 | Frontend: build | `npm run build` | `Frontend/digital-fit-frontend` |
-| Frontend: tests | `npx ng test --watch=false` — hoy **no compila** (23 errores en specs antiguos, tarea 1.7) | `Frontend/digital-fit-frontend` |
+| Frontend: tests | `npx ng test --watch=false` | `Frontend/digital-fit-frontend` |
 | Backend: compilar | `mvnw.cmd -DskipTests package` (CMD), `.\mvnw.cmd …` (PowerShell) o `sh ./mvnw …` (Git Bash/Linux/macOS) | `Backend/digital-fit` |
 | Backend: tests | `mvnw.cmd test` (mismas variantes) — el único test (`contextLoads`) necesita MySQL accesible | `Backend/digital-fit` |
 | Todo junto | `docker compose up --build` | raíz |

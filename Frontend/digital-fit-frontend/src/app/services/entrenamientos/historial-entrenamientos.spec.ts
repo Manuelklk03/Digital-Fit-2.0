@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HistorialEntrenamientos } from './historial-entrenamientos';
+import { HistorialEntrenamientosService } from './historial-entrenamientos';
 
-describe('HistorialEntrenamientos', () => {
-  let service: HistorialEntrenamientos;
+describe('HistorialEntrenamientosService', () => {
+  let service: HistorialEntrenamientosService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(HistorialEntrenamientos);
+    service = TestBed.inject(HistorialEntrenamientosService);
   });
 
   it('should be created', () => {
