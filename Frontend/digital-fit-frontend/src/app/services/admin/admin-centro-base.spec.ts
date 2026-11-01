@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AdminCentroBase } from './admin-centro-base';
+import { AdminCentrosPrivadosBaseService } from './admin-centro-base';
 
-describe('AdminCentroBase', () => {
-  let service: AdminCentroBase;
+describe('AdminCentrosPrivadosBaseService', () => {
+  let service: AdminCentrosPrivadosBaseService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AdminCentroBase);
+    service = TestBed.inject(AdminCentrosPrivadosBaseService);
   });
 
   it('should be created', () => {

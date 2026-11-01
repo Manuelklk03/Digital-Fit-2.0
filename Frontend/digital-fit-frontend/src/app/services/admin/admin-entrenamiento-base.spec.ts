@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AdminEntrenamientoBase } from './admin-entrenamiento-base';
+import { AdminEntrenamientosBaseService } from './admin-entrenamiento-base';
 
-describe('AdminEntrenamientoBase', () => {
-  let service: AdminEntrenamientoBase;
+describe('AdminEntrenamientosBaseService', () => {
+  let service: AdminEntrenamientosBaseService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AdminEntrenamientoBase);
+    service = TestBed.inject(AdminEntrenamientosBaseService);
   });
 
   it('should be created', () => {

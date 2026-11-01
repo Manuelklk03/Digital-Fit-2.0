@@ -1,17 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { DetalleMiCentro } from './detalle-mi-centro';
+import { DetalleMiCentroComponent } from './detalle-mi-centro';
 
-describe('DetalleMiCentro', () => {
-  let component: DetalleMiCentro;
-  let fixture: ComponentFixture<DetalleMiCentro>;
+describe('DetalleMiCentroComponent', () => {
+  let component: DetalleMiCentroComponent;
+  let fixture: ComponentFixture<DetalleMiCentroComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetalleMiCentro],
+      imports: [DetalleMiCentroComponent],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DetalleMiCentro);
+    fixture = TestBed.createComponent(DetalleMiCentroComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

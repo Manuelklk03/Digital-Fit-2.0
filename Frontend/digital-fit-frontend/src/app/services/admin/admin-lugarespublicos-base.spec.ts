@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AdminLugarespublicosBase } from './admin-lugarespublicos-base';
+import { AdminLugaresPublicosBaseService } from './admin-lugarespublicos-base';
 
-describe('AdminLugarespublicosBase', () => {
-  let service: AdminLugarespublicosBase;
+describe('AdminLugaresPublicosBaseService', () => {
+  let service: AdminLugaresPublicosBaseService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AdminLugarespublicosBase);
+    service = TestBed.inject(AdminLugaresPublicosBaseService);
   });
 
   it('should be created', () => {

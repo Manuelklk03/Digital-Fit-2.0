@@ -1,17 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { EntrenamientosComunidad } from './entrenamientos-comunidad/entrenamientos-comunidad';
+import { EntrenamientosComunidadComponent } from './entrenamientos-comunidad';
 
-describe('EntrenamientosComunidad', () => {
-  let component: EntrenamientosComunidad;
-  let fixture: ComponentFixture<EntrenamientosComunidad>;
+describe('EntrenamientosComunidadComponent', () => {
+  let component: EntrenamientosComunidadComponent;
+  let fixture: ComponentFixture<EntrenamientosComunidadComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EntrenamientosComunidad],
+      imports: [EntrenamientosComunidadComponent],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EntrenamientosComunidad);
+    fixture = TestBed.createComponent(EntrenamientosComunidadComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

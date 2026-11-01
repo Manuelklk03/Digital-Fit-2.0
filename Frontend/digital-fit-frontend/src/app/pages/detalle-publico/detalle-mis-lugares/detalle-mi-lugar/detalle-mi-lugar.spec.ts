@@ -1,17 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { DetalleMiLugar } from './detalle-mi-lugar';
+import { DetalleMiLugarComponent } from './detalle-mi-lugar';
 
-describe('DetalleMiLugar', () => {
-  let component: DetalleMiLugar;
-  let fixture: ComponentFixture<DetalleMiLugar>;
+describe('DetalleMiLugarComponent', () => {
+  let component: DetalleMiLugarComponent;
+  let fixture: ComponentFixture<DetalleMiLugarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetalleMiLugar],
+      imports: [DetalleMiLugarComponent],
+      providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DetalleMiLugar);
+    fixture = TestBed.createComponent(DetalleMiLugarComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
