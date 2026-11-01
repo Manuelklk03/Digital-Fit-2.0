@@ -151,11 +151,12 @@ jobs:
           name: frontend-cobertura
           path: Frontend/digital-fit-frontend/coverage/digital-fit-frontend
 
-      # Lee sonar-project.properties. Con qualitygate.wait el job falla si el Quality Gate falla.
+      # Lee sonar-project.properties. En las PR, qualitygate.wait hace fallar el job si el
+      # Quality Gate falla (y bloquea el merge); en main solo actualiza el panel de Sonar.
       - uses: SonarSource/sonarqube-scan-action@v8
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
         with:
           args: >
-            -Dsonar.qualitygate.wait=true
+            -Dsonar.qualitygate.wait=${{ github.event_name == 'pull_request' }}

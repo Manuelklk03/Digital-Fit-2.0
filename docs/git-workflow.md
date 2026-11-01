@@ -85,11 +85,11 @@ docker run --rm --network digital-fit-proyecto_default -v "%cd%:/src:ro" -v digi
 | `Backend (Maven)` | Java 25 y `./mvnw -B verify` contra un PostgreSQL 17 levantado como *service container*; cobertura con JaCoCo |
 | `Frontend (Angular)` | Node 22, `npm ci`, tests con cobertura (`lcov`) y `npm run build` |
 | `Frontend (lint)` | Node 22, `npm ci` y `npm run lint` (ESLint): falla con errores, los avisos no bloquean |
-| `SonarQube` | Espera a los dos primeros (`needs`), descarga sus informes (artefactos) y analiza el proyecto en SonarQube Cloud con `sonar-project.properties`. Falla si el Quality Gate falla |
+| `SonarQube` | Espera a los dos primeros (`needs`), descarga sus informes (artefactos) y analiza el proyecto en SonarQube Cloud con `sonar-project.properties`. En las PR falla si el Quality Gate falla (bloquea el merge); en `main` solo actualiza el panel y la insignia, sin romper la CI |
 
 El resultado aparece en la PR como checks. Ver una ejecución desde la terminal: `gh pr checks <número> --watch` o `gh run view <id> --log`.
 
-**SonarQube Cloud.** Proyecto `Manuelklk03_Digital-Fit-Proyecto` en la organización `manuelklk03`; token en el secreto `SONAR_TOKEN`. Quality Gate *Sonar way* (decisión de Manuel, 2026-11-01): el **código nuevo** de cada PR no puede añadir bugs ni vulnerabilidades, debe tener los *Security Hotspots* revisados, menos de un 3 % de duplicación y **al menos un 80 % de cobertura**. La deuda de la v1 no bloquea, pero cada línea nueva con lógica necesita tests. Sonar no aplica las condiciones de cobertura y duplicación si el código nuevo tiene menos de 20 líneas. Resultados: en el comentario que Sonar deja en la PR o en `https://sonarcloud.io/dashboard?id=Manuelklk03_Digital-Fit-Proyecto`.
+**SonarQube Cloud.** Proyecto `Manuelklk03_Digital-Fit-Proyecto` en la organización `manuelklk03`; token en el secreto `SONAR_TOKEN`. Quality Gate *Sonar way* (decisión de Manuel, 2026-11-01): el **código nuevo** de cada PR no puede añadir bugs ni vulnerabilidades, debe tener los *Security Hotspots* revisados, menos de un 3 % de duplicación y **al menos un 80 % de cobertura**. La deuda de la v1 no bloquea, pero cada línea nueva con lógica necesita tests. Sonar no aplica las condiciones de cobertura y duplicación si el código nuevo tiene menos de 20 líneas. El Quality Gate de `main` mide el código nuevo desde la fecha de referencia de Sonar (*New Code*), hoy el primer análisis del 2026-11-01 01:23; el primer análisis completo de `main` lo suspendió (cobertura 72 %, duplicación 11,4 %) porque cuenta como nuevo todo lo cambiado ese día. Resultados: en el comentario que Sonar deja en la PR o en `https://sonarcloud.io/dashboard?id=Manuelklk03_Digital-Fit-Proyecto`.
 
 Cobertura en local:
 
