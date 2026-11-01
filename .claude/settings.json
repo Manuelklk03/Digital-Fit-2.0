@@ -1,0 +1,10 @@
+{
+  "enabledPlugins": {
+    "caveman@caveman": false,
+    "superpowers@claude-plugins-official": false,
+    "claude-mem@thedotmack": false
+  },
+  "env": {
+    "PONYTAIL_DEFAULT_MODE": "lite"
+  }
+}

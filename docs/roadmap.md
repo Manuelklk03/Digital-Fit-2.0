@@ -1,0 +1,117 @@
+# Roadmap de Digital-Fit 2.0
+
+Fases de la renovación. Cada tarea se hace en su propia rama y PR ([git-workflow.md](git-workflow.md)). **[P]** = imprescindible para publicar 2.0; **[+]** = mejora posterior, que no bloquea la versión.
+
+El roadmap no es una orden de implementar nada. Manuel decide cuándo empieza cada paso y, por defecto, lo escribe él con explicación guiada (ver «Modo de trabajo: guiado por defecto» en [AGENTS.md](../AGENTS.md)). La fase activa está en [STATUS.md](STATUS.md).
+
+## Fase 1 — Auditoría, GitHub Flow, `v1.0.0`, limpieza y documentación
+
+Dependencias: ninguna.
+
+| ID | Tarea | Estado |
+|---|---|---|
+| 1.1 [P] | Auditoría inicial de repositorio, código, herramientas y documentación | Hecha (2026-10-26) |
+| 1.2 [P] | Historial de `main` reconstruido con GitHub Flow (PR #1–#22) , mensajes reescritos, contraseña retirada del historial y tag anotado `v1.0.0` sobre `218f26d`, publicado y verificado | Hecha (2026-10-26) |
+| 1.3 [P] | Retirar materiales académicos (rama `chore/v2-start`) | Preparada, pendiente de commit/PR |
+| 1.4 [P] | Documentación base: AGENTS, CLAUDE, STATUS, roadmap, arquitectura, diseño, despliegue, IA, Git, CHANGELOG, README, plantilla de PR | Preparada, pendiente de commit/PR |
+| 1.5 [P] | Configurar GitHub: proteger `main`, borrar ramas al fusionar (comandos en [git-workflow.md](git-workflow.md#configuración-pendiente-manuel)) | Pendiente (Manuel) |
+| 1.6 [P] | `chore/repo-hygiene`: dejar de versionar los tres `.log` y añadirlos a `.gitignore` (P8); marcar `mvnw` como ejecutable con `git update-index --chmod=+x` (P14) | Pendiente |
+| 1.7 [P] | `test/fix-frontend-specs`: que `ng test` compile y pase (23 errores en 22 specs) | Pendiente |
+| 1.8 [P] | Comprobar el backend: compilar y arrancar con Docker; ejecutar `docker compose up --build` y el recorrido login → crear entrenamiento → historial | Pendiente (Docker Desktop no estaba en marcha) |
+
+Aceptación: `v1.0.0` publicado y verificado; `main` sin materiales académicos; documentación coherente con el código; `ng test` y la compilación del backend en verde y registrados en STATUS.
+
+## Fase 1B — DevOps: CI/CD, Docker y calidad
+
+Dependencias: 1.5–1.8. Adelantada el 2026-11-01 (decisión de Manuel, práctica del bootcamp): con el pipeline montado primero, todas las PR de las fases siguientes pasan por la CI. Tareas en **modo automático**: las hace el agente (rama, commits, PR y merge) y después las explica.
+
+| ID | Tarea |
+|---|---|
+| 1B.1 [P] | `ci/github-actions`: workflow `ci.yml` en cada PR y push a `main`: backend `mvn verify` con MySQL como *service container*; frontend `npm ci`, `build` y `test` |
+| 1B.2 [P] | Protección de `main` con los checks de CI obligatorios |
+| 1B.3 [P] | `ci/sonarqube`: cobertura (JaCoCo en backend, vitest en frontend) y análisis en SonarQube Cloud con Quality Gate obligatorio (D7). Secreto `SONAR_TOKEN` |
+| 1B.4 [P] | `ci/docker-publish`: en cada merge a `main` y tag `v*`, construir y publicar las imágenes en Docker Hub (`latest`, SHA corto y versión) (D8). Secretos `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN` |
+| 1B.5 [+] | Compose de producción que use las imágenes de Docker Hub en lugar de `build:` |
+
+Aceptación: una PR de prueba muestra los checks de CI y Sonar en verde; tras el merge, las imágenes aparecen en Docker Hub con sus tags.
+
+## Fase 2 — Viabilidad del despliegue gratuito
+
+Dependencias: 1.8. **Se resuelve antes de invertir en el resto de la renovación.**
+
+| ID | Tarea |
+|---|---|
+| 2.1 [P] | Investigar planes vigentes en documentación oficial: frontend estático (Cloudflare Pages, Netlify, Vercel, GitHub Pages), backend en contenedor (Render, Koyeb, Fly.io, Google Cloud Run…), MySQL gestionado (Aiven, TiDB Cloud Serverless…). Registrar en [deployment.md](deployment.md) límites, memoria, suspensión, persistencia, tarjeta y caducidad. Separar planes gratuitos de pruebas temporales |
+| 2.2 [P] | Decidir el alojamiento y el modelo de autenticación (D2) y la base de datos (D4) en [architecture.md](architecture.md#4-registro-de-decisiones) |
+| 2.3 [P] | Configuración por entorno: perfiles `dev`/`prod`, variables para base de datos, CORS y cookies; corregir rutas de Compose (P3, P9) |
+| 2.4 [P] | **Prueba mínima real**: desplegar backend + base de datos + un frontend mínimo y verificar registro, login, crear un recurso propio, cerrar sesión, volver a entrar y comprobar que persiste |
+
+Aceptación: recorrido de 2.4 funcionando en URLs públicas gratuitas, con límites conocidos y documentados. Si no es viable, decisión alternativa registrada antes de seguir.
+
+## Fase 3 — Producto, navegación y sistema visual
+
+Dependencias: fase 2 decidida.
+
+| ID | Tarea |
+|---|---|
+| 3.1 [P] | Definir producto: público (personas que entrenan en Valencia, por libre o en gimnasio), recorridos principales y qué funciones se mantienen, fusionan o retiran |
+| 3.2 [P] | Mapa de navegación y estructura de pantallas (27 rutas actuales) |
+| 3.3 [P] | Dirección visual con `frontend-stack` → propuestas comparables y una pantalla representativa aprobada ([design-system.md](design-system.md)) |
+| 3.4 [P] | Tokens (color, tipografía, espaciado, radios, movimiento) y componentes base en Angular |
+| 3.5 [+] | Evaluar librerías (GSAP, Lenis, Angular CDK/Spartan…) con los criterios de [design-system.md](design-system.md#dependencias-de-interfaz) |
+
+Aceptación: pantalla representativa aprobada, revisada en móvil, escritorio, teclado, contraste y movimiento reducido; antislop sin hallazgos graves.
+
+## Fase 4 — Backend, API y datos
+
+Dependencias: 2.2 (autenticación y base de datos decididas). Puede solaparse con la fase 3.
+
+| ID | Tarea |
+|---|---|
+| 4.1 [P] | Seguridad: CSRF o modelo de token según D2, cookies `Secure`/`SameSite`, CORS por entorno (P2, P3) |
+| 4.2 [P] | Tests de integración de permisos: usuario A no lee ni modifica recursos de B; `/api/admin/**` solo ADMIN |
+| 4.3 [P] | Errores uniformes con `ProblemDetail` (P5) y validación completa de DTOs |
+| 4.4 [P] | Flyway con migración inicial y datos de demostración separados; `ddl-auto=validate` en producción (P4, D3) |
+| 4.5 [P] | Usuarios de demostración con credenciales documentadas fuera del código (variables o datos de demo) |
+| 4.6 [P] | Nominatim y teselas: cumplir políticas de uso (atribución, ≤1 petición/s, caché o proxy en el backend) (P11) |
+| 4.7 [P] | Logs y SQL de depuración solo en `dev` (P10); eliminar `/api/auth/yo` si nada lo usa (P13) |
+| 4.8 [+] | Paginación y ordenación en listados (P6); revisar consultas N+1 y transacciones |
+| 4.9 [+] | Retirar dependencias sin uso (Thymeleaf, Actuator si no se usa para `health`) |
+
+Aceptación: tests de backend en verde (con MySQL o Testcontainers), permisos cubiertos, sin secretos en el repositorio.
+
+## Fase 5 — Renovación del frontend por recorridos
+
+Dependencias: 3.4 y los endpoints de la fase 4 que use cada recorrido.
+
+Recorridos, en este orden: **acceso** (login, registro, sesión) → **entrenamientos** (catálogo, mis entrenamientos, comunidad, historial) → **lugares** (centros privados, lugares públicos, mapa) → **progreso** (estadísticas, valoraciones) → **soporte y administración**.
+
+Para cada recorrido [P]: modelos tipados sin `any` (P7), interceptor HTTP común, estados de carga/error/vacío/éxito, accesibilidad, revisión antislop y de UI, tests de lo que tenga lógica.
+
+Además: proxy de desarrollo para `ng serve` (P1) [P], `lang="es"` [P], carga diferida de rutas [+], limpieza de `public/img` (P12) [+].
+
+## Fase 6 — Integración, depuración y pruebas
+
+Dependencias: fases 4 y 5.
+
+| ID | Tarea |
+|---|---|
+| 6.1 [P] | Añadir a la CI de la fase 1B los tests nuevos (integración, E2E) |
+| 6.2 [P] | Pruebas E2E de los recorridos principales (Playwright) |
+| 6.3 [P] | Revisión de seguridad y de rendimiento (Lighthouse, tamaño del bundle) |
+| 6.4 [P] | Revisión completa con Codex y corrección de hallazgos |
+| 6.5 [+] | Lint y formato como checks (ESLint para Angular, Prettier) |
+
+## Fase 7 — Publicación y versión estable 2.0
+
+Dependencias: fase 6.
+
+| ID | Tarea |
+|---|---|
+| 7.1 [P] | Despliegue final con la configuración de la fase 2 y verificación en producción |
+| 7.2 [P] | README de portfolio con URL, capturas reales y credenciales de demostración |
+| 7.3 [P] | CHANGELOG `[2.0.0]`, tag `v2.0.0` y GitHub Release (con indicación de Manuel) |
+
+## Después de 2.0 [+]
+
+Funciones nuevas que surjan en la fase 3 y no sean imprescindibles; PWA; internacionalización.

@@ -1,0 +1,142 @@
+# Arquitectura de Digital-Fit
+
+Este documento separa **lo que existe** (comprobado en el código el 2026-10-26, versión `v1.0.0`) de **lo que se quiere** en 2.0. Las decisiones se registran al final con su estado.
+
+## 1. Visión general
+
+```text
+Navegador ──► Frontend Angular (SPA)
+                 │  peticiones /api/... con cookie de sesión
+                 ▼
+            Backend Spring Boot ──► MySQL 8
+                 │
+                 └──► Nominatim (geocodificación inversa)
+Navegador ──► teselas de OpenStreetMap y Nominatim (búsqueda) directamente
+```
+
+En Docker Compose, nginx sirve el frontend en el puerto 4200 y reenvía `/api/` al backend (`backend:8080`). Así navegador y API comparten origen y la cookie de sesión funciona sin CORS.
+
+## 2. Estado actual (v1.0.0)
+
+### Versiones
+
+| Pieza | Versión (archivos) |
+|---|---|
+| Angular / CLI | `^21.2.0` / `^21.2.2` |
+| TypeScript | `~5.9.2` |
+| RxJS | `~7.8.0` |
+| Leaflet / leaflet-control-geocoder | `^1.9.4` / `^3.3.1` |
+| Vitest (tests de Angular) | `^4.0.8` |
+| Spring Boot (parent) | `4.0.6` |
+| Java | `25` |
+| MySQL (Compose) | `8.0` |
+| Node (Dockerfile del frontend) | `22-alpine` |
+
+### Backend (`Backend/digital-fit`)
+
+Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, por dominio:
+
+| Carpeta | Contenido |
+|---|---|
+| `config` | `SecurityConfig` (Spring Security), `CorsConfig` |
+| `controller` | 17 controladores REST; los de administración en subcarpetas `Admin` |
+| `dto` | DTOs de entrada (`Crear*`) y salida (`*DTO`) |
+| `model` | Entidades JPA y enums (`Rol`, `NivelEntrenamiento`, `EstadoSoporte`…) |
+| `repository` | Repositorios Spring Data JPA |
+| `service` | Lógica de negocio y comprobación de propiedad |
+| `exception`, `handler` | Excepciones propias y `GlobalExceptionHandler` |
+
+**Dominios y rutas de la API**
+
+| Dominio | Rutas | Notas |
+|---|---|---|
+| Auth | `/api/auth/login`, `/registro`, `/me`, `/yo`, `/logout` | `login` y `logout` los gestiona Spring Security |
+| Entrenamientos base | `/api/entrenamientos` | catálogo; gestión admin en `/api/admin/entrenamientos-base` |
+| Mis entrenamientos | `/api/mis-entrenamientos` | copias propias de un entrenamiento base |
+| Comunidad | `/api/entrenamientos-comunidad` | entrenamientos publicados por usuarios |
+| Historial | `/api/entrenamientos/mi-historial` | entrenamientos realizados |
+| Centros privados | `/api/centros-privados`, `/api/mis-centros-privados` | admin en `/api/admin/centros-privados-base` |
+| Lugares públicos | `/api/lugares-publicos`, `/api/mis-lugares-publicos` | admin en `/api/admin/lugares-publicos-base` |
+| Valoraciones | `/api/valoraciones` | |
+| Estadísticas | `/api/estadisticas` | |
+| Soporte | `/api/soporte`, `/api/admin/soporte` | tickets con mensajes |
+| Admin | `/api/admin` | crear administradores |
+
+**Modelo de datos.** Patrón *base / de usuario*: un catálogo común (`EntrenamientoBase`, `CentroPrivadoBase`, `LugarPublicoBase`) y copias o registros propios del usuario (`EntrenamientoUsuario`, `CentroPrivadoUsuario`, `LugarPublicoUsuario`, `HistorialEntrenamientos`), todos con `@ManyToOne` hacia `Usuario`. `Soporte` tiene `@OneToMany` hacia `MensajeSoporte` con borrado en cascada.
+
+**Persistencia.** Hibernate crea y actualiza el esquema (`ddl-auto=update`); `data.sql` inserta el catálogo y dos usuarios de ejemplo (`admin1`, `usuario1`) con `INSERT IGNORE` en cada arranque. No hay migraciones versionadas. Las contraseñas de esos usuarios no figuran en el repositorio (solo sus hashes BCrypt).
+
+**Autenticación y permisos.**
+
+- Sesión de servidor con cookie (`JSESSIONID`): `formLogin` en `POST /api/auth/login` (formulario `username`/`password`), respuestas 200/401 en lugar de redirecciones.
+- Contraseñas con `BCryptPasswordEncoder`.
+- `/api/auth/**` público; `/api/admin/**` exige `ROLE_ADMIN` (además de `@PreAuthorize` en los controladores admin); el resto exige sesión.
+- Propiedad de recursos: los servicios reciben `authentication.getName()` y lanzan `OperacionNoPermitida` (403) si el recurso no es del usuario.
+- **CSRF desactivado** y **CORS fijo a `http://localhost:4200`** (`CorsConfig`).
+
+**Errores.** `GlobalExceptionHandler` devuelve texto plano (400/403/404) y, para la validación de DTOs, un mapa `campo → mensaje`. No hay un formato de error único.
+
+**Otros.** Actuator y Thymeleaf están en el `pom.xml` sin uso aparente en la API. Logs en `logs/digitalfit.log`; tres `.log` están versionados por error (`Backend/logs/`, `Backend/digital-fit/logs/` y `Backend/digital-fit/src/main/java/com/example/digital_fit/logs/`). Un único test: `contextLoads` (necesita MySQL).
+
+### Frontend (`Frontend/digital-fit-frontend`)
+
+- Componentes standalone; rutas en `app.routes.ts` (27 rutas) con cuatro guards: `publicGuard` (login/registro), `authGuard`, `userGuard` y `adminGuard`.
+- Servicios HTTP por dominio en `src/app/services`. URL relativas (`/api/...`) y `withCredentials: true` en cada llamada; no hay interceptor. Varios servicios usan `any`.
+- `AuthService` guarda el usuario en un `BehaviorSubject`.
+- Estilos en CSS por componente y `styles.css` global (718 líneas). Sin sistema de diseño ni librería de componentes.
+- Tests: los `.spec.ts` generados por Angular CLI, con Vitest.
+- `index.html` declara `lang="en"` aunque la interfaz está en español.
+
+### Mapas y geocodificación
+
+- `mapa-selector` usa Leaflet con teselas de `tile.openstreetmap.org` y busca direcciones llamando a `nominatim.openstreetmap.org/search` **desde el navegador**.
+- El backend completa direcciones con `nominatim.openstreetmap.org/reverse`, enviando un `User-Agent` propio.
+- Las [políticas de uso de las teselas de OSM](https://operations.osmfoundation.org/policies/tiles/) y de [Nominatim](https://operations.osmfoundation.org/policies/nominatim/) limitan el uso intensivo (Nominatim: máximo 1 petición por segundo, identificación de la aplicación, sin autocompletado por pulsación) y exigen atribución visible. Antes de publicar se revisará su cumplimiento (fase 4).
+
+### Docker
+
+`docker-compose.yml` levanta `mysql:8.0` (puerto 3307 en el host, credenciales `root/root` de desarrollo), backend (8080) y frontend con nginx (4200 → 80). Los `context` usan barras invertidas de Windows (`./Backend\digital-fit`), que fallarían en Linux/macOS.
+
+### Problemas detectados (no corregidos todavía)
+
+| # | Problema | Dónde | Fase |
+|---|---|---|---|
+| P1 | `npm start` no tiene proxy hacia el backend: con `ng serve` las llamadas `/api` van a `localhost:4200` (sin comprobar en ejecución) | `angular.json` | 4 |
+| P2 | CSRF desactivado con autenticación por cookie | `SecurityConfig` | 4 |
+| P3 | CORS con origen fijo; sin configuración por entorno | `CorsConfig` | 2/4 |
+| P4 | `ddl-auto=update` y `data.sql` en cada arranque, `continue-on-error=true`; sin migraciones | `application.properties` | 4 |
+| P5 | Errores de la API sin formato común (texto o mapa) | `GlobalExceptionHandler` | 4 |
+| P6 | Sin paginación en ningún listado | servicios/repositorios | 4 |
+| P7 | `any` en servicios y modelos del frontend | `src/app/services` | 5 |
+| P8 | Tres archivos `.log` versionados | `Backend/logs/`, `Backend/digital-fit/logs/`, `src/main/java/.../logs/` | 1 (limpieza) |
+| P14 | `mvnw` sin permiso de ejecución en Git (`100644`) | `Backend/digital-fit/mvnw` | 1 (limpieza) |
+| P9 | Rutas de Compose con `\` | `docker-compose.yml` | 2 |
+| P10 | `show-sql=true` y logs DEBUG por defecto | `application.properties` | 4 |
+| P11 | Búsqueda Nominatim desde el navegador sin limitación ni atribución revisada | `mapa-selector` | 4 |
+| P12 | Imágenes sueltas o sin uso aparente (`public/img/.png`, `e.ico`, `e2.ico`) | `public/` | 5 |
+| P13 | Endpoint duplicado `/api/auth/yo` y `/me` | `AuthController` | 4 |
+
+## 3. Arquitectura objetivo (2.0)
+
+Propuesta; cada punto se confirma en su fase.
+
+- **Mismo stack**: Angular, TypeScript, Spring Boot, MySQL. No hay motivo, por ahora, para cambiarlo. Si el alojamiento gratuito de MySQL resulta inviable, se planteará como decisión aparte (ver D4).
+- **Despliegue separado**: frontend estático en un CDN, backend en un contenedor y base de datos gestionada (fase 2).
+- **Configuración por entornos**: perfiles de Spring (`dev`, `prod`) y variables de entorno para URL de la base de datos, credenciales, orígenes permitidos y cookies.
+- **Autenticación**: se conserva la sesión con cookie si el dominio lo permite; con frontend y API en dominios distintos exige `SameSite=None; Secure` y CSRF activado con token. La alternativa es servir ambos bajo el mismo dominio con un proxy. Se decide en la fase 2 según el alojamiento real (D2).
+- **API**: errores con `ProblemDetail` (RFC 9457, soportado por Spring), paginación en los listados, validación completa de DTOs y tests de integración de permisos.
+- **Datos**: migraciones versionadas (Flyway) y datos de demostración separados del esquema.
+- **Frontend**: modelos tipados, interceptor HTTP para credenciales y errores, estados de carga/error/vacío, sistema de diseño propio ([design-system.md](design-system.md)) y rutas cargadas bajo demanda (`loadComponent`).
+
+## 4. Registro de decisiones
+
+| ID | Decisión | Motivo | Consecuencias | Estado |
+|---|---|---|---|---|
+| D1 | GitHub Flow como en ValveDex; sin `develop` | Proyecto individual; `main` siempre estable | Toda modificación entra por PR | Aceptada (2026-10-26) |
+| D2 | Mantener sesión por cookie o pasar a token | Depende de si frontend y API comparten dominio | Afecta a CSRF, CORS y cookies | Pendiente (fase 2) |
+| D3 | Flyway para el esquema | `ddl-auto=update` no es reproducible ni seguro en producción | Hay que generar la migración inicial desde el esquema actual | Propuesta (fase 4) |
+| D4 | Mantener MySQL | Es la base prevista; cambiar obliga a revisar SQL y `data.sql` | Si no hay MySQL gratuito estable, evaluar PostgreSQL con sus costes | Pendiente (fase 2) |
+| D5 | Materiales académicos fuera de 2.0, conservados en `v1.0.0` | La rama de trabajo debe ser un proyecto profesional | Se consultan con `git show v1.0.0` | Aceptada (2026-10-26) |
+| D6 | Librerías de UI compatibles con Angular (sin React) | Evitar dos frameworks en el cliente | shadcn/ui y React Bits solo como referencia visual | Aceptada (2026-10-26) |
+| D7 | SonarQube Cloud para el análisis de calidad | Gratis en repositorios públicos y accesible desde GitHub Actions (un SonarQube local no lo es) | Token `SONAR_TOKEN` como secreto de GitHub; Quality Gate como check de PR | Aceptada (2026-11-01) |
+| D8 | Imágenes publicadas en Docker Hub desde GitHub Actions | Despliegue reproducible a partir de imágenes versionadas | Token de Docker Hub como secreto de GitHub, nunca en el repositorio | Aceptada (2026-11-01) |
