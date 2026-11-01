@@ -2,12 +2,13 @@
 
 Última actualización: **2026-11-01** (Claude Code).
 
-> **2026-11-01:** Manuel adelanta DevOps (fase 1B del roadmap) y autoriza el modo automático para ella y para las tareas de la fase 1 que la desbloquean (1.5–1.8). Decisiones D7 (SonarQube Cloud) y D8 (Docker Hub). Orden: merge de la PR #23 → configuración de GitHub (1.5) → 1.6 → 1.7 → 1.8 → 1B.1–1B.4.
+> **2026-11-01:** Manuel adelanta DevOps (fase 1B del roadmap) y autoriza el modo automático para ella y para las tareas de la fase 1 que la desbloquean (1.5–1.9). Decisiones D4 (PostgreSQL), D7 (SonarQube Cloud), D8 (Docker Hub) y D9 (Vercel/Netlify + backend en contenedor + PostgreSQL gestionado). Hechas: PR #23 (1.3, 1.4), configuración de GitHub (1.5) y limpieza del repositorio (1.6). Orden pendiente: 1.7 → 1.8 → 1.9 → 1B.1–1B.5.
 
 ## Resumen
 
 - **Fase activa:** 1 — Auditoría, GitHub Flow, `v1.0.0`, limpieza y documentación ([roadmap](roadmap.md#fase-1--auditoría-github-flow-v100-limpieza-y-documentación)).
-- **Rama de trabajo:** `chore/v2-start`, creada desde `main` (`218f26d`). Commits y PR hechos por Claude a petición de Manuel (tarea de preparación).
+- **Rama de trabajo:** ninguna abierta tras la PR de `chore/repo-hygiene`. `main` está protegida: todo entra por PR.
+- **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, método de análisis GitHub Actions (según Manuel), secreto `SONAR_TOKEN` guardado en el repositorio (verificado con `gh secret list`).
 - **Versión publicada:** `v1.0.0` (tag anotado, ver abajo). `v2.0.0` no existe todavía.
 - **Despliegue público:** ninguno.
 - **Modo de trabajo:** guiado por defecto (decisión de Manuel, 2026-10-26; ver `AGENTS.md`). La preparación de esta entrega (tag, limpieza y documentación) se hizo en automático porque el encargo inicial lo autorizaba expresamente. Las tareas siguientes empiezan solo cuando Manuel lo indique y, salvo que pida otra cosa, de forma guiada.
@@ -58,14 +59,13 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 ## Bloqueos y limitaciones
 
 - **Claudex** no arranca (`codex.ps1 is missing beside the selected batch shim`). Las revisiones se hacen con el plugin `codex@openai-codex`, que sí funciona. Detalle en [ai-workflow.md](ai-workflow.md).
-- **Configuración de GitHub** pendiente de Manuel: `main` sin proteger y sin borrado automático de ramas (comandos en [git-workflow.md](git-workflow.md#configuración-pendiente-manuel)).
 - Contraseñas de los usuarios de ejemplo (`admin1`, `usuario1`) desconocidas: solo están sus hashes en `data.sql`.
 
 ## Siguiente paso
 
-1. Los dos commits de `chore/v2-start` (retirada de materiales y documentación) y su PR los ha hecho Claude a petición de Manuel, porque son tareas de preparación. Manuel revisa la PR y la fusiona: `gh pr merge chore/v2-start --merge --delete-branch`, y después `git switch main && git pull --ff-only`.
-2. Aplicar la configuración de GitHub (tarea 1.5).
-3. Siguiente tarea propuesta, cuando Manuel lo indique y en modo guiado: **1.8** (arrancar Docker Desktop, compilar el backend y probar `docker compose up --build`), después **1.6** y **1.7**. Con la fase 1 cerrada, empezar la **fase 2** (viabilidad del despliegue gratuito).
+1. **1.7** `test/fix-frontend-specs`, **1.8** (compilar y arrancar con Docker) y **1.9** (PostgreSQL), en automático.
+2. Fase 1B (DevOps), en automático.
+3. Plan del rediseño de mapas, i18n y SEO pedido por Manuel el 2026-11-01: pendiente de sus decisiones antes de registrarlo en el roadmap.
 
 ## Cómo actualizar este archivo
 

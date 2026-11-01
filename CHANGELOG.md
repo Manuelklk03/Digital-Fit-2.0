@@ -12,14 +12,19 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 - GitHub Flow como flujo de trabajo y plantilla de pull request.
 - Modo de trabajo guiado para las IA: Manuel escribe el código y la IA explica paso a paso; la IA solo edita en tareas autorizadas.
 - Configuración de Claude Code del proyecto (`.claude/settings.json`).
-- Fase 1B (DevOps) en el roadmap: CI con GitHub Actions, SonarQube Cloud y publicación de imágenes en Docker Hub.
+- Fase 1B (DevOps) en el roadmap: CI con GitHub Actions, ESLint, SonarQube Cloud y publicación de imágenes en Docker Hub.
+- `.gitignore` en la raíz (logs, `.env`, estado local de herramientas).
 
 ### Cambiado
 
+- `docker-compose.yml`: rutas de `context` con `/`, válidas fuera de Windows.
+- `mvnw` versionado como ejecutable.
+- Decisiones de arquitectura: PostgreSQL en lugar de MySQL (pendiente de aplicar, tarea 1.9) y despliegue en Vercel/Netlify + backend en contenedor + PostgreSQL gestionado.
 - README reescrito: presenta Digital-Fit como proyecto en evolución hacia 2.0 y documenta la ejecución real.
 
 ### Eliminado
 
+- Tres archivos `.log` que estaban versionados.
 - Materiales de la entrega académica: memoria, guía del centro, manuales de uso y despliegue, presentación de defensa y guías de preparación. Se conservan en el tag `v1.0.0`; la información técnica vigente del manual de despliegue pasa a `docs/deployment.md`.
 
 ## [1.0.0] — 2026-10-26

@@ -95,7 +95,7 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 
 ### Docker
 
-`docker-compose.yml` levanta `mysql:8.0` (puerto 3307 en el host, credenciales `root/root` de desarrollo), backend (8080) y frontend con nginx (4200 → 80). Los `context` usan barras invertidas de Windows (`./Backend\digital-fit`), que fallarían en Linux/macOS.
+`docker-compose.yml` levanta `mysql:8.0` (puerto 3307 en el host, credenciales `root/root` de desarrollo), backend (8080) y frontend con nginx (4200 → 80). Los `context` usan `/`, válidos en Windows, Linux y macOS.
 
 ### Problemas detectados (no corregidos todavía)
 
@@ -108,9 +108,6 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 | P5 | Errores de la API sin formato común (texto o mapa) | `GlobalExceptionHandler` | 4 |
 | P6 | Sin paginación en ningún listado | servicios/repositorios | 4 |
 | P7 | `any` en servicios y modelos del frontend | `src/app/services` | 5 |
-| P8 | Tres archivos `.log` versionados | `Backend/logs/`, `Backend/digital-fit/logs/`, `src/main/java/.../logs/` | 1 (limpieza) |
-| P14 | `mvnw` sin permiso de ejecución en Git (`100644`) | `Backend/digital-fit/mvnw` | 1 (limpieza) |
-| P9 | Rutas de Compose con `\` | `docker-compose.yml` | 2 |
 | P10 | `show-sql=true` y logs DEBUG por defecto | `application.properties` | 4 |
 | P11 | Búsqueda Nominatim desde el navegador sin limitación ni atribución revisada | `mapa-selector` | 4 |
 | P12 | Imágenes sueltas o sin uso aparente (`public/img/.png`, `e.ico`, `e2.ico`) | `public/` | 5 |
@@ -133,10 +130,11 @@ Propuesta; cada punto se confirma en su fase.
 | ID | Decisión | Motivo | Consecuencias | Estado |
 |---|---|---|---|---|
 | D1 | GitHub Flow como en ValveDex; sin `develop` | Proyecto individual; `main` siempre estable | Toda modificación entra por PR | Aceptada (2026-10-26) |
-| D2 | Mantener sesión por cookie o pasar a token | Depende de si frontend y API comparten dominio | Afecta a CSRF, CORS y cookies | Pendiente (fase 2) |
+| D2 | Mantener la sesión por cookie | Con el proxy `/api` de D9, el navegador ve frontend y API en el mismo dominio | Cookie de primera parte, sin CORS entre dominios; falta activar CSRF (P2) | Propuesta (se valida en la prueba 2.4) |
 | D3 | Flyway para el esquema | `ddl-auto=update` no es reproducible ni seguro en producción | Hay que generar la migración inicial desde el esquema actual | Propuesta (fase 4) |
-| D4 | Mantener MySQL | Es la base prevista; cambiar obliga a revisar SQL y `data.sql` | Si no hay MySQL gratuito estable, evaluar PostgreSQL con sus costes | Pendiente (fase 2) |
+| D4 | Migrar de MySQL a PostgreSQL | Más opciones gratuitas gestionadas (Neon, Supabase, Render) y estándar actual | Cambian driver, URL, imagen de Compose y los `INSERT IGNORE` de `data.sql` (→ `ON CONFLICT DO NOTHING`); las consultas nativas son SQL estándar. Tarea 1.9 | Aceptada (2026-11-01) |
 | D5 | Materiales académicos fuera de 2.0, conservados en `v1.0.0` | La rama de trabajo debe ser un proyecto profesional | Se consultan con `git show v1.0.0` | Aceptada (2026-10-26) |
 | D6 | Librerías de UI compatibles con Angular (sin React) | Evitar dos frameworks en el cliente | shadcn/ui y React Bits solo como referencia visual | Aceptada (2026-10-26) |
 | D7 | SonarQube Cloud para el análisis de calidad | Gratis en repositorios públicos y accesible desde GitHub Actions (un SonarQube local no lo es) | Token `SONAR_TOKEN` como secreto de GitHub; Quality Gate como check de PR | Aceptada (2026-11-01) |
 | D8 | Imágenes publicadas en Docker Hub desde GitHub Actions | Despliegue reproducible a partir de imágenes versionadas | Token de Docker Hub como secreto de GitHub, nunca en el repositorio | Aceptada (2026-11-01) |
+| D9 | Frontend en Vercel o Netlify; backend en contenedor (Render, Koyeb o Fly.io) desde Docker Hub; PostgreSQL gestionado (Neon o Supabase) | Vercel y Netlify no ejecutan servidores Java persistentes | El frontend reenvía `/api/*` al backend con `rewrites` (igual que `nginx.conf` en local); despliegue del backend por *deploy hook* desde la CD. Proveedores concretos en la tarea 2.1 | Aceptada (2026-11-01) |
