@@ -9,7 +9,7 @@
 ## Resumen
 
 - **Fase activa:** 2 — viabilidad del despliegue gratuito ([roadmap](roadmap.md#fase-2--viabilidad-del-despliegue-gratuito)); investigación 2.1 hecha, decisión 2.2 pendiente.
-- **Rama de trabajo:** `docs/hosting-feasibility` para la tarea 2.1; `main` está protegida: todo entra por PR.
+- **Rama de la tarea 2.1:** `docs/hosting-feasibility` (PR #39); `main` está protegida: todo entra por PR.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, método de análisis GitHub Actions (según Manuel), secreto `SONAR_TOKEN` guardado en el repositorio (verificado con `gh secret list`).
 - **Versión publicada:** `v1.0.0` (tag anotado, ver abajo). `v2.0.0` no existe todavía.
