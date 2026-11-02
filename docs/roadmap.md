@@ -46,7 +46,7 @@ Dependencias: 1.8. **Se resuelve antes de invertir en el resto de la renovación
 
 | ID | Tarea |
 |---|---|
-| 2.1 [P] | Investigar planes vigentes en documentación oficial: frontend estático (Cloudflare Pages, Netlify, Vercel, GitHub Pages), backend en contenedor (Render, Koyeb, Fly.io, Google Cloud Run…), PostgreSQL gestionado (Aiven, TiDB Cloud Serverless…). Registrar en [deployment.md](deployment.md) límites, memoria, suspensión, persistencia, tarjeta y caducidad. Separar planes gratuitos de pruebas temporales |
+| 2.1 [P] | **Investigación hecha (2026-11-03).** Comparativa de frontend estático (Cloudflare Pages, Netlify, Vercel, GitHub Pages), backend en contenedor (Render, Koyeb, Fly.io, Google Cloud Run) y PostgreSQL gestionado (Neon, Supabase, Render Postgres) en [deployment.md](deployment.md). Proveedor final y prueba real pendientes |
 | 2.2 [P] | Decidir el alojamiento y el modelo de autenticación (D2) y la base de datos (D4) en [architecture.md](architecture.md#4-registro-de-decisiones) |
 | 2.3 [P] | Configuración por entorno: perfiles `dev`/`prod`, variables para base de datos, CORS y cookies; corregir rutas de Compose (P3, P9) |
 | 2.4 [P] | **Prueba mínima real**: desplegar backend + base de datos + un frontend mínimo y verificar registro, login, crear un recurso propio, cerrar sesión, volver a entrar y comprobar que persiste |

@@ -73,13 +73,35 @@ npm start                       # ng serve en http://localhost:4200
 
 Objetivo: frontend, backend y base de datos en planes **gratuitos** (no pruebas temporales ni de pago), con autenticación y persistencia reales.
 
-Para cada candidato se registrará, a partir de su documentación oficial y con fecha de consulta: límites de CPU y memoria, suspensión por inactividad y tiempo de arranque, persistencia, si pide tarjeta, caducidad del plan y región.
+Consulta de documentación oficial: **2026-11-03**. Los límites pueden cambiar. «Sin caducidad publicada» describe el plan consultado; no garantiza que el proveedor mantenga sus condiciones. Para el frontend estático, CPU, RAM y suspensión del servidor Java no aplican: Spring Boot necesita un servicio aparte.
 
-| Parte | Candidatos a evaluar | Datos verificados |
+### Frontend estático
+
+| Proveedor | Plan y límites | Tarjeta, caducidad y encaje |
 |---|---|---|
-| Frontend estático | Cloudflare Pages, Netlify, Vercel, GitHub Pages | _pendiente_ |
-| Backend (contenedor Java) | Render, Koyeb, Fly.io, Google Cloud Run | _pendiente_ |
-| PostgreSQL | Neon, Supabase, Render Postgres | _pendiente_ |
+| [Cloudflare Pages](https://developers.cloudflare.com/pages/platform/limits/) | Free: 500 compilaciones/mes, una simultánea, 20 min por compilación, 20 000 archivos y 25 MiB por archivo. [Node.js del entorno de compilación](https://developers.cloudflare.com/pages/configuration/build-image/) configurable. | Sin caducidad publicada; tarjeta no confirmada en la documentación consultada. [Admite Angular y vistas previas de PR](https://developers.cloudflare.com/pages/framework-guides/deploy-an-angular-site/). Entrega global. Falta probar el proxy `/api`. |
+| [Netlify](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/) | Free: 300 créditos/mes, límite estricto; [15 créditos por despliegue de producción y 20 por GB servido](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/). Un build simultáneo y CDN global. | Plan de $0 sin caducidad publicada y sin recarga automática. Con el límite, el sitio puede pausarse hasta el siguiente ciclo. Tarjeta no confirmada para la cuenta actual; los planes anteriores al 4-9-2025 usan condiciones distintas. |
+| [Vercel](https://vercel.com/docs/plans/hobby) | Hobby: gratis; 100 GB de transferencia rápida y [100 despliegues/día](https://vercel.com/docs/limits). Entrega global. | Sin caducidad fija, pero el plan se [limita al uso personal no comercial](https://vercel.com/legal/terms). La aptitud de este portfolio para Hobby y el proxy `/api` se deben confirmar antes de elegirlo. Tarjeta no confirmada. |
+| [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages) | Disponible en repositorios públicos con GitHub Free; [sitio ≤1 GB, límite flexible de 100 GB/mes y 10 builds/h](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits). | Sin caducidad publicada ni tarjeta documentada. Solo sirve archivos estáticos; no ofrece el proxy `/api` previsto en D9. Habría que cambiar la estrategia de sesión y CORS o usar otro proxy. |
+
+### Backend Java en contenedor
+
+| Proveedor | Plan y límites | Tarjeta, caducidad y encaje |
+|---|---|---|
+| [Render](https://render.com/docs/free) | Web Service Free: [512 MB RAM](https://render.com/pricing), 750 horas de instancia/mes por workspace. Se duerme tras 15 min sin tráfico y tarda alrededor de 1 min en despertar. Sistema de archivos efímero; admite imágenes Docker. | Sin caducidad fija publicada para el servicio web. Sin método de pago, el exceso de ancho de banda suspende servicios hasta el mes siguiente. Hay que medir si Spring Boot 4 con Java 25 cabe en 512 MB. Región concreta por elegir. |
+| [Koyeb](https://www.koyeb.com/docs/reference/instances) | Una instancia Free por organización: 0,1 vCPU, 512 MB RAM y 2 GB SSD; Frankfurt o Washington. [Escala a cero tras 1 hora sin tráfico](https://www.koyeb.com/docs/run-and-scale/scale-to-zero). | [Exige tarjeta y hace una retención temporal de $29 para validarla](https://www.koyeb.com/docs/faqs/pricing). Sin caducidad fija publicada. La CPU y memoria son ajustadas para este backend; requiere prueba real. |
+| [Fly.io](https://fly.io/docs/about/free-trial/) | Prueba de 7 días o 2 horas de VM, lo que se agote antes. | **Descartado como plan gratuito permanente**: al terminar la prueba, las aplicaciones se detienen hasta configurar facturación. |
+| [Google Cloud Run](https://cloud.google.com/run/pricing) | Cuota gratuita mensual con facturación por petición: 180 000 vCPU-s, 360 000 GiB-s y 2 millones de peticiones (base de precios de `us-central1`). Escala a cero; las instancias no conservan archivos locales. Madrid figura entre las regiones, pero el coste depende de la región. | [Requiere cuenta de facturación](https://cloud.google.com/run/docs/quickstarts/deploy-container). La cuota gratuita no es un tope de gasto: puede haber cargos por exceso o red. Sin caducidad publicada para la cuota. No cumple la condición de coste garantizado cero sin controles adicionales. |
+
+### PostgreSQL gestionado
+
+| Proveedor | Plan y límites | Tarjeta, caducidad y encaje |
+|---|---|---|
+| [Neon](https://neon.com/pricing) | Free: 1 GB por proyecto, 100 CU-h/mes por proyecto y 5 GB de transferencia. El cómputo escala a cero tras 5 min de inactividad y vuelve con la siguiente consulta; los datos permanecen. | Sin tarjeta ni límite temporal. Si se agotan horas o transferencia, se suspende el cómputo hasta el siguiente ciclo. Región por elegir según el backend. Es el candidato más prometedor para la prueba 2.4. |
+| [Supabase](https://supabase.com/pricing) | Free: 500 MB de base de datos por proyecto, 2 proyectos activos y 5 GB de salida. [Puede pausar el proyecto tras una semana de poca actividad](https://supabase.com/docs/guides/platform/free-project-pausing). | Sin caducidad fija publicada; tarjeta no confirmada. La pausa exige restauración y perjudica una demo pública poco visitada. Región por elegir. |
+| [Render Postgres](https://render.com/docs/free) | Free: 1 GB, una base por workspace y sin copias de seguridad. | **Descartado para persistencia duradera**: expira a los 30 días y sus datos se eliminan tras otros 14 días si no se actualiza al plan de pago. |
+
+**Resultado de la investigación:** Cloudflare Pages o Netlify para Angular, Render para Spring Boot y Neon para PostgreSQL forman una hipótesis de coste cero, no un despliegue verificado. La tarea 2.2 debe decidir proveedor y modelo de sesión; la 2.4 debe comprobar memoria, arranque, conectividad, proxy `/api`, cookies y persistencia en URLs reales. No se han creado cuentas ni servicios.
 
 Puntos que condicionan la elección:
 
