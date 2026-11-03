@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Los @import van antes de cualquier otra regla (si no, el CSS es inválido). */
+@import 'leaflet/dist/leaflet.css';
 
 @theme {
   --color-df-bg: var(--df-bg);
@@ -19,8 +21,6 @@
   --color-df-text-muted: var(--df-text-muted);
   --color-df-text-subtle: var(--df-text-subtle);
 }
-
-@import 'leaflet/dist/leaflet.css';
 
 /* ========================================= */
 /* RESET */
