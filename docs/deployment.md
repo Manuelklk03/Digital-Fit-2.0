@@ -1,6 +1,6 @@
 # Despliegue — Digital-Fit
 
-Estado: **solo ejecución local**. No hay despliegue público todavía; el alojamiento gratuito se estudia en la fase 2 ([roadmap.md](roadmap.md#fase-2--viabilidad-del-despliegue-gratuito)).
+Estado: **solo ejecución local**. No hay despliegue público. Netlify + Render + Neon es la propuesta documental para una prueba futura; staging y producción se prepararán antes del despliegue ([roadmap.md](roadmap.md#fase-2--viabilidad-del-despliegue-gratuito)).
 
 ## 1. Ejecución local con Docker (recomendada)
 
@@ -79,7 +79,7 @@ Consulta de documentación oficial: **2026-11-03**. Los límites pueden cambiar.
 
 | Proveedor | Plan y límites | Tarjeta, caducidad y encaje |
 |---|---|---|
-| [Cloudflare Pages](https://developers.cloudflare.com/pages/platform/limits/) | Free: 500 compilaciones/mes, una simultánea, 20 min por compilación, 20 000 archivos y 25 MiB por archivo. [Node.js del entorno de compilación](https://developers.cloudflare.com/pages/configuration/build-image/) configurable. | Sin caducidad publicada; tarjeta no confirmada en la documentación consultada. [Admite Angular y vistas previas de PR](https://developers.cloudflare.com/pages/framework-guides/deploy-an-angular-site/). Entrega global. Falta probar el proxy `/api`. |
+| [Cloudflare Pages](https://developers.cloudflare.com/pages/platform/limits/) | Free: 500 compilaciones/mes, una simultánea, 20 min por compilación, 20 000 archivos y 25 MiB por archivo. [Node.js del entorno de compilación](https://developers.cloudflare.com/pages/configuration/build-image/) configurable. | Sin caducidad publicada; tarjeta no confirmada en la documentación consultada. [Admite Angular y vistas previas de PR](https://developers.cloudflare.com/pages/framework-guides/deploy-an-angular-site/). Entrega global. [Su archivo `_redirects` no admite proxy a dominios externos](https://developers.cloudflare.com/pages/configuration/redirects/); haría falta una Function o un Worker. |
 | [Netlify](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/) | Free: 300 créditos/mes, límite estricto; [15 créditos por despliegue de producción y 20 por GB servido](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/). Un build simultáneo y CDN global. | Plan de $0 sin caducidad publicada y sin recarga automática. Con el límite, el sitio puede pausarse hasta el siguiente ciclo. Tarjeta no confirmada para la cuenta actual; los planes anteriores al 4-9-2025 usan condiciones distintas. |
 | [Vercel](https://vercel.com/docs/plans/hobby) | Hobby: gratis; 100 GB de transferencia rápida y [100 despliegues/día](https://vercel.com/docs/limits). Entrega global. | Sin caducidad fija, pero el plan se [limita al uso personal no comercial](https://vercel.com/legal/terms). La aptitud de este portfolio para Hobby y el proxy `/api` se deben confirmar antes de elegirlo. Tarjeta no confirmada. |
 | [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages) | Disponible en repositorios públicos con GitHub Free; [sitio ≤1 GB, límite flexible de 100 GB/mes y 10 builds/h](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits). | Sin caducidad publicada ni tarjeta documentada. Solo sirve archivos estáticos; no ofrece el proxy `/api` previsto en D9. Habría que cambiar la estrategia de sesión y CORS o usar otro proxy. |
@@ -101,12 +101,12 @@ Consulta de documentación oficial: **2026-11-03**. Los límites pueden cambiar.
 | [Supabase](https://supabase.com/pricing) | Free: 500 MB de base de datos por proyecto, 2 proyectos activos y 5 GB de salida. [Puede pausar el proyecto tras una semana de poca actividad](https://supabase.com/docs/guides/platform/free-project-pausing). | Sin caducidad fija publicada; tarjeta no confirmada. La pausa exige restauración y perjudica una demo pública poco visitada. Región por elegir. |
 | [Render Postgres](https://render.com/docs/free) | Free: 1 GB, una base por workspace y sin copias de seguridad. | **Descartado para persistencia duradera**: expira a los 30 días y sus datos se eliminan tras otros 14 días si no se actualiza al plan de pago. |
 
-**Resultado de la investigación:** Cloudflare Pages o Netlify para Angular, Render para Spring Boot y Neon para PostgreSQL forman una hipótesis de coste cero, no un despliegue verificado. La tarea 2.2 debe decidir proveedor y modelo de sesión; la 2.4 debe comprobar memoria, arranque, conectividad, proxy `/api`, cookies y persistencia en URLs reales. No se han creado cuentas ni servicios.
+**Propuesta documental (2.2):** [Netlify permite reenviar `/api/*` a una API externa](https://docs.netlify.com/manage/routing/redirects/rewrites-proxies/), por lo que se propone para Angular junto con Render para Spring Boot y Neon para PostgreSQL. El navegador usaría el origen de Netlify y mantendría la sesión mediante una cookie de primera parte. Esta combinación no está desplegada ni verificada: antes del despliegue final habrá que preparar staging y producción por separado y probar en URLs reales memoria, arranque, proxy, `Set-Cookie`, CSRF, permisos, persistencia y coste de ambos entornos. No se han creado cuentas ni servicios.
 
 Puntos que condicionan la elección:
 
 - **Memoria**: Spring Boot con Java 25 necesita normalmente varios cientos de MB; hay que medirlo con la configuración real.
-- **Cookies entre dominios**: si frontend y API están en dominios distintos, la sesión exige `SameSite=None; Secure` y CSRF activo (decisión D2).
+- **Sesión por cookie**: el proxy `/api/*` propuesto permite que el navegador llame al origen del frontend. Hay que comprobar que transmite `Set-Cookie` y que la cookie de primera parte funciona; CSRF debe activarse antes de publicar (decisión D2). Si se prescinde del proxy y el navegador llama a otro dominio, habrá que rediseñar la configuración de cookies y CORS.
 - **Suspensión**: un backend que se duerme tarda en responder a la primera petición; la interfaz debe mostrar un estado de carga honesto.
 
 ## 5. Verificación de un despliegue

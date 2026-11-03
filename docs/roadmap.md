@@ -42,20 +42,20 @@ Aceptación: una PR de prueba muestra los checks de CI y Sonar en verde; tras el
 
 ## Fase 2 — Viabilidad del despliegue gratuito
 
-Dependencias: 1.8. **Se resuelve antes de invertir en el resto de la renovación.**
+Dependencias: 1.8. La investigación y la elección documental (2.1–2.2) se hacen antes del rediseño. La configuración y la prueba en servicios reales (2.3–2.4) se aplazan hasta preparar el despliegue.
 
 | ID | Tarea |
 |---|---|
 | 2.1 [P] | **Investigación hecha (2026-11-03).** Comparativa de frontend estático (Cloudflare Pages, Netlify, Vercel, GitHub Pages), backend en contenedor (Render, Koyeb, Fly.io, Google Cloud Run) y PostgreSQL gestionado (Neon, Supabase, Render Postgres) en [deployment.md](deployment.md). Proveedor final y prueba real pendientes |
-| 2.2 [P] | Decidir el alojamiento y el modelo de autenticación (D2) y la base de datos (D4) en [architecture.md](architecture.md#4-registro-de-decisiones) |
-| 2.3 [P] | Configuración por entorno: perfiles `dev`/`prod`, variables para base de datos, CORS y cookies; corregir rutas de Compose (P3, P9) |
-| 2.4 [P] | **Prueba mínima real**: desplegar backend + base de datos + un frontend mínimo y verificar registro, login, crear un recurso propio, cerrar sesión, volver a entrar y comprobar que persiste |
+| 2.2 [P] | **Propuesta documental hecha (2026-11-03).** Netlify, Render y Neon; sesión por cookie mediante proxy `/api`. Decisiones D2 y D9 en [architecture.md](architecture.md#4-registro-de-decisiones), pendientes de validar en 2.4 |
+| 2.3 [P] | **Aplazada hasta preparar el despliegue.** Configurar `dev`, `staging` y `prod` con bases de datos, variables y secretos separados; preparar CORS y cookies por entorno |
+| 2.4 [P] | **Aplazada hasta preparar el despliegue.** Probar en URLs reales registro, login, creación de un recurso propio, cierre de sesión y persistencia al volver a entrar; validar primero en staging |
 
-Aceptación: recorrido de 2.4 funcionando en URLs públicas gratuitas, con límites conocidos y documentados. Si no es viable, decisión alternativa registrada antes de seguir.
+Aceptación ahora: proveedores y modelo de sesión documentados como propuesta. Antes del despliegue final: configuración 2.3 y recorrido real 2.4 verificados, con límites y costes comprobados. Si no es viable, registrar una decisión alternativa.
 
 ## Fase 3 — Producto, navegación y sistema visual
 
-Dependencias: fase 2 decidida.
+Dependencias: 2.2 documentada; no requiere que 2.3 ni 2.4 estén ejecutadas.
 
 | ID | Tarea |
 |---|---|
