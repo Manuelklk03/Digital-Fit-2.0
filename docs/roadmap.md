@@ -59,8 +59,8 @@ Dependencias: 2.2 documentada; no requiere que 2.3 ni 2.4 estén ejecutadas.
 
 | ID | Tarea |
 |---|---|
-| 3.1 [P] | Definir producto: público (personas que entrenan en Valencia, por libre o en gimnasio), recorridos principales y qué funciones se mantienen, fusionan o retiran |
-| 3.2 [P] | Mapa de navegación y estructura de pantallas (27 rutas actuales) |
+| 3.1 [P] | Definir producto: asistente de entreno en vivo (series, repeticiones, peso, descansos con cronómetro), gamificación (metas, retos), social (amigos y compartir) y mapa inteligente con pines; retirada de tickets | **Hecha (2026-11-03)** |
+| 3.2 [P] | Mapa de navegación y pantallas: consolidar las 27 rutas en 5 vistas clave (Dashboard, Entrenar, Explorar Mapa, Progreso/Retos, Perfil) | **Hecha (2026-11-03)** |
 | 3.3 [P] | Dirección visual con `frontend-stack` → propuestas comparables y una pantalla representativa aprobada ([design-system.md](design-system.md)) |
 | 3.4 [P] | Tokens (color, tipografía, espaciado, radios, movimiento) y componentes base en Angular |
 | 3.5 [+] | Evaluar librerías (GSAP, Lenis, Angular CDK/Spartan…) con los criterios de [design-system.md](design-system.md#dependencias-de-interfaz) |
