@@ -76,32 +76,36 @@ html {
     --df-transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
     /* ========================================= */
-    /* COMPATIBILIDAD V1 (mapeada a tokens v2) */
     /* ========================================= */
-    --color-azul: var(--df-primary);
-    --color-azul-fondo: var(--df-surface-hover);
-    --color-azul-caja: var(--df-surface);
-    --color-azul-oscuro: #090d13;
-    --color-azul-medio: var(--df-primary);
-    --color-negro: var(--df-text);
-    --color-gris-claro: var(--df-border);
-    --color-blanco: var(--df-text);
-    --color-boton-rosa: var(--df-accent);
+    /* COMPATIBILIDAD V1 (valores originales para preservar contraste en vistas v1) */
+    /* ========================================= */
+    --color-azul: #3C91E6;
+    --color-azul-fondo: #b3d7ff;
+    --color-azul-caja: #d9eaff;
+    --color-azul-oscuro: #1a4f87;
+    --color-azul-medio: #5fa8f0;
+    --color-negro: #333333;
+    --color-gris-claro: #dedede;
+    --color-blanco: #ffffff;
+    --color-boton-rosa: #f4b4b4;
 
-    --color-exito: var(--df-accent);
-    --color-error: var(--df-danger);
-    --color-aviso: var(--df-warning);
+    --color-exito: #1f7a37;
+    --color-error: #c62828;
+    --color-aviso: #f0a500;
 
-    --sombra-suave: var(--df-shadow-sm);
-    --sombra-media: var(--df-shadow-md);
-    --sombra-fuerte: var(--df-shadow-lg);
+    --sombra-suave: 0 10px 24px rgba(0, 0, 0, 0.10);
+    --sombra-media: 0 16px 34px rgba(0, 0, 0, 0.14);
+    --sombra-fuerte: 0 22px 48px rgba(0, 0, 0, 0.18);
 
-    --borde-suave: 1px solid var(--df-border);
-    --radio-grande: var(--df-radius-lg);
-    --radio-medio: var(--df-radius-md);
-    --radio-pequeno: var(--df-radius-sm);
+    --borde-suave: 1px solid rgba(26, 79, 135, 0.12);
+    --radio-grande: 24px;
+    --radio-medio: 18px;
+    --radio-pequeno: 12px;
 
-    --fondo-principal: var(--df-bg);
+    --fondo-principal:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.55), transparent 28%),
+        radial-gradient(circle at top right, rgba(255, 255, 255, 0.22), transparent 20%),
+        linear-gradient(180deg, #b9dcff 0%, #cfe7ff 35%, #dceeff 100%);
 }
 
 /* ========================================= */
