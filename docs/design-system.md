@@ -34,8 +34,8 @@ Se instala cada una solo cuando se usa, explicando su función. Criterios: compa
 
 | Herramienta | Encaje con Angular | Uso previsto |
 |---|---|---|
-| GSAP | Librería de JS sin framework: compatible | Transiciones con función, respetando `prefers-reduced-motion` |
-| Lenis | JS sin framework: compatible | Solo si hay páginas largas de contenido; no en formularios ni en el mapa |
+| GSAP | Librería de JS sin framework: compatible | Transiciones con función, respetando `prefers-reduced-motion`. Con ScrollTrigger, solo en la portada `/inicio` (D15) |
+| Lenis | JS sin framework: compatible | Solo si hay páginas largas de contenido; no en formularios ni en el mapa. Previsto únicamente en la portada `/inicio` (D15) |
 | shadcn/ui | Componentes de React: **no** se usa directamente | Referencia visual; alternativas Angular a evaluar: Angular CDK, Spartan UI (port de shadcn a Angular) |
 | React Bits | Componentes de React: **no** compatible | Solo como referencia de ideas |
 | Leaflet | Ya instalado | Mapa; revisar estilos de teselas y atribución |
