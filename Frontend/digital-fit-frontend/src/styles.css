@@ -1,3 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --color-df-bg: var(--df-bg);
+  --color-df-surface: var(--df-surface);
+  --color-df-surface-hover: var(--df-surface-hover);
+  --color-df-surface-active: var(--df-surface-active);
+  --color-df-border: var(--df-border);
+  --color-df-border-focus: var(--df-border-focus);
+
+  --color-df-primary: var(--df-primary);
+  --color-df-primary-hover: var(--df-primary-hover);
+  --color-df-accent: var(--df-accent);
+  --color-df-accent-hover: var(--df-accent-hover);
+  --color-df-warning: var(--df-warning);
+  --color-df-danger: var(--df-danger);
+
+  --color-df-text: var(--df-text);
+  --color-df-text-muted: var(--df-text-muted);
+  --color-df-text-subtle: var(--df-text-subtle);
+}
+
 @import 'leaflet/dist/leaflet.css';
 
 /* ========================================= */
