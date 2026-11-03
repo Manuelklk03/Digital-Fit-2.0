@@ -2,13 +2,14 @@
 
 Última actualización: **2026-11-03**.
 
-> **2026-11-03:** Tarea 2.1 investigada en documentación oficial y registrada en [deployment.md](deployment.md#4-despliegue-público-fase-2). Se compararon 4 opciones de frontend, 4 de backend y 3 de PostgreSQL. No hay proveedor elegido ni despliegue verificado.
+> **2026-11-03:** Tarea 2.1 investigada en documentación oficial y registrada en [deployment.md](deployment.md#4-despliegue-público-fase-2). Se compararon 4 opciones de frontend, 4 de backend y 3 de PostgreSQL. En 2.2 se documentó la propuesta Netlify + Render + Neon con sesión por cookie. Manuel ha aplazado la configuración y la prueba reales (2.3–2.4) hasta preparar el despliegue, después del rediseño. No se han creado cuentas ni entornos remotos.
 
 > **2026-11-01:** Manuel adelanta DevOps (fase 1B) y autoriza el modo automático para ella y para la fase 1. Fase 1 cerrada (PR #23–#29: documentación, limpieza, tests del frontend, Docker verificado, PostgreSQL, Spring Boot 4.1.2, Angular 22). Fase 1B en curso: **1B.1 CI hecha** (PR #30).
 
 ## Resumen
 
-- **Fase activa:** 2 — viabilidad del despliegue gratuito ([roadmap](roadmap.md#fase-2--viabilidad-del-despliegue-gratuito)); investigación 2.1 hecha, decisión 2.2 pendiente.
+- **Fase activa:** 2 — viabilidad del despliegue gratuito ([roadmap](roadmap.md#fase-2--viabilidad-del-despliegue-gratuito)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas. La fase 3 empezará cuando Manuel lo indique.
+- **Rama de la tarea 2.2:** `docs/hosting-decision`; `main` está protegida: todo entra por PR.
 - **Rama de la tarea 2.1:** `docs/hosting-feasibility` (PR #39); `main` está protegida: todo entra por PR.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, método de análisis GitHub Actions (según Manuel), secreto `SONAR_TOKEN` guardado en el repositorio (verificado con `gh secret list`).
@@ -71,7 +72,7 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. Tarea 2.1 documentada. Siguiente: 2.2, decidir proveedor y modelo de sesión (D2) antes de configurar o crear servicios. Falta comprobar los datos de alta no publicados por algunos proveedores y medir el backend en 512 MB en la prueba 2.4.
+1. Esperar la indicación de Manuel para empezar 3.1 (definición del producto). La configuración de staging y producción y la prueba 2.4 quedan para antes del despliegue final; entonces habrá que comprobar los datos de alta de los proveedores, el coste de ambos entornos y si el backend cabe en los 512 MB de Render.
 2. Rediseño: mapa tipo Google Maps, i18n y SEO registrados como tareas 3.6–3.9 (D10, D11), en modo mixto.
 
 ## Cómo actualizar este archivo
