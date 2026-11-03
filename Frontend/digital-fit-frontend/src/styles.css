@@ -1,4 +1,9 @@
-@import "tailwindcss";
+/* Tailwind sin «preflight» (su reset global): con él, los títulos de las pantallas v1 pierden la
+   negrita. Para volver al import completo, cuando las pantallas se hayan renovado con Tailwind:
+   @import "tailwindcss"; */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
 /* Los @import van antes de cualquier otra regla (si no, el CSS es inválido). */
 @import 'leaflet/dist/leaflet.css';
 
