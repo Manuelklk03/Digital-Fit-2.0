@@ -5,7 +5,7 @@
   <section class="sesion-barra">
     <div class="sesion-info">
       <div class="sesion-estado">
-        <span class="chip-estado chip-en-curso">EN VIVO</span>
+        <span df-badge variant="accent" [dot]="true">EN VIVO</span>
         <span class="tiempo-total" aria-label="Tiempo total de entrenamiento">
           ⏱ {{ tiempoTotalFormateado() }}
         </span>
@@ -18,7 +18,9 @@
 
     <button
       type="button"
-      class="boton-terminar"
+      df-button
+      variant="danger"
+      size="sm"
       (click)="finalizarSesion()"
       aria-label="Finalizar entrenamiento"
     >
@@ -42,7 +44,7 @@
   </nav>
 
   <!-- Tarjeta de Ejercicio Activo (Sistema Neutral Sport: borde perimetral fino, sin border-left) -->
-  <section class="tarjeta-ejercicio-activo" aria-labelledby="ejercicio-activo-titulo">
+  <section df-card class="tarjeta-ejercicio-activo" aria-labelledby="ejercicio-activo-titulo">
     <header class="ejercicio-cabecera">
       <div>
         <span class="etiqueta-musculo">{{ ejercicioActual().grupoMuscular }}</span>
@@ -121,13 +123,13 @@
               <!-- Acción: Botón completar o Check -->
               <td class="celda-accion">
                 @if (s.completada) {
-                  <span class="badge-completado" aria-label="Serie completada">
+                  <span df-badge variant="accent" aria-label="Serie completada">
                     ✓ Lista
                   </span>
                 } @else {
                   <button
                     type="button"
-                    class="btn-completar-serie"
+                    df-button variant="primary" size="sm"
                     (click)="completarSerie(s.numero)"
                   >
                     Completar
@@ -168,7 +170,7 @@
         </button>
         <button
           type="button"
-          class="btn-descanso-saltar"
+          df-button variant="outline" size="sm"
           (click)="detenerDescanso()"
         >
           Omitir descanso
