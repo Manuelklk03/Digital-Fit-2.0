@@ -1,0 +1,409 @@
+/* =================================================== */
+/* DIGITAL-FIT 2.0 — ASISTENTE DE ENTRENAR EN VIVO     */
+/* Sistema de diseño: Neutral Sport / Industrial       */
+/* =================================================== */
+
+.entrenar-contenedor {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  color: var(--df-text);
+  font-family: var(--df-font-sans);
+}
+
+/* 1. Barra de sesión superior */
+.sesion-barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  background-color: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.sesion-estado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.chip-estado {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.chip-en-curso {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: var(--df-accent);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.tiempo-total {
+  font-family: var(--df-font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--df-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.sesion-titulo {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--df-text);
+  letter-spacing: -0.01em;
+}
+
+.sesion-progreso-texto {
+  font-size: 13px;
+  color: var(--df-text-muted);
+  margin: 0;
+}
+
+.boton-terminar {
+  background-color: transparent;
+  color: var(--df-danger);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.boton-terminar:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: var(--df-danger);
+}
+
+/* 2. Selector de ejercicios (chips horizontales) */
+.selector-ejercicios {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+  scrollbar-width: thin;
+}
+
+.chip-ejercicio {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--df-surface);
+  border: 1px solid var(--df-border);
+  color: var(--df-text-muted);
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.chip-ejercicio:hover {
+  background-color: var(--df-surface-hover);
+  color: var(--df-text);
+}
+
+.chip-ejercicio.activo {
+  background-color: var(--df-surface-hover);
+  border-color: var(--df-primary);
+  color: var(--df-text);
+}
+
+.chip-num {
+  font-family: var(--df-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--df-primary);
+}
+
+/* 3. Tarjeta de Ejercicio Activo (borde perimetral sin border-left) */
+.tarjeta-ejercicio-activo {
+  background-color: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.ejercicio-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--df-border);
+}
+
+.etiqueta-musculo {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--df-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.ejercicio-titulo {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--df-text);
+}
+
+.indicador-series {
+  font-size: 13px;
+  color: var(--df-text-muted);
+  font-weight: 500;
+}
+
+/* 4. Tabla interactiva de series */
+.tabla-series-envoltorio {
+  overflow-x: auto;
+}
+
+.tabla-series {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tabla-series th {
+  text-align: left;
+  padding: 10px 14px;
+  color: var(--df-text-subtle);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--df-border);
+}
+
+.tabla-series td {
+  padding: 14px;
+  border-bottom: 1px solid rgba(48, 54, 61, 0.4);
+  vertical-align: middle;
+}
+
+.serie-completada {
+  opacity: 0.65;
+}
+
+.badge-numero-serie {
+  display: inline-block;
+  font-family: var(--df-font-mono);
+  font-weight: 700;
+  font-size: 12px;
+  background-color: var(--df-surface-hover);
+  color: var(--df-text);
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--df-border);
+}
+
+/* Controles táctiles de peso y repeticiones */
+.control-tactil {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(13, 17, 23, 0.6);
+  border: 1px solid var(--df-border);
+  border-radius: 10px;
+  padding: 4px 6px;
+}
+
+.btn-ajuste {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--df-surface-hover);
+  border: 1px solid var(--df-border);
+  border-radius: 8px;
+  color: var(--df-text);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-ajuste:hover {
+  background-color: var(--df-border-focus);
+  color: #fff;
+}
+
+.valor-tactil {
+  font-family: var(--df-font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  min-width: 44px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--df-text);
+}
+
+.valor-fijo {
+  font-family: var(--df-font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--df-text-muted);
+}
+
+.btn-completar-serie {
+  background-color: var(--df-primary);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  min-height: 40px;
+}
+
+.btn-completar-serie:hover {
+  background-color: var(--df-primary-hover);
+}
+
+.badge-completado {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--df-accent);
+  background-color: rgba(16, 185, 129, 0.12);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* 5. Tarjeta de Descanso Interactiva */
+.tarjeta-descanso {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: linear-gradient(145deg, #161b22, #1b222d);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  animation: aparecerDescanso 0.3s ease;
+}
+
+@keyframes aparecerDescanso {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.descanso-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.descanso-etiqueta {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--df-primary);
+  text-transform: uppercase;
+}
+
+.descanso-cronometro {
+  font-family: var(--df-font-mono);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--df-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.descanso-controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-descanso-mod {
+  background-color: var(--df-surface-hover);
+  border: 1px solid var(--df-border);
+  color: var(--df-text);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-height: 38px;
+}
+
+.btn-descanso-mod:hover {
+  background-color: var(--df-border);
+}
+
+.btn-descanso-saltar {
+  background-color: transparent;
+  border: 1px solid var(--df-border);
+  color: var(--df-text-muted);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-height: 38px;
+}
+
+.btn-descanso-saltar:hover {
+  color: var(--df-text);
+  border-color: var(--df-text-muted);
+}
+
+/* Responsividad para móviles */
+@media (max-width: 640px) {
+  .sesion-barra {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .boton-terminar {
+    text-align: center;
+  }
+
+  .tarjeta-descanso {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .descanso-controles {
+    justify-content: center;
+  }
+}
