@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { AuthService } from '../../services/auth-service';
+import { BadgeComponent, ButtonComponent, CardComponent } from '../../components/ui';
 
 export interface SerieEjercicio {
   numero: number;
@@ -28,7 +29,7 @@ export interface EjercicioActivo {
 
 @Component({
   selector: 'app-entrenar',
-  imports: [HeaderComponent, Footer],
+  imports: [HeaderComponent, Footer, ButtonComponent, BadgeComponent, CardComponent],
   templateUrl: './entrenar.html',
   styleUrl: './entrenar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
