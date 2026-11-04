@@ -2,6 +2,8 @@
 
 Última actualización: **2026-11-04**.
 
+> **2026-11-04 (Fase 3, Tarea 3.3):** Dirección visual cerrada en rama `feat/visual-direction`. Propuesta aprobada: Neutral Sport / Industrial. Configurada tipografía Inter (sustituyendo a Arial) en `index.html` y tokens de Tailwind v4. Diseñada e implementada la pantalla representativa del Asistente de Entrenar (`/entrenar`) con tarjetas de borde perimetral (eliminando el patrón v1 de `border-left`), cronómetro de descanso regresivo interactivo y controles táctiles de series. Verificaciones: `ng build` en verde, 56/56 tests pasando (5 nuevos), 0 errores ESLint.
+
 > **2026-11-04:** Revisión Stylelint de la PR #43 (rama de estilos): 5 avisos heredados de la v1 (3 × `border-left: 4px solid` en tarjetas, 2 × fuente Arial). Los 5 se dejan tal cual: pertenecen al diseño de la v1 y se resolverán en la tarea 3.3 (dirección visual), donde se decidirán la tipografía base y el tratamiento de los bordes laterales de acento. Anotado en [roadmap.md](roadmap.md).
 
 > **2026-11-03 (Fase 3):** Tareas 3.1 y 3.2 acordadas con Manuel en rama docs/product-definition. Definición de producto: asistente de entrenamiento interactivo (ejercicios, series, pesos, descansos), gamificación (metas, retos), social (amigos, compartir) y mapa inteligente con pines vía Overpass/MapLibre. Se eliminan tickets de soporte y se consolidan las 27 rutas en 5 vistas clave (Dashboard, Entrenar, Explorar Mapa, Progreso/Retos, Perfil). Dirección visual con tokens neutros desacoplados («Neutral Sport») para agilidad en cambios de estilo.
@@ -12,7 +14,7 @@
 
 ## Resumen
 
-- **Fase activa:** 3 — Producto, navegación y sistema visual (tareas 3.1 y 3.2 cerradas, 3.3/3.4 en curso) ([roadmap](roadmap.md#fase-2--viabilidad-del-despliegue-gratuito)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas. La fase 3 empezará cuando Manuel lo indique.
+- **Fase activa:** 3 — Producto, navegación y sistema visual (tareas 3.1, 3.2 y 3.3 cerradas, 3.4 en curso) ([roadmap](roadmap.md#fase-3--producto-navegación-y-sistema-visual)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
 - **Rama de la tarea 2.2:** `docs/hosting-decision`; `main` está protegida: todo entra por PR.
 - **Rama de la tarea 2.1:** `docs/hosting-feasibility` (PR #39); `main` está protegida: todo entra por PR.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
