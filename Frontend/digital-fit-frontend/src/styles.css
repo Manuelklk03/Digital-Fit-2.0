@@ -25,6 +25,9 @@
   --color-df-text: var(--df-text);
   --color-df-text-muted: var(--df-text-muted);
   --color-df-text-subtle: var(--df-text-subtle);
+
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 /* ========================================= */
@@ -75,7 +78,7 @@ html {
     --df-text-subtle: #6e7681;
 
     /* Tipografía */
-    --df-font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --df-font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --df-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
     /* Escala de espaciado */
@@ -142,7 +145,7 @@ html {
 body {
     min-height: 100vh;
     background: var(--fondo-principal);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--df-font-sans);
     color: var(--color-negro);
     line-height: 1.5;
     animation: aparecerPagina 0.6s ease;
@@ -453,7 +456,7 @@ button:disabled {
 input,
 textarea,
 select {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--df-font-sans);
 }
 
 .grupo-campo input,
