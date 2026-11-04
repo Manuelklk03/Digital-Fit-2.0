@@ -1,6 +1,6 @@
 # Sistema de diseño — Digital-Fit 2.0
 
-Estado: **sin definir**. Este documento fija el método y los criterios; la dirección visual concreta se decide en la fase 3 ([roadmap.md](roadmap.md#fase-3--producto-navegación-y-sistema-visual)) y se registra aquí cuando se apruebe.
+Estado: **Dirección visual definida (2026-11-04, Tarea 3.3)**. La dirección aprobada es **Neutral Sport / Industrial**, con la pantalla de **Asistente de Entrenar** como modelo representativo.
 
 ## Punto de partida (v1.0.0)
 
@@ -42,6 +42,24 @@ Se instala cada una solo cuando se usa, explicando su función. Criterios: compa
 
 La compatibilidad, licencia y mantenimiento de cada alternativa se comprueban en el momento de instalarla; esta tabla no sustituye esa comprobación.
 
-## Decisiones visuales
+## Decisiones visuales (Tarea 3.3)
 
-_Pendiente de la fase 3._
+### 1. Dirección: Neutral Sport / Industrial
+- **Concepto:** Estética técnica, funcional y precisa inspirada en instrumentación de alto rendimiento deportivo (Whoop, Strava Pro).
+- **Paleta y superficies:** Fondos oscuros grafito (`--df-bg`), tarjetas elevadas (`--df-surface`) y acentos de color aplicados con función semántica (estados de serie, descansos, métricas activas), evitando brillos o gradientes ornamentales (*antislop*).
+
+### 2. Tipografía base y técnica
+- **Familia principal:** `Inter` (soporte de números tabulares para cronómetros y pesos, alta legibilidad en pantallas móviles bajo fatiga física). Fallback al sistema: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`.
+- **Sustitución de Arial:** Se descarta definitivamente `Arial` heredado de la v1 (resuelve los 2 avisos Stylelint en `styles.css`).
+- **Datos numéricos:** Uso de `font-mono` o variantes numéricas tabulares (`tnum`) para tiempos de descanso, pesos y repeticiones para evitar saltos de línea al cambiar dígitos.
+
+### 3. Tarjetas y contenedores (adiós `border-left` v1)
+- **Estructura:** Borde perimetral fino (`1px solid var(--df-border)`), esquinas con radio estándar (`rounded-xl` / `12px`) y contraste mediante tono de superficie.
+- **Sustitución de `border-left: 4px solid`:** Se eliminan los acentos laterales gruesos de la v1 (resuelve los 3 avisos Stylelint en `styles.css`). Las categorías o estados se comunican mediante **chips/badges semánticos discretos** integrados en la cabecera de la tarjeta.
+
+### 4. Pantalla representativa de referencia
+- **Pantalla elegida:** **Asistente de Entrenar en vivo (`/entrenar`)**.
+- **Elementos clave que valida:**
+  - Cronómetro regresivo de descanso con tipografía tabular legible de un vistazo.
+  - Tarjeta de ejercicio activo con selectores táctiles de peso y repeticiones.
+  - Botones de acción principal (siguiente serie, finalizar sesión) con estados de foco y contraste accesible.

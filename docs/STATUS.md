@@ -1,6 +1,8 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-03**.
+Última actualización: **2026-11-04**.
+
+> **2026-11-04:** Revisión Stylelint de la PR #43 (rama de estilos): 5 avisos heredados de la v1 (3 × `border-left: 4px solid` en tarjetas, 2 × fuente Arial). Los 5 se dejan tal cual: pertenecen al diseño de la v1 y se resolverán en la tarea 3.3 (dirección visual), donde se decidirán la tipografía base y el tratamiento de los bordes laterales de acento. Anotado en [roadmap.md](roadmap.md).
 
 > **2026-11-03 (Fase 3):** Tareas 3.1 y 3.2 acordadas con Manuel en rama docs/product-definition. Definición de producto: asistente de entrenamiento interactivo (ejercicios, series, pesos, descansos), gamificación (metas, retos), social (amigos, compartir) y mapa inteligente con pines vía Overpass/MapLibre. Se eliminan tickets de soporte y se consolidan las 27 rutas en 5 vistas clave (Dashboard, Entrenar, Explorar Mapa, Progreso/Retos, Perfil). Dirección visual con tokens neutros desacoplados («Neutral Sport») para agilidad en cambios de estilo.
 
