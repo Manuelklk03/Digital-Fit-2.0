@@ -26,6 +26,7 @@ import { CrearAdminComponent } from './pages/admin/crear-admin/crear-admin';
 import { DetalleTicketComponent } from './pages/soporte/detalle-ticket/detalle-ticket';
 import { AdminDetalleTicketComponent } from './pages/admin/soporte/admin-detalle-ticket/admin-detalle-ticket';
 import { EntrenarComponent } from './pages/entrenar/entrenar';
+import { ExplorarComponent } from './pages/explorar/explorar';
 import { authGuard } from './guards/auth-guard';
 import { publicGuard } from './guards/public-guard';
 import { adminGuard } from './guards/admin-guard';
@@ -39,6 +40,7 @@ export const routes: Routes = [
 
   { path: 'inicio', component: InicioComponent, canActivate: [authGuard] },
   { path: 'entrenar', component: EntrenarComponent, canActivate: [authGuard] },
+  { path: 'explorar', component: ExplorarComponent, canActivate: [authGuard] },
 
   { path: 'privados', component: PrivadosComponent, canActivate: [authGuard] },
   { path: 'privados/:id', component: DetallePrivadoComponent, canActivate: [authGuard] },
