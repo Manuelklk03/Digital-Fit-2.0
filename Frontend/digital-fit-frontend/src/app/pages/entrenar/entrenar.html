@@ -1,0 +1,182 @@
+<app-header></app-header>
+
+<main class="entrenar-contenedor">
+  <!-- Cabecera de la sesión en vivo -->
+  <section class="sesion-barra">
+    <div class="sesion-info">
+      <div class="sesion-estado">
+        <span class="chip-estado chip-en-curso">EN VIVO</span>
+        <span class="tiempo-total" aria-label="Tiempo total de entrenamiento">
+          ⏱ {{ tiempoTotalFormateado() }}
+        </span>
+      </div>
+      <h1 class="sesion-titulo">{{ nombreEntrenamiento() }}</h1>
+      <p class="sesion-progreso-texto">
+        Progreso: {{ totalSeriesCompletadas() }} de {{ totalSeriesGlobal() }} series completadas
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="boton-terminar"
+      (click)="finalizarSesion()"
+      aria-label="Finalizar entrenamiento"
+    >
+      Finalizar sesión
+    </button>
+  </section>
+
+  <!-- Pestañas de selector de ejercicio (chips técnicos) -->
+  <nav class="selector-ejercicios" aria-label="Ejercicios del entrenamiento">
+    @for (ej of ejercicios(); track ej.id; let i = $index) {
+      <button
+        type="button"
+        class="chip-ejercicio"
+        [class.activo]="i === indiceEjercicio()"
+        (click)="cambiarEjercicio(i)"
+      >
+        <span class="chip-num">0{{ i + 1 }}</span>
+        <span class="chip-nombre">{{ ej.nombre }}</span>
+      </button>
+    }
+  </nav>
+
+  <!-- Tarjeta de Ejercicio Activo (Sistema Neutral Sport: borde perimetral fino, sin border-left) -->
+  <section class="tarjeta-ejercicio-activo" aria-labelledby="ejercicio-activo-titulo">
+    <header class="ejercicio-cabecera">
+      <div>
+        <span class="etiqueta-musculo">{{ ejercicioActual().grupoMuscular }}</span>
+        <h2 id="ejercicio-activo-titulo" class="ejercicio-titulo">{{ ejercicioActual().nombre }}</h2>
+      </div>
+      <span class="indicador-series">
+        {{ ejercicioActual().series.length }} series planificadas
+      </span>
+    </header>
+
+    <!-- Tabla interactiva de series -->
+    <div class="tabla-series-envoltorio">
+      <table class="tabla-series">
+        <thead>
+          <tr>
+            <th scope="col" class="col-serie">Serie</th>
+            <th scope="col" class="col-peso">Carga (kg)</th>
+            <th scope="col" class="col-reps">Repeticiones</th>
+            <th scope="col" class="col-accion">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of ejercicioActual().series; track s.numero) {
+            <tr [class.serie-completada]="s.completada">
+              <!-- Número de serie -->
+              <td class="celda-serie">
+                <span class="badge-numero-serie">S{{ s.numero }}</span>
+              </td>
+
+              <!-- Control de Carga (kg) -->
+              <td class="celda-control">
+                @if (s.completada) {
+                  <span class="valor-fijo">{{ s.pesoKg }} kg</span>
+                } @else {
+                  <div class="control-tactil">
+                    <button
+                      type="button"
+                      class="btn-ajuste"
+                      (click)="modificarPeso(s.numero, -2.5)"
+                      aria-label="Restar 2.5 kg"
+                    >-</button>
+                    <span class="valor-tactil">{{ s.pesoKg }}</span>
+                    <button
+                      type="button"
+                      class="btn-ajuste"
+                      (click)="modificarPeso(s.numero, 2.5)"
+                      aria-label="Sumar 2.5 kg"
+                    >+</button>
+                  </div>
+                }
+              </td>
+
+              <!-- Control de Repeticiones -->
+              <td class="celda-control">
+                @if (s.completada) {
+                  <span class="valor-fijo">{{ s.repeticiones }} reps</span>
+                } @else {
+                  <div class="control-tactil">
+                    <button
+                      type="button"
+                      class="btn-ajuste"
+                      (click)="modificarRepeticiones(s.numero, -1)"
+                      aria-label="Restar 1 repetición"
+                    >-</button>
+                    <span class="valor-tactil">{{ s.repeticiones }}</span>
+                    <button
+                      type="button"
+                      class="btn-ajuste"
+                      (click)="modificarRepeticiones(s.numero, 1)"
+                      aria-label="Sumar 1 repetición"
+                    >+</button>
+                  </div>
+                }
+              </td>
+
+              <!-- Acción: Botón completar o Check -->
+              <td class="celda-accion">
+                @if (s.completada) {
+                  <span class="badge-completado" aria-label="Serie completada">
+                    ✓ Lista
+                  </span>
+                } @else {
+                  <button
+                    type="button"
+                    class="btn-completar-serie"
+                    (click)="completarSerie(s.numero)"
+                  >
+                    Completar
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Cronómetro regresivo de descanso interactivo -->
+  @if (descansoActivo()) {
+    <section class="tarjeta-descanso" aria-live="polite">
+      <div class="descanso-info">
+        <span class="descanso-etiqueta">DESCANSO ENTRE SERIES</span>
+        <span class="descanso-cronometro">{{ descansoFormateado() }}</span>
+      </div>
+
+      <div class="descanso-controles">
+        <button
+          type="button"
+          class="btn-descanso-mod"
+          (click)="ajustarDescanso(-15)"
+          aria-label="Restar 15 segundos de descanso"
+        >
+          -15s
+        </button>
+        <button
+          type="button"
+          class="btn-descanso-mod"
+          (click)="ajustarDescanso(15)"
+          aria-label="Sumar 15 segundos de descanso"
+        >
+          +15s
+        </button>
+        <button
+          type="button"
+          class="btn-descanso-saltar"
+          (click)="detenerDescanso()"
+        >
+          Omitir descanso
+        </button>
+      </div>
+    </section>
+  }
+</main>
+
+<app-footer></app-footer>
+

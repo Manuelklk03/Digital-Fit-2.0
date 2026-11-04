@@ -1,0 +1,9 @@
+node_modules/
+dist/
+target/
+.git/
+.gemini/
+coverage/
+Backend/**/target/
+Frontend/**/dist/
+Frontend/**/coverage/
