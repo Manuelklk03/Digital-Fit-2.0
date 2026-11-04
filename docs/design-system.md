@@ -63,3 +63,27 @@ La compatibilidad, licencia y mantenimiento de cada alternativa se comprueban en
   - Cronómetro regresivo de descanso con tipografía tabular legible de un vistazo.
   - Tarjeta de ejercicio activo con selectores táctiles de peso y repeticiones.
   - Botones de acción principal (siguiente serie, finalizar sesión) con estados de foco y contraste accesible.
+
+## Componentes base en Angular (Tarea 3.4)
+
+Ubicación: `src/app/components/ui/` (exportados centralizadamente en `index.ts`). Diseñados como componentes/directivas standalone que consumen las variables CSS `--df-*` y clases de Tailwind v4:
+
+1. **Botón (`ButtonComponent` — selector `button[df-button], a[df-button], app-button`)**:
+   - **Variantes (`variant`):** `primary` (azul acento), `secondary` (superficie hover), `outline` (borde sutil), `ghost` (sin borde ni fondo), `danger` (rojo).
+   - **Tamaños (`size`):** `sm` (32px), `md` (40px, por defecto), `lg` (48px).
+   - **Estados:** `loading` (spinner CSS accesible con `aria-busy`), `disabled` (`opacity: 0.5`, `aria-disabled`).
+
+2. **Badge / Chip (`BadgeComponent` — selector `span[df-badge], div[df-badge], app-badge`)**:
+   - **Variantes semánticas (`variant`):** `neutral`, `primary`, `accent` (verde éxito), `warning` (ámbar), `danger` (rojo).
+   - **Estilos (`badgeStyle`):** `subtle` (fondo translúcido + borde perimetral), `solid`, `outline`.
+   - **Detalles:** Soporte de punto indicador (`dot="true"`).
+
+3. **Tarjeta (`CardComponent` — selector `app-card, section[df-card], article[df-card]`)**:
+   - **Estructura:** Superficie elevada `var(--df-surface)` con borde perimetral `1px solid var(--df-border)`.
+   - **Ranuras de contenido:** Proyección mediante `[card-header]`, `ng-content` y `[card-footer]`.
+   - **Modo interactivo (`interactive="true"`):** Elevación al hover (`translateY(-2px)`), sombra y realce de borde.
+
+4. **Input (`InputDirective` — selector `input[df-input], textarea[df-input], select[df-input], app-input`)**:
+   - **Estilo:** Fondo oscuro traslúcido, borde perimetral, anillo de foco accesible (`outline` con foco visible).
+   - **Tamaños (`size`):** `sm`, `md`, `lg`.
+   - **Estados:** `error="true"` (borde y resplandor en rojo `--df-danger`).
