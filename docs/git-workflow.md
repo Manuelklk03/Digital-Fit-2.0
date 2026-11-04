@@ -13,7 +13,7 @@ Digital-Fit usa **GitHub Flow**, el mismo flujo que ValveDex. No hay rama `devel
 7. Merge con commit de merge y borrado de la rama integrada.
 8. Vuelta a `main` y `git pull --ff-only`.
 
-Criterio: una rama = un cambio completo. En los pasos intermedios, commit y `git push`; la PR se crea al terminar.
+Criterio: una rama = un cambio completo. Cada PR debe contener **un mínimo de 3 commits lógicos** (por ejemplo: desarrollo núcleo, batería de tests y documentación/actualización de estado). Se evitan las micro-PRs de un solo commit para asegurar entregas cohesionadas. En los pasos intermedios, commit y `git push`; la PR se crea al terminar.
 
 ## Comandos
 
