@@ -147,5 +147,49 @@ describe('ExplorarComponent', () => {
       configurable: true,
     });
   });
+
+  it('debe actualizar ubicación y recalcular distancias cuando la geolocalización es exitosa', () => {
+    const fakeGeolocation = {
+      getCurrentPosition: (success: (pos: unknown) => void) => {
+        success({
+          coords: { latitude: 39.47, longitude: -0.37 },
+        });
+      },
+    };
+    Object.defineProperty(navigator, 'geolocation', {
+      value: fakeGeolocation,
+      configurable: true,
+    });
+
+    component.usarMiUbicacion();
+    expect(component.ubicacionUsuario()).toEqual({ lat: 39.47, lng: -0.37 });
+    expect(component.geolocalizando()).toBe(false);
+  });
+
+  it('debe registrar error cuando la geolocalización es denegada', () => {
+    const fakeGeolocation = {
+      getCurrentPosition: (_success: unknown, error: (err: unknown) => void) => {
+        error({ message: 'User denied geolocation' });
+      },
+    };
+    Object.defineProperty(navigator, 'geolocation', {
+      value: fakeGeolocation,
+      configurable: true,
+    });
+
+    component.usarMiUbicacion();
+    expect(component.mensajeError()).toContain('No se pudo acceder a tu ubicación');
+    expect(component.geolocalizando()).toBe(false);
+  });
+
+  it('debe mapear tipos públicos a categorías unificadas', () => {
+    const compAny = component as unknown as {
+      mapearTipoPublico: (tipo?: string) => string;
+    };
+    expect(compAny.mapearTipoPublico('PISCINA_MUNICIPAL')).toBe('PISCINA');
+    expect(compAny.mapearTipoPublico('POLIDEPORTIVO')).toBe('POLIDEPORTIVO');
+    expect(compAny.mapearTipoPublico('DESCONOCIDO')).toBe('OTRO');
+    expect(compAny.mapearTipoPublico(undefined)).toBe('OTRO');
+  });
 });
 
