@@ -92,6 +92,9 @@ public class GeocodificacionService {
             }
             cacheBusqueda.put(claveCache, resultados);
 
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.warn("Petición de geocodificación interrumpida para '{}': {}", consulta, e.getMessage());
         } catch (Exception e) {
             log.warn("Error consultando geocodificación en Nominatim para '{}': {}", consulta, e.getMessage());
         }
@@ -148,6 +151,9 @@ public class GeocodificacionService {
                 return res;
             }
 
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.warn("Petición de geocodificación inversa interrumpida para ({}, {}): {}", latitud, longitud, e.getMessage());
         } catch (Exception e) {
             log.warn("Error en geocodificación inversa para ({}, {}): {}", latitud, longitud, e.getMessage());
         }
@@ -155,7 +161,7 @@ public class GeocodificacionService {
         return null;
     }
 
-    private synchronized void aplicarRateLimit() {
+    private void aplicarRateLimit() {
         long ahora = System.currentTimeMillis();
         long anterior = ultimaPeticionMs.get();
         long transcurrido = ahora - anterior;

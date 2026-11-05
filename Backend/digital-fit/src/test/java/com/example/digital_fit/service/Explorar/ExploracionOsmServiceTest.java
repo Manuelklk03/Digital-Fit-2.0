@@ -107,4 +107,45 @@ class ExploracionOsmServiceTest {
             assertEquals("GIMNASIO", l.getCategoria());
         }
     }
+
+    @Test
+    void testExplorarMapeaTiposLugaresPublicos() {
+        LugarPublicoBase piscina = LugarPublicoBase.builder()
+                .id(3L)
+                .nombre("Piscina Municipal")
+                .latitud(39.4650)
+                .longitud(-0.3750)
+                .tipo(TipoLugarPublico.PISCINA_PUBLICA)
+                .build();
+
+        LugarPublicoBase polideportivo = LugarPublicoBase.builder()
+                .id(4L)
+                .nombre("Pabellon Polideportivo")
+                .latitud(39.4660)
+                .longitud(-0.3740)
+                .tipo(TipoLugarPublico.ZONA_MULTIDEPORTE)
+                .build();
+
+        LugarPublicoBase sendero = LugarPublicoBase.builder()
+                .id(5L)
+                .nombre("Ruta Senderismo")
+                .latitud(39.4670)
+                .longitud(-0.3730)
+                .tipo(TipoLugarPublico.RUTA_SENDERISMO)
+                .build();
+
+        when(lugarPublicoBaseRepository.findAll()).thenReturn(List.of(piscina, polideportivo, sendero));
+
+        List<LugarExploracionDTO> resPiscina = exploracionOsmService.explorar(39.4650, -0.3750, 5.0, "PISCINA");
+        assertEquals(1, resPiscina.size());
+        assertEquals("PISCINA", resPiscina.get(0).getCategoria());
+
+        List<LugarExploracionDTO> resPoli = exploracionOsmService.explorar(39.4660, -0.3740, 5.0, "POLIDEPORTIVO");
+        assertEquals(1, resPoli.size());
+        assertEquals("POLIDEPORTIVO", resPoli.get(0).getCategoria());
+
+        List<LugarExploracionDTO> resOtro = exploracionOsmService.explorar(39.4670, -0.3730, 5.0, "OTRO");
+        assertEquals(1, resOtro.size());
+        assertEquals("OTRO", resOtro.get(0).getCategoria());
+    }
 }

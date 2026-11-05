@@ -19,7 +19,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Explorar.LugarExploracionDTO;
@@ -39,11 +38,20 @@ public class ExploracionOsmService {
     private static final String USER_AGENT = "Digital-FIT/2.0 (contacto: soporte@digitalfit.local; https://github.com/Manuelklk03/Digital-Fit-2.0)";
     private static final long RATE_LIMIT_MS = 1000L;
 
-    @Autowired
-    private CentroPrivadoBaseRepository centroPrivadoBaseRepository;
+    public static final String CAT_GIMNASIO = "GIMNASIO";
+    public static final String CAT_CALISTENIA = "CALISTENIA";
+    public static final String CAT_POLIDEPORTIVO = "POLIDEPORTIVO";
+    public static final String CAT_PISCINA = "PISCINA";
+    public static final String CAT_OTRO = "OTRO";
 
-    @Autowired
-    private LugarPublicoBaseRepository lugarPublicoBaseRepository;
+    private final CentroPrivadoBaseRepository centroPrivadoBaseRepository;
+    private final LugarPublicoBaseRepository lugarPublicoBaseRepository;
+
+    public ExploracionOsmService(CentroPrivadoBaseRepository centroPrivadoBaseRepository,
+                                 LugarPublicoBaseRepository lugarPublicoBaseRepository) {
+        this.centroPrivadoBaseRepository = centroPrivadoBaseRepository;
+        this.lugarPublicoBaseRepository = lugarPublicoBaseRepository;
+    }
 
     private final HttpClient httpClient = HttpClient.newBuilder()
             .connectTimeout(Duration.ofSeconds(6))
@@ -90,7 +98,7 @@ public class ExploracionOsmService {
             List<LugarExploracionDTO> resultados, Set<String> nombresUnicos) {
 
         // Centros privados locales
-        if (categoria == null || categoria.equals("GIMNASIO")) {
+        if (categoria == null || categoria.equals(CAT_GIMNASIO)) {
             List<CentroPrivadoBase> privados = centroPrivadoBaseRepository.findAll();
             for (CentroPrivadoBase cp : privados) {
                 if (cp.getLatitud() != null && cp.getLongitud() != null) {
@@ -101,7 +109,7 @@ public class ExploracionOsmService {
                                 .id(cp.getId())
                                 .osmId(cp.getOsmId())
                                 .nombre(cp.getNombre())
-                                .categoria("GIMNASIO")
+                                .categoria(CAT_GIMNASIO)
                                 .tipoOrigen("LOCAL_PRIVADO")
                                 .direccion(cp.getDireccion())
                                 .latitud(cp.getLatitud())
@@ -236,6 +244,9 @@ public class ExploracionOsmService {
                     }
                 }
             }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.warn("Petición Overpass interrumpida para ({}, {}): {}", latitud, longitud, e.getMessage());
         } catch (Exception e) {
             log.warn("Fallo consultando Overpass API para ({}, {}): {}", latitud, longitud, e.getMessage());
         }
@@ -293,28 +304,28 @@ public class ExploracionOsmService {
         String sport = tags.path("sport").asText("");
 
         if (leisure.equalsIgnoreCase("fitness_station") || sport.contains("calisthenics")) {
-            return "CALISTENIA";
+            return CAT_CALISTENIA;
         }
         if (leisure.equalsIgnoreCase("fitness_centre") || amenity.equalsIgnoreCase("gym")) {
-            return "GIMNASIO";
+            return CAT_GIMNASIO;
         }
         if (leisure.equalsIgnoreCase("swimming_pool") || sport.contains("swimming")) {
-            return "PISCINA";
+            return CAT_PISCINA;
         }
         if (leisure.equalsIgnoreCase("sports_centre") || leisure.equalsIgnoreCase("stadium")
                 || leisure.equalsIgnoreCase("pitch") || leisure.equalsIgnoreCase("track")) {
-            return "POLIDEPORTIVO";
+            return CAT_POLIDEPORTIVO;
         }
-        return "OTRO";
+        return CAT_OTRO;
     }
 
     private String mapearTipoPublico(TipoLugarPublico tipo) {
-        if (tipo == null) return "OTRO";
+        if (tipo == null) return CAT_OTRO;
         String s = tipo.name().toUpperCase(Locale.ROOT);
-        if (s.contains("CALISTENIA") || s.contains("BARRAS") || s.contains("BIOSALUDABLE")) return "CALISTENIA";
-        if (s.contains("POLIDEPORTIVO") || s.contains("CAMPO") || s.contains("PISTA") || s.contains("MULTIDEPORTE")) return "POLIDEPORTIVO";
-        if (s.contains("PISCINA") || s.contains("REMAR")) return "PISCINA";
-        return "OTRO";
+        if (s.contains(CAT_CALISTENIA) || s.contains("BARRAS") || s.contains("BIOSALUDABLE")) return CAT_CALISTENIA;
+        if (s.contains(CAT_POLIDEPORTIVO) || s.contains("CAMPO") || s.contains("PISTA") || s.contains("MULTIDEPORTE")) return CAT_POLIDEPORTIVO;
+        if (s.contains(CAT_PISCINA) || s.contains("REMAR")) return CAT_PISCINA;
+        return CAT_OTRO;
     }
 
     private String construirDireccionDesdeTags(JsonNode tags) {
@@ -344,7 +355,7 @@ public class ExploracionOsmService {
                 .trim();
     }
 
-    private synchronized void aplicarRateLimit() {
+    private void aplicarRateLimit() {
         long ahora = System.currentTimeMillis();
         long anterior = ultimaPeticionOverpassMs.get();
         long transcurrido = ahora - anterior;

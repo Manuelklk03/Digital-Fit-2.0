@@ -2,7 +2,6 @@ package com.example.digital_fit.controller.Explorar;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +18,14 @@ import com.example.digital_fit.service.Explorar.GeocodificacionService;
 @RequestMapping("/api/explorar")
 public class ExploracionRestController {
 
-    @Autowired
-    private ExploracionOsmService exploracionOsmService;
+    private final ExploracionOsmService exploracionOsmService;
+    private final GeocodificacionService geocodificacionService;
 
-    @Autowired
-    private GeocodificacionService geocodificacionService;
+    public ExploracionRestController(ExploracionOsmService exploracionOsmService,
+                                     GeocodificacionService geocodificacionService) {
+        this.exploracionOsmService = exploracionOsmService;
+        this.geocodificacionService = geocodificacionService;
+    }
 
     @GetMapping("/lugares")
     public ResponseEntity<List<LugarExploracionDTO>> buscarLugaresPorZona(

@@ -91,4 +91,13 @@ class ExploracionRestControllerTest {
         assertNotNull(response.getBody());
         assertEquals("Calle Colon", response.getBody().getNombre());
     }
+
+    @Test
+    void testGeocodificarInversaNoContent() {
+        when(geocodificacionService.reversa(39.47, -0.37)).thenReturn(null);
+
+        ResponseEntity<GeocodificacionResultadoDTO> response = exploracionRestController.geocodificarInversa(39.47, -0.37);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
 }
