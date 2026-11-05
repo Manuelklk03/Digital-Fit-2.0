@@ -87,3 +87,11 @@ Ubicación: `src/app/components/ui/` (exportados centralizadamente en `index.ts`
    - **Estilo:** Fondo oscuro traslúcido, borde perimetral, anillo de foco accesible (`outline` con foco visible).
    - **Tamaños (`size`):** `sm`, `md`, `lg`.
    - **Estados:** `error="true"` (borde y resplandor en rojo `--df-danger`).
+
+## 5. Patrón de Exploración y Mapa (Tarea 3.6 — D10)
+
+- **Distribución de pantalla partida:**
+  - En escritorio: panel lateral de búsqueda, filtros y listado (anchura fija de 420px–460px) con scroll independiente y mapa en el área restante a pantalla completa.
+  - En móvil: vista apilada fluida con acceso rápido a conmutación mapa/lista y barra flotante de filtros superiores.
+- **Estilo de mapa:** Teselas CartoDB Dark Matter de alto contraste manteniendo atribución obligatoria a OpenStreetMap y CARTO, integradas armónicamente con la paleta Neutral Sport / Industrial.
+- **Marcadores y microinteracciones:** Pines personalizados con badges semánticos por categoría (Gimnasio 🏋️, Calistenia 🤸, Polideportivo 🏟️, Piscina 🏊), pulso radar para la ubicación del usuario y botón flotante «Buscar en esta zona» activado al desplazar el visor del mapa.
