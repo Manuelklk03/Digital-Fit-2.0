@@ -56,7 +56,7 @@ class ExploracionOsmServiceTest {
                 .direccion("Jardin del Turia Tramo IX, Valencia")
                 .latitud(39.4722)
                 .longitud(-0.3712)
-                .tipo(TipoLugarPublico.CALISTENIA)
+                .tipo(TipoLugarPublico.PARQUE_CALISTENIA)
                 .descripcion("Barras paralelas y dominadas")
                 .build();
     }

@@ -311,9 +311,9 @@ public class ExploracionOsmService {
     private String mapearTipoPublico(TipoLugarPublico tipo) {
         if (tipo == null) return "OTRO";
         String s = tipo.name().toUpperCase(Locale.ROOT);
-        if (s.contains("CALISTENIA") || s.contains("PARQUE")) return "CALISTENIA";
-        if (s.contains("POLIDEPORTIVO") || s.contains("CAMPO")) return "POLIDEPORTIVO";
-        if (s.contains("PISCINA")) return "PISCINA";
+        if (s.contains("CALISTENIA") || s.contains("BARRAS") || s.contains("BIOSALUDABLE")) return "CALISTENIA";
+        if (s.contains("POLIDEPORTIVO") || s.contains("CAMPO") || s.contains("PISTA") || s.contains("MULTIDEPORTE")) return "POLIDEPORTIVO";
+        if (s.contains("PISCINA") || s.contains("REMAR")) return "PISCINA";
         return "OTRO";
     }
 
