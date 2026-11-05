@@ -165,17 +165,14 @@ export class MapaSelectorComponent implements AfterViewInit {
     }
 
     const params = new HttpParams()
-      .set('format', 'json')
-      .set('limit', '10')
-      .set('countrycodes', 'es')
-      .set('addressdetails', '1')
       .set('q', consultas[indice]);
 
-    this.http.get<any[]>('https://nominatim.openstreetmap.org/search', { params }).subscribe({
+    // Llamada al backend de Digital-Fit como proxy hacia Nominatim (resuelve P11)
+    this.http.get<any[]>('/api/explorar/geocodificar', { params }).subscribe({
       next: (resultados) => {
         const resultadoValido = resultados?.find((resultado) => {
-          const lat = Number(resultado.lat);
-          const lng = Number(resultado.lon);
+          const lat = Number(resultado.latitud ?? resultado.lat);
+          const lng = Number(resultado.longitud ?? resultado.lon);
           return this.coordenadasValidas(lat, lng);
         });
 
@@ -186,8 +183,8 @@ export class MapaSelectorComponent implements AfterViewInit {
           return;
         }
 
-        const lat = Number(Number(resultadoValido.lat).toFixed(6));
-        const lng = Number(Number(resultadoValido.lon).toFixed(6));
+        const lat = Number(Number(resultadoValido.latitud ?? resultadoValido.lat).toFixed(6));
+        const lng = Number(Number(resultadoValido.longitud ?? resultadoValido.lon).toFixed(6));
 
         this.map.setView([lat, lng], 16);
         this.colocarMarker(lat, lng);

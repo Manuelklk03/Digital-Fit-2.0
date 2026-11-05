@@ -10,6 +10,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import * as L from 'leaflet';
 import { HeaderComponent } from '../../components/header/header';
@@ -21,10 +22,11 @@ import { PublicosService } from '../../services/publicos/publicos-service';
 export type CategoriaLugar = 'GIMNASIO' | 'CALISTENIA' | 'POLIDEPORTIVO' | 'PISCINA' | 'OTRO';
 
 export interface LugarDeportivo {
-  id: number;
+  id?: number;
+  osmId?: number;
   nombre: string;
   categoria: CategoriaLugar;
-  tipoOrigen: 'PRIVADO' | 'PUBLICO';
+  tipoOrigen: 'PRIVADO' | 'PUBLICO' | 'OSM';
   direccion: string;
   latitud: number;
   longitud: number;
@@ -54,6 +56,7 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private privadosService = inject(PrivadosService);
   private publicosService = inject(PublicosService);
+  private http = inject(HttpClient);
 
   private map?: L.Map;
   private markersLayer?: L.LayerGroup;
@@ -318,7 +321,45 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.map) return;
     const center = this.map.getCenter();
     this.recalcularDistancias(center.lat, center.lng);
+    this.buscarLugaresEnBackend(center.lat, center.lng, this.radioFiltroKm(), this.categoriaFiltro());
     this.mostrarBotonZona.set(false);
+  }
+
+  buscarLugaresEnBackend(lat: number, lon: number, radioKm: number, categoria?: string): void {
+    let params = new HttpParams()
+      .set('lat', lat.toString())
+      .set('lon', lon.toString())
+      .set('radioKm', radioKm.toString());
+
+    if (categoria && categoria !== 'TODOS') {
+      params = params.set('categoria', categoria);
+    }
+
+    this.http.get<any[]>('/api/explorar/lugares', { params }).subscribe({
+      next: (res) => {
+        if (Array.isArray(res) && res.length > 0) {
+          const nuevos: LugarDeportivo[] = res.map((r) => ({
+            id: r.id ?? r.osmId,
+            osmId: r.osmId,
+            nombre: r.nombre,
+            categoria: (r.categoria as CategoriaLugar) ?? 'OTRO',
+            tipoOrigen: (r.tipoOrigen as 'PRIVADO' | 'PUBLICO' | 'OSM') ?? 'OSM',
+            direccion: r.direccion,
+            latitud: r.latitud,
+            longitud: r.longitud,
+            precioMensual: r.precioMensual,
+            equipamiento: r.equipamiento,
+            horario: r.horario,
+            distanciaKm: r.distanciaKm,
+          }));
+          this.lugares.set(nuevos);
+          this.actualizarMarcadoresEnMapa();
+        }
+      },
+      error: () => {
+        // En caso de fallo de red o backend no disponible, se conservan los datos precargados
+      },
+    });
   }
 
   cambiarCategoria(cat: CategoriaLugar | 'TODOS'): void {
