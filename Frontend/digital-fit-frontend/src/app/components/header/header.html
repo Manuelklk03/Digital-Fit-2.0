@@ -13,10 +13,14 @@
       <ul>
         @if (esAdmin()) {
         <li><a routerLink="/inicio">Inicio</a></li>
+        <li><a routerLink="/explorar">Explorar mapa</a></li>
+        <li><a routerLink="/entrenar">Entrenar</a></li>
         <li><a routerLink="/admin/soporte">Panel soporte</a></li>
         <li><a routerLink="/admin/crear-admin">Crear admin</a></li>
         } @else {
         <li><a routerLink="/inicio">Inicio</a></li>
+        <li><a routerLink="/explorar">Explorar mapa</a></li>
+        <li><a routerLink="/entrenar">Entrenar</a></li>
         <li><a routerLink="/mis-entrenamientos">Mis entrenamientos</a></li>
         <li><a routerLink="/mis-centros">Mis centros</a></li>
         <li><a routerLink="/mis-lugares">Mis lugares</a></li>

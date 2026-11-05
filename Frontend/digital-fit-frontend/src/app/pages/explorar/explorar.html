@@ -1,0 +1,209 @@
+<app-header></app-header>
+
+<main class="explorar-contenedor">
+  <!-- 1. Barra de Búsqueda y Filtros Rápidos -->
+  <header class="explorar-barra-superior">
+    <div class="fila-busqueda">
+      <div class="campo-busqueda-envoltorio">
+        <input
+          df-input
+          type="search"
+          [ngModel]="textoBusqueda()"
+          (ngModelChange)="textoBusqueda.set($event)"
+          placeholder="Buscar gimnasios, zonas de calistenia, calles..."
+          aria-label="Buscar instalaciones deportivas"
+        />
+      </div>
+
+      <button
+        df-button
+        variant="secondary"
+        type="button"
+        (click)="usarMiUbicacion()"
+        [loading]="geolocalizando()"
+        aria-label="Usar mi ubicación actual"
+      >
+        📍 Mi ubicación
+      </button>
+
+      <!-- Selector de Radio -->
+      <div class="selector-radio">
+        <span class="etiqueta-radio">Radio:</span>
+        <select
+          df-input
+          size="sm"
+          [ngModel]="radioFiltroKm()"
+          (ngModelChange)="cambiarRadio(+($event))"
+          aria-label="Filtrar por radio de distancia"
+        >
+          <option [value]="1">1 km</option>
+          <option [value]="3">3 km</option>
+          <option [value]="5">5 km</option>
+          <option [value]="10">10 km</option>
+          <option [value]="25">25 km</option>
+        </select>
+      </div>
+    </div>
+
+    @if (mensajeError()) {
+      <div class="alerta-error" role="alert">
+        <span>⚠️ {{ mensajeError() }}</span>
+      </div>
+    }
+
+    <!-- Filtros de categoría por chips -->
+    <nav class="chips-categorias" aria-label="Filtrar por tipo de instalación">
+      <button
+        type="button"
+        class="chip-filtro"
+        [class.activo]="categoriaFiltro() === 'TODOS'"
+        (click)="cambiarCategoria('TODOS')"
+      >
+        Todas las zonas
+      </button>
+
+      <button
+        type="button"
+        class="chip-filtro"
+        [class.activo]="categoriaFiltro() === 'GIMNASIO'"
+        (click)="cambiarCategoria('GIMNASIO')"
+      >
+        🏋️ Gimnasios
+      </button>
+
+      <button
+        type="button"
+        class="chip-filtro"
+        [class.activo]="categoriaFiltro() === 'CALISTENIA'"
+        (click)="cambiarCategoria('CALISTENIA')"
+      >
+        🤸 Calistenia / Parques
+      </button>
+
+      <button
+        type="button"
+        class="chip-filtro"
+        [class.activo]="categoriaFiltro() === 'POLIDEPORTIVO'"
+        (click)="cambiarCategoria('POLIDEPORTIVO')"
+      >
+        🏟️ Polideportivos
+      </button>
+
+      <button
+        type="button"
+        class="chip-filtro"
+        [class.activo]="categoriaFiltro() === 'PISCINA'"
+        (click)="cambiarCategoria('PISCINA')"
+      >
+        🏊 Piscinas
+      </button>
+    </nav>
+  </header>
+
+  <!-- 2. Contenedor de Vista Dual: Panel de Resultados + Mapa Leaflet -->
+  <div class="explorar-cuerpo">
+    <!-- Panel Izquierdo: Lista de Resultados -->
+    <aside class="panel-resultados" aria-label="Lista de centros deportivos">
+      <div class="resultados-cabecera">
+        <h2 class="resultados-conteo">
+          {{ lugaresFiltrados().length }} lugares encontrados
+        </h2>
+        @if (ubicacionUsuario()) {
+          <span df-badge variant="accent" [dot]="true">Cerca de ti</span>
+        }
+      </div>
+
+      <div class="lista-tarjetas-envoltorio">
+        @for (lugar of lugaresFiltrados(); track lugar.id) {
+          <article
+            df-card
+            [interactive]="true"
+            class="tarjeta-lugar-item"
+            [class.tarjeta-seleccionada]="lugarSeleccionado()?.id === lugar.id"
+            (click)="seleccionarLugar(lugar)"
+            tabindex="0"
+            (keydown.enter)="seleccionarLugar(lugar)"
+          >
+            <div class="tarjeta-lugar-header">
+              <span df-badge [variant]="lugar.tipoOrigen === 'PRIVADO' ? 'primary' : 'accent'">
+                {{ lugar.categoria }}
+              </span>
+
+              @if (lugar.distanciaKm !== undefined) {
+                <span class="distancia-chip">
+                  {{ lugar.distanciaKm }} km
+                </span>
+              }
+            </div>
+
+            <h3 class="tarjeta-lugar-titulo">{{ lugar.nombre }}</h3>
+            <p class="tarjeta-lugar-direccion">📍 {{ lugar.direccion }}</p>
+
+            @if (lugar.equipamiento) {
+              <p class="tarjeta-lugar-extra">🛠️ {{ lugar.equipamiento }}</p>
+            }
+
+            @if (lugar.horario) {
+              <p class="tarjeta-lugar-extra">🕒 {{ lugar.horario }}</p>
+            }
+
+            <div class="tarjeta-lugar-footer">
+              @if (lugar.precioMensual) {
+                <span class="precio-texto">{{ lugar.precioMensual }} €/mes</span>
+              } @else {
+                <span class="gratis-texto">Acceso público gratuito</span>
+              }
+
+              <button
+                df-button
+                variant="outline"
+                size="sm"
+                type="button"
+                (click)="$event.stopPropagation(); seleccionarLugar(lugar)"
+              >
+                Ver en mapa
+              </button>
+            </div>
+          </article>
+        } @empty {
+          <div class="estado-vacio">
+            <p class="vacio-icono">🔍</p>
+            <p class="vacio-titulo">No se han encontrado instalaciones</p>
+            <p class="vacio-texto">Prueba a ampliar el radio de búsqueda o a cambiar la categoría de filtro.</p>
+            <button
+              df-button
+              variant="secondary"
+              size="sm"
+              type="button"
+              (click)="cambiarCategoria('TODOS'); cambiarRadio(25)"
+            >
+              Restablecer filtros
+            </button>
+          </div>
+        }
+      </div>
+    </aside>
+
+    <!-- Panel Derecho: Mapa Interactivo con botón flotante -->
+    <section class="panel-mapa" aria-label="Mapa interactivo">
+      @if (mostrarBotonZona()) {
+        <div class="flotante-buscar-zona">
+          <button
+            df-button
+            variant="primary"
+            size="sm"
+            type="button"
+            (click)="buscarEnEstaZona()"
+          >
+            🔄 Buscar en esta zona
+          </button>
+        </div>
+      }
+
+      <div #mapContainer class="mapa-lienzo"></div>
+    </section>
+  </div>
+</main>
+
+<app-footer></app-footer>
+
