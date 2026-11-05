@@ -132,6 +132,7 @@ public class CentroPrivadoBaseService {
     public CentroPrivadoBaseDTO entityToDto(CentroPrivadoBase entity) {
         CentroPrivadoBaseDTO dto = new CentroPrivadoBaseDTO();
         dto.setId(entity.getId());
+        dto.setOsmId(entity.getOsmId());
         dto.setNombre(entity.getNombre());
         dto.setDireccion(entity.getDireccion());
         dto.setTelefono(entity.getTelefono());
@@ -146,6 +147,7 @@ public class CentroPrivadoBaseService {
     public CentroPrivadoBase dtoToEntity(CentroPrivadoBaseDTO dto) {
         CentroPrivadoBase entity = new CentroPrivadoBase();
         entity.setId(dto.getId());
+        entity.setOsmId(dto.getOsmId());
         entity.setNombre(dto.getNombre());
         entity.setDireccion(dto.getDireccion());
         entity.setTelefono(dto.getTelefono());

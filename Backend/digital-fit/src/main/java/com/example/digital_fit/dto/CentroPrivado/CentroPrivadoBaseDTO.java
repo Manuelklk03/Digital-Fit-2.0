@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @JsonPropertyOrder({
         "id",
+        "osmId",
         "nombre",
         "direccion",
         "telefono",
@@ -20,6 +21,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CentroPrivadoBaseDTO {
     private Long id;
+
+    private Long osmId;
 
     private String nombre;
 

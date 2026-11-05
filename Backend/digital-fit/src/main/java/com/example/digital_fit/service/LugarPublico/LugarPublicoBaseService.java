@@ -133,6 +133,7 @@ public class LugarPublicoBaseService {
     public LugarPublicoBase dtoToEntity(LugarPublicoBaseDTO dto) {
         LugarPublicoBase lugar = new LugarPublicoBase();
         lugar.setId(dto.getId());
+        lugar.setOsmId(dto.getOsmId());
         lugar.setNombre(dto.getNombre());
         lugar.setDireccion(dto.getDireccion());
         lugar.setTelefono(dto.getTelefono());
@@ -147,6 +148,7 @@ public class LugarPublicoBaseService {
     public LugarPublicoBaseDTO entityToDto(LugarPublicoBase lugar) {
         LugarPublicoBaseDTO dto = new LugarPublicoBaseDTO();
         dto.setId(lugar.getId());
+        dto.setOsmId(lugar.getOsmId());
         dto.setNombre(lugar.getNombre());
         dto.setDireccion(lugar.getDireccion());
         dto.setTelefono(lugar.getTelefono());

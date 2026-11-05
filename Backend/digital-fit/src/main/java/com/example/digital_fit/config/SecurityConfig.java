@@ -29,6 +29,9 @@ public class SecurityConfig {
                         // Todo lo relacionado con login, registro y usuario actual queda permitido
                         .requestMatchers("/api/auth/**").permitAll()
 
+                        // Rutas públicas de exploración geográfica y geocodificación (D10 / P11)
+                        .requestMatchers("/api/explorar/**").permitAll()
+
                         // Healthcheck de Docker/Compose: solo {"status":"UP"}, sin detalles
                         .requestMatchers("/actuator/health", "/actuator/health/**").permitAll()
 
