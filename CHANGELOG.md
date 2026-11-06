@@ -8,6 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Segregación de perfiles de configuración de Spring Boot (`application-dev.properties` vs `application-prod.properties`) con `spring.profiles.active=${SPRING_PROFILES_ACTIVE:dev}`, desactivando `show-sql` y niveles DEBUG en producción y manteniendo trazabilidad en desarrollo local, resolviendo la deuda técnica P10 (tarea 4.7).
 - Suites de pruebas de integración de seguridad y permisos en Spring Security: aislamiento estricto de recursos entre usuarios (`AislamientoRecursosUsuarioTest`, 12 tests) verificando denegación (`OperacionNoPermitida` / 403) ante intentos de acceso cruzado entre usuario A y B, y protección de las rutas `/api/admin/**` con `AdminRutasPermisosSecurityTest` (15 tests) verificando 401 para anónimos, 403 para rol `USER` y 200/201/204 para rol `ADMIN` (tarea 4.2).
 - Estandarización de respuestas de error de la API REST mediante `ProblemDetail` (RFC 7807/RFC 9457) en `GlobalExceptionHandler`, con mapa de validaciones de campo en errores 400 y suite de pruebas unitarias `GlobalExceptionHandlerTest` (tarea 4.3, deuda técnica P5).
 - Utilidad de seguridad `LogSanitizer` para neutralizar inyecciones de logs CRLF (Sonar `java:S5145`) aplicada en servicios de autenticación, geocodificación y gestión de centros y entrenamientos (tarea 4.1).

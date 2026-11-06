@@ -2,6 +2,11 @@
 
 Última actualización: **2026-11-06**.
 
+> **2026-11-06 (Fase 4, Tarea 4.7 — Perfiles dev y prod y resolución P10):**
+> - **Segregación de entornos (P10):** Separada la configuración común en `application.properties` con `spring.profiles.active=${SPRING_PROFILES_ACTIVE:dev}`. Creado `application-dev.properties` para desarrollo local con depuración SQL (`show-sql=true`, `format_sql=true`) y logs en nivel `DEBUG`. Creado `application-prod.properties` para producción desactivando volcado SQL (`show-sql=false`), logs en `INFO`/`WARN` y ocultación de trazas de error (`server.error.include-stacktrace=never`).
+> - **Entorno contenedor:** Configurado `SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}` en `docker-compose.yml`.
+> - **Verificaciones:** Suite `PerfilesPropertiesTest` con 3 tests unitarios validando la correcta parametrización y aislamiento de ambos perfiles.
+
 > **2026-11-06 (Fase 4, Tarea 4.2 — Tests de integración de permisos y seguridad Spring Security):**
 > - **Aislamiento de recursos entre usuarios:** Creada suite `AislamientoRecursosUsuarioTest` con 12 tests verificando que ningún usuario puede leer, modificar o borrar centros privados, entrenamientos ni lugares públicos de otro usuario (`OperacionNoPermitida` mapeada a 403 Forbidden RFC 7807). Verificado igualmente el aislamiento en valoraciones privadas.
 > - **Seguridad y autorización en rutas `/api/admin/**`:** Creada suite `AdminRutasPermisosSecurityTest` con 15 pruebas de integración WebMvc sobre los 5 controladores administrativos (`AdminRestController`, `CentroPrivadoBaseAdminRestController`, `EntrenamientoBaseAdminRestController`, `LugarPublicoBaseAdminRestController`, `SoporteAdminRestController`), validando rechazo 401 Unauthorized para anónimos, rechazo 403 Forbidden para rol `USER` y acceso autorizado para rol `ADMIN`.
@@ -53,7 +58,7 @@
 
 ## Resumen
 
-- **Fase activa:** 4 — Backend, API y datos (tareas 4.1, 4.2 y 4.3 cerradas; 4.6 ya hecha en 3.7; 3.9 SEO reservada para Claude) ([roadmap](roadmap.md#fase-4--backend-api-y-datos)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
+- **Fase activa:** 4 — Backend, API y datos (tareas 4.1, 4.2, 4.3 y 4.7 cerradas; 4.6 ya hecha en 3.7; 3.9 SEO reservada para Claude) ([roadmap](roadmap.md#fase-4--backend-api-y-datos)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
 - **Rama de la tarea 2.2:** `docs/hosting-decision`; `main` está protegida: todo entra por PR.
 - **Rama de la tarea 2.1:** `docs/hosting-feasibility` (PR #39); `main` está protegida: todo entra por PR.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
