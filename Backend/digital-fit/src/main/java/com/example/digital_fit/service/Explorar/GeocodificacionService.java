@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Explorar.GeocodificacionResultadoDTO;
+import com.example.digital_fit.util.LogSanitizer;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
@@ -55,7 +56,7 @@ public class GeocodificacionService {
 
         String claveCache = consulta.trim().toLowerCase();
         if (cacheBusqueda.containsKey(claveCache)) {
-            log.debug("Recuperando geocodificación desde caché para: {}", consulta);
+            log.debug("Recuperando geocodificación desde caché para: {}", LogSanitizer.sanitize(consulta));
             return cacheBusqueda.get(claveCache);
         }
 
@@ -104,9 +105,9 @@ public class GeocodificacionService {
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            log.warn("Petición de geocodificación interrumpida para '{}': {}", consulta, e.getMessage());
+            log.warn("Petición de geocodificación interrumpida para '{}': {}", LogSanitizer.sanitize(consulta), e.getMessage());
         } catch (Exception e) {
-            log.warn("Error consultando geocodificación en Nominatim para '{}': {}", consulta, e.getMessage());
+            log.warn("Error consultando geocodificación en Nominatim para '{}': {}", LogSanitizer.sanitize(consulta), e.getMessage());
         }
 
         return resultados;

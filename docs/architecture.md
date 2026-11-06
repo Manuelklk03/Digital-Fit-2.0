@@ -103,15 +103,15 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 |---|---|---|---|
 | P1 | `npm start` no tiene proxy hacia el backend: con `ng serve` las llamadas `/api` van a `localhost:4200` (sin comprobar en ejecución) | `angular.json` | 4 |
 | P2 | CSRF desactivado con autenticación por cookie | `SecurityConfig` | 4 |
-| P3 | CORS con origen fijo; sin configuración por entorno | `CorsConfig` | 2/4 |
+| P3 | CORS con origen fijo; sin configuración por entorno | `CorsConfig` | Resuelto en 4.1 (`CORS_ALLOWED_ORIGINS`) |
 | P4 | `ddl-auto=update` y `data.sql` en cada arranque, `continue-on-error=true`; sin migraciones | `application.properties` | 4 |
 | P5 | Errores de la API sin formato común (texto o mapa) | `GlobalExceptionHandler` | 4 |
 | P6 | Sin paginación en ningún listado | servicios/repositorios | 4 |
 | P7 | `any` en servicios y modelos del frontend | `src/app/services` | 5 |
 | P10 | `show-sql=true` y logs DEBUG por defecto | `application.properties` | 4 |
-| P11 | Búsqueda Nominatim desde el navegador sin limitación ni atribución revisada | `mapa-selector` | 4 |
+| P11 | Búsqueda Nominatim desde el navegador sin limitación ni atribución revisada | `mapa-selector` | Resuelto en 3.7 (proxy en backend) |
 | P12 | Imágenes sueltas o sin uso aparente (`public/img/.png`, `e.ico`, `e2.ico`) | `public/` | 5 |
-| P13 | Endpoint duplicado `/api/auth/yo` y `/me` | `AuthController` | 4 |
+| P13 | Endpoint duplicado `/api/auth/yo` y `/me` | `AuthController` | Resuelto en 4.1 (eliminado `/yo`) |
 
 ## 3. Arquitectura objetivo (2.0)
 

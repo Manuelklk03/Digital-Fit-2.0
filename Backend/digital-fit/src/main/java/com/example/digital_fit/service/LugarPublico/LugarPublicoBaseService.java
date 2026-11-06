@@ -15,6 +15,7 @@ import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Enums.TipoLugarPublico;
 import com.example.digital_fit.model.LugarPublico.LugarPublicoBase;
 import com.example.digital_fit.repository.LugarPublico.LugarPublicoBaseRepository;
+import com.example.digital_fit.util.LogSanitizer;
 
 import jakarta.transaction.Transactional;
 
@@ -64,7 +65,7 @@ public class LugarPublicoBaseService {
     @Transactional
     public LugarPublicoBaseDTO crearLugarPublico(CrearLugarPublicoDTO dto) {
 
-        log.info("Creando lugar publico {}", dto.getNombre());
+        log.info("Creando lugar publico {}", LogSanitizer.sanitize(dto.getNombre()));
 
         if (lugarPublicoBaseRepository.findByNombreIgnoreCase(dto.getNombre()).isPresent()) {
             throw new OperacionNoPermitida("Ya existe un lugar público base con ese nombre.");

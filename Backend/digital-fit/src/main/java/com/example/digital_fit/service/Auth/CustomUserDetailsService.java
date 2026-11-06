@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.model.Auth.Usuario;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
+import com.example.digital_fit.util.LogSanitizer;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -23,13 +24,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 
-        log.info("Buscando usuario con login: {}", login);
+        log.info("Buscando usuario con login: {}", LogSanitizer.sanitize(login));
 
         Usuario usuario = usuarioRepository.findByUsername(login)
                 .orElseGet(() -> usuarioRepository.findByEmail(login)
                         .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado")));
 
-        log.info("Usuario encontrado: {}", usuario.getUsername());
+        log.info("Usuario encontrado: {}", LogSanitizer.sanitize(usuario.getUsername()));
 
         return User.withUsername(usuario.getUsername())
                 .password(usuario.getPassword())

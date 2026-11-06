@@ -8,6 +8,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Utilidad de seguridad `LogSanitizer` para neutralizar inyecciones de logs CRLF (Sonar `java:S5145`) aplicada en servicios de autenticación, geocodificación y gestión de centros y entrenamientos (tarea 4.1).
+- Parámetros de seguridad de cookies de sesión (`server.servlet.session.cookie.http-only=true`, `same-site=lax` y `secure` configurable) y parametrización de CORS dinámico por entorno (`CORS_ALLOWED_ORIGINS`, P2 y P3).
+- Retirado el endpoint duplicado `/api/auth/yo` en `AuthController`, eliminando la deuda técnica P13.
 - Soporte multilingüe completo (español por defecto, valenciano, inglés y francés, decisión D11) mediante `I18nService` reactivo con Angular Signals, diccionarios tipados desacoplados y persistencia en `localStorage`.
 - Selector desplegable de idioma accesible en la cabecera (`HeaderComponent`) con banderas, abreviaturas, navegación por teclado y atributos ARIA (`aria-expanded`, `aria-haspopup`, `role="listbox"`).
 - Integración de traducciones en tiempo real en la navegación global y las secciones de la portada `/inicio` (Hero, Asistente en vivo, Radar OSM y Comunidad).

@@ -145,4 +145,26 @@ class GeocodificacionServiceTest {
         assertNotNull(resultado);
         assertEquals("Calle Colon", resultado.getNombre());
     }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void testBuscarManejaExcepcionHttp() throws Exception {
+        when(mockHttpClient.send(any(), any())).thenThrow(new RuntimeException("Simulated network error"));
+
+        List<GeocodificacionResultadoDTO> resultados = geocodificacionService.buscar("Valencia error");
+
+        assertNotNull(resultados);
+        assertTrue(resultados.isEmpty());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void testBuscarManejaInterruptedException() throws Exception {
+        when(mockHttpClient.send(any(), any())).thenThrow(new InterruptedException("Interrupted"));
+
+        List<GeocodificacionResultadoDTO> resultados = geocodificacionService.buscar("Valencia interrupted");
+
+        assertNotNull(resultados);
+        assertTrue(resultados.isEmpty());
+    }
 }
