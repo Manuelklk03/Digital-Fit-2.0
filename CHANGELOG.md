@@ -8,6 +8,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Soporte multilingüe completo (español por defecto, valenciano, inglés y francés, decisión D11) mediante `I18nService` reactivo con Angular Signals, diccionarios tipados desacoplados y persistencia en `localStorage`.
+- Selector desplegable de idioma accesible en la cabecera (`HeaderComponent`) con banderas, abreviaturas, navegación por teclado y atributos ARIA (`aria-expanded`, `aria-haspopup`, `role="listbox"`).
+- Integración de traducciones en tiempo real en la navegación global y las secciones de la portada `/inicio` (Hero, Asistente en vivo, Radar OSM y Comunidad).
 - Portada `/inicio` cinematográfica bajo la dirección Neutral Sport / Industrial con narrativa visual por scroll (GSAP ScrollTrigger dinámico y alternancia estática accesible con `prefers-reduced-motion: reduce`, decisión D15).
 - Demostración interactiva en la portada del asistente de entrenamiento en tiempo real (series, peso táctil y cronómetro regresivo de descanso con tipografía tabular).
 - Carga diferida (`loadComponent`) para `/inicio` y sus dependencias de animación en `app.routes.ts`, reduciendo el CSS a 1.4 kB y optimizando el bundle.
