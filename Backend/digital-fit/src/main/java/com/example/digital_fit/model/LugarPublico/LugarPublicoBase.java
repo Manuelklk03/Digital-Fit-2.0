@@ -48,4 +48,7 @@ public class LugarPublicoBase {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoLugarPublico tipo;
+
+    @Column(name = "osm_id")
+    private Long osmId;
 }

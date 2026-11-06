@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonPropertyOrder({ "id", "nombre", "direccion", "descripcion", "telefono", "horario", "latitud", "longitud", "tipo" })
+@JsonPropertyOrder({ "id", "osmId", "nombre", "direccion", "descripcion", "telefono", "horario", "latitud", "longitud", "tipo" })
 public class LugarPublicoBaseDTO {
 
     private Long id;
+
+    private Long osmId;
 
     private String nombre;
 

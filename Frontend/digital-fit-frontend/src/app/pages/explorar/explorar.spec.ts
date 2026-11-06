@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { of } from 'rxjs';
 
 import { ExplorarComponent } from './explorar';
@@ -190,6 +190,30 @@ describe('ExplorarComponent', () => {
     expect(compAny.mapearTipoPublico('POLIDEPORTIVO')).toBe('POLIDEPORTIVO');
     expect(compAny.mapearTipoPublico('DESCONOCIDO')).toBe('OTRO');
     expect(compAny.mapearTipoPublico(undefined)).toBe('OTRO');
+  });
+
+  it('debe consultar lugares en el backend y actualizar la lista', () => {
+    const mockLugaresBackend = [
+      {
+        osmId: 999,
+        nombre: 'Gimnasio Backend OSM',
+        categoria: 'GIMNASIO',
+        tipoOrigen: 'OSM',
+        direccion: 'Calle Test, Valencia',
+        latitud: 39.469,
+        longitud: -0.376,
+        distanciaKm: 0.3,
+      },
+    ];
+
+    const httpTesting = TestBed.inject(HttpTestingController);
+    component.buscarLugaresEnBackend(39.4699, -0.3763, 5, 'GIMNASIO');
+
+    const req = httpTesting.expectOne((r) => r.url.includes('/api/explorar/lugares'));
+    expect(req.request.method).toBe('GET');
+    req.flush(mockLugaresBackend);
+
+    expect(component.lugares().some((l) => l.nombre === 'Gimnasio Backend OSM')).toBe(true);
   });
 });
 

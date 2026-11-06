@@ -38,9 +38,12 @@ public class CentroPrivadoBase {
     @Column(length = 1000)
     private String descripcion;
 
-    // Para Google Maps:
+    // Para Google Maps y OpenStreetMap:
 
     private Double latitud;
 
     private Double longitud;
+
+    @Column(name = "osm_id")
+    private Long osmId;
 }

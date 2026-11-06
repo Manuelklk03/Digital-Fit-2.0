@@ -2,6 +2,11 @@
 
 Última actualización: **2026-11-05**.
 
+> **2026-11-05 (Fase 3, Tarea 3.7 y P11):**
+> - **Backend de Búsqueda OSM (D10) y Proxy de Geocodificación (P11):** Implementados los servicios `ExploracionOsmService` y `GeocodificacionService` con endpoints `/api/explorar/lugares`, `/api/explorar/geocodificar` y `/api/explorar/geocodificar/inversa`. Consultas Overpass filtradas por etiquetas de deporte con rate limiting de 1s, cabecera `User-Agent` identificativa y caché en memoria. Fusión con entidades de BD local (`CentroPrivadoBase` y `LugarPublicoBase`) con identificador `osmId`.
+> - **Erradicación de deuda técnica P11:** Sustituida la llamada directa de `mapa-selector.ts` a `nominatim.openstreetmap.org` por el proxy del backend `/api/explorar/geocodificar`. Conectado `ExplorarComponent` al backend conservando fallback local robusto.
+> - **Verificaciones:** Tests unitarios de backend (`ExploracionOsmServiceTest`, `ExploracionRestControllerTest`), 81/81 tests de frontend pasando con 95.3% de cobertura en `explorar.ts`, 0 errores ESLint y build de producción limpio.
+
 > **2026-11-05 (Fase 3, Tarea 3.6 y Seguridad):**
 > - **Página Explorar (`/explorar`, D10):** Implementada con vista dividida estilo Google Maps (panel lateral reactivo de 440px y visor Leaflet a pantalla completa). Modelo unificado `LugarDeportivo`, ordenación geodésica con fórmula Haversine, filtros por categoría (Gimnasio, Calistenia, Polideportivo, Piscina) y radio en km. Detección de ubicación (`navigator.geolocation`) y botón flotante «Buscar en esta zona».
 > - **Verificaciones:** `ng build` correcto, 77/77 tests unitarios pasando (7 nuevos con >81% cobertura en `explorar.ts`/`explorar.html`), 0 errores ESLint.
@@ -22,7 +27,7 @@
 
 ## Resumen
 
-- **Fase activa:** 3 — Producto, navegación y sistema visual (tareas 3.1, 3.2, 3.3, 3.4 y 3.6 cerradas, 3.5/3.7 siguientes) ([roadmap](roadmap.md#fase-3--producto-navegación-y-sistema-visual)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
+- **Fase activa:** 3 — Producto, navegación y sistema visual (tareas 3.1, 3.2, 3.3, 3.4, 3.6 y 3.7 cerradas, 3.5 siguiente) ([roadmap](roadmap.md#fase-3--producto-navegación-y-sistema-visual)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
 - **Rama de la tarea 2.2:** `docs/hosting-decision`; `main` está protegida: todo entra por PR.
 - **Rama de la tarea 2.1:** `docs/hosting-feasibility` (PR #39); `main` está protegida: todo entra por PR.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
