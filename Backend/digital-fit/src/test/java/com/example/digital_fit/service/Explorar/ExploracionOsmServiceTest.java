@@ -4,14 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -31,7 +34,7 @@ class ExploracionOsmServiceTest {
     @Mock
     private LugarPublicoBaseRepository lugarPublicoBaseRepository;
 
-    @InjectMocks
+    private HttpClient mockHttpClient;
     private ExploracionOsmService exploracionOsmService;
 
     private CentroPrivadoBase gymTest;
@@ -39,6 +42,11 @@ class ExploracionOsmServiceTest {
 
     @BeforeEach
     void setUp() {
+        mockHttpClient = mock(HttpClient.class);
+        exploracionOsmService = new ExploracionOsmService(
+                centroPrivadoBaseRepository,
+                lugarPublicoBaseRepository,
+                mockHttpClient);
         gymTest = CentroPrivadoBase.builder()
                 .id(1L)
                 .osmId(12345L)
@@ -147,5 +155,74 @@ class ExploracionOsmServiceTest {
         List<LugarExploracionDTO> resOtro = exploracionOsmService.explorar(39.4670, -0.3730, 5.0, "OTRO");
         assertEquals(1, resOtro.size());
         assertEquals("OTRO", resOtro.get(0).getCategoria());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void testExplorarConsultaOverpassYParseaElementosOsm() throws Exception {
+        String jsonOverpass = """
+                {
+                  "elements": [
+                    {
+                      "type": "node",
+                      "id": 99991,
+                      "lat": 39.4680,
+                      "lon": -0.3770,
+                      "tags": {
+                        "name": "Fitness Park Valencia",
+                        "leisure": "fitness_centre",
+                        "addr:street": "Calle Ruzafa",
+                        "addr:housenumber": "5",
+                        "addr:city": "Valencia",
+                        "phone": "963000111",
+                        "opening_hours": "Mo-Su 06:00-23:00"
+                      }
+                    },
+                    {
+                      "type": "way",
+                      "id": 99992,
+                      "center": {
+                        "lat": 39.4710,
+                        "lon": -0.3720
+                      },
+                      "tags": {
+                        "leisure": "fitness_station",
+                        "sport": "calisthenics"
+                      }
+                    }
+                  ]
+                }
+                """;
+
+        HttpResponse<String> mockResponse = mock(HttpResponse.class);
+        when(mockResponse.statusCode()).thenReturn(200);
+        when(mockResponse.body()).thenReturn(jsonOverpass);
+        when(mockHttpClient.send(any(), any(HttpResponse.BodyHandler.class))).thenReturn(mockResponse);
+
+        when(centroPrivadoBaseRepository.findAll()).thenReturn(List.of());
+        when(lugarPublicoBaseRepository.findAll()).thenReturn(List.of());
+
+        List<LugarExploracionDTO> res = exploracionOsmService.explorar(39.4690, -0.3750, 5.0, "TODOS");
+
+        assertNotNull(res);
+        assertEquals(2, res.size());
+
+        LugarExploracionDTO osmGym = res.stream()
+                .filter(l -> l.getOsmId() != null && l.getOsmId().equals(99991L))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(osmGym);
+        assertEquals("Fitness Park Valencia", osmGym.getNombre());
+        assertEquals("GIMNASIO", osmGym.getCategoria());
+        assertEquals("Calle Ruzafa 5, Valencia", osmGym.getDireccion());
+        assertEquals("963000111", osmGym.getTelefono());
+
+        LugarExploracionDTO osmCalistenia = res.stream()
+                .filter(l -> l.getOsmId() != null && l.getOsmId().equals(99992L))
+                .findFirst()
+                .orElse(null);
+        assertNotNull(osmCalistenia);
+        assertTrue(osmCalistenia.getNombre().contains("calistenia"));
+        assertEquals("CALISTENIA", osmCalistenia.getCategoria());
     }
 }

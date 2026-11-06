@@ -28,15 +28,23 @@ public class GeocodificacionService {
     private static final String USER_AGENT = "Digital-FIT/2.0 (contacto: soporte@digitalfit.local; https://github.com/Manuelklk03/Digital-Fit-2.0)";
     private static final long RATE_LIMIT_MS = 1000L;
 
-    private final HttpClient httpClient = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(5))
-            .build();
+    private final HttpClient httpClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     // Caché en memoria para evitar llamadas repetidas y proteger la cuota de Nominatim
     private final Map<String, List<GeocodificacionResultadoDTO>> cacheBusqueda = new ConcurrentHashMap<>();
     private final Map<String, GeocodificacionResultadoDTO> cacheInversa = new ConcurrentHashMap<>();
     private final AtomicLong ultimaPeticionMs = new AtomicLong(0);
+
+    public GeocodificacionService() {
+        this(HttpClient.newBuilder()
+                .connectTimeout(Duration.ofSeconds(5))
+                .build());
+    }
+
+    public GeocodificacionService(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
     public List<GeocodificacionResultadoDTO> buscar(String consulta) {
         if (consulta == null || consulta.trim().isBlank()) {

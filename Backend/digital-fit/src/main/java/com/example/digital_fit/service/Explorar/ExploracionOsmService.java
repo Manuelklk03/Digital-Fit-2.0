@@ -46,21 +46,26 @@ public class ExploracionOsmService {
 
     private final CentroPrivadoBaseRepository centroPrivadoBaseRepository;
     private final LugarPublicoBaseRepository lugarPublicoBaseRepository;
-
-    public ExploracionOsmService(CentroPrivadoBaseRepository centroPrivadoBaseRepository,
-                                 LugarPublicoBaseRepository lugarPublicoBaseRepository) {
-        this.centroPrivadoBaseRepository = centroPrivadoBaseRepository;
-        this.lugarPublicoBaseRepository = lugarPublicoBaseRepository;
-    }
-
-    private final HttpClient httpClient = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(6))
-            .build();
+    private final HttpClient httpClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     // Caché geográfica en memoria para evitar saturar Overpass
     private final Map<String, List<LugarExploracionDTO>> cacheOverpass = new ConcurrentHashMap<>();
     private final AtomicLong ultimaPeticionOverpassMs = new AtomicLong(0);
+
+    public ExploracionOsmService(CentroPrivadoBaseRepository centroPrivadoBaseRepository,
+                                 LugarPublicoBaseRepository lugarPublicoBaseRepository) {
+        this(centroPrivadoBaseRepository, lugarPublicoBaseRepository,
+                HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(6)).build());
+    }
+
+    public ExploracionOsmService(CentroPrivadoBaseRepository centroPrivadoBaseRepository,
+                                 LugarPublicoBaseRepository lugarPublicoBaseRepository,
+                                 HttpClient httpClient) {
+        this.centroPrivadoBaseRepository = centroPrivadoBaseRepository;
+        this.lugarPublicoBaseRepository = lugarPublicoBaseRepository;
+        this.httpClient = httpClient;
+    }
 
     public List<LugarExploracionDTO> explorar(Double latitud, Double longitud, Double radioKm, String categoriaFiltro) {
         if (latitud == null || longitud == null) {

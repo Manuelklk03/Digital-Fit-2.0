@@ -4,8 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Field;
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -16,11 +21,14 @@ import com.example.digital_fit.dto.Explorar.GeocodificacionResultadoDTO;
 
 class GeocodificacionServiceTest {
 
+    private HttpClient mockHttpClient;
     private GeocodificacionService geocodificacionService;
 
     @BeforeEach
+    @SuppressWarnings("unchecked")
     void setUp() {
-        geocodificacionService = new GeocodificacionService();
+        mockHttpClient = mock(HttpClient.class);
+        geocodificacionService = new GeocodificacionService(mockHttpClient);
     }
 
     @Test
@@ -35,6 +43,59 @@ class GeocodificacionServiceTest {
         assertNull(geocodificacionService.reversa(null, null));
         assertNull(geocodificacionService.reversa(39.4, null));
         assertNull(geocodificacionService.reversa(null, -0.3));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void testBuscarLlamaHttpYParseaResultados() throws Exception {
+        String jsonRespuesta = """
+                [
+                  {
+                    "lat": "39.4699",
+                    "lon": "-0.3763",
+                    "name": "Plaza del Ayuntamiento",
+                    "display_name": "Plaza del Ayuntamiento, Valencia, España",
+                    "type": "plaza"
+                  }
+                ]
+                """;
+        HttpResponse<String> mockResponse = mock(HttpResponse.class);
+        when(mockResponse.statusCode()).thenReturn(200);
+        when(mockResponse.body()).thenReturn(jsonRespuesta);
+        when(mockHttpClient.send(any(), any(HttpResponse.BodyHandler.class))).thenReturn(mockResponse);
+
+        List<GeocodificacionResultadoDTO> resultados = geocodificacionService.buscar("Valencia Centro");
+
+        assertNotNull(resultados);
+        assertEquals(1, resultados.size());
+        assertEquals("Plaza del Ayuntamiento", resultados.get(0).getNombre());
+        assertEquals(39.4699, resultados.get(0).getLatitud());
+        assertEquals(-0.3763, resultados.get(0).getLongitud());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void testReversaLlamaHttpYParseaResultado() throws Exception {
+        String jsonRespuesta = """
+                {
+                  "lat": "39.4700",
+                  "lon": "-0.3700",
+                  "name": "Calle Colon",
+                  "display_name": "Calle Colon, 10, Valencia",
+                  "type": "calle"
+                }
+                """;
+        HttpResponse<String> mockResponse = mock(HttpResponse.class);
+        when(mockResponse.statusCode()).thenReturn(200);
+        when(mockResponse.body()).thenReturn(jsonRespuesta);
+        when(mockHttpClient.send(any(), any(HttpResponse.BodyHandler.class))).thenReturn(mockResponse);
+
+        GeocodificacionResultadoDTO res = geocodificacionService.reversa(39.4700, -0.3700);
+
+        assertNotNull(res);
+        assertEquals("Calle Colon", res.getNombre());
+        assertEquals(39.4700, res.getLatitud());
+        assertEquals(-0.3700, res.getLongitud());
     }
 
     @Test
@@ -85,4 +146,3 @@ class GeocodificacionServiceTest {
         assertEquals("Calle Colon", resultado.getNombre());
     }
 }
-
