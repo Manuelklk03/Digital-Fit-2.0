@@ -2,6 +2,11 @@
 
 Última actualización: **2026-11-06**.
 
+> **2026-11-06 (Fase 4, Tareas 4.4 y 4.5 — Flyway, resolución P4/D3 y usuarios de demo):**
+> - **Migraciones versionadas con Flyway (D3, P4):** Incorporado Flyway con PostgreSQL 17 (`V1__esquema_inicial.sql` con DDL completo, `V2__catalogos_base.sql` con los catálogos inmutables de entrenamientos, centros y lugares públicos base, y `V3__usuarios_demo.sql` con usuarios de prueba). Retirado `data.sql` legacy y configurado `ddl-auto=validate` en producción.
+> - **Usuarios de demostración documentados (Tarea 4.5):** Eliminado el bloqueo histórico de credenciales desconocidas. Documentados en `docs/deployment.md`: `admin1` / `Admin123!` (rol `ADMIN`) y `usuario1` / `Usuario123!` (rol `USER`).
+> - **Verificaciones:** Suite `FlywayMigrationScriptsTest` (3 tests) y `PerfilesPropertiesTest` en verde.
+
 > **2026-11-06 (Fase 4, Tarea 4.7 — Perfiles dev y prod y resolución P10):**
 > - **Segregación de entornos (P10):** Separada la configuración común en `application.properties` con `spring.profiles.active=${SPRING_PROFILES_ACTIVE:dev}`. Creado `application-dev.properties` para desarrollo local con depuración SQL (`show-sql=true`, `format_sql=true`) y logs en nivel `DEBUG`. Creado `application-prod.properties` para producción desactivando volcado SQL (`show-sql=false`), logs en `INFO`/`WARN` y ocultación de trazas de error (`server.error.include-stacktrace=never`).
 > - **Entorno contenedor:** Configurado `SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}` en `docker-compose.yml`.
@@ -58,7 +63,7 @@
 
 ## Resumen
 
-- **Fase activa:** 4 — Backend, API y datos (tareas 4.1, 4.2, 4.3 y 4.7 cerradas; 4.6 ya hecha en 3.7; 3.9 SEO reservada para Claude) ([roadmap](roadmap.md#fase-4--backend-api-y-datos)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
+- **Fase activa:** 4 — Backend, API y datos (tareas 4.1, 4.2, 4.3, 4.4, 4.5 y 4.7 cerradas; 4.6 ya hecha en 3.7; 3.9 SEO reservada para Claude) ([roadmap](roadmap.md#fase-4--backend-api-y-datos)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas. Con el backend saneado y asegurado, el proyecto está listo para el rediseño visual de la aplicación.
 - **Rama de la tarea 2.2:** `docs/hosting-decision`; `main` está protegida: todo entra por PR.
 - **Rama de la tarea 2.1:** `docs/hosting-feasibility` (PR #39); `main` está protegida: todo entra por PR.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
@@ -118,7 +123,7 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 ## Bloqueos y limitaciones
 
 - **Claudex** no arranca (`codex.ps1 is missing beside the selected batch shim`). Las revisiones se hacen con el plugin `codex@openai-codex`, que sí funciona. Detalle en [ai-workflow.md](ai-workflow.md).
-- Contraseñas de los usuarios de ejemplo (`admin1`, `usuario1`) desconocidas: solo están sus hashes en `data.sql`.
+- *Resuelto en 4.5:* Contraseñas de los usuarios de ejemplo (`admin1`, `usuario1`) documentadas explícitamente en `deployment.md` (`Admin123!` y `Usuario123!`).
 
 ## Siguiente paso
 

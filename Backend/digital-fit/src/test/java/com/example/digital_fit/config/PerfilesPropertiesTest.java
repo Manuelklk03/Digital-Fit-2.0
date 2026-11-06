@@ -26,6 +26,7 @@ class PerfilesPropertiesTest {
         Properties base = loadProperties("application.properties");
         assertEquals("digital_fit", base.getProperty("spring.application.name"));
         assertEquals("${SPRING_PROFILES_ACTIVE:dev}", base.getProperty("spring.profiles.active"));
+        assertEquals("true", base.getProperty("spring.flyway.enabled"));
         assertEquals("true", base.getProperty("server.servlet.session.cookie.http-only"));
         assertEquals("lax", base.getProperty("server.servlet.session.cookie.same-site"));
     }
@@ -44,6 +45,7 @@ class PerfilesPropertiesTest {
     @DisplayName("application-prod.properties desactiva show-sql y configura logs seguros para produccion")
     void testApplicationProdProperties() throws Exception {
         Properties prod = loadProperties("application-prod.properties");
+        assertEquals("validate", prod.getProperty("spring.jpa.hibernate.ddl-auto"));
         assertEquals("false", prod.getProperty("spring.jpa.show-sql"));
         assertEquals("false", prod.getProperty("spring.jpa.properties.hibernate.format_sql"));
         assertEquals("INFO", prod.getProperty("logging.level.com.example.digital_fit"));
