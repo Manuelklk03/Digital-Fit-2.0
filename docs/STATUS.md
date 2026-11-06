@@ -2,6 +2,10 @@
 
 Última actualización: **2026-11-06**.
 
+> **2026-11-06 (Fase 4, Tarea 4.3 — Errores uniformes con ProblemDetail RFC 7807 y resolución P5):**
+> - **Estandarización de errores HTTP (P5):** Refactorizado `GlobalExceptionHandler` sustituyendo respuestas heterogéneas por el estándar IETF RFC 7807 (`ProblemDetail`) nativo de Spring Boot 4. Mapeo semántico de códigos HTTP: `404 Not Found` (recursos no encontrados), `409 Conflict` (duplicidad de usuario o email), `403 Forbidden` (operaciones no permitidas y `AccessDeniedException`), `400 Bad Request` (argumentos inválidos y validación de DTOs con desglose de campos) y `500 Internal Server Error` (fallback genérico que protege las trazas internas).
+> - **Verificaciones:** Añadida suite `GlobalExceptionHandlerTest` con 8 tests unitarios cubriendo todos los manejadores de excepciones y estructuras de respuesta.
+
 > **2026-11-06 (Fase 4, Tarea 4.1 — Seguridad en logs, CORS, cookies de sesión y retirada de /yo):**
 > - **Saneamiento de Log Injection (Sonar java:S5145):** Implementada la utilidad `LogSanitizer` y aplicada en los servicios de autenticación (`AuthService`, `CustomUserDetailsService`), geocodificación (`GeocodificacionService`) y servicios base (`CentroPrivadoBaseService`, `LugarPublicoBaseService`, `EntrenamientoBaseService`) neutralizando inyecciones CRLF en los registros del servidor.
 > - **Seguridad de Cookies y CORS por entorno (D2, P2, P3):** Añadida configuración en `application.properties` para cookies de sesión con `HttpOnly=true`, `SameSite=Lax` y `Secure=${SESSION_COOKIE_SECURE:false}`. Parametrizados los orígenes permitidos de CORS en `CorsConfig` mediante `${CORS_ALLOWED_ORIGINS:http://localhost:4200}`.
@@ -44,7 +48,7 @@
 
 ## Resumen
 
-- **Fase activa:** 4 — Backend, API y datos (tarea 4.1 cerrada; 4.6 ya hecha en 3.7; 3.9 SEO reservada para Claude) ([roadmap](roadmap.md#fase-4--backend-api-y-datos)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
+- **Fase activa:** 4 — Backend, API y datos (tareas 4.1 y 4.3 cerradas; 4.6 ya hecha en 3.7; 3.9 SEO reservada para Claude) ([roadmap](roadmap.md#fase-4--backend-api-y-datos)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
 - **Rama de la tarea 2.2:** `docs/hosting-decision`; `main` está protegida: todo entra por PR.
 - **Rama de la tarea 2.1:** `docs/hosting-feasibility` (PR #39); `main` está protegida: todo entra por PR.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).

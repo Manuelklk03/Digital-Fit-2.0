@@ -105,7 +105,7 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 | P2 | CSRF desactivado con autenticación por cookie | `SecurityConfig` | 4 |
 | P3 | CORS con origen fijo; sin configuración por entorno | `CorsConfig` | Resuelto en 4.1 (`CORS_ALLOWED_ORIGINS`) |
 | P4 | `ddl-auto=update` y `data.sql` en cada arranque, `continue-on-error=true`; sin migraciones | `application.properties` | 4 |
-| P5 | Errores de la API sin formato común (texto o mapa) | `GlobalExceptionHandler` | 4 |
+| P5 | Errores de la API sin formato común (texto o mapa) | `GlobalExceptionHandler` | Resuelto en 4.3 (`ProblemDetail` RFC 7807) |
 | P6 | Sin paginación en ningún listado | servicios/repositorios | 4 |
 | P7 | `any` en servicios y modelos del frontend | `src/app/services` | 5 |
 | P10 | `show-sql=true` y logs DEBUG por defecto | `application.properties` | 4 |
