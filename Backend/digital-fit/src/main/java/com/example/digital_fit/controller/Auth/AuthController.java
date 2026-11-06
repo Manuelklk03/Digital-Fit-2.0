@@ -30,16 +30,6 @@ public class AuthController {
                 .body("Usuario registrado exitosamente");
     }
 
-    @GetMapping("/yo")
-    public ResponseEntity<String> yo(Authentication authentication) {
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("No autenticado");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(authentication.getName());
-    }
-
     @GetMapping("/me")
     public ResponseEntity<UsuarioSesionDTO> me(Authentication authentication) {
 
