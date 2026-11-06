@@ -1,0 +1,63 @@
+import { DiccionarioTraduccion } from '../i18n.types';
+
+export const diccionarioEs: DiccionarioTraduccion = {
+  nav: {
+    inicio: 'Inicio',
+    explorar: 'Explorar mapa',
+    entrenar: 'Entrenar',
+    misEntrenamientos: 'Mis entrenamientos',
+    misCentros: 'Mis centros',
+    misLugares: 'Mis lugares',
+    panelSoporte: 'Panel soporte',
+    crearAdmin: 'Crear admin',
+  },
+  header: {
+    marcaSubtexto: 'Tu espacio deportivo digital',
+    sesionNoIniciada: 'Sesión no iniciada',
+    accedeParaContinuar: 'Accede para continuar',
+    entrar: 'Entrar',
+    salir: 'Salir',
+    cambiarIdioma: 'Cambiar idioma',
+    idiomaSeleccionado: 'Idioma actual',
+  },
+  inicio: {
+    badge: 'DIGITAL-FIT 2.0 • VALENCIA & COMUNIDAD',
+    heroTitulo: 'ENTRENA CON PRECISIÓN INDUSTRIAL.',
+    heroSubtitulo:
+      'Tu centro de operaciones deportivo: asistente en vivo con cronómetros de descanso, mapa radar de instalaciones y comunidad abierta.',
+    ctaEmpezar: 'Comenzar entrenamiento',
+    ctaExplorar: 'Explorar mapa libre',
+    metricasActivos: 'atletas activos',
+    metricasInstalaciones: 'centros y spots',
+    metricasLatencia: 'latencia de interfaz',
+    seccionAsistenteTitulo: 'Asistente de sesión en tiempo real',
+    seccionAsistenteDesc: 'Control preciso de series, pesos y tiempos de recuperación.',
+    ejercicioActual: 'Press de banca con barra',
+    serie: 'Serie',
+    peso: 'Peso (kg)',
+    reps: 'Repeticiones',
+    completarSerie: 'Completar serie',
+    descansoEnCurso: 'Descanso en curso',
+    segundos: 'segundos',
+    seccionRadarTitulo: 'Radar de instalaciones deportivas',
+    seccionRadarDesc:
+      'Localiza centros de fitness, calistenia y piscinas con datos abiertos de OpenStreetMap.',
+    distanciaHaversine: 'distancia calculada',
+    ctaVerMapa: 'Abrir explorador de mapa',
+    seccionComunidadTitulo: 'Comunidad y progreso continuo',
+    seccionComunidadDesc:
+      'Comparte marcas personales, supera desafíos y registra cada sesión.',
+    ctaUnirse: 'Crear cuenta gratuita',
+    instalacionGimnasio: 'Gimnasio',
+    instalacionCalistenia: 'Parque de Calistenia',
+    instalacionPiscina: 'Piscina Municipal',
+    instalacionPolideportivo: 'Polideportivo',
+  },
+  comun: {
+    cargando: 'Cargando...',
+    error: 'Ha ocurrido un error',
+    volver: 'Volver',
+    guardar: 'Guardar',
+    cancelar: 'Cancelar',
+  },
+};

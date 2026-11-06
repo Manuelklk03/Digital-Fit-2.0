@@ -1,0 +1,63 @@
+import { DiccionarioTraduccion } from '../i18n.types';
+
+export const diccionarioEn: DiccionarioTraduccion = {
+  nav: {
+    inicio: 'Home',
+    explorar: 'Explore map',
+    entrenar: 'Workout',
+    misEntrenamientos: 'My workouts',
+    misCentros: 'My gyms',
+    misLugares: 'My places',
+    panelSoporte: 'Support dashboard',
+    crearAdmin: 'Create admin',
+  },
+  header: {
+    marcaSubtexto: 'Your digital fitness space',
+    sesionNoIniciada: 'Not signed in',
+    accedeParaContinuar: 'Sign in to continue',
+    entrar: 'Sign in',
+    salir: 'Sign out',
+    cambiarIdioma: 'Change language',
+    idiomaSeleccionado: 'Current language',
+  },
+  inicio: {
+    badge: 'DIGITAL-FIT 2.0 • VALENCIA & COMMUNITY',
+    heroTitulo: 'TRAIN WITH INDUSTRIAL PRECISION.',
+    heroSubtitulo:
+      'Your sports operations hub: live workout assistant with rest timers, radar facility map, and open community.',
+    ctaEmpezar: 'Start workout',
+    ctaExplorar: 'Explore map freely',
+    metricasActivos: 'active athletes',
+    metricasInstalaciones: 'gyms & spots',
+    metricasLatencia: 'interface latency',
+    seccionAsistenteTitulo: 'Real-time workout assistant',
+    seccionAsistenteDesc: 'Precise control of sets, weights, and recovery times.',
+    ejercicioActual: 'Barbell bench press',
+    serie: 'Set',
+    peso: 'Weight (kg)',
+    reps: 'Reps',
+    completarSerie: 'Complete set',
+    descansoEnCurso: 'Rest in progress',
+    segundos: 'seconds',
+    seccionRadarTitulo: 'Sports facilities radar',
+    seccionRadarDesc:
+      'Locate fitness gyms, calisthenics spots, and swimming pools with open OpenStreetMap data.',
+    distanciaHaversine: 'calculated distance',
+    ctaVerMapa: 'Open map explorer',
+    seccionComunidadTitulo: 'Community & continuous progress',
+    seccionComunidadDesc:
+      'Share personal records, complete challenges, and log every single session.',
+    ctaUnirse: 'Create free account',
+    instalacionGimnasio: 'Fitness Gym',
+    instalacionCalistenia: 'Calisthenics Park',
+    instalacionPiscina: 'Municipal Pool',
+    instalacionPolideportivo: 'Sports Center',
+  },
+  comun: {
+    cargando: 'Loading...',
+    error: 'An error occurred',
+    volver: 'Back',
+    guardar: 'Save',
+    cancelar: 'Cancel',
+  },
+};
