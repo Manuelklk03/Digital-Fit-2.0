@@ -8,6 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Migraciones versionadas de base de datos con Flyway (`V1__esquema_inicial.sql` con DDL completo de PostgreSQL 17, `V2__catalogos_base.sql` y `V3__usuarios_demo.sql`), retirando la inicialización legacy con `data.sql` y configurando `ddl-auto=validate` en producción, resolviendo la deuda técnica P4 y formalizando la decisión D3 (tarea 4.4).
+- Documentación explícita de credenciales de los usuarios de demostración (`admin1` / `Admin123!` y `usuario1` / `Usuario123!`) en `docs/deployment.md`, eliminando el bloqueo histórico del repositorio (tarea 4.5).
 - Segregación de perfiles de configuración de Spring Boot (`application-dev.properties` vs `application-prod.properties`) con `spring.profiles.active=${SPRING_PROFILES_ACTIVE:dev}`, desactivando `show-sql` y niveles DEBUG en producción y manteniendo trazabilidad en desarrollo local, resolviendo la deuda técnica P10 (tarea 4.7).
 - Suites de pruebas de integración de seguridad y permisos en Spring Security: aislamiento estricto de recursos entre usuarios (`AislamientoRecursosUsuarioTest`, 12 tests) verificando denegación (`OperacionNoPermitida` / 403) ante intentos de acceso cruzado entre usuario A y B, y protección de las rutas `/api/admin/**` con `AdminRutasPermisosSecurityTest` (15 tests) verificando 401 para anónimos, 403 para rol `USER` y 200/201/204 para rol `ADMIN` (tarea 4.2).
 - Estandarización de respuestas de error de la API REST mediante `ProblemDetail` (RFC 7807/RFC 9457) en `GlobalExceptionHandler`, con mapa de validaciones de campo en errores 400 y suite de pruebas unitarias `GlobalExceptionHandlerTest` (tarea 4.3, deuda técnica P5).
