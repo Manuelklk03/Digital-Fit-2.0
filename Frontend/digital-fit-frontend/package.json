@@ -18,6 +18,8 @@
     "@angular/forms": "^22.2.4",
     "@angular/platform-browser": "^22.2.4",
     "@angular/router": "^22.2.4",
+    "@types/gsap": "^1.20.2",
+    "gsap": "^3.15.1",
     "leaflet": "^1.9.4",
     "leaflet-control-geocoder": "^3.3.1",
     "rxjs": "~7.8.0",
