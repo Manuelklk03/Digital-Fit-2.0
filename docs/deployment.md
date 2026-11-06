@@ -20,7 +20,12 @@ Credenciales: sin `.env`, Compose usa `digitalfit`/`digitalfit` (solo desarrollo
 | Backend | http://localhost:8080 | /actuator/health responde `{"status":"UP"}` sin sesión; el resto de Actuator está protegido |
 | PostgreSQL 17 | `localhost:5433` | base `digital_fit`; usuario y contraseña de `.env` o `digitalfit` |
 
-Al arrancar, Hibernate crea o actualiza las tablas a partir de las entidades (`ddl-auto=update`) y `data.sql` inserta el catálogo base y dos usuarios de ejemplo (`admin1` y `usuario1`) con `ON CONFLICT DO NOTHING`, así que reiniciar no duplica datos. Las contraseñas de esos usuarios no están documentadas en el repositorio; para probar, registra un usuario nuevo desde la aplicación.
+Al arrancar, Flyway aplica automáticamente las migraciones versionadas (`V1__esquema_inicial.sql`, `V2__catalogos_base.sql` y `V3__usuarios_demo.sql`). En desarrollo `ddl-auto=update` y en producción `ddl-auto=validate` (D3, P4). Los usuarios de demostración iniciales con credenciales documentadas (tarea 4.5) son:
+
+| Usuario | Contraseña | Rol | Finalidad |
+|---|---|---|---|
+| `admin1` | `Admin123!` | `ADMIN` | Gestión global del catálogo base y tickets de soporte (`/api/admin/**`) |
+| `usuario1` | `Usuario123!` | `USER` | Pruebas de deportista: rutinas propias, mapas, favoritos e historial |
 
 Consultar la base de datos: `docker exec -it digital-fit-postgres psql -U digitalfit -d digital_fit`.
 
