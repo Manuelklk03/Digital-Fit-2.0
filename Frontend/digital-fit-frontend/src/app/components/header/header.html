@@ -5,43 +5,79 @@
       <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT">
       <div class="bloque-marca">
         <span class="marca-mini">Digital-FIT</span>
-        <span class="marca-subtexto">Tu espacio deportivo digital</span>
+        <span class="marca-subtexto">{{ i18n.t().header.marcaSubtexto }}</span>
       </div>
     </a>
 
-    <nav class="menu-navegacion">
+    <nav class="menu-navegacion" aria-label="Navegación principal">
       <ul>
         @if (esAdmin()) {
-        <li><a routerLink="/inicio">Inicio</a></li>
-        <li><a routerLink="/explorar">Explorar mapa</a></li>
-        <li><a routerLink="/entrenar">Entrenar</a></li>
-        <li><a routerLink="/admin/soporte">Panel soporte</a></li>
-        <li><a routerLink="/admin/crear-admin">Crear admin</a></li>
+        <li><a routerLink="/inicio">{{ i18n.t().nav.inicio }}</a></li>
+        <li><a routerLink="/explorar">{{ i18n.t().nav.explorar }}</a></li>
+        <li><a routerLink="/entrenar">{{ i18n.t().nav.entrenar }}</a></li>
+        <li><a routerLink="/admin/soporte">{{ i18n.t().nav.panelSoporte }}</a></li>
+        <li><a routerLink="/admin/crear-admin">{{ i18n.t().nav.crearAdmin }}</a></li>
         } @else {
-        <li><a routerLink="/inicio">Inicio</a></li>
-        <li><a routerLink="/explorar">Explorar mapa</a></li>
-        <li><a routerLink="/entrenar">Entrenar</a></li>
-        <li><a routerLink="/mis-entrenamientos">Mis entrenamientos</a></li>
-        <li><a routerLink="/mis-centros">Mis centros</a></li>
-        <li><a routerLink="/mis-lugares">Mis lugares</a></li>
+        <li><a routerLink="/inicio">{{ i18n.t().nav.inicio }}</a></li>
+        <li><a routerLink="/explorar">{{ i18n.t().nav.explorar }}</a></li>
+        <li><a routerLink="/entrenar">{{ i18n.t().nav.entrenar }}</a></li>
+        <li><a routerLink="/mis-entrenamientos">{{ i18n.t().nav.misEntrenamientos }}</a></li>
+        <li><a routerLink="/mis-centros">{{ i18n.t().nav.misCentros }}</a></li>
+        <li><a routerLink="/mis-lugares">{{ i18n.t().nav.misLugares }}</a></li>
         }
       </ul>
     </nav>
 
-    <div class="estado-usuario">
-      @if (usuarioActual) {
-      <div class="estado-texto">
-        <span class="estado-linea-superior">{{ iconoUsuario() }} {{ usuarioActual.username }}</span>
-        <span class="estado-linea-inferior">{{ usuarioActual.rol }}</span>
+    <div class="acciones-cabecera">
+      <div class="selector-idioma">
+        <button
+          type="button"
+          class="boton-idioma"
+          [attr.aria-expanded]="desplegableIdiomaAbierto"
+          aria-haspopup="listbox"
+          [attr.aria-label]="i18n.t().header.cambiarIdioma"
+          (click)="alternarDesplegableIdioma()"
+        >
+          <span class="bandera-idioma">{{ i18n.infoIdiomaActual().bandera }}</span>
+          <span class="codigo-idioma">{{ i18n.infoIdiomaActual().abreviatura }}</span>
+          <span class="flecha-idioma" aria-hidden="true">▾</span>
+        </button>
+
+        @if (desplegableIdiomaAbierto) {
+        <ul class="menu-idiomas" role="listbox" [attr.aria-label]="i18n.t().header.cambiarIdioma">
+          @for (item of i18n.idiomas; track item.codigo) {
+          <li role="option" [attr.aria-selected]="item.codigo === i18n.idiomaActual()">
+            <button
+              type="button"
+              class="opcion-idioma"
+              [class.activo]="item.codigo === i18n.idiomaActual()"
+              (click)="seleccionarIdioma(item.codigo)"
+            >
+              <span class="bandera-opcion">{{ item.bandera }}</span>
+              <span class="nombre-opcion">{{ item.etiqueta }}</span>
+              <span class="abreviatura-opcion">({{ item.abreviatura }})</span>
+            </button>
+          </li>
+          }
+        </ul>
+        }
       </div>
-      <button class="boton-header" (click)="cerrarSesion()">Salir</button>
-      } @else {
-      <div class="estado-texto">
-        <span class="estado-linea-superior">Sesión no iniciada</span>
-        <span class="estado-linea-inferior">Accede para continuar</span>
+
+      <div class="estado-usuario">
+        @if (usuarioActual) {
+        <div class="estado-texto">
+          <span class="estado-linea-superior">{{ iconoUsuario() }} {{ usuarioActual.username }}</span>
+          <span class="estado-linea-inferior">{{ usuarioActual.rol }}</span>
+        </div>
+        <button class="boton-header" (click)="cerrarSesion()">{{ i18n.t().header.salir }}</button>
+        } @else {
+        <div class="estado-texto">
+          <span class="estado-linea-superior">{{ i18n.t().header.sesionNoIniciada }}</span>
+          <span class="estado-linea-inferior">{{ i18n.t().header.accedeParaContinuar }}</span>
+        </div>
+        <a class="boton-header" routerLink="/login">{{ i18n.t().header.entrar }}</a>
+        }
       </div>
-      <a class="boton-header" routerLink="/login">Entrar</a>
-      }
     </div>
   </div>
 

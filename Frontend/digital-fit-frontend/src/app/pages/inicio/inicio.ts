@@ -16,6 +16,7 @@ import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { ButtonComponent, BadgeComponent, CardComponent } from '../../components/ui';
 import { AuthService } from '../../services/auth-service';
+import { I18nService } from '../../i18n/i18n.service';
 
 export interface UsuarioSesion {
   username: string;
@@ -34,6 +35,7 @@ export class InicioComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly router = inject(Router);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly platformId = inject(PLATFORM_ID);
+  readonly i18n = inject(I18nService);
 
   readonly usuarioActual = signal<UsuarioSesion | null>(null);
   readonly cargando = signal<boolean>(true);

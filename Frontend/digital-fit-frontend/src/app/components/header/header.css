@@ -152,6 +152,115 @@
     background: rgba(255,255,255,0.22);
 }
 
+.acciones-cabecera {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.selector-idioma {
+    position: relative;
+}
+
+.boton-idioma {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 14px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    backdrop-filter: blur(8px);
+}
+
+.boton-idioma:hover,
+.boton-idioma:focus-visible {
+    background: rgba(255, 255, 255, 0.24);
+    outline: 2px solid white;
+    outline-offset: 2px;
+    transform: translateY(-1px);
+}
+
+.bandera-idioma {
+    font-size: 15px;
+}
+
+.codigo-idioma {
+    letter-spacing: 0.5px;
+}
+
+.flecha-idioma {
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+.menu-idiomas {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    background: #111827;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+    padding: 6px;
+    margin: 0;
+    list-style: none;
+    z-index: 3100;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.opcion-idioma {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #e5e7eb;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: 0.15s ease;
+}
+
+.opcion-idioma:hover,
+.opcion-idioma:focus-visible {
+    background: rgba(59, 130, 246, 0.2);
+    color: white;
+    outline: none;
+}
+
+.opcion-idioma.activo {
+    background: rgba(59, 130, 246, 0.35);
+    color: #60a5fa;
+    font-weight: 700;
+}
+
+.bandera-opcion {
+    font-size: 16px;
+}
+
+.nombre-opcion {
+    flex: 1;
+}
+
+.abreviatura-opcion {
+    font-size: 11px;
+    opacity: 0.6;
+}
+
 @media (max-width: 900px) {
     .cabecera-contenido {
         justify-content: center;
