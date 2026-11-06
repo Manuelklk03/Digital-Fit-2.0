@@ -14,6 +14,7 @@ import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.CentroPrivado.CentroPrivadoBase;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoBaseRepository;
+import com.example.digital_fit.util.LogSanitizer;
 
 import jakarta.transaction.Transactional;
 
@@ -65,7 +66,7 @@ public class CentroPrivadoBaseService {
     @Transactional
     public CentroPrivadoBaseDTO crearCentroPrivado(CrearCentroPrivadoDTO dto) {
 
-        log.info("Creando centro privado {}", dto.getNombre());
+        log.info("Creando centro privado {}", LogSanitizer.sanitize(dto.getNombre()));
 
         if (centroPrivadoBaseRepository.findByNombreIgnoreCase(dto.getNombre()).isPresent()) {
             throw new OperacionNoPermitida("Ya existe un centro privado base con ese nombre.");

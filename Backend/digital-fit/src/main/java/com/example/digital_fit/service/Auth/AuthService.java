@@ -15,6 +15,7 @@ import com.example.digital_fit.exception.UsernameYaExiste;
 import com.example.digital_fit.model.Auth.Usuario;
 import com.example.digital_fit.model.Enums.Rol;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
+import com.example.digital_fit.util.LogSanitizer;
 
 import jakarta.transaction.Transactional;
 
@@ -32,10 +33,10 @@ public class AuthService {
     @Transactional
     public void registrar(UsuarioDTO usuarioDTO) {
 
-        log.info("Registrando usuario: {}", usuarioDTO.getUsername());
+        log.info("Registrando usuario: {}", LogSanitizer.sanitize(usuarioDTO.getUsername()));
 
         if (usuarioRepository.findByUsername(usuarioDTO.getUsername()).isPresent()) {
-            log.warn("Usuario no creado, username ya existente {}", usuarioDTO.getUsername());
+            log.warn("Usuario no creado, username ya existente {}", LogSanitizer.sanitize(usuarioDTO.getUsername()));
             throw new UsernameYaExiste("Nombre de usuario ya existe");
         }
 
@@ -52,16 +53,16 @@ public class AuthService {
 
         usuarioRepository.save(usuario);
 
-        log.info("Usuario registrado exitosamente {}", usuario.getUsername());
+        log.info("Usuario registrado exitosamente {}", LogSanitizer.sanitize(usuario.getUsername()));
     }
 
     @Transactional
     public void registrarAdmin(CrearAdmin crearAdmin) {
 
-        log.info("Creación de administrador {}", crearAdmin.getUsername());
+        log.info("Creación de administrador {}", LogSanitizer.sanitize(crearAdmin.getUsername()));
 
         if (usuarioRepository.findByUsername(crearAdmin.getUsername()).isPresent()) {
-            log.warn("Admin no creado, username ya existente {}", crearAdmin.getUsername());
+            log.warn("Admin no creado, username ya existente {}", LogSanitizer.sanitize(crearAdmin.getUsername()));
             throw new UsernameYaExiste("Nombre de usuario ya existe");
         }
 
@@ -77,7 +78,7 @@ public class AuthService {
 
         usuarioRepository.save(admin);
 
-        log.info("Admin creado exitosamente {}", admin.getUsername());
+        log.info("Admin creado exitosamente {}", LogSanitizer.sanitize(admin.getUsername()));
     }
 
     public UsuarioSesionDTO obtenerSesion(String username) {

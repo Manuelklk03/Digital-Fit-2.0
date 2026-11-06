@@ -16,6 +16,7 @@ import com.example.digital_fit.model.Entrenamientos.EntrenamientoBase;
 import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
 import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
+import com.example.digital_fit.util.LogSanitizer;
 
 import jakarta.transaction.Transactional;
 
@@ -90,7 +91,7 @@ public class EntrenamientoBaseService {
     @Transactional
     public EntrenamientoBaseDTO crearEntrenamientoBase(CrearEntrenamientoBaseDTO dto) {
 
-        log.info("Creando entrenamiento base {}", dto.getNombre());
+        log.info("Creando entrenamiento base {}", LogSanitizer.sanitize(dto.getNombre()));
 
         if (entrenamientoBaseRepository.findByNombreIgnoreCase(dto.getNombre()).isPresent()) {
             throw new OperacionNoPermitida("Ya existe un entrenamiento base con ese nombre.");
@@ -105,7 +106,7 @@ public class EntrenamientoBaseService {
 
         EntrenamientoBase entrenamientoBaseGuardado = entrenamientoBaseRepository.save(entrenamientoBase);
 
-        log.info("Entrenamiento base {} creado", dto.getNombre());
+        log.info("Entrenamiento base {} creado", LogSanitizer.sanitize(dto.getNombre()));
 
         return entityToDto(entrenamientoBaseGuardado);
     }
