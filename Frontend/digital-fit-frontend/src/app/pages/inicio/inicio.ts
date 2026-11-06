@@ -101,37 +101,45 @@ export class InicioComponent implements OnInit, AfterViewInit, OnDestroy {
       gsap.registerPlugin(ScrollTrigger);
 
       // 1. Animación del Hero al entrar
-      gsap.from('.anim-hero-badge', {
-        opacity: 0,
-        y: -15,
-        duration: 0.6,
-        ease: 'power2.out',
-      });
+      if (document.querySelector('.anim-hero-badge')) {
+        gsap.from('.anim-hero-badge', {
+          opacity: 0,
+          y: -15,
+          duration: 0.6,
+          ease: 'power2.out',
+        });
+      }
 
-      gsap.from('.anim-hero-title', {
-        opacity: 0,
-        y: 25,
-        duration: 0.8,
-        delay: 0.15,
-        ease: 'power3.out',
-      });
+      if (document.querySelector('.anim-hero-title')) {
+        gsap.from('.anim-hero-title', {
+          opacity: 0,
+          y: 25,
+          duration: 0.8,
+          delay: 0.15,
+          ease: 'power3.out',
+        });
+      }
 
-      gsap.from('.anim-hero-text', {
-        opacity: 0,
-        y: 20,
-        duration: 0.8,
-        delay: 0.3,
-        ease: 'power3.out',
-      });
+      if (document.querySelector('.anim-hero-text')) {
+        gsap.from('.anim-hero-text', {
+          opacity: 0,
+          y: 20,
+          duration: 0.8,
+          delay: 0.3,
+          ease: 'power3.out',
+        });
+      }
 
-      gsap.from('.anim-hero-cta', {
-        opacity: 0,
-        y: 20,
-        duration: 0.7,
-        delay: 0.45,
-        stagger: 0.1,
-        ease: 'power3.out',
-      });
+      if (document.querySelector('.anim-hero-cta')) {
+        gsap.from('.anim-hero-cta', {
+          opacity: 0,
+          y: 20,
+          duration: 0.7,
+          delay: 0.45,
+          stagger: 0.1,
+          ease: 'power3.out',
+        });
+      }
 
       // 2. Animaciones guiadas por scroll en cada sección de storytelling
       const secciones = document.querySelectorAll('.anim-scroll-seccion');
