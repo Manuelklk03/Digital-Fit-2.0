@@ -1,6 +1,11 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-05**.
+Última actualización: **2026-11-06**.
+
+> **2026-11-06 (Fase 3, Tarea 3.5 — Portada con animación al hacer scroll):**
+> - **Portada `/inicio` cinematográfica (D15):** Rediseñada bajo la estética Neutral Sport / Industrial con narrativa visual (storytelling). Hero section con propuesta de valor clara y llamadas directas a la acción hacia `/entrenar` y `/explorar`. Demostración interactiva en vivo del asistente de entrenamiento con cronómetro regresivo tabular y selectores táctiles de carga/series. Vista previa del radar deportivo OSM con distancias Haversine y tarjetas de marcas personales/comunidad.
+> - **Carga diferida y bundle optimizado (D15):** Configurado `loadComponent` para `/inicio` en `app.routes.ts` y carga dinámica asíncrona de GSAP/ScrollTrigger solo cuando se visita la portada y el usuario no tiene activada la preferencia de movimiento reducido (`prefers-reduced-motion: reduce`). Tamaño del CSS de inicio reducido de 5.19 kB a 1.4 kB, eliminando el aviso de presupuesto de Angular.
+> - **Verificaciones:** 57/57 suites de tests (92 tests) pasando en verde, 0 errores ESLint y build de producción exitoso.
 
 > **2026-11-05 (Fase 3, Tarea 3.7 y P11):**
 > - **Backend de Búsqueda OSM (D10) y Proxy de Geocodificación (P11):** Implementados los servicios `ExploracionOsmService` y `GeocodificacionService` con endpoints `/api/explorar/lugares`, `/api/explorar/geocodificar` y `/api/explorar/geocodificar/inversa`. Consultas Overpass filtradas por etiquetas de deporte con rate limiting de 1s, cabecera `User-Agent` identificativa y caché en memoria. Fusión con entidades de BD local (`CentroPrivadoBase` y `LugarPublicoBase`) con identificador `osmId`.
@@ -27,7 +32,7 @@
 
 ## Resumen
 
-- **Fase activa:** 3 — Producto, navegación y sistema visual (tareas 3.1, 3.2, 3.3, 3.4, 3.6 y 3.7 cerradas, 3.5 siguiente) ([roadmap](roadmap.md#fase-3--producto-navegación-y-sistema-visual)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
+- **Fase activa:** 3 — Producto, navegación y sistema visual (tareas 3.1, 3.2, 3.3, 3.4, 3.5, 3.6 y 3.7 cerradas, 3.8 siguiente) ([roadmap](roadmap.md#fase-3--producto-navegación-y-sistema-visual)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
 - **Rama de la tarea 2.2:** `docs/hosting-decision`; `main` está protegida: todo entra por PR.
 - **Rama de la tarea 2.1:** `docs/hosting-feasibility` (PR #39); `main` está protegida: todo entra por PR.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).

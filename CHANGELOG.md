@@ -8,6 +8,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Portada `/inicio` cinematográfica bajo la dirección Neutral Sport / Industrial con narrativa visual por scroll (GSAP ScrollTrigger dinámico y alternancia estática accesible con `prefers-reduced-motion: reduce`, decisión D15).
+- Demostración interactiva en la portada del asistente de entrenamiento en tiempo real (series, peso táctil y cronómetro regresivo de descanso con tipografía tabular).
+- Carga diferida (`loadComponent`) para `/inicio` y sus dependencias de animación en `app.routes.ts`, reduciendo el CSS a 1.4 kB y optimizando el bundle.
 - Healthchecks en Docker Compose (`/actuator/health` público en el backend; el frontend espera a que el backend esté sano), que elimina el 502 de los primeros segundos. La prueba de humo de la CI usa `docker compose up --wait`.
 - Entrega continua: en cada merge a `main` y en cada tag `v*` la CI publica las imágenes de backend y frontend en Docker Hub. Prueba de humo con Docker Compose en cada PR.
 - Análisis de calidad con SonarQube Cloud en la CI, con cobertura de JaCoCo (backend) y Vitest (frontend); el Quality Gate *Sonar way* es un check obligatorio. Insignia en el README.
