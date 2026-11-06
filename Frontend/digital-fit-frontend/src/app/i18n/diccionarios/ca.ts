@@ -1,0 +1,63 @@
+import { DiccionarioTraduccion } from '../i18n.types';
+
+export const diccionarioCa: DiccionarioTraduccion = {
+  nav: {
+    inicio: 'Inici',
+    explorar: 'Explorar mapa',
+    entrenar: 'Entrenar',
+    misEntrenamientos: 'Els meus entrenaments',
+    misCentros: 'Els meus centres',
+    misLugares: 'Els meus llocs',
+    panelSoporte: 'Panell suport',
+    crearAdmin: 'Crear admin',
+  },
+  header: {
+    marcaSubtexto: 'El teu espai esportiu digital',
+    sesionNoIniciada: 'Sessió no iniciada',
+    accedeParaContinuar: 'Accedeix per a continuar',
+    entrar: 'Entrar',
+    salir: 'Eixir',
+    cambiarIdioma: 'Canviar idioma',
+    idiomaSeleccionado: 'Idioma actual',
+  },
+  inicio: {
+    badge: 'DIGITAL-FIT 2.0 • VALÈNCIA I COMUNITAT',
+    heroTitulo: 'ENTRENA AMB PRECISIÓ INDUSTRIAL.',
+    heroSubtitulo:
+      'El teu centre d’operacions esportiu: assistent en viu amb cronòmetres de descans, mapa radar d’instal·lacions i comunitat oberta.',
+    ctaEmpezar: 'Començar entrenament',
+    ctaExplorar: 'Explorar mapa lliure',
+    metricasActivos: 'atletes actius',
+    metricasInstalaciones: 'centres i spots',
+    metricasLatencia: 'latència d’interfície',
+    seccionAsistenteTitulo: 'Assistent de sessió en temps real',
+    seccionAsistenteDesc: 'Control precís de sèries, pesos i temps de recuperació.',
+    ejercicioActual: 'Press de banca amb barra',
+    serie: 'Sèrie',
+    peso: 'Pes (kg)',
+    reps: 'Repeticions',
+    completarSerie: 'Completar sèrie',
+    descansoEnCurso: 'Descans en curs',
+    segundos: 'segons',
+    seccionRadarTitulo: 'Radar d’instal·lacions esportives',
+    seccionRadarDesc:
+      'Localitza centres de fitness, cal·listènia i piscines amb dades obertes d’OpenStreetMap.',
+    distanciaHaversine: 'distància calculada',
+    ctaVerMapa: 'Obrir explorador de mapa',
+    seccionComunidadTitulo: 'Comunitat i progrés continu',
+    seccionComunidadDesc:
+      'Comparteix marques personals, supera desafiaments i registra cada sessió.',
+    ctaUnirse: 'Crear compte gratuït',
+    instalacionGimnasio: 'Gimnàs',
+    instalacionCalistenia: 'Parc de Cal·listènia',
+    instalacionPiscina: 'Piscina Municipal',
+    instalacionPolideportivo: 'Poliesportiu',
+  },
+  comun: {
+    cargando: 'Carregant...',
+    error: 'S’ha produït un error',
+    volver: 'Tornar',
+    guardar: 'Guardar',
+    cancelar: 'Cancel·lar',
+  },
+};

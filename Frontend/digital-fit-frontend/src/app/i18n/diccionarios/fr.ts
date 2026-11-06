@@ -1,0 +1,63 @@
+import { DiccionarioTraduccion } from '../i18n.types';
+
+export const diccionarioFr: DiccionarioTraduccion = {
+  nav: {
+    inicio: 'Accueil',
+    explorar: 'Explorer la carte',
+    entrenar: 'S’entraîner',
+    misEntrenamientos: 'Mes entraînements',
+    misCentros: 'Mes centres',
+    misLugares: 'Mes lieux',
+    panelSoporte: 'Panneau support',
+    crearAdmin: 'Créer admin',
+  },
+  header: {
+    marcaSubtexto: 'Votre espace sportif numérique',
+    sesionNoIniciada: 'Non connecté',
+    accedeParaContinuar: 'Connectez-vous pour continuer',
+    entrar: 'Connexion',
+    salir: 'Déconnexion',
+    cambiarIdioma: 'Changer de langue',
+    idiomaSeleccionado: 'Langue actuelle',
+  },
+  inicio: {
+    badge: 'DIGITAL-FIT 2.0 • VALENCE ET COMMUNAUTÉ',
+    heroTitulo: 'ENTRAÎNEZ-VOUS AVEC UNE PRÉCISION INDUSTRIELLE.',
+    heroSubtitulo:
+      'Votre centre d’opérations sportives : assistant en direct avec chronomètres de repos, carte radar des installations et communauté ouverte.',
+    ctaEmpezar: 'Commencer l’entraînement',
+    ctaExplorar: 'Explorer la carte librement',
+    metricasActivos: 'athlètes actifs',
+    metricasInstalaciones: 'centres et spots',
+    metricasLatencia: 'latence d’interface',
+    seccionAsistenteTitulo: 'Assistant de séance en temps réel',
+    seccionAsistenteDesc: 'Contrôle précis des séries, poids et temps de récupération.',
+    ejercicioActual: 'Développé couché à la barre',
+    serie: 'Série',
+    peso: 'Poids (kg)',
+    reps: 'Répétitions',
+    completarSerie: 'Valider la série',
+    descansoEnCurso: 'Repos en cours',
+    segundos: 'secondes',
+    seccionRadarTitulo: 'Radar des installations sportives',
+    seccionRadarDesc:
+      'Localisez des salles de sport, calisthénie et piscines grâce aux données ouvertes d’OpenStreetMap.',
+    distanciaHaversine: 'distance calculée',
+    ctaVerMapa: 'Ouvrir l’explorateur',
+    seccionComunidadTitulo: 'Communauté et progrès continus',
+    seccionComunidadDesc:
+      'Partagez vos records personnels, relevez des défis et enregistrez chaque séance.',
+    ctaUnirse: 'Créer un compte gratuit',
+    instalacionGimnasio: 'Salle de sport',
+    instalacionCalistenia: 'Parc de Calisthénie',
+    instalacionPiscina: 'Piscine Municipale',
+    instalacionPolideportivo: 'Centre Omnisports',
+  },
+  comun: {
+    cargando: 'Chargement...',
+    error: 'Une erreur est survenue',
+    volver: 'Retour',
+    guardar: 'Enregistrer',
+    cancelar: 'Annuler',
+  },
+};
