@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Explorar.LugarExploracionDTO;
@@ -53,6 +54,7 @@ public class ExploracionOsmService {
     private final Map<String, List<LugarExploracionDTO>> cacheOverpass = new ConcurrentHashMap<>();
     private final AtomicLong ultimaPeticionOverpassMs = new AtomicLong(0);
 
+    @Autowired
     public ExploracionOsmService(CentroPrivadoBaseRepository centroPrivadoBaseRepository,
                                  LugarPublicoBaseRepository lugarPublicoBaseRepository) {
         this(centroPrivadoBaseRepository, lugarPublicoBaseRepository,

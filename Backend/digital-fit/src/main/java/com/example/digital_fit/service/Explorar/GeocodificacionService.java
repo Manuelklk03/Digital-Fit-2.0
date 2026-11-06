@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.Explorar.GeocodificacionResultadoDTO;
@@ -36,6 +37,7 @@ public class GeocodificacionService {
     private final Map<String, GeocodificacionResultadoDTO> cacheInversa = new ConcurrentHashMap<>();
     private final AtomicLong ultimaPeticionMs = new AtomicLong(0);
 
+    @Autowired
     public GeocodificacionService() {
         this(HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(5))
