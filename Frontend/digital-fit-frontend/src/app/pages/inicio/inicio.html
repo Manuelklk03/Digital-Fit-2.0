@@ -2,204 +2,405 @@
 
 <main class="pagina-inicio">
 
-  @if (cargando) {
-  <section class="hero-inicio">
-    <div class="hero-contenido hero-cargando">
-      <div class="fondo-brillo fondo-brillo-1"></div>
-      <div class="fondo-brillo fondo-brillo-2"></div>
-
-      <img src="img/Logo 3D de DIGITAL-FIT con pulso.png" alt="Logo Digital-FIT" class="logo-inicio logo-inicio-animado">
-      <h1>Bienvenido a Digital-FIT</h1>
-      <p>Cargando panel principal...</p>
-    </div>
-  </section>
-  } @else if (esAdmin()) {
-
-  <section class="hero-inicio hero-admin">
-    <div class="hero-contenido">
-      <div class="fondo-brillo fondo-brillo-1"></div>
-      <div class="fondo-brillo fondo-brillo-2"></div>
-
-      <div class="hero-grid">
-        <div class="hero-texto">
-          <span class="insignia-rol admin">Administrador</span>
-          <span class="hero-subtitulo">Control total del sistema</span>
-          <h1>Panel de administración</h1>
-          <p>
-            Bienvenido, <strong>{{ usuarioActual.username }}</strong>.
-            Desde aquí puedes gestionar el contenido base, revisar soporte y controlar la estructura principal de la aplicación.
+  <!-- Panel superior contextual para usuarios autenticados -->
+  @if (usuarioActual(); as usuario) {
+  <section class="max-w-6xl mx-auto mb-8 px-4">
+    <div class="panel-usuario-activo p-4 md:p-6 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl" aria-hidden="true">{{ esAdmin() ? '🛡️' : '⚡' }}</span>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs uppercase font-bold tracking-wider text-emerald-400">Sesión iniciada</span>
+            <span df-badge [variant]="esAdmin() ? 'warning' : 'accent'" [badgeStyle]="'subtle'">{{ usuario.rol }}</span>
+          </div>
+          <p class="text-base font-semibold text-slate-100">
+            ¡Hola, {{ usuario.username }}! Tu panel de entrenamiento está listo.
           </p>
         </div>
+      </div>
 
-        <div class="hero-logo-panel">
-          <img src="img/Logo 3D de DIGITAL-FIT con pulso.png" alt="Logo Digital-FIT" class="logo-inicio logo-inicio-animado">
-        </div>
+      <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+        @if (esAdmin()) {
+        <a df-button routerLink="/admin/soporte" [variant]="'secondary'" [size]="'sm'">Panel Soporte</a>
+        <a df-button routerLink="/admin/crear-admin" [variant]="'secondary'" [size]="'sm'">Crear Admin</a>
+        }
+        <a df-button routerLink="/entrenar" [variant]="'primary'" [size]="'sm'">Asistente de Entreno</a>
+        <a df-button routerLink="/explorar" [variant]="'outline'" [size]="'sm'">Explorar Mapa</a>
       </div>
     </div>
   </section>
-
-  <section class="bloque-seccion">
-    <div class="titulo-seccion">
-      <span class="mini-etiqueta">Gestión</span>
-      <h2>Gestión general</h2>
-      <p>Accesos principales para administración y revisión del sistema.</p>
-    </div>
-
-    <div class="grid-accesos">
-      <a class="tarjeta-acceso admin" routerLink="/admin/soporte">
-        <span class="etiqueta-tarjeta">Soporte</span>
-        <h3>Panel de soporte</h3>
-        <p>Revisa tickets, cambia estados y controla incidencias de usuarios.</p>
-      </a>
-
-      <a class="tarjeta-acceso admin" routerLink="/admin/crear-admin">
-        <span class="etiqueta-tarjeta">Administración</span>
-        <h3>Crear admin</h3>
-        <p>Da de alta nuevos administradores para la aplicación.</p>
-      </a>
-    </div>
-  </section>
-
-  <section class="bloque-seccion">
-    <div class="titulo-seccion">
-      <span class="mini-etiqueta">Contenido</span>
-      <h2>Contenido base de la app</h2>
-      <p>Desde estos apartados puedes crear, editar y borrar el contenido principal visible para los usuarios.</p>
-    </div>
-
-    <div class="grid-accesos">
-      <a class="tarjeta-acceso admin" routerLink="/entrenamientos">
-        <span class="etiqueta-tarjeta">Base</span>
-        <h3>Entrenamientos base</h3>
-        <p>Gestiona los entrenamientos generales que ofrece la aplicación.</p>
-      </a>
-
-      <a class="tarjeta-acceso admin" routerLink="/privados">
-        <span class="etiqueta-tarjeta">Base</span>
-        <h3>Centros privados base</h3>
-        <p>Gestiona gimnasios y centros privados base disponibles en la app.</p>
-      </a>
-
-      <a class="tarjeta-acceso admin" routerLink="/publicos">
-        <span class="etiqueta-tarjeta">Base</span>
-        <h3>Lugares públicos base</h3>
-        <p>Gestiona espacios deportivos visibles para los usuarios.</p>
-      </a>
-    </div>
-  </section>
-
-  } @else {
-
-  <section class="hero-inicio hero-user">
-    <div class="hero-contenido">
-      <div class="fondo-brillo fondo-brillo-1"></div>
-      <div class="fondo-brillo fondo-brillo-2"></div>
-
-      <div class="hero-grid">
-        <div class="hero-texto">
-          <span class="insignia-rol user">Usuario</span>
-          <span class="hero-subtitulo">Tu espacio deportivo personal</span>
-          <h1>Bienvenido a Digital-FIT</h1>
-          <p>
-            Hola, <strong>{{ usuarioActual.username }}</strong>.
-            Desde aquí puedes moverte por la app, registrar tu actividad y acceder rápido a los apartados más importantes.
-          </p>
-        </div>
-
-        <div class="hero-logo-panel">
-          <img src="img/Logo 3D de DIGITAL-FIT con pulso.png" alt="Logo Digital-FIT" class="logo-inicio logo-inicio-animado">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="bloque-seccion">
-    <div class="titulo-seccion">
-      <span class="mini-etiqueta">Personal</span>
-      <h2>Mi espacio personal</h2>
-      <p>Accesos rápidos a tus apartados principales como usuario.</p>
-    </div>
-
-    <div class="grid-accesos">
-      <a class="tarjeta-acceso user destacada" routerLink="/mis-entrenamientos">
-        <span class="etiqueta-tarjeta">Personal</span>
-        <h3>Mis entrenamientos</h3>
-        <p>Consulta tus entrenamientos guardados y gestiona tus propios entrenamientos personalizados.</p>
-      </a>
-
-      <a class="tarjeta-acceso user destacada" routerLink="/mis-centros">
-        <span class="etiqueta-tarjeta">Personal</span>
-        <h3>Mis centros</h3>
-        <p>Consulta los centros que has guardado en tu espacio personal.</p>
-      </a>
-
-      <a class="tarjeta-acceso user destacada" routerLink="/mis-lugares">
-        <span class="etiqueta-tarjeta">Personal</span>
-        <h3>Mis lugares</h3>
-        <p>Consulta tus lugares guardados y prepárate para la parte de mapa más adelante.</p>
-      </a>
-
-      <a class="tarjeta-acceso user" routerLink="/historial-entrenamientos">
-        <span class="etiqueta-tarjeta">Actividad</span>
-        <h3>Historial</h3>
-        <p>Registra entrenamientos realizados y revisa tus sesiones anteriores.</p>
-      </a>
-
-      <a class="tarjeta-acceso user" routerLink="/estadisticas">
-        <span class="etiqueta-tarjeta">Actividad</span>
-        <h3>Estadísticas</h3>
-        <p>Consulta el resumen automático de tu actividad dentro de la aplicación.</p>
-      </a>
-
-      <a class="tarjeta-acceso user" routerLink="/valoraciones">
-        <span class="etiqueta-tarjeta">Opiniones</span>
-        <h3>Valoraciones</h3>
-        <p>Crea valoraciones y consulta las que ya has hecho sobre contenidos de la app.</p>
-      </a>
-    </div>
-  </section>
-
-  <section class="bloque-seccion">
-    <div class="titulo-seccion">
-      <span class="mini-etiqueta">Explorar</span>
-      <h2>Explorar contenidos</h2>
-      <p>Descubre recursos base y entrenamientos compartidos por la comunidad.</p>
-    </div>
-
-    <div class="grid-accesos">
-      <a class="tarjeta-acceso user" routerLink="/entrenamientos">
-        <span class="etiqueta-tarjeta">Explorar</span>
-        <h3>Entrenamientos base</h3>
-        <p>Consulta entrenamientos generales y añádelos a tu zona personal.</p>
-      </a>
-
-      <a class="tarjeta-acceso user" routerLink="/entrenamientos-comunidad">
-        <span class="etiqueta-tarjeta">Comunidad</span>
-        <h3>Entrenamientos comunidad</h3>
-        <p>Descubre entrenamientos compartidos por otros usuarios y publica los tuyos.</p>
-      </a>
-
-      <a class="tarjeta-acceso user" routerLink="/privados">
-        <span class="etiqueta-tarjeta">Explorar</span>
-        <h3>Centros privados base</h3>
-        <p>Consulta los centros privados base disponibles en la aplicación.</p>
-      </a>
-
-      <a class="tarjeta-acceso user" routerLink="/publicos">
-        <span class="etiqueta-tarjeta">Explorar</span>
-        <h3>Lugares públicos base</h3>
-        <p>Consulta espacios deportivos públicos y lugares base de la app.</p>
-      </a>
-
-      <a class="tarjeta-acceso user" routerLink="/soporte">
-        <span class="etiqueta-tarjeta">Ayuda</span>
-        <h3>Soporte</h3>
-        <p>Envía tickets de soporte y revisa el estado de tus consultas.</p>
-      </a>
-    </div>
-  </section>
-
   }
+
+  <!-- ================================================================= -->
+  <!-- HERO SECTION CINEMATOGRÁFICO (Neutral Sport / Industrial - D15)   -->
+  <!-- ================================================================= -->
+  <section class="hero-section max-w-6xl mx-auto px-4 pt-6 pb-16 md:pt-12 md:pb-24 text-center">
+    <!-- Badge superior -->
+    <div class="anim-hero-badge inline-flex justify-center mb-6">
+      <span df-badge [variant]="'primary'" [badgeStyle]="'subtle'" [dot]="true">
+        DIGITAL-FIT 2.0 • ASISTENTE DEPORTIVO Y MAPA INTELIGENTE
+      </span>
+    </div>
+
+    <!-- Titular principal -->
+    <h1 class="anim-hero-title text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 uppercase leading-tight font-sans">
+      ENTRENA INTELIGENTE.<br>
+      <span class="texto-gradiente-acento">DOMINA TU ZONA.</span>
+    </h1>
+
+    <!-- Subtítulo -->
+    <p class="anim-hero-text max-w-3xl mx-auto text-base sm:text-lg md:text-xl text-slate-300 leading-relaxed mb-10">
+      Tu aplicación definitiva de entrenamiento: asistente en directo con cronómetro de descanso automático,
+      radar geográfico de zonas de calistenia, gimnasios y piscinas con OpenStreetMap, y registro integral de marcas personales.
+    </p>
+
+    <!-- Botones de llamada a la acción -->
+    <div class="anim-hero-cta flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto mb-16">
+      <a df-button routerLink="/entrenar" [variant]="'primary'" [size]="'lg'" class="w-full sm:w-auto px-8 py-4 text-base font-bold shadow-lg shadow-blue-500/20">
+        Comenzar a entrenar
+      </a>
+      <a df-button routerLink="/explorar" [variant]="'outline'" [size]="'lg'" class="w-full sm:w-auto px-8 py-4 text-base font-bold">
+        Explorar mapa deportivo
+      </a>
+    </div>
+
+    <!-- Barra de métricas y garantías -->
+    <div class="anim-hero-cta grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-8 border-t border-slate-800/80">
+      <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+        <div class="text-2xl sm:text-3xl font-black text-white font-mono tnum mb-1">+1.200</div>
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Lugares indexados</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+        <div class="text-2xl sm:text-3xl font-black text-emerald-400 font-mono tnum mb-1">100%</div>
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Libre y sin anuncios</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+        <div class="text-2xl sm:text-3xl font-black text-cyan-400 font-mono tnum mb-1">0 ms</div>
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Cronómetro en vivo</div>
+      </div>
+      <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+        <div class="text-2xl sm:text-3xl font-black text-indigo-400 font-mono tnum mb-1">OSM</div>
+        <div class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Geolocalización real</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- SECCIÓN 1: ASISTENTE DE ENTRENAR EN DIRECTO (Storytelling D12)    -->
+  <!-- ================================================================= -->
+  <section class="anim-scroll-seccion max-w-6xl mx-auto px-4 py-16 md:py-24 border-t border-slate-800/80">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-6 space-y-6 text-left">
+        <span df-badge [variant]="'accent'" [badgeStyle]="'subtle'" [dot]="true">
+          ASISTENTE EN VIVO
+        </span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black uppercase text-white leading-tight font-sans">
+          Adiós a las notas en papel.<br>
+          <span class="texto-gradiente-acento">Control serie a serie.</span>
+        </h2>
+        <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+          Diseñado específicamente para el gimnasio o el parque: botones táctiles grandes de acceso rápido,
+          cronómetro regresivo con tipografía tabular legible de un vistazo y control de series sin fricción.
+        </p>
+
+        <ul class="space-y-3 pt-2 text-slate-300 text-sm sm:text-base">
+          <li class="flex items-center gap-3">
+            <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold">✓</span>
+            Ajuste de peso con un solo toque (+2.5 kg / -2.5 kg).
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold">✓</span>
+            Cronómetro regresivo que arranca al completar la serie.
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-bold">✓</span>
+            Registro de marcas personales y guardado automático en tu historial.
+          </li>
+        </ul>
+
+        <div class="pt-4">
+          <a df-button routerLink="/entrenar" [variant]="'primary'" [size]="'md'">
+            Probar asistente de entrenamiento →
+          </a>
+        </div>
+      </div>
+
+      <!-- Tarjeta interactiva simuladora del Asistente en vivo -->
+      <div class="lg:col-span-6">
+        <div class="tarjeta-entreno-demo p-6 sm:p-8 rounded-3xl border border-blue-500/30 bg-slate-900/80 shadow-2xl relative overflow-hidden backdrop-blur-md">
+          <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-blue-400">Ejercicio en curso</span>
+              <h3 class="text-xl sm:text-2xl font-bold text-white">Press de banca plano</h3>
+            </div>
+            <span df-badge [variant]="'primary'" [badgeStyle]="'solid'">
+              Serie {{ serieActual() }} / {{ serieTotal }}
+            </span>
+          </div>
+
+          <!-- Cronómetro de descanso regresivo -->
+          <div class="my-6 p-6 rounded-2xl bg-slate-950/70 border border-slate-800 text-center">
+            <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1">
+              Tiempo de descanso
+            </span>
+            <div class="cronometro-digitos text-5xl sm:text-6xl font-black font-mono text-cyan-400 tracking-wider mb-3">
+              {{ formatearTiempo(descansoSegundos()) }}
+            </div>
+
+            <!-- Barra visual de descanso -->
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mb-4">
+              <div
+                class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full transition-all duration-1000"
+                [style.width.%]="(descansoSegundos() / 90) * 100">
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-3">
+              <button
+                type="button"
+                (click)="toggleDescanso()"
+                class="px-4 py-2 text-xs font-bold uppercase rounded-lg bg-slate-800 hover:bg-slate-700 text-white transition-colors">
+                {{ descansoActivo() ? '⏸️ Pausar' : '▶️ Iniciar' }}
+              </button>
+              <button
+                type="button"
+                (click)="reiniciarDescanso()"
+                class="px-4 py-2 text-xs font-bold uppercase rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
+                ↺ 90s
+              </button>
+            </div>
+          </div>
+
+          <!-- Selectores táctiles de peso y repeticiones -->
+          <div class="grid grid-cols-2 gap-4 mb-6">
+            <div class="p-4 rounded-xl bg-slate-950/50 border border-slate-800 text-center">
+              <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1">Carga</span>
+              <div class="text-2xl font-black font-mono text-white mb-2">{{ pesoActual() }} kg</div>
+              <div class="flex items-center justify-center gap-2">
+                <button
+                  type="button"
+                  (click)="ajustarPeso(-2.5)"
+                  class="w-8 h-8 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center justify-center">
+                  -
+                </button>
+                <button
+                  type="button"
+                  (click)="ajustarPeso(+2.5)"
+                  class="w-8 h-8 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center justify-center">
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-950/50 border border-slate-800 text-center">
+              <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1">Repeticiones</span>
+              <div class="text-2xl font-black font-mono text-white mb-2">{{ repsActual() }}</div>
+              <div class="flex items-center justify-center gap-2">
+                <button
+                  type="button"
+                  (click)="ajustarReps(-1)"
+                  class="w-8 h-8 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center justify-center">
+                  -
+                </button>
+                <button
+                  type="button"
+                  (click)="ajustarReps(+1)"
+                  class="w-8 h-8 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold flex items-center justify-center">
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de acción serie -->
+          <button
+            type="button"
+            (click)="completarSerie()"
+            class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-sm uppercase tracking-wider transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+            <span>✓</span> Completar Serie {{ serieActual() }} y Descansar
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- SECCIÓN 2: RADAR DE LUGARES Y MAPA OPENSTREETMAP (D10 / 3.6-3.7)  -->
+  <!-- ================================================================= -->
+  <section class="anim-scroll-seccion max-w-6xl mx-auto px-4 py-16 md:py-24 border-t border-slate-800/80">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <!-- Tarjeta visual con pines y simulación de mapa -->
+      <div class="lg:col-span-6 order-2 lg:order-1">
+        <div class="tarjeta-mapa-preview p-6 rounded-3xl border border-cyan-500/30 bg-slate-900/90 shadow-2xl relative overflow-hidden">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+              Puntos deportivos en tu radio (5 km)
+            </span>
+            <span df-badge [variant]="'neutral'" [badgeStyle]="'outline'">Carto Dark Matter</span>
+          </div>
+
+          <!-- Lista de lugares cercanos ordenados por proximidad -->
+          <div class="space-y-3">
+            <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between hover:border-slate-700 transition-colors">
+              <div class="flex items-center gap-3">
+                <span class="text-xl">🤸</span>
+                <div>
+                  <h4 class="text-sm font-bold text-white">Parque Calistenia Jardín del Turia</h4>
+                  <p class="text-xs text-slate-400">Barras paralelas y dominadas • Público</p>
+                </div>
+              </div>
+              <span class="text-xs font-bold font-mono text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded">
+                0.4 km
+              </span>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between hover:border-slate-700 transition-colors">
+              <div class="flex items-center gap-3">
+                <span class="text-xl">🏋️</span>
+                <div>
+                  <h4 class="text-sm font-bold text-white">Fitness Park Valencia Centro</h4>
+                  <p class="text-xs text-slate-400">Gimnasio comercial • 06:00 - 23:00</p>
+                </div>
+              </div>
+              <span class="text-xs font-bold font-mono text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded">
+                0.8 km
+              </span>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between hover:border-slate-700 transition-colors">
+              <div class="flex items-center gap-3">
+                <span class="text-xl">🏊</span>
+                <div>
+                  <h4 class="text-sm font-bold text-white">Complejo Deportivo La Petxina</h4>
+                  <p class="text-xs text-slate-400">Piscina climatizada y pista • Municipal</p>
+                </div>
+              </div>
+              <span class="text-xs font-bold font-mono text-blue-400 bg-blue-500/10 px-2 py-1 rounded">
+                1.3 km
+              </span>
+            </div>
+          </div>
+
+          <div class="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+            <span>© OpenStreetMap contributors</span>
+            <span class="text-cyan-400 font-semibold">Cálculo Haversine en servidor</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 order-1 lg:order-2 space-y-6 text-left">
+        <span df-badge [variant]="'primary'" [badgeStyle]="'subtle'" [dot]="true">
+          RADAR DEPORTIVO OSM
+        </span>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black uppercase text-white leading-tight font-sans">
+          Encuentra dónde entrenar.<br>
+          <span class="texto-gradiente-acento">Cualquier día, en cualquier ciudad.</span>
+        </h2>
+        <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+          Ya estés en tu barrio o de viaje, activa «Usar mi ubicación» o escribe cualquier dirección.
+          El servidor consulta OpenStreetMap y tu propia biblioteca de centros favoritos en tiempo real,
+          ordenándolos por proximidad milimétrica.
+        </p>
+
+        <ul class="space-y-3 pt-2 text-slate-300 text-sm sm:text-base">
+          <li class="flex items-center gap-3">
+            <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">✓</span>
+            Filtros instantáneos: Calistenia, Gimnasios, Piscinas y Polideportivos.
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">✓</span>
+            Privacidad total: proxy seguro en backend que protege tu navegador (P11).
+          </li>
+          <li class="flex items-center gap-3">
+            <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">✓</span>
+            Exploración activa con botón «Buscar en esta zona» al mover el mapa.
+          </li>
+        </ul>
+
+        <div class="pt-4">
+          <a df-button routerLink="/explorar" [variant]="'outline'" [size]="'md'">
+            Abrir mapa de exploración deportiva →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- SECCIÓN 3: GAMIFICACIÓN, RETOS Y COMUNIDAD (D12 / 3.1)            -->
+  <!-- ================================================================= -->
+  <section class="anim-scroll-seccion max-w-6xl mx-auto px-4 py-16 md:py-24 border-t border-slate-800/80 text-center">
+    <div class="max-w-3xl mx-auto mb-16">
+      <span df-badge [variant]="'warning'" [badgeStyle]="'subtle'" [dot]="true">
+        PROGRESO Y COMUNIDAD
+      </span>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black uppercase text-white leading-tight font-sans mt-4 mb-4">
+        Convierte la constancia en marcas personales.
+      </h2>
+      <p class="text-slate-300 text-base sm:text-lg">
+        Todo el ecosistema pensado para mantener la motivación alta durante todo el año.
+      </p>
+    </div>
+
+    <div class="contenedor-tarjetas-story grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+      <app-card [interactive]="true" class="anim-scroll-card">
+        <div class="text-3xl mb-4" aria-hidden="true">🏆</div>
+        <h3 class="text-xl font-bold text-white mb-2">Marcas Personales (PR)</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Digital-Fit detecta automáticamente cuando bates tu récord de carga o repeticiones en cualquier ejercicio y lo celebra en tu perfil.
+        </p>
+      </app-card>
+
+      <app-card [interactive]="true" class="anim-scroll-card">
+        <div class="text-3xl mb-4" aria-hidden="true">🔥</div>
+        <h3 class="text-xl font-bold text-white mb-2">Rachas y Consistencia</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Monitorea tu volumen de entrenamiento semanal, días de descanso y frecuencia por grupo muscular para progresar sin estancarte.
+        </p>
+      </app-card>
+
+      <app-card [interactive]="true" class="anim-scroll-card">
+        <div class="text-3xl mb-4" aria-hidden="true">🌐</div>
+        <h3 class="text-xl font-bold text-white mb-2">Rutinas Comunitarias</h3>
+        <p class="text-slate-400 text-sm leading-relaxed">
+          Descubre entrenamientos compartidos por otros atletas, califícalos e impórtalos directamente a tu biblioteca personal con un clic.
+        </p>
+      </app-card>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- SECCIÓN 4: CALL TO ACTION FINAL                                   -->
+  <!-- ================================================================= -->
+  <section class="anim-scroll-seccion max-w-5xl mx-auto px-4 py-16 text-center">
+    <div class="p-8 sm:p-12 md:p-16 rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-blue-500/30 shadow-2xl relative overflow-hidden">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-black uppercase text-white mb-6 font-sans">
+        Empieza tu próximo entrenamiento hoy.
+      </h2>
+      <p class="max-w-2xl mx-auto text-slate-300 text-base sm:text-lg mb-8 leading-relaxed">
+        Explora el mapa sin necesidad de registro o inicia tu cuenta gratuita para guardar rutinas, registrar series y seguir tu evolución.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        @if (usuarioActual()) {
+        <a df-button routerLink="/entrenar" [variant]="'primary'" [size]="'lg'" class="w-full sm:w-auto px-8 py-3.5 font-bold">
+          Ir a mi sesión de entreno
+        </a>
+        } @else {
+        <a df-button routerLink="/register" [variant]="'primary'" [size]="'lg'" class="w-full sm:w-auto px-8 py-3.5 font-bold">
+          Crear cuenta gratuita
+        </a>
+        <a df-button routerLink="/login" [variant]="'secondary'" [size]="'lg'" class="w-full sm:w-auto px-8 py-3.5 font-bold">
+          Iniciar sesión
+        </a>
+        }
+        <a df-button routerLink="/explorar" [variant]="'outline'" [size]="'lg'" class="w-full sm:w-auto px-8 py-3.5 font-bold">
+          Ver mapa deportivo
+        </a>
+      </div>
+    </div>
+  </section>
 
 </main>
 
