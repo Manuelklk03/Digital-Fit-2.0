@@ -108,7 +108,7 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 | P5 | Errores de la API sin formato común (texto o mapa) | `GlobalExceptionHandler` | Resuelto en 4.3 (`ProblemDetail` RFC 7807) |
 | P6 | Sin paginación en ningún listado | servicios/repositorios | 4 |
 | P7 | `any` en servicios y modelos del frontend | `src/app/services` | 5 |
-| P10 | `show-sql=true` y logs DEBUG por defecto | `application.properties` | 4 |
+| P10 | `show-sql=true` y logs DEBUG por defecto | `application.properties` | Resuelto en 4.7 (perfiles dev y prod) |
 | P11 | Búsqueda Nominatim desde el navegador sin limitación ni atribución revisada | `mapa-selector` | Resuelto en 3.7 (proxy en backend) |
 | P12 | Imágenes sueltas o sin uso aparente (`public/img/.png`, `e.ico`, `e2.ico`) | `public/` | 5 |
 | P13 | Endpoint duplicado `/api/auth/yo` y `/me` | `AuthController` | Resuelto en 4.1 (eliminado `/yo`) |
