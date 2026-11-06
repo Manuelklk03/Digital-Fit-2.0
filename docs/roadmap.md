@@ -77,12 +77,12 @@ Dependencias: 2.2 (autenticación y base de datos decididas). Puede solaparse co
 
 | ID | Tarea |
 |---|---|
-| 4.1 [P] | Seguridad: sanear los datos que se registran en los logs (17 avisos de *log injection* de Sonar); CSRF o modelo de token según D2, cookies `Secure`/`SameSite`, CORS por entorno (P2, P3) |
+| 4.1 [P] | Seguridad: sanear los datos que se registran en los logs (LogSanitizer, Sonar java:S5145); cookies `HttpOnly`/`SameSite`/`Secure` (D2, P2), CORS por entorno (P3) y retirada de `/api/auth/yo` (P13) | **Hecha (2026-11-06)** |
 | 4.2 [P] | Tests de integración de permisos: usuario A no lee ni modifica recursos de B; `/api/admin/**` solo ADMIN |
 | 4.3 [P] | Errores uniformes con `ProblemDetail` (P5) y validación completa de DTOs |
 | 4.4 [P] | Flyway con migración inicial y datos de demostración separados; `ddl-auto=validate` en producción (P4, D3) |
 | 4.5 [P] | Usuarios de demostración con credenciales documentadas fuera del código (variables o datos de demo) |
-| 4.6 [P] | Nominatim y teselas: cumplir políticas de uso (atribución, ≤1 petición/s, caché o proxy en el backend) (P11) |
+| 4.6 [P] | Nominatim y teselas: cumplir políticas de uso (atribución, ≤1 petición/s, caché o proxy en el backend) (P11) | **Hecha (2026-11-05; tarea 3.7)** |
 | 4.7 [P] | Logs y SQL de depuración solo en `dev` (P10); eliminar `/api/auth/yo` si nada lo usa (P13) |
 | 4.8 [+] | Paginación y ordenación en listados (P6); revisar consultas N+1 y transacciones |
 | 4.9 [+] | Retirar dependencias sin uso (Thymeleaf, Actuator si no se usa para `health`) |

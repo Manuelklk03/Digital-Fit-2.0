@@ -2,6 +2,12 @@
 
 Última actualización: **2026-11-06**.
 
+> **2026-11-06 (Fase 4, Tarea 4.1 — Seguridad en logs, CORS, cookies de sesión y retirada de /yo):**
+> - **Saneamiento de Log Injection (Sonar java:S5145):** Implementada la utilidad `LogSanitizer` y aplicada en los servicios de autenticación (`AuthService`, `CustomUserDetailsService`), geocodificación (`GeocodificacionService`) y servicios base (`CentroPrivadoBaseService`, `LugarPublicoBaseService`, `EntrenamientoBaseService`) neutralizando inyecciones CRLF en los registros del servidor.
+> - **Seguridad de Cookies y CORS por entorno (D2, P2, P3):** Añadida configuración en `application.properties` para cookies de sesión con `HttpOnly=true`, `SameSite=Lax` y `Secure=${SESSION_COOKIE_SECURE:false}`. Parametrizados los orígenes permitidos de CORS en `CorsConfig` mediante `${CORS_ALLOWED_ORIGINS:http://localhost:4200}`.
+> - **Eliminación de deuda técnica P13:** Retirado el endpoint duplicado `/api/auth/yo` en `AuthController`, unificando la resolución de sesión en `/api/auth/me`.
+> - **Verificaciones:** Tests unitarios de seguridad `LogSanitizerTest` en verde.
+
 > **2026-11-06 (Fase 3, Tarea 3.8 — i18n multilingüe ES, CA/VAL, EN, FR - D11):**
 > - **Internacionalización y arquitectura reactiva (D11):** Creado `I18nService` en Angular con `Signal<Idioma>` ('es' por defecto, 'ca' valenciano, 'en' inglés, 'fr' francés), diccionarios tipados desacoplados en `src/app/i18n/diccionarios/`, persistencia en `localStorage` y sincronización dinámica con `<html lang="...">`.
 > - **Selector de idioma accesible:** Añadido control interactivo en la cabecera (`HeaderComponent`) con banderas, códigos de idioma, foco visible y atributos ARIA (`aria-expanded`, `aria-haspopup`, `role="listbox"` y `role="option"`).
@@ -38,7 +44,7 @@
 
 ## Resumen
 
-- **Fase activa:** 3 — Producto, navegación y sistema visual (tareas 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7 y 3.8 cerradas, 3.9 siguiente) ([roadmap](roadmap.md#fase-3--producto-navegación-y-sistema-visual)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
+- **Fase activa:** 4 — Backend, API y datos (tarea 4.1 cerrada; 4.6 ya hecha en 3.7; 3.9 SEO reservada para Claude) ([roadmap](roadmap.md#fase-4--backend-api-y-datos)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas.
 - **Rama de la tarea 2.2:** `docs/hosting-decision`; `main` está protegida: todo entra por PR.
 - **Rama de la tarea 2.1:** `docs/hosting-feasibility` (PR #39); `main` está protegida: todo entra por PR.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
