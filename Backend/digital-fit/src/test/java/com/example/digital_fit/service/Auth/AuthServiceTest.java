@@ -133,9 +133,9 @@ class AuthServiceTest {
         UsuarioSesionDTO sesion = authService.obtenerSesion("carlos_fit");
 
         assertNotNull(sesion);
-        assertEquals("carlos_fit", sesion.username());
-        assertEquals("carlos@digitalfit.com", sesion.email());
-        assertEquals(Rol.USER, sesion.rol());
+        assertEquals("carlos_fit", sesion.getUsername());
+        assertEquals("carlos@digitalfit.com", sesion.getEmail());
+        assertEquals(Rol.USER, sesion.getRol());
     }
 
     @Test
