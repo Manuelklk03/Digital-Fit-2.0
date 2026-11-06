@@ -26,6 +26,7 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/digital_fit
       DB_USERNAME: ${DB_USERNAME:-digitalfit}
       DB_PASSWORD: ${DB_PASSWORD:-digitalfit}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
     ports:
       - "8080:8080"
     depends_on:
