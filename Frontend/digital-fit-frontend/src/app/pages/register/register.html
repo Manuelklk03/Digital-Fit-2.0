@@ -62,7 +62,7 @@
 
         <div class="grupo-campo">
           <label class="etiqueta-campo" for="password">
-            {{ i18n.t().auth.passwordLabel }}
+            {{ i18n.t().auth.contrasenaLabel }}
           </label>
           <input
             df-input
@@ -72,10 +72,10 @@
             autocomplete="new-password"
             [(ngModel)]="password"
             required
-            [placeholder]="i18n.t().auth.passwordPlaceholder"
+            [placeholder]="i18n.t().auth.contrasenaPlaceholder"
             [disabled]="cargando"
           />
-          <span class="pista-campo">{{ i18n.t().auth.errorPasswordCorta }}</span>
+          <span class="pista-campo">{{ i18n.t().auth.errorContrasenaCorta }}</span>
         </div>
 
         <button

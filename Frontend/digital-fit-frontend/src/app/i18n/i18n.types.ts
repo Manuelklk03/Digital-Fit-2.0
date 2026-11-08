@@ -77,8 +77,8 @@ export interface DiccionarioTraduccion {
     loginSubtitulo: string;
     usuarioLabel: string;
     usuarioPlaceholder: string;
-    passwordLabel: string;
-    passwordPlaceholder: string;
+    contrasenaLabel: string;
+    contrasenaPlaceholder: string;
     botonEntrar: string;
     botonEntrando: string;
     sinCuenta: string;
@@ -101,7 +101,7 @@ export interface DiccionarioTraduccion {
     conCuenta: string;
     enlaceLogin: string;
     errorEmailInvalido: string;
-    errorPasswordCorta: string;
+    errorContrasenaCorta: string;
     errorRegistro: string;
     exitoRegistro: string;
   };

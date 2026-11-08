@@ -69,7 +69,7 @@ export class RegisterComponent {
     }
 
     if (passwordLimpia.length < 6) {
-      this.mostrarAlerta(this.i18n.t().auth.errorPasswordCorta, 'error');
+      this.mostrarAlerta(this.i18n.t().auth.errorContrasenaCorta, 'error');
       return;
     }
 
@@ -105,17 +105,11 @@ export class RegisterComponent {
   }
 
   mostrarAlerta(texto: string, tipo: 'exito' | 'error'): void {
-    this.alerta.set({ texto, tipo });
-    this.cdr.markForCheck();
-
     if (this.alertaTimeout) {
       clearTimeout(this.alertaTimeout);
     }
-
-    this.alertaTimeout = setTimeout(() => {
-      this.alerta.set(null);
-      this.cdr.markForCheck();
-    }, 4500);
+    this.alerta.set({ texto, tipo });
+    this.alertaTimeout = setTimeout(() => this.cerrarAlerta(), 4500);
   }
 
   cerrarAlerta(): void {
@@ -124,6 +118,5 @@ export class RegisterComponent {
       this.alertaTimeout = null;
     }
     this.alerta.set(null);
-    this.cdr.markForCheck();
   }
 }
