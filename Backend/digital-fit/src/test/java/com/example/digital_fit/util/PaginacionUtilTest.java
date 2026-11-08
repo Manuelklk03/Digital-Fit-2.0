@@ -71,7 +71,7 @@ class PaginacionUtilTest {
     }
 
     @Test
-    @DisplayName("Normalizar con orden por defecto lo aplica si el pageable no tiene orden")
+    @DisplayName("Normalizar con orden por defecto lo aplica si el pageable no tiene orden y limita tamaño")
     void normalizarAplicaOrdenPorDefecto() {
         Sort ordenPorDefecto = Sort.by(Sort.Direction.DESC, "fecha");
         Pageable pageable = PageRequest.of(1, 10);
@@ -80,6 +80,10 @@ class PaginacionUtilTest {
         assertEquals(10, resultado.getPageSize());
         assertTrue(resultado.getSort().isSorted());
         assertEquals(ordenPorDefecto, resultado.getSort());
+
+        Pageable grande = PageRequest.of(0, 500);
+        Pageable resGrande = PaginacionUtil.normalizar(grande, ordenPorDefecto);
+        assertEquals(PaginacionUtil.TAMANO_MAXIMO, resGrande.getPageSize());
     }
 
     @Test
