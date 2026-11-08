@@ -95,6 +95,7 @@ GitHub Flow: rama por cambio desde `main`, Conventional Commits en español, PR,
 - `AGENTS.md` contiene las reglas comunes; `CLAUDE.md` lo importa. No mantengas copias divergentes.
 - `docs/STATUS.md` es el punto de continuación: actualízalo al cerrar cada tarea con fecha, cambios, comprobaciones reales, bloqueos y siguiente paso.
 - Evita que dos herramientas editen a la vez los mismos archivos del mismo checkout: usa ramas o worktrees separados.
+- Reparto entre Claude (SEO y frontend) y Antigravity (el resto) y paradas de coordinación: [docs/HANDOFF.md](docs/HANDOFF.md). Al llegar a una parada, no sigas: registra `BLOQUEADO` y avisa a Manuel.
 - Al terminar, deja explícitos los cambios sin commit y los bloqueos.
 
 ## Documentación y cierre
