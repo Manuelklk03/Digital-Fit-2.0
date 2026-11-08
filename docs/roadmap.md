@@ -84,7 +84,7 @@ Dependencias: 2.2 (autenticación y base de datos decididas). Puede solaparse co
 | 4.5 [P] | Usuarios de demostración con credenciales documentadas fuera del código (variables o datos de demo) | **Hecha (2026-11-06)** |
 | 4.6 [P] | Nominatim y teselas: cumplir políticas de uso (atribución, ≤1 petición/s, caché o proxy en el backend) (P11) | **Hecha (2026-11-05; tarea 3.7)** |
 | 4.7 [P] | Logs y SQL de depuración solo en `dev` (P10); eliminar `/api/auth/yo` si nada lo usa (P13) | **Hecha (2026-11-06)** |
-| 4.8 [+] | Paginación y ordenación en listados (P6); revisar consultas N+1 y transacciones |
+| 4.8 [+] | Paginación y ordenación en listados (P6); resolución N+1 con EntityGraph y PaginaResponse | **Hecha (2026-11-09)** |
 | 4.9 [+] | Retirar dependencias sin uso (Thymeleaf en `pom.xml`; Actuator preservado para `/actuator/health`) | **Hecha (2026-11-08)** |
 
 Aceptación: tests de backend en verde (con PostgreSQL o Testcontainers), permisos cubiertos, sin secretos en el repositorio.
