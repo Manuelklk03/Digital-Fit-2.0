@@ -8,6 +8,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Rediseño visual del recorrido de **Acceso (Login y Registro)** en la fase 5 bajo el sistema de diseño Neutral Sport / Industrial, integrando `CardComponent`, `BadgeComponent`, `InputDirective` y `ButtonComponent`.
+- Panel accesible con credenciales de prueba en `/login` para evaluadores y pruebas de demostración (`usuario1` / `admin1`).
+- Validaciones accesibles en `/register` (formato de correo electrónico, longitud mínima de contraseña de 6 caracteres y campos obligatorios) con avisos inline `role="alert"`.
+- Soporte multilingüe completo para login y registro en los 4 idiomas soportados (`es`, `ca`, `en`, `fr`) mediante `I18nService`.
+- Suites de pruebas unitarias actualizadas para `login.spec.ts` (6 tests) y `register.spec.ts` (6 tests), totalizando 118 tests pasando en el frontend.
 - Migraciones versionadas de base de datos con Flyway (`V1__esquema_inicial.sql` con DDL completo de PostgreSQL 17, `V2__catalogos_base.sql` y `V3__usuarios_demo.sql`), retirando la inicialización legacy con `data.sql` y configurando `ddl-auto=validate` en producción, resolviendo la deuda técnica P4 y formalizando la decisión D3 (tarea 4.4).
 - Documentación explícita de credenciales de los usuarios de demostración (`admin1` / `Admin123!` y `usuario1` / `Usuario123!`) en `docs/deployment.md`, eliminando el bloqueo histórico del repositorio (tarea 4.5).
 - Segregación de perfiles de configuración de Spring Boot (`application-dev.properties` vs `application-prod.properties`) con `spring.profiles.active=${SPRING_PROFILES_ACTIVE:dev}`, desactivando `show-sql` y niveles DEBUG en producción y manteniendo trazabilidad en desarrollo local, resolviendo la deuda técnica P10 (tarea 4.7).
