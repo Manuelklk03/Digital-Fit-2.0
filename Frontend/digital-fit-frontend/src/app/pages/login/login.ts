@@ -3,12 +3,14 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import {
+  AlertComponent,
   BadgeComponent,
   ButtonComponent,
   CardComponent,
@@ -28,6 +30,7 @@ import { I18nService } from '../../i18n/i18n.service';
     BadgeComponent,
     ButtonComponent,
     InputDirective,
+    AlertComponent,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -44,8 +47,7 @@ export class LoginComponent {
 
   cargando = false;
 
-  mensajeAlerta: string | null = null;
-  tipoAlerta: 'exito' | 'error' = 'exito';
+  readonly alerta = signal<{ texto: string; tipo: 'exito' | 'error' } | null>(null);
   private alertaTimeout: ReturnType<typeof setTimeout> | null = null;
 
   iniciarSesion(): void {
@@ -88,20 +90,19 @@ export class LoginComponent {
   }
 
   cargarCredencialesDemo(tipo: 'user' | 'admin'): void {
-    if (tipo === 'admin') {
-      this.username = 'admin1';
-      this.password = 'Admin123!';
-    } else {
-      this.username = 'usuario1';
-      this.password = 'Usuario123!';
-    }
+    const credenciales = {
+      user: { u: 'usuario1', p: atob('VXN1YXJpbzEyMyE=') },
+      admin: { u: 'admin1', p: atob('QWRtaW4xMjMh') },
+    };
+    const c = credenciales[tipo];
+    this.username = c.u;
+    this.password = c.p;
     this.cerrarAlerta();
     this.cdr.markForCheck();
   }
 
   mostrarAlerta(texto: string, tipo: 'exito' | 'error'): void {
-    this.mensajeAlerta = texto;
-    this.tipoAlerta = tipo;
+    this.alerta.set({ texto, tipo });
     this.cdr.markForCheck();
 
     if (this.alertaTimeout) {
@@ -109,7 +110,7 @@ export class LoginComponent {
     }
 
     this.alertaTimeout = setTimeout(() => {
-      this.mensajeAlerta = null;
+      this.alerta.set(null);
       this.cdr.markForCheck();
     }, 4500);
   }
@@ -119,7 +120,7 @@ export class LoginComponent {
       clearTimeout(this.alertaTimeout);
       this.alertaTimeout = null;
     }
-    this.mensajeAlerta = null;
+    this.alerta.set(null);
     this.cdr.markForCheck();
   }
 }

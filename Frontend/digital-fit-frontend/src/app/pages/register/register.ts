@@ -3,12 +3,14 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import {
+  AlertComponent,
   BadgeComponent,
   ButtonComponent,
   CardComponent,
@@ -30,6 +32,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     BadgeComponent,
     ButtonComponent,
     InputDirective,
+    AlertComponent,
   ],
   templateUrl: './register.html',
   styleUrl: './register.css',
@@ -47,8 +50,7 @@ export class RegisterComponent {
 
   cargando = false;
 
-  mensajeAlerta: string | null = null;
-  tipoAlerta: 'exito' | 'error' = 'exito';
+  readonly alerta = signal<{ texto: string; tipo: 'exito' | 'error' } | null>(null);
   private alertaTimeout: ReturnType<typeof setTimeout> | null = null;
 
   registrar(): void {
@@ -103,8 +105,7 @@ export class RegisterComponent {
   }
 
   mostrarAlerta(texto: string, tipo: 'exito' | 'error'): void {
-    this.mensajeAlerta = texto;
-    this.tipoAlerta = tipo;
+    this.alerta.set({ texto, tipo });
     this.cdr.markForCheck();
 
     if (this.alertaTimeout) {
@@ -112,7 +113,7 @@ export class RegisterComponent {
     }
 
     this.alertaTimeout = setTimeout(() => {
-      this.mensajeAlerta = null;
+      this.alerta.set(null);
       this.cdr.markForCheck();
     }, 4500);
   }
@@ -122,7 +123,7 @@ export class RegisterComponent {
       clearTimeout(this.alertaTimeout);
       this.alertaTimeout = null;
     }
-    this.mensajeAlerta = null;
+    this.alerta.set(null);
     this.cdr.markForCheck();
   }
 }

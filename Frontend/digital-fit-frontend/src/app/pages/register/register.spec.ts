@@ -29,34 +29,18 @@ describe('RegisterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('debe rechazar registro con campos vacíos', () => {
-    component.username = '';
-    component.email = '';
-    component.password = '';
+  it.each([
+    { u: '', e: '', p: '', caso: 'campos vacíos' },
+    { u: 'nuevoUsuario', e: 'correo-no-valido', p: 'Password123!', caso: 'email inválido' },
+    { u: 'nuevoUsuario', e: 'usuario@ejemplo.com', p: '12345', caso: 'contraseña corta' },
+  ])('debe rechazar registro con datos inválidos: $caso', ({ u, e, p }) => {
+    component.username = u;
+    component.email = e;
+    component.password = p;
     component.registrar();
 
-    expect(component.mensajeAlerta).toBeTruthy();
-    expect(component.tipoAlerta).toBe('error');
-  });
-
-  it('debe rechazar un email con formato inválido', () => {
-    component.username = 'nuevoUsuario';
-    component.email = 'correo-no-valido';
-    component.password = 'Password123!';
-    component.registrar();
-
-    expect(component.mensajeAlerta).toBeTruthy();
-    expect(component.tipoAlerta).toBe('error');
-  });
-
-  it('debe rechazar una contraseña de longitud inferior a 6 caracteres', () => {
-    component.username = 'nuevoUsuario';
-    component.email = 'usuario@ejemplo.com';
-    component.password = '12345';
-    component.registrar();
-
-    expect(component.mensajeAlerta).toBeTruthy();
-    expect(component.tipoAlerta).toBe('error');
+    expect(component.alerta()).not.toBeNull();
+    expect(component.alerta()?.tipo).toBe('error');
   });
 
   it('debe procesar el registro satisfactoriamente cuando los datos son válidos', () => {
@@ -72,7 +56,7 @@ describe('RegisterComponent', () => {
       email: 'atleta@digitalfit.com',
       password: 'Atleta2026!',
     });
-    expect(component.tipoAlerta).toBe('exito');
+    expect(component.alerta()?.tipo).toBe('exito');
   });
 
   it('debe mostrar alerta de error cuando el servicio de autenticación falla', () => {
@@ -83,7 +67,7 @@ describe('RegisterComponent', () => {
     component.password = 'Atleta2026!';
     component.registrar();
 
-    expect(component.tipoAlerta).toBe('error');
+    expect(component.alerta()?.tipo).toBe('error');
     expect(component.cargando).toBe(false);
   });
 });

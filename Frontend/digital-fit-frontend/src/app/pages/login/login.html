@@ -3,37 +3,10 @@
 <main class="zona-login" id="contenido-principal">
   <div class="login-wrapper">
 
-    @if (mensajeAlerta) {
-      <div
-        class="alerta-banner"
-        [class.alerta-error]="tipoAlerta === 'error'"
-        [class.alerta-exito]="tipoAlerta === 'exito'"
-        role="alert"
-        aria-live="polite"
-      >
-        <div class="alerta-contenido">
-          @if (tipoAlerta === 'error') {
-            <svg class="alerta-icono" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          } @else {
-            <svg class="alerta-icono" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          }
-          <span class="alerta-texto">{{ mensajeAlerta }}</span>
-        </div>
-        <button
-          type="button"
-          class="alerta-boton-cerrar"
-          (click)="cerrarAlerta()"
-          aria-label="Cerrar notificación"
-        >
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+    @if (alerta(); as a) {
+      <app-alert [tipo]="a.tipo" (cerrar)="cerrarAlerta()">
+        {{ a.texto }}
+      </app-alert>
     }
 
     <app-card class="tarjeta-login">

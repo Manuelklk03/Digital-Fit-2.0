@@ -34,8 +34,8 @@ describe('LoginComponent', () => {
     component.password = '';
     component.iniciarSesion();
 
-    expect(component.mensajeAlerta).toBeTruthy();
-    expect(component.tipoAlerta).toBe('error');
+    expect(component.alerta()).not.toBeNull();
+    expect(component.alerta()?.tipo).toBe('error');
   });
 
   it('debe autocompletar credenciales demo de usuario estándar', () => {
@@ -59,7 +59,7 @@ describe('LoginComponent', () => {
     component.iniciarSesion();
 
     expect(authService.login).toHaveBeenCalledWith('usuario1', 'Usuario123!');
-    expect(component.tipoAlerta).toBe('exito');
+    expect(component.alerta()?.tipo).toBe('exito');
   });
 
   it('debe mostrar error de credenciales si login falla', () => {
@@ -69,7 +69,7 @@ describe('LoginComponent', () => {
     component.password = 'incorrecta';
     component.iniciarSesion();
 
-    expect(component.tipoAlerta).toBe('error');
+    expect(component.alerta()?.tipo).toBe('error');
     expect(component.cargando).toBe(false);
   });
 });
