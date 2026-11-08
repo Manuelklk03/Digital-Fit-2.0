@@ -245,8 +245,12 @@ jobs:
       # Se ejecuta tras publicar la imagen del backend en merges a main y se omite
       # de forma limpia mientras el secreto RENDER_DEPLOY_HOOK no exista.
       - name: Notificar deploy hook en Render (backend)
-        if: matrix.imagen == 'backend' && github.ref == 'refs/heads/main' && secrets.RENDER_DEPLOY_HOOK != ''
+        if: matrix.imagen == 'backend' && github.ref == 'refs/heads/main'
         env:
           RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |
-          curl -fsS -X POST "$RENDER_DEPLOY_HOOK"
+          if [ -n "$RENDER_DEPLOY_HOOK" ]; then
+            curl -fsS -X POST "$RENDER_DEPLOY_HOOK"
+          else
+            echo "Secreto RENDER_DEPLOY_HOOK no configurado. Omitiendo notificación de despliegue."
+          fi

@@ -34,8 +34,8 @@ class CiWorkflowTest {
                 "El deploy hook debe aplicar a la imagen de backend");
         assertTrue(contenido.contains("github.ref == 'refs/heads/main'"),
                 "El deploy hook debe ejecutarse en merge a main");
-        assertTrue(contenido.contains("secrets.RENDER_DEPLOY_HOOK != ''"),
-                "El deploy hook debe omitirse si el secreto RENDER_DEPLOY_HOOK está ausente");
+        assertTrue(contenido.contains("[ -n \"$RENDER_DEPLOY_HOOK\" ]"),
+                "El deploy hook debe comprobar que la variable RENDER_DEPLOY_HOOK está definida");
 
         // 3. Debe realizar la llamada curl usando variable de entorno
         assertTrue(contenido.contains("curl -fsS -X POST \"$RENDER_DEPLOY_HOOK\""),
