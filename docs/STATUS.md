@@ -143,6 +143,7 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 1. Esperar la indicación de Manuel para empezar 3.1 (definición del producto). La configuración de staging y producción y la prueba 2.4 quedan para antes del despliegue final; entonces habrá que comprobar los datos de alta de los proveedores, el coste de ambos entornos y si el backend cabe en los 512 MB de Render.
 2. Rediseño: mapa tipo Google Maps, i18n y SEO registrados como tareas 3.6–3.9 (D10, D11), en modo mixto.
+3. Reparto de las tareas restantes entre Claude (SEO y frontend) y Antigravity (el resto), con paradas de coordinación, en [HANDOFF.md](HANDOFF.md). Primera tarea de Antigravity: 4.9, 1B.5, 1B.6 y 4.8 (parada G1).
 
 ## Cómo actualizar este archivo
 
