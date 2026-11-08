@@ -48,6 +48,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 - Spring Boot 4.0.6 → 4.1.2.
 - Angular 21 → 22.2.4 y TypeScript 5.9 → 6.0.3, con las migraciones de `ng update` que mantienen el comportamiento anterior.
 - Base de datos: PostgreSQL 17 en lugar de MySQL 8 (driver, URL, Compose en el puerto 5433 y `data.sql` con `ON CONFLICT DO NOTHING`). Credenciales por `.env` (plantilla en `.env.example`).
+
+### Eliminado
+
+- Dependencias no utilizadas `spring-boot-starter-thymeleaf` y `spring-boot-starter-thymeleaf-test` en `Backend/digital-fit/pom.xml`, preservando `spring-boot-starter-actuator` para las sondas de salud `/actuator/health` en Docker Compose (tarea 4.9).
 - Tests del frontend: 51/51 en verde (los specs usaban nombres de clase inexistentes y no daban router ni `HttpClient`).
 - Roadmap: actualización de Spring Boot y Angular (1.10, 1.11) y rediseño con mapa tipo Google Maps, i18n y SEO (3.6–3.9).
 - `docker-compose.yml`: rutas de `context` con `/`, válidas fuera de Windows.

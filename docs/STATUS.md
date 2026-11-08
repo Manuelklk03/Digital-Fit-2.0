@@ -2,6 +2,10 @@
 
 Última actualización: **2026-11-08**.
 
+> **2026-11-08 (Fase 4, Tarea 4.9 — Retirada de dependencias Thymeleaf sin uso):**
+> - **Saneamiento del descriptor Maven:** Retirados `spring-boot-starter-thymeleaf` y `spring-boot-starter-thymeleaf-test` de `Backend/digital-fit/pom.xml`. Se preserva `spring-boot-starter-actuator` para las comprobaciones de salud en `/actuator/health` empleadas por Docker Compose.
+> - **Verificaciones:** Suite de regresión unitaria `ThymeleafAusenteTest` añadida para garantizar ausencia en el classpath; 80 tests de backend pasando en verde y compilación verificada.
+
 > **2026-11-08 (Fase 3/5 — Saneamiento Antislop de Portada `/inicio`):**
 > - **Eliminación de AI Slop y narrativa técnica:** Eliminadas métricas de marketing inventadas y textos vacíos en la portada principal. Sustituidas por indicadores técnicos reales (10 rutinas base, OpenStreetMap con Overpass API, cronómetro en vivo y código abierto sin cuotas).
 > - **Sustitución de emojis por iconografía SVG técnica:** Suprimidos todos los emojis decorativos en las tarjetas, categorías del mapa y barra de usuario, reemplazándolos por iconos vectoriales SVG limpios y consistentes con la estética industrial.
