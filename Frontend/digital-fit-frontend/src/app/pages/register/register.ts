@@ -1,21 +1,48 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
+import {
+  AlertComponent,
+  BadgeComponent,
+  ButtonComponent,
+  CardComponent,
+  InputDirective,
+} from '../../components/ui';
 import { AuthService } from '../../services/auth-service';
+import { I18nService } from '../../i18n/i18n.service';
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, RouterLink, HeaderComponent, Footer],
+  imports: [
+    FormsModule,
+    RouterLink,
+    HeaderComponent,
+    Footer,
+    CardComponent,
+    BadgeComponent,
+    ButtonComponent,
+    InputDirective,
+    AlertComponent,
+  ],
   templateUrl: './register.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './register.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef);
+  readonly i18n = inject(I18nService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   username = '';
   email = '';
@@ -23,65 +50,73 @@ export class RegisterComponent {
 
   cargando = false;
 
-  mostrarPopup = false;
-  textoPopup = '';
-  tipoPopup: 'exito' | 'error' = 'exito';
-  private popupTimeout: any;
+  readonly alerta = signal<{ texto: string; tipo: 'exito' | 'error' } | null>(null);
+  private alertaTimeout: ReturnType<typeof setTimeout> | null = null;
 
   registrar(): void {
-    if (!this.username.trim() || !this.email.trim() || !this.password.trim()) {
-      this.abrirPopup('Debes completar todos los campos.', 'error');
+    const usuarioLimpio = this.username.trim();
+    const emailLimpio = this.email.trim();
+    const passwordLimpia = this.password.trim();
+
+    if (!usuarioLimpio || !emailLimpio || !passwordLimpia) {
+      this.mostrarAlerta(this.i18n.t().auth.errorCamposObligatorios, 'error');
+      return;
+    }
+
+    if (!EMAIL_REGEX.test(emailLimpio)) {
+      this.mostrarAlerta(this.i18n.t().auth.errorEmailInvalido, 'error');
+      return;
+    }
+
+    if (passwordLimpia.length < 6) {
+      this.mostrarAlerta(this.i18n.t().auth.errorContrasenaCorta, 'error');
       return;
     }
 
     const nuevoUsuario = {
-      username: this.username,
-      email: this.email,
-      password: this.password,
+      username: usuarioLimpio,
+      email: emailLimpio,
+      password: passwordLimpia,
     };
 
     this.cargando = true;
+    this.cerrarAlerta();
 
     this.authService.registrar(nuevoUsuario).subscribe({
       next: () => {
-        this.abrirPopup('Usuario registrado correctamente.', 'exito');
+        this.mostrarAlerta(this.i18n.t().auth.exitoRegistro, 'exito');
         this.cargando = false;
 
         this.username = '';
         this.email = '';
         this.password = '';
-
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
 
         setTimeout(() => {
           this.router.navigate(['/login']);
-        }, 1000);
+        }, 800);
       },
       error: () => {
         this.cargando = false;
-        this.abrirPopup('No se pudo registrar el usuario.', 'error');
+        this.mostrarAlerta(this.i18n.t().auth.errorRegistro, 'error');
+        this.cdr.markForCheck();
       },
     });
   }
 
-  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
-    this.textoPopup = texto;
-    this.tipoPopup = tipo;
-    this.mostrarPopup = true;
-    this.cdr.detectChanges();
-
-    if (this.popupTimeout) {
-      clearTimeout(this.popupTimeout);
+  mostrarAlerta(texto: string, tipo: 'exito' | 'error'): void {
+    if (this.alertaTimeout) {
+      clearTimeout(this.alertaTimeout);
     }
-
-    this.popupTimeout = setTimeout(() => {
-      this.mostrarPopup = false;
-      this.cdr.detectChanges();
-    }, 3000);
+    this.alerta.set({ texto, tipo });
+    this.alertaTimeout = setTimeout(() => this.cerrarAlerta(), 4500);
   }
 
-  cerrarPopup(): void {
-    this.mostrarPopup = false;
-    this.cdr.detectChanges();
+  cerrarAlerta(): void {
+    if (this.alertaTimeout) {
+      clearTimeout(this.alertaTimeout);
+      this.alertaTimeout = null;
+    }
+    this.alerta.set(null);
   }
 }

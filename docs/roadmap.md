@@ -93,7 +93,7 @@ Aceptación: tests de backend en verde (con PostgreSQL o Testcontainers), permis
 
 Dependencias: 3.4 y los endpoints de la fase 4 que use cada recorrido.
 
-Recorridos, en este orden: **acceso** (login, registro, sesión) → **entrenamientos** (catálogo, mis entrenamientos, comunidad, historial) → **lugares** (centros privados, lugares públicos, mapa) → **progreso** (estadísticas, valoraciones) → **soporte y administración**.
+Recorridos, en este orden: **acceso** (login, registro, sesión — **Hecho 2026-11-08**) → **entrenamientos** (catálogo, mis entrenamientos, comunidad, historial) → **lugares** (centros privados, lugares públicos, mapa) → **progreso** (estadísticas, valoraciones) → **soporte y administración**.
 
 Para cada recorrido [P]: modelos tipados sin `any` (P7), interceptor HTTP común, estados de carga/error/vacío/éxito, accesibilidad, revisión antislop y de UI, tests de lo que tenga lógica.
 

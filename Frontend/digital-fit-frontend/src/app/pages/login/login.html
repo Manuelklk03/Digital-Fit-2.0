@@ -1,54 +1,117 @@
-<app-header></app-header>
+<app-header />
 
-<main class="zona-login">
+<main class="zona-login" id="contenido-principal">
+  <div class="login-wrapper">
 
-  @if (mostrarPopup) {
-  <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'" [class.popup-exito]="tipoPopup === 'exito'">
-    <span>{{ textoPopup }}</span>
-    <button type="button" class="boton-cerrar-popup" (click)="cerrarPopup()">×</button>
+    @if (alerta(); as a) {
+      <app-alert [tipo]="a.tipo" (cerrar)="cerrarAlerta()">
+        {{ a.texto }}
+      </app-alert>
+    }
+
+    <app-card class="tarjeta-login">
+      <header class="cabecera-login">
+        <app-badge variant="primary" badgeStyle="subtle" [dot]="true">
+          {{ i18n.t().auth.loginBadge }}
+        </app-badge>
+
+        <div class="emblema-deportivo" aria-hidden="true">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="emblema-icono">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </div>
+
+        <h1 class="titulo-login">{{ i18n.t().auth.loginTitulo }}</h1>
+        <p class="subtitulo-login">{{ i18n.t().auth.loginSubtitulo }}</p>
+      </header>
+
+      <form class="formulario-login" (ngSubmit)="iniciarSesion()" novalidate>
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="usuario">
+            {{ i18n.t().auth.usuarioLabel }}
+          </label>
+          <input
+            df-input
+            id="usuario"
+            name="usuario"
+            type="text"
+            autocomplete="username"
+            [(ngModel)]="username"
+            required
+            [placeholder]="i18n.t().auth.usuarioPlaceholder"
+            [disabled]="cargando"
+          />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="contrasena">
+            {{ i18n.t().auth.contrasenaLabel }}
+          </label>
+          <input
+            df-input
+            id="contrasena"
+            name="contrasena"
+            type="password"
+            autocomplete="current-password"
+            [(ngModel)]="password"
+            required
+            [placeholder]="i18n.t().auth.contrasenaPlaceholder"
+            [disabled]="cargando"
+          />
+        </div>
+
+        <button
+          df-button
+          variant="primary"
+          size="lg"
+          type="submit"
+          [loading]="cargando"
+          [disabled]="cargando"
+          class="boton-submit"
+        >
+          {{ cargando ? i18n.t().auth.botonEntrando : i18n.t().auth.botonEntrar }}
+        </button>
+      </form>
+
+      <!-- Panel de credenciales demo para evaluadores del portfolio -->
+      <section class="panel-demo" aria-labelledby="titulo-demo">
+        <div class="cabecera-demo">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="icono-demo" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span id="titulo-demo" class="titulo-demo">{{ i18n.t().auth.demoTitulo }}</span>
+        </div>
+        <p class="descripcion-demo">{{ i18n.t().auth.demoClickLlenar }}</p>
+        <div class="demo-botones">
+          <button
+            type="button"
+            class="boton-demo"
+            (click)="cargarCredencialesDemo('user')"
+            [disabled]="cargando"
+          >
+            <span class="demo-rol">{{ i18n.t().auth.demoUsuario }}</span>
+            <code class="demo-credencial">usuario1</code>
+          </button>
+          <button
+            type="button"
+            class="boton-demo"
+            (click)="cargarCredencialesDemo('admin')"
+            [disabled]="cargando"
+          >
+            <span class="demo-rol">{{ i18n.t().auth.demoAdmin }}</span>
+            <code class="demo-credencial">admin1</code>
+          </button>
+        </div>
+      </section>
+
+      <footer class="pie-login">
+        <p class="texto-pie">
+          {{ i18n.t().auth.sinCuenta }}
+          <a routerLink="/register" class="enlace-registro">{{ i18n.t().auth.enlaceRegistro }}</a>
+        </p>
+      </footer>
+    </app-card>
   </div>
-  }
-
-  <section class="caja-login">
-
-    <div class="bloque-superior">
-      <div class="insignia-login">Acceso</div>
-      <img src="img/usuario.png" alt="Icono de usuario" class="icono-usuario">
-      <h1 class="titulo-login">Iniciar sesión</h1>
-      <p class="texto-secundario">
-        Accede a tu cuenta para entrar en tu panel de Digital-FIT.
-      </p>
-    </div>
-
-    <form class="formulario-login" (ngSubmit)="iniciarSesion()">
-
-      <div class="grupo-campo">
-        <label class="texto-etiqueta" for="usuario">Nombre de usuario</label>
-        <input class="campo-texto" type="text" id="usuario" name="usuario" [(ngModel)]="username" required
-          placeholder="Introduce tu nombre de usuario">
-      </div>
-
-      <div class="grupo-campo">
-        <label class="texto-etiqueta" for="contrasena">Contraseña</label>
-        <input class="campo-texto" type="password" id="contrasena" name="contrasena" [(ngModel)]="password" required
-          placeholder="Introduce tu contraseña">
-      </div>
-
-      <button class="boton-acceder" type="submit" [disabled]="cargando">
-        @if (cargando) {
-        Entrando...
-        } @else {
-        Iniciar sesión
-        }
-      </button>
-
-      <p class="texto-registro">
-        ¿No tienes cuenta?
-        <a routerLink="/register">Regístrate</a>
-      </p>
-    </form>
-
-  </section>
 </main>
 
-<app-footer></app-footer>
+<app-footer />

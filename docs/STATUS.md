@@ -1,6 +1,13 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-06**.
+Última actualización: **2026-11-08**.
+
+> **2026-11-08 (Fase 5, Recorrido 1 — Acceso: Login y Registro):**
+> - **Rediseño estético Neutral Sport / Industrial:** Modernizadas las vistas `/login` y `/register` utilizando los componentes reutilizables OnPush (`CardComponent`, `BadgeComponent`, `InputDirective`, `ButtonComponent`). Eliminados los fondos con degradados heredados de v1, los popups flotantes con temporizador y las imágenes estáticas (`img/usuario.png`).
+> - **Acceso rápido para evaluadores:** Incorporado panel accesible en `/login` para rellenar de forma inmediata con un clic las credenciales de demostración (`usuario1` / `admin1`), facilitando la navegación de evaluadores y portfolio.
+> - **Validaciones y accesibilidad:** Implementadas validaciones de frontend en `/register` (patrón de email válido, mínimo 6 caracteres en contraseña y campos obligatorios), avisos inline accesibles (`role="alert"`, `aria-live="polite"`), etiquetas semánticas y atributos de autocompletado estándar (`autocomplete="username"`, `current-password`, `new-password`).
+> - **Internacionalización completa:** Añadida sección `auth` al diccionario tipado `DiccionarioTraduccion` con soporte completo en español, valenciano, inglés y francés.
+> - **Verificaciones:** 58/58 suites de tests (118 tests unitarios) en verde en el frontend (+10 tests nuevos en `login.spec.ts` y `register.spec.ts`), 0 errores de ESLint y compilación de producción validada.
 
 > **2026-11-06 (Fase 4, Tareas 4.4 y 4.5 — Flyway, resolución P4/D3 y usuarios de demo):**
 > - **Migraciones versionadas con Flyway (D3, P4):** Incorporado Flyway con PostgreSQL 17 (`V1__esquema_inicial.sql` con DDL completo, `V2__catalogos_base.sql` con los catálogos inmutables de entrenamientos, centros y lugares públicos base, y `V3__usuarios_demo.sql` con usuarios de prueba). Retirado `data.sql` legacy y configurado `ddl-auto=validate` en producción.

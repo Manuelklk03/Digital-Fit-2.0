@@ -71,4 +71,38 @@ export interface DiccionarioTraduccion {
     guardar: string;
     cancelar: string;
   };
+  auth: {
+    loginBadge: string;
+    loginTitulo: string;
+    loginSubtitulo: string;
+    usuarioLabel: string;
+    usuarioPlaceholder: string;
+    contrasenaLabel: string;
+    contrasenaPlaceholder: string;
+    botonEntrar: string;
+    botonEntrando: string;
+    sinCuenta: string;
+    enlaceRegistro: string;
+    demoTitulo: string;
+    demoUsuario: string;
+    demoAdmin: string;
+    demoClickLlenar: string;
+    errorCamposObligatorios: string;
+    errorCredenciales: string;
+    errorSesion: string;
+    exitoLogin: string;
+    registroBadge: string;
+    registroTitulo: string;
+    registroSubtitulo: string;
+    emailLabel: string;
+    emailPlaceholder: string;
+    botonRegistrar: string;
+    botonRegistrando: string;
+    conCuenta: string;
+    enlaceLogin: string;
+    errorEmailInvalido: string;
+    errorContrasenaCorta: string;
+    errorRegistro: string;
+    exitoRegistro: string;
+  };
 }

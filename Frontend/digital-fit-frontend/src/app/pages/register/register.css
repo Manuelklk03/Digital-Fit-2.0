@@ -1,187 +1,128 @@
-@keyframes aparecerFormulario {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .zona-registro {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 60px 20px 80px;
-    background:
-        radial-gradient(circle at top right, rgba(255,255,255,0.45), transparent 28%),
-        linear-gradient(180deg, var(--color-azul-fondo), #dceeff);
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px 64px;
+  background-color: var(--df-bg);
+  box-sizing: border-box;
 }
 
-.caja-registro {
-    background: linear-gradient(180deg, rgba(255,255,255,0.80), rgba(217,234,255,0.95));
-    padding: 40px;
-    border-radius: 28px;
-    width: 100%;
-    max-width: 470px;
-    box-shadow: 0px 18px 36px rgba(0, 0, 0, 0.14);
-    border: 1px solid rgba(183, 201, 239, 0.9);
-    animation: aparecerFormulario 0.8s ease forwards;
-    backdrop-filter: blur(6px);
+.registro-wrapper {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.bloque-superior {
-    text-align: center;
-    margin-bottom: 24px;
+/* Tarjeta principal */
+.tarjeta-registro {
+  padding: 32px 28px;
+  background-color: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: 20px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
 }
 
-.insignia-registro {
-    display: inline-block;
-    margin-bottom: 14px;
-    padding: 8px 16px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #eef6ff, #ffffff);
-    color: var(--color-azul-oscuro);
-    font-weight: bold;
-    font-size: 12px;
-    box-shadow: 0 8px 18px rgba(0,0,0,0.07);
+.cabecera-registro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 24px;
 }
 
-.caja-registro h1 {
-    margin-bottom: 10px;
-    text-align: center;
-    color: var(--color-azul-oscuro);
-    font-size: 32px;
+.emblema-deportivo {
+  margin: 14px 0 10px;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background-color: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--df-accent);
 }
 
-.texto-secundario {
-    margin: 0;
-    line-height: 1.7;
-    color: #455d76;
+.emblema-icono {
+  width: 28px;
+  height: 28px;
 }
 
+.titulo-registro {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--df-text);
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.subtitulo-registro {
+  font-size: 13px;
+  color: var(--df-text-muted);
+  margin: 0;
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+/* Formulario */
 .formulario-registro {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .grupo-campo {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
 }
 
-.grupo-campo label {
-    font-weight: bold;
-    color: var(--color-azul-oscuro);
+.etiqueta-campo {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--df-text);
 }
 
-.grupo-campo input {
-    padding: 14px;
-    border-radius: 14px;
-    border: 1px solid #b7d0f1;
-    transition: 0.25s ease;
-    background: white;
-    font-size: 15px;
+.pista-campo {
+  font-size: 11px;
+  color: var(--df-text-subtle);
+  margin-top: 2px;
 }
 
-.grupo-campo input:focus {
-    outline: none;
-    border-color: var(--color-azul);
-    box-shadow: 0 0 0 4px rgba(60,145,230,0.15);
+.boton-submit {
+  width: 100%;
+  margin-top: 8px;
 }
 
-.boton-principal {
-    margin-top: 10px;
-    padding: 14px;
-    border-radius: 14px;
-    border: none;
-    background: linear-gradient(135deg, var(--color-azul-oscuro), #2f6cac);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.25s ease;
-    box-shadow: 0 12px 20px rgba(26, 79, 135, 0.16);
+/* Pie */
+.pie-registro {
+  margin-top: 24px;
+  text-align: center;
 }
 
-.boton-principal:hover:not(:disabled) {
-    transform: translateY(-2px);
+.texto-pie {
+  font-size: 13px;
+  color: var(--df-text-muted);
+  margin: 0;
 }
 
-.boton-principal:disabled {
-    opacity: 0.75;
-    cursor: not-allowed;
+.enlace-login {
+  color: var(--df-primary);
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 4px;
 }
 
-.texto-login {
-    margin-top: 16px;
-    text-align: center;
-    line-height: 1.6;
+.enlace-login:hover {
+  text-decoration: underline;
 }
 
-.texto-login a {
-    color: var(--color-azul-oscuro);
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.popup-mensaje {
-    position: fixed;
-    top: 92px;
-    right: 20px;
-    z-index: 9999;
-    min-width: 280px;
-    max-width: 360px;
-    padding: 14px 16px;
-    border-radius: 14px;
-    color: white;
-    font-weight: bold;
-    box-shadow: 0px 14px 24px rgba(0, 0, 0, 0.18);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 14px;
-    animation: aparecerFormulario 0.3s ease;
-}
-
-.popup-exito {
-    background: linear-gradient(135deg, #1f7a37, #2aa14c);
-}
-
-.popup-error {
-    background: linear-gradient(135deg, #c62828, #df4343);
-}
-
-.boton-cerrar-popup {
-    border: none;
-    background: transparent;
-    color: white;
-    font-size: 22px;
-    cursor: pointer;
-    line-height: 1;
-}
-
-@media (max-width: 600px) {
-    .zona-registro {
-        padding: 40px 16px 70px;
-    }
-
-    .caja-registro {
-        padding: 28px 22px;
-    }
-
-    .caja-registro h1 {
-        font-size: 28px;
-    }
-
-    .popup-mensaje {
-        left: 16px;
-        right: 16px;
-        min-width: auto;
-        max-width: none;
-    }
+@media (max-width: 480px) {
+  .tarjeta-registro {
+    padding: 24px 20px;
+  }
 }
