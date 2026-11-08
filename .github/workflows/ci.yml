@@ -240,3 +240,13 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=${{ matrix.imagen }}
           cache-to: type=gha,mode=max,scope=${{ matrix.imagen }}
+
+      # Notifica al backend en Render mediante su deploy hook (tarea 1B.5).
+      # Se ejecuta tras publicar la imagen del backend en merges a main y se omite
+      # de forma limpia mientras el secreto RENDER_DEPLOY_HOOK no exista.
+      - name: Notificar deploy hook en Render (backend)
+        if: matrix.imagen == 'backend' && github.ref == 'refs/heads/main' && secrets.RENDER_DEPLOY_HOOK != ''
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          curl -fsS -X POST "$RENDER_DEPLOY_HOOK"
