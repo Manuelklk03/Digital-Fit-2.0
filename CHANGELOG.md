@@ -8,6 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Revisión y saneamiento **antislop** integral de la portada `/inicio`: sustitución de métricas y textos artificiales por datos verificables del sistema (catálogo de 10 rutinas, Overpass API, cronómetro en vivo y código libre), eliminación de emojis decorativos en favor de iconos técnicos SVG y unificación de tarjetas hacia las tres áreas nucleares de la plataforma.
+- Componente de alerta reutilizable `AlertComponent` (`app-alert`) en `src/app/components/ui/alert` con soporte para variantes de éxito, error e información, accesibilidad WCAG AAA y atributos ARIA completos.
 - Rediseño visual del recorrido de **Acceso (Login y Registro)** en la fase 5 bajo el sistema de diseño Neutral Sport / Industrial, integrando `CardComponent`, `BadgeComponent`, `InputDirective` y `ButtonComponent`.
 - Panel accesible con credenciales de prueba en `/login` para evaluadores y pruebas de demostración (`usuario1` / `admin1`).
 - Validaciones accesibles en `/register` (formato de correo electrónico, longitud mínima de contraseña de 6 caracteres y campos obligatorios) con avisos inline `role="alert"`.
