@@ -29,6 +29,39 @@ Al arrancar, Flyway aplica automáticamente las migraciones versionadas (`V1__es
 
 Consultar la base de datos: `docker exec -it digital-fit-postgres psql -U digitalfit -d digital_fit`.
 
+### 1.1 Ejecución con imágenes publicadas de producción (`docker-compose.prod.yml`)
+
+Para desplegar la aplicación utilizando las imágenes inmutables publicadas en Docker Hub en lugar de compilar el código fuente localmente:
+
+```bash
+# Validar la configuración
+docker compose -f docker-compose.prod.yml config
+
+# Arrancar los contenedores en segundo plano
+docker compose -f docker-compose.prod.yml up -d
+
+# Consultar el estado y las sondas de salud
+docker compose -f docker-compose.prod.yml ps
+
+# Parar la aplicación conservando el volumen de datos
+docker compose -f docker-compose.prod.yml down
+```
+
+**Variables de entorno configurables (ficticias, sin secretos en el repositorio):**
+
+| Variable | Valor por defecto | Descripción |
+|---|---|---|
+| `DB_USERNAME` | `digitalfit` | Usuario de PostgreSQL |
+| `DB_PASSWORD` | `digitalfit` | Contraseña de PostgreSQL (definir valor seguro en despliegue) |
+| `DB_PORT` | `5433` | Puerto expuesto para el contenedor de PostgreSQL |
+| `BACKEND_PORT` | `8080` | Puerto expuesto para la API de Spring Boot |
+| `FRONTEND_PORT` | `80` | Puerto expuesto para el contenedor de frontend (nginx) |
+| `SPRING_PROFILES_ACTIVE` | `prod` | Perfil activo de Spring Boot (`ddl-auto=validate`, logs en INFO) |
+| `SESSION_COOKIE_SECURE` | `true` | Exige flag `Secure` en cookies de sesión sobre HTTPS |
+| `CORS_ALLOWED_ORIGINS` | `https://digitalfit.example.com` | Origen web autorizado para CORS en producción |
+
+Las imágenes utilizadas son `manuelklk03/digital-fit-backend:latest` y `manuelklk03/digital-fit-frontend:latest`, publicadas automáticamente por la CI en cada push a `main`. El arranque respeta el orden estricto de disponibilidad mediante `service_healthy`.
+
 ## 2. Ejecución local sin Docker
 
 Requisitos: JDK 25, Node.js `^22.22.3`, `^24.15.0` o `>=26` (lo exige Angular CLI 22) con npm y PostgreSQL en marcha. Lo más sencillo es levantar solo la base con Compose: `docker compose up -d postgres`.

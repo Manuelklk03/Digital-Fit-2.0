@@ -8,6 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Orquestador de producción `docker-compose.prod.yml` que utiliza las imágenes inmutables de Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`) en lugar de compilación local, preservando sondas de salud (`/actuator/health`), sincronización con `service_healthy` y parametrización por entorno para cookies seguras, CORS y perfil `prod` (tarea 1B.6).
 - Paso opcional de notificación de *deploy hook* a Render tras la publicación de la imagen del backend en Docker Hub en `.github/workflows/ci.yml`. Condicionado al secreto `RENDER_DEPLOY_HOOK`, omitiéndose limpiamente sin fallos mientras no esté configurado (tarea 1B.5, D9).
 - Revisión y saneamiento **antislop** integral de la portada `/inicio`: sustitución de métricas y textos artificiales por datos verificables del sistema (catálogo de 10 rutinas, Overpass API, cronómetro en vivo y código libre), eliminación de emojis decorativos en favor de iconos técnicos SVG y unificación de tarjetas hacia las tres áreas nucleares de la plataforma.
 - Componente de alerta reutilizable `AlertComponent` (`app-alert`) en `src/app/components/ui/alert` con soporte para variantes de éxito, error e información, accesibilidad WCAG AAA y atributos ARIA completos.
