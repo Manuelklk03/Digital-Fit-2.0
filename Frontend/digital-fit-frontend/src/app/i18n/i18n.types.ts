@@ -40,9 +40,10 @@ export interface DiccionarioTraduccion {
     heroSubtitulo: string;
     ctaEmpezar: string;
     ctaExplorar: string;
-    metricasActivos: string;
+    metricasRutinas: string;
     metricasInstalaciones: string;
-    metricasLatencia: string;
+    metricasEnVivo: string;
+    metricasCodigoLibre: string;
     seccionAsistenteTitulo: string;
     seccionAsistenteDesc: string;
     ejercicioActual: string;
@@ -63,6 +64,14 @@ export interface DiccionarioTraduccion {
     instalacionCalistenia: string;
     instalacionPiscina: string;
     instalacionPolideportivo: string;
+    tarjeta1Titulo: string;
+    tarjeta1Desc: string;
+    tarjeta2Titulo: string;
+    tarjeta2Desc: string;
+    tarjeta3Titulo: string;
+    tarjeta3Desc: string;
+    ctaFinalTitulo: string;
+    ctaFinalDesc: string;
   };
   comun: {
     cargando: string;
