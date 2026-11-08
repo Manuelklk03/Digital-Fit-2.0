@@ -2,6 +2,11 @@
 
 Última actualización: **2026-11-08**.
 
+> **2026-11-08 (Fase 1B, Tarea 1B.5 — Deploy hook en CI para Render):**
+> - **Automatización de despliegue continuo (D9):** Añadido paso condicional en `.github/workflows/ci.yml` tras la publicación de la imagen `digital-fit-backend` en Docker Hub para invocar el *deploy hook* de Render vía petición POST segura con `curl`.
+> - **Tolerancia a ausencia de credenciales:** El paso se activa únicamente en merge a `main` cuando el secreto `RENDER_DEPLOY_HOOK` está definido, omitiéndose limpiamente sin romper la canalización de CI mientras el despliegue público no esté provisionado.
+> - **Verificaciones:** Suite unitaria `CiWorkflowTest` validando sintaxis, filtros de ejecución condicional y garantía de no exposición de secretos.
+
 > **2026-11-08 (Fase 4, Tarea 4.9 — Retirada de dependencias Thymeleaf sin uso):**
 > - **Saneamiento del descriptor Maven:** Retirados `spring-boot-starter-thymeleaf` y `spring-boot-starter-thymeleaf-test` de `Backend/digital-fit/pom.xml`. Se preserva `spring-boot-starter-actuator` para las comprobaciones de salud en `/actuator/health` empleadas por Docker Compose.
 > - **Verificaciones:** Suite de regresión unitaria `ThymeleafAusenteTest` añadida para garantizar ausencia en el classpath; 80 tests de backend pasando en verde y compilación verificada.
