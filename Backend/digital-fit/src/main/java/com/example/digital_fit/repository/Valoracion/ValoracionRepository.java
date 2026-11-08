@@ -3,6 +3,9 @@ package com.example.digital_fit.repository.Valoracion;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +21,14 @@ public interface ValoracionRepository extends JpaRepository<Valoracion, Long> {
 
         List<Valoracion> findByTipoDeValoracionAndIdRelacionado(TipoDeValoracion tipoDeValoracion, Long idRelacionado);
 
+        @EntityGraph(attributePaths = {"usuario"})
+        Page<Valoracion> findByTipoDeValoracionAndIdRelacionado(TipoDeValoracion tipoDeValoracion, Long idRelacionado,
+                        Pageable pageable);
+
         List<Valoracion> findByUsuario(Usuario usuario);
+
+        @EntityGraph(attributePaths = {"usuario"})
+        Page<Valoracion> findByUsuario(Usuario usuario, Pageable pageable);
 
         Optional<Valoracion> findByUsuarioAndTipoDeValoracionAndIdRelacionado(
                         Usuario usuario,
@@ -26,4 +36,7 @@ public interface ValoracionRepository extends JpaRepository<Valoracion, Long> {
                         Long idRelacionado);
 
         List<Valoracion> findByTipoDeValoracionInOrderByFechaDesc(List<TipoDeValoracion> tipos);
+
+        @EntityGraph(attributePaths = {"usuario"})
+        Page<Valoracion> findByTipoDeValoracionIn(List<TipoDeValoracion> tipos, Pageable pageable);
 }

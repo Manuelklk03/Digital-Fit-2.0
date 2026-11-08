@@ -6,15 +6,19 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoBaseDTO;
 import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
+import com.example.digital_fit.dto.Comun.PaginaResponse;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.CentroPrivado.CentroPrivadoBase;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoBaseRepository;
 import com.example.digital_fit.util.LogSanitizer;
+import com.example.digital_fit.util.PaginacionUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -25,6 +29,30 @@ public class CentroPrivadoBaseService {
     private CentroPrivadoBaseRepository centroPrivadoBaseRepository;
 
     private static final Logger log = LoggerFactory.getLogger(CentroPrivadoBaseService.class);
+
+    public PaginaResponse<CentroPrivadoBaseDTO> listarOFiltrarPaginado(
+            String nombre,
+            String direccion,
+            Double precioMensual,
+            Pageable pageable) {
+
+        log.debug("Listando centros privados con paginación");
+
+        Pageable paginacion = PaginacionUtil.normalizar(pageable);
+        Page<CentroPrivadoBase> pagina;
+
+        if (nombre != null) {
+            pagina = centroPrivadoBaseRepository.findByNombreContainingIgnoreCase(nombre, paginacion);
+        } else if (direccion != null) {
+            pagina = centroPrivadoBaseRepository.findByDireccionContainingIgnoreCase(direccion, paginacion);
+        } else if (precioMensual != null) {
+            pagina = centroPrivadoBaseRepository.findByPrecioMensualLessThanEqual(precioMensual, paginacion);
+        } else {
+            pagina = centroPrivadoBaseRepository.findAll(paginacion);
+        }
+
+        return PaginaResponse.de(pagina, this::entityToDto);
+    }
 
     public List<CentroPrivadoBaseDTO> listarOFiltrar(String nombre, String direccion, Double precioMensual) {
 

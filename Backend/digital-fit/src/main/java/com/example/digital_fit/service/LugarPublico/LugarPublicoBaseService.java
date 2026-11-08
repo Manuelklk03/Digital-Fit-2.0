@@ -6,8 +6,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.digital_fit.dto.Comun.PaginaResponse;
 import com.example.digital_fit.dto.LugarPublico.CrearLugarPublicoDTO;
 import com.example.digital_fit.dto.LugarPublico.LugarPublicoBaseDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;
@@ -16,6 +19,7 @@ import com.example.digital_fit.model.Enums.TipoLugarPublico;
 import com.example.digital_fit.model.LugarPublico.LugarPublicoBase;
 import com.example.digital_fit.repository.LugarPublico.LugarPublicoBaseRepository;
 import com.example.digital_fit.util.LogSanitizer;
+import com.example.digital_fit.util.PaginacionUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -26,6 +30,30 @@ public class LugarPublicoBaseService {
     private LugarPublicoBaseRepository lugarPublicoBaseRepository;
 
     private static final Logger log = LoggerFactory.getLogger(LugarPublicoBaseService.class);
+
+    public PaginaResponse<LugarPublicoBaseDTO> listarOFiltrarPaginado(
+            String nombre,
+            String direccion,
+            TipoLugarPublico tipo,
+            Pageable pageable) {
+
+        log.debug("Listando lugares publicos de la app con paginación");
+
+        Pageable paginacion = PaginacionUtil.normalizar(pageable);
+        Page<LugarPublicoBase> pagina;
+
+        if (nombre != null) {
+            pagina = lugarPublicoBaseRepository.findByNombreContainingIgnoreCase(nombre, paginacion);
+        } else if (direccion != null) {
+            pagina = lugarPublicoBaseRepository.findByDireccionContainingIgnoreCase(direccion, paginacion);
+        } else if (tipo != null) {
+            pagina = lugarPublicoBaseRepository.findByTipo(tipo, paginacion);
+        } else {
+            pagina = lugarPublicoBaseRepository.findAll(paginacion);
+        }
+
+        return PaginaResponse.de(pagina, this::entityToDto);
+    }
 
     public List<LugarPublicoBaseDTO> listarOFiltrar(String nombre, String direccion, TipoLugarPublico tipo) {
 

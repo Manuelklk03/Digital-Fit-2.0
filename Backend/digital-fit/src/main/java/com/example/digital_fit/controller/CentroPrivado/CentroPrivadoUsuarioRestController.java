@@ -3,6 +3,8 @@ package com.example.digital_fit.controller.CentroPrivado;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.digital_fit.dto.CentroPrivado.AutocompletarCentroPrivadoDTO;
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
 import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
+import com.example.digital_fit.dto.Comun.PaginaResponse;
 import com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService;
 import com.example.digital_fit.service.CentroPrivado.CentroPrivadoUsuarioService;
 
@@ -35,14 +38,15 @@ public class CentroPrivadoUsuarioRestController {
     private AutocompletadoCentroPrivadoService autocompletadoCentroPrivadoService;
 
     @GetMapping
-    public ResponseEntity<List<CentroPrivadoUsuarioDTO>> listar(Authentication authentication,
+    public ResponseEntity<PaginaResponse<CentroPrivadoUsuarioDTO>> listar(Authentication authentication,
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String direccion,
-            @RequestParam(required = false) Double precioMensual) {
+            @RequestParam(required = false) Double precioMensual,
+            @PageableDefault(page = 0, size = 20) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(centroPrivadoUsuarioService.listarOFiltrar(
-                        authentication.getName(), nombre, direccion, precioMensual));
+                .body(centroPrivadoUsuarioService.listarOFiltrarPaginado(
+                        authentication.getName(), nombre, direccion, precioMensual, pageable));
     }
 
     @GetMapping("/{id}")
