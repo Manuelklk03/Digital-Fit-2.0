@@ -7,8 +7,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoComunidadDTO;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;
@@ -19,6 +23,7 @@ import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
 import com.example.digital_fit.model.Enums.NivelEntrenamiento;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoComunidadRepository;
+import com.example.digital_fit.util.PaginacionUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -32,6 +37,33 @@ public class EntrenamientoComunidadService {
     private UsuarioRepository usuarioRepository;
 
     private static final Logger log = LoggerFactory.getLogger(EntrenamientoComunidadService.class);
+
+    public PaginaResponse<EntrenamientoComunidadDTO> listarOFiltrarPaginado(
+            CategoriaEntrenamientoComunidad categoria,
+            NivelEntrenamiento nivel,
+            Integer duracionEnMinutos,
+            String nombre,
+            Pageable pageable) {
+
+        log.debug("Listando entrenamientos comunidad con paginación");
+
+        Pageable paginacion = PaginacionUtil.normalizar(pageable, Sort.by(Sort.Direction.DESC, "fechaPublicacion"));
+        Page<EntrenamientoComunidad> pagina;
+
+        if (categoria != null) {
+            pagina = entrenamientoComunidadRepository.findByCategoria(categoria, paginacion);
+        } else if (nivel != null) {
+            pagina = entrenamientoComunidadRepository.findByNivel(nivel, paginacion);
+        } else if (duracionEnMinutos != null) {
+            pagina = entrenamientoComunidadRepository.findByDuracionEnMinutosLessThanEqual(duracionEnMinutos, paginacion);
+        } else if (nombre != null) {
+            pagina = entrenamientoComunidadRepository.findByNombreContainingIgnoreCase(nombre, paginacion);
+        } else {
+            pagina = entrenamientoComunidadRepository.findAllConUsuario(paginacion);
+        }
+
+        return PaginaResponse.de(pagina, this::entityToDto);
+    }
 
     public List<EntrenamientoComunidadDTO> listarOFiltrar(CategoriaEntrenamientoComunidad categoria,
             NivelEntrenamiento nivel, Integer duracionEnMinutos, String nombre) {

@@ -7,8 +7,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoHistorialDTO;
 import com.example.digital_fit.dto.Entrenamientos.HistorialEntrenamientosDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;
@@ -29,6 +33,7 @@ import com.example.digital_fit.repository.Entrenamientos.EntrenamientoUsuarioRep
 import com.example.digital_fit.repository.Entrenamientos.HistorialEntrenamientosRepository;
 import com.example.digital_fit.repository.LugarPublico.LugarPublicoBaseRepository;
 import com.example.digital_fit.repository.LugarPublico.LugarPublicoUsuarioRepository;
+import com.example.digital_fit.util.PaginacionUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -60,6 +65,33 @@ public class HistorialEntrenamientosService {
     private CentroPrivadoUsuarioRepository centroPrivadoUsuarioRepository;
 
     private static final Logger log = LoggerFactory.getLogger(HistorialEntrenamientosService.class);
+
+    public PaginaResponse<HistorialEntrenamientosDTO> listarOFiltrarHistorialPaginado(
+            String username,
+            Integer duracionEnMinutos,
+            LocalDateTime fecha,
+            Pageable pageable) {
+
+        log.info("Listar historial de entrenamientos con paginación");
+
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        Pageable paginacion = PaginacionUtil.normalizar(pageable, Sort.by(Sort.Direction.DESC, "fechaHora"));
+        Page<HistorialEntrenamientos> pagina;
+
+        if (duracionEnMinutos != null) {
+            pagina = historialEntrenamientosRepository
+                    .findByUsuarioAndDuracionMinutosLessThanEqual(usuario, duracionEnMinutos, paginacion);
+        } else if (fecha != null) {
+            pagina = historialEntrenamientosRepository
+                    .findByUsuarioAndFechaHoraAfter(usuario, fecha, paginacion);
+        } else {
+            pagina = historialEntrenamientosRepository.findByUsuario(usuario, paginacion);
+        }
+
+        return PaginaResponse.de(pagina, this::entityToDto);
+    }
 
     // Listar filtrado
     public List<HistorialEntrenamientosDTO> listarOFiltrarHistorial(String username, Integer duracionEnMinutos,

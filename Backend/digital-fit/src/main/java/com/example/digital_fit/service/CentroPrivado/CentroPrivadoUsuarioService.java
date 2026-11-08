@@ -6,10 +6,13 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
 import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.exception.OperacionNoPermitida;
 import com.example.digital_fit.exception.RecursoNoEncontradoException;
 import com.example.digital_fit.model.Auth.Usuario;
@@ -18,6 +21,7 @@ import com.example.digital_fit.model.CentroPrivado.CentroPrivadoUsuario;
 import com.example.digital_fit.repository.Auth.UsuarioRepository;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoBaseRepository;
 import com.example.digital_fit.repository.CentroPrivado.CentroPrivadoUsuarioRepository;
+import com.example.digital_fit.util.PaginacionUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -34,6 +38,36 @@ public class CentroPrivadoUsuarioService {
     private UsuarioRepository usuarioRepository;
 
     private static final Logger log = LoggerFactory.getLogger(CentroPrivadoUsuarioService.class);
+
+    public PaginaResponse<CentroPrivadoUsuarioDTO> listarOFiltrarPaginado(
+            String username,
+            String nombre,
+            String direccion,
+            Double precioMensual,
+            Pageable pageable) {
+
+        log.debug("Listando centros privados al usuario {} con paginación", username);
+
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        Pageable paginacion = PaginacionUtil.normalizar(pageable);
+        Page<CentroPrivadoUsuario> pagina;
+
+        if (nombre != null) {
+            pagina = centroPrivadoUsuarioRepository.findVisiblesByUsuarioAndNombreContainingIgnoreCase(usuario, nombre, paginacion);
+        } else if (direccion != null) {
+            pagina = centroPrivadoUsuarioRepository
+                    .findVisiblesByUsuarioAndDireccionContainingIgnoreCase(usuario, direccion, paginacion);
+        } else if (precioMensual != null) {
+            pagina = centroPrivadoUsuarioRepository
+                    .findVisiblesByUsuarioAndPrecioMensualLessThanEqual(usuario, precioMensual, paginacion);
+        } else {
+            pagina = centroPrivadoUsuarioRepository.findVisiblesByUsuario(usuario, paginacion);
+        }
+
+        return PaginaResponse.de(pagina, this::entityToDto);
+    }
 
     public List<CentroPrivadoUsuarioDTO> listarOFiltrar(String username, String nombre, String direccion,
             Double precioMensual) {

@@ -1,8 +1,8 @@
 package com.example.digital_fit.controller.LugarPublico;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.dto.LugarPublico.AutocompletarLugarPublicoDTO;
 import com.example.digital_fit.dto.LugarPublico.CrearLugarPublicoDTO;
 import com.example.digital_fit.dto.LugarPublico.LugarPublicoUsuarioDTO;
@@ -35,13 +36,15 @@ public class LugarPublicoUsuarioRestController {
     private AutocompletadoLugarPublicoService autocompletadoLugarPublicoService;
 
     @GetMapping
-    public ResponseEntity<List<LugarPublicoUsuarioDTO>> listar(Authentication authentication,
+    public ResponseEntity<PaginaResponse<LugarPublicoUsuarioDTO>> listar(Authentication authentication,
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String direccion,
-            @RequestParam(required = false) TipoLugarPublico tipo) {
+            @RequestParam(required = false) TipoLugarPublico tipo,
+            @PageableDefault(page = 0, size = 20) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(lugarPublicoUsuarioService.listarOFiltrar(authentication.getName(), nombre, direccion, tipo));
+                .body(lugarPublicoUsuarioService.listarOFiltrarPaginado(
+                        authentication.getName(), nombre, direccion, tipo, pageable));
     }
 
     @GetMapping("/{id}")

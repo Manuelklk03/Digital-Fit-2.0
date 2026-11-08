@@ -8,6 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Paginación y ordenación en los listados de la API REST mediante Spring Data `Pageable` (`page`, `size` [por defecto 20, máximo 100], `sort`) y encapsulación en el DTO genérico `PaginaResponse<T>` (`content`, `page`, `size`, `totalElements`, `totalPages`), resolviendo la deuda técnica P6 y optimizando consultas N+1 con `@EntityGraph` en comunidad, historial y valoraciones (tarea 4.8).
 - Orquestador de producción `docker-compose.prod.yml` que utiliza las imágenes inmutables de Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`) en lugar de compilación local, preservando sondas de salud (`/actuator/health`), sincronización con `service_healthy` y parametrización por entorno para cookies seguras, CORS y perfil `prod` (tarea 1B.6).
 - Paso opcional de notificación de *deploy hook* a Render tras la publicación de la imagen del backend en Docker Hub en `.github/workflows/ci.yml`. Condicionado al secreto `RENDER_DEPLOY_HOOK`, omitiéndose limpiamente sin fallos mientras no esté configurado (tarea 1B.5, D9).
 - Revisión y saneamiento **antislop** integral de la portada `/inicio`: sustitución de métricas y textos artificiales por datos verificables del sistema (catálogo de 10 rutinas, Overpass API, cronómetro en vivo y código libre), eliminación de emojis decorativos en favor de iconos técnicos SVG y unificación de tarjetas hacia las tres áreas nucleares de la plataforma.

@@ -3,6 +3,8 @@ package com.example.digital_fit.repository.Entrenamientos;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,12 +32,30 @@ public interface EntrenamientoUsuarioRepository extends JpaRepository<Entrenamie
     @Query("""
             SELECT e FROM EntrenamientoUsuario e
             WHERE e.usuario = :usuario
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    Page<EntrenamientoUsuario> findVisiblesByUsuario(@Param("usuario") Usuario usuario, Pageable pageable);
+
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
             AND e.categoria = :categoria
             AND (e.activo IS NULL OR e.activo = true)
             """)
     List<EntrenamientoUsuario> findVisiblesByUsuarioAndCategoria(
             @Param("usuario") Usuario usuario,
             @Param("categoria") CategoriaEntrenamientoComunidad categoria);
+
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
+            AND e.categoria = :categoria
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    Page<EntrenamientoUsuario> findVisiblesByUsuarioAndCategoria(
+            @Param("usuario") Usuario usuario,
+            @Param("categoria") CategoriaEntrenamientoComunidad categoria,
+            Pageable pageable);
 
     @Query("""
             SELECT e FROM EntrenamientoUsuario e
@@ -50,6 +70,17 @@ public interface EntrenamientoUsuarioRepository extends JpaRepository<Entrenamie
     @Query("""
             SELECT e FROM EntrenamientoUsuario e
             WHERE e.usuario = :usuario
+            AND e.nivel = :nivel
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    Page<EntrenamientoUsuario> findVisiblesByUsuarioAndNivel(
+            @Param("usuario") Usuario usuario,
+            @Param("nivel") NivelEntrenamiento nivel,
+            Pageable pageable);
+
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
             AND e.duracionEnMinutos <= :duracionEnMinutos
             AND (e.activo IS NULL OR e.activo = true)
             """)
@@ -60,12 +91,34 @@ public interface EntrenamientoUsuarioRepository extends JpaRepository<Entrenamie
     @Query("""
             SELECT e FROM EntrenamientoUsuario e
             WHERE e.usuario = :usuario
+            AND e.duracionEnMinutos <= :duracionEnMinutos
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    Page<EntrenamientoUsuario> findVisiblesByUsuarioAndDuracionEnMinutosLessThanEqual(
+            @Param("usuario") Usuario usuario,
+            @Param("duracionEnMinutos") Integer duracionEnMinutos,
+            Pageable pageable);
+
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
             AND LOWER(e.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))
             AND (e.activo IS NULL OR e.activo = true)
             """)
     List<EntrenamientoUsuario> findVisiblesByUsuarioAndNombreContainingIgnoreCase(
             @Param("usuario") Usuario usuario,
             @Param("nombre") String nombre);
+
+    @Query("""
+            SELECT e FROM EntrenamientoUsuario e
+            WHERE e.usuario = :usuario
+            AND LOWER(e.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))
+            AND (e.activo IS NULL OR e.activo = true)
+            """)
+    Page<EntrenamientoUsuario> findVisiblesByUsuarioAndNombreContainingIgnoreCase(
+            @Param("usuario") Usuario usuario,
+            @Param("nombre") String nombre,
+            Pageable pageable);
 
     @Query("""
             SELECT e FROM EntrenamientoUsuario e

@@ -6,8 +6,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoUsuario;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoUsuarioDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;
@@ -22,6 +25,7 @@ import com.example.digital_fit.repository.Auth.UsuarioRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoBaseRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoComunidadRepository;
 import com.example.digital_fit.repository.Entrenamientos.EntrenamientoUsuarioRepository;
+import com.example.digital_fit.util.PaginacionUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -41,6 +45,40 @@ public class EntrenamientoUsuarioService {
     private UsuarioRepository usuarioRepository;
 
     private static final Logger log = LoggerFactory.getLogger(EntrenamientoUsuarioService.class);
+
+    public PaginaResponse<EntrenamientoUsuarioDTO> listarOFiltrarPaginado(
+            String username,
+            CategoriaEntrenamientoComunidad categoria,
+            NivelEntrenamiento nivel,
+            Integer duracionEnMinutos,
+            String nombre,
+            Pageable pageable) {
+
+        log.debug("Listando entrenamientos de usuario {} con paginación", username);
+
+        Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
+
+        Pageable paginacion = PaginacionUtil.normalizar(pageable);
+        Page<EntrenamientoUsuario> pagina;
+
+        if (categoria != null) {
+            pagina = entrenamientoUsuarioRepository.findVisiblesByUsuarioAndCategoria(usuario, categoria, paginacion);
+        } else if (nivel != null) {
+            pagina = entrenamientoUsuarioRepository.findVisiblesByUsuarioAndNivel(usuario, nivel, paginacion);
+        } else if (duracionEnMinutos != null) {
+            pagina = entrenamientoUsuarioRepository.findVisiblesByUsuarioAndDuracionEnMinutosLessThanEqual(
+                    usuario,
+                    duracionEnMinutos,
+                    paginacion);
+        } else if (nombre != null) {
+            pagina = entrenamientoUsuarioRepository.findVisiblesByUsuarioAndNombreContainingIgnoreCase(usuario, nombre, paginacion);
+        } else {
+            pagina = entrenamientoUsuarioRepository.findVisiblesByUsuario(usuario, paginacion);
+        }
+
+        return PaginaResponse.de(pagina, this::entityToDto);
+    }
 
     public List<EntrenamientoUsuarioDTO> listarOFiltrar(String username,
             CategoriaEntrenamientoComunidad categoria,

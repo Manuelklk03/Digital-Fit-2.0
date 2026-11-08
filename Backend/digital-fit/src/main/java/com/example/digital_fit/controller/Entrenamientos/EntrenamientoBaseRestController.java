@@ -1,8 +1,8 @@
 package com.example.digital_fit.controller.Entrenamientos;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoBaseDTO;
 import com.example.digital_fit.model.Enums.CategoriaEntrenamientoComunidad;
 import com.example.digital_fit.model.Enums.NivelEntrenamiento;
@@ -24,14 +25,15 @@ public class EntrenamientoBaseRestController {
     private EntrenamientoBaseService entrenamientoBaseService;
 
     @GetMapping
-    public ResponseEntity<List<EntrenamientoBaseDTO>> listarOFiltrar(
+    public ResponseEntity<PaginaResponse<EntrenamientoBaseDTO>> listarOFiltrar(
             @RequestParam(required = false) CategoriaEntrenamientoComunidad categoria,
             @RequestParam(required = false) NivelEntrenamiento nivel,
             @RequestParam(required = false) Integer duracionEnMinutos,
-            @RequestParam(required = false) String nombre) {
+            @RequestParam(required = false) String nombre,
+            @PageableDefault(page = 0, size = 20) Pageable pageable) {
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(entrenamientoBaseService.listarOFiltrar(categoria, nivel, duracionEnMinutos, nombre));
+                .body(entrenamientoBaseService.listarOFiltrarPaginado(categoria, nivel, duracionEnMinutos, nombre, pageable));
     }
 
     @GetMapping("/{id}")

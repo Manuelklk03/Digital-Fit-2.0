@@ -2,6 +2,12 @@
 
 Última actualización: **2026-11-09**.
 
+> **2026-11-09 (Fase 4, Tarea 4.8 — Paginación, ordenación y resolución N+1 en listados - P6):**
+> - **Contrato de API REST paginada y estable (P6):** Incorporado `Pageable` (`page`, `size` [por defecto 20, máximo 100], `sort`) en todos los controladores de colecciones (entrenamientos base, propios y de comunidad, historial, centros y lugares públicos base y de usuario, y valoraciones). Las respuestas se encapsulan en el DTO genérico `PaginaResponse<T>` (`content`, `page`, `size`, `totalElements`, `totalPages`), fijando un contrato inmutable para el frontend.
+> - **Optimización de consultas y resolución N+1:** Incorporado `@EntityGraph` en las consultas de `EntrenamientoComunidadRepository` (unión con autor), `HistorialEntrenamientosRepository` (unión de referencias de ubicación y rutinas) y `ValoracionRepository` (unión de usuarios autores), eliminando consultas N+1 en bucle.
+> - **Aislamiento y permisos:** Preservadas las validaciones de propiedad por usuario autenticado en los servicios; no se debilita ningún permiso de acceso.
+> - **Verificaciones:** Suite unitaria `PaginacionUtilTest` (5 tests), suite de integración WebMvc `PaginacionIntegrationTest` (5 tests) y suite de permisos `AislamientoRecursosUsuarioTest` (12 tests) pasando en verde. Total: 92 tests de backend en verde.
+
 > **2026-11-09 (Fase 1B, Tarea 1B.6 — Compose de producción con imágenes de Docker Hub):**
 > - **Orquestación para despliegues inmutables:** Creado `docker-compose.prod.yml` que utiliza directamente las imágenes construidas y firmadas en Docker Hub (`manuelklk03/digital-fit-backend:latest` y `manuelklk03/digital-fit-frontend:latest`) prescindiendo de compilación local en servidor.
 > - **Resiliencia y configuración de producción:** Preservadas las sondas de salud (`/actuator/health` en backend y `/` en frontend) y la coordinación estricta con `service_healthy`. Parametrizadas las variables `SPRING_PROFILES_ACTIVE=prod`, `SESSION_COOKIE_SECURE` y `CORS_ALLOWED_ORIGINS`. Documentado su uso en `docs/deployment.md`.
