@@ -1,6 +1,11 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-08**.
+Última actualización: **2026-11-09**.
+
+> **2026-11-09 (Fase 1B, Tarea 1B.6 — Compose de producción con imágenes de Docker Hub):**
+> - **Orquestación para despliegues inmutables:** Creado `docker-compose.prod.yml` que utiliza directamente las imágenes construidas y firmadas en Docker Hub (`manuelklk03/digital-fit-backend:latest` y `manuelklk03/digital-fit-frontend:latest`) prescindiendo de compilación local en servidor.
+> - **Resiliencia y configuración de producción:** Preservadas las sondas de salud (`/actuator/health` en backend y `/` en frontend) y la coordinación estricta con `service_healthy`. Parametrizadas las variables `SPRING_PROFILES_ACTIVE=prod`, `SESSION_COOKIE_SECURE` y `CORS_ALLOWED_ORIGINS`. Documentado su uso en `docs/deployment.md`.
+> - **Verificaciones:** `docker compose -f docker-compose.prod.yml config` validado sin errores sintácticos y suite unitaria `ComposeProduccionTest` añadida en verde.
 
 > **2026-11-08 (Fase 1B, Tarea 1B.5 — Deploy hook en CI para Render):**
 > - **Automatización de despliegue continuo (D9):** Añadido paso condicional en `.github/workflows/ci.yml` tras la publicación de la imagen `digital-fit-backend` en Docker Hub para invocar el *deploy hook* de Render vía petición POST segura con `curl`.

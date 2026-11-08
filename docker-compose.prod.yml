@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: digital-fit-postgres-prod
+    restart: always
+    environment:
+      POSTGRES_DB: digital_fit
+      POSTGRES_USER: ${DB_USERNAME:-digitalfit}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-digitalfit}
+    ports:
+      - "${DB_PORT:-5433}:5432"
+    volumes:
+      - digital_fit_postgres_prod_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    image: manuelklk03/digital-fit-backend:latest
+    container_name: digital-fit-backend-prod
+    restart: always
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/digital_fit
+      DB_USERNAME: ${DB_USERNAME:-digitalfit}
+      DB_PASSWORD: ${DB_PASSWORD:-digitalfit}
+      SPRING_PROFILES_ACTIVE: prod
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-true}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-https://digitalfit.example.com}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+
+  frontend:
+    image: manuelklk03/digital-fit-frontend:latest
+    container_name: digital-fit-frontend-prod
+    restart: always
+    ports:
+      - "${FRONTEND_PORT:-80}:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:8080/"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  digital_fit_postgres_prod_data:
