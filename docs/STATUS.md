@@ -2,6 +2,13 @@
 
 Última actualización: **2026-11-08**.
 
+> **2026-11-08 (Fase 3/5 — Saneamiento Antislop de Portada `/inicio`):**
+> - **Eliminación de AI Slop y narrativa técnica:** Eliminadas métricas de marketing inventadas y textos vacíos en la portada principal. Sustituidas por indicadores técnicos reales (10 rutinas base, OpenStreetMap con Overpass API, cronómetro en vivo y código abierto sin cuotas).
+> - **Sustitución de emojis por iconografía SVG técnica:** Suprimidos todos los emojis decorativos en las tarjetas, categorías del mapa y barra de usuario, reemplazándolos por iconos vectoriales SVG limpios y consistentes con la estética industrial.
+> - **Enfoque en capacidades reales del sistema:** Reestructurada la sección de funcionalidades para presentar con rigor las 3 áreas nucleares de la plataforma (asistente de series y descansos en tiempo real, mapa geodeportivo con fórmula Haversine y catálogo estructurado de rutinas con reseñas).
+> - **Internacionalización y accesibilidad:** Textos técnicos actualizados en español, valenciano, inglés y francés. Preservada la carga diferida de GSAP y el respeto a `prefers-reduced-motion`.
+> - **Verificaciones:** 59 suites de tests (120 tests unitarios) en verde, 0 errores ESLint y build de producción verificado.
+
 > **2026-11-08 (Fase 5, Recorrido 1 — Acceso: Login y Registro):**
 > - **Rediseño estético Neutral Sport / Industrial:** Modernizadas las vistas `/login` y `/register` utilizando los componentes reutilizables OnPush (`CardComponent`, `BadgeComponent`, `InputDirective`, `ButtonComponent`). Eliminados los fondos con degradados heredados de v1, los popups flotantes con temporizador y las imágenes estáticas (`img/usuario.png`).
 > - **Acceso rápido para evaluadores:** Incorporado panel accesible en `/login` para rellenar de forma inmediata con un clic las credenciales de demostración (`usuario1` / `admin1`), facilitando la navegación de evaluadores y portfolio.
