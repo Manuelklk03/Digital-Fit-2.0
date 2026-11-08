@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { PaginaResponse, PARAMS_PAGINA_COMPLETA, soloContenido } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,10 @@ export class HistorialEntrenamientosService {
   private apiUrl = '/api/entrenamientos/mi-historial';
 
   getHistorial(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, {
+    return this.http.get<PaginaResponse<any>>(this.apiUrl, {
+      params: PARAMS_PAGINA_COMPLETA,
       withCredentials: true
-    });
+    }).pipe(soloContenido());
   }
 
   getHistorialById(id: number): Observable<any> {

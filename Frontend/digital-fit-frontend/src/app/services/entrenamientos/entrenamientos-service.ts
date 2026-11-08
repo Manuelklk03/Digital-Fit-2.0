@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { PaginaResponse, PARAMS_PAGINA_COMPLETA, soloContenido } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,10 @@ export class EntrenamientosService {
   private apiUrl = '/api/entrenamientos';
 
   getEntrenamientos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, {
+    return this.http.get<PaginaResponse<any>>(this.apiUrl, {
+      params: PARAMS_PAGINA_COMPLETA,
       withCredentials: true
-    });
+    }).pipe(soloContenido());
   }
 
   getEntrenamientosFiltrados(
@@ -22,7 +24,7 @@ export class EntrenamientosService {
     duracionEnMinutos?: number,
     nombre?: string
   ): Observable<any[]> {
-    let params = new HttpParams();
+    let params = PARAMS_PAGINA_COMPLETA;
 
     if (categoria) {
       params = params.set('categoria', categoria.toUpperCase().replaceAll(' ', '_'));
@@ -40,10 +42,10 @@ export class EntrenamientosService {
       params = params.set('nombre', nombre);
     }
 
-    return this.http.get<any[]>(this.apiUrl, {
+    return this.http.get<PaginaResponse<any>>(this.apiUrl, {
       params,
       withCredentials: true
-    });
+    }).pipe(soloContenido());
   }
 
   getEntrenamientoById(id: number): Observable<any> {
