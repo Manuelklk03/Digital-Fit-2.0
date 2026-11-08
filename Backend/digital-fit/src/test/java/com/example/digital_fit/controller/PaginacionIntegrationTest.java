@@ -32,11 +32,17 @@ import com.example.digital_fit.controller.LugarPublico.LugarPublicoBaseRestContr
 import com.example.digital_fit.controller.LugarPublico.LugarPublicoUsuarioRestController;
 import com.example.digital_fit.controller.Valoracion.ValoracionRestController;
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoBaseDTO;
-import com.example.digital_fit.dto.Comun.PaginaResponse;
+import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoBaseDTO;
+import com.example.digital_fit.dto.Entrenamientos.EntrenamientoComunidadDTO;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoUsuarioDTO;
+import com.example.digital_fit.dto.Entrenamientos.HistorialEntrenamientosDTO;
+import com.example.digital_fit.dto.LugarPublico.LugarPublicoBaseDTO;
+import com.example.digital_fit.dto.LugarPublico.LugarPublicoUsuarioDTO;
 import com.example.digital_fit.dto.Valoracion.ValoracionDTO;
 import com.example.digital_fit.handler.GlobalExceptionHandler;
+import com.example.digital_fit.model.Enums.TipoDeValoracion;
 import com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService;
 import com.example.digital_fit.service.CentroPrivado.CentroPrivadoBaseService;
 import com.example.digital_fit.service.CentroPrivado.CentroPrivadoUsuarioService;
@@ -221,6 +227,151 @@ class PaginacionIntegrationTest {
                         .with(user("usuario1").roles("USER")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").value(100))
+                .andExpect(jsonPath("$.content[0].puntuacion").value(5))
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /api/entrenamientos-comunidad devuelve PaginaResponse")
+    void testListarEntrenamientosComunidadPaginado() throws Exception {
+        EntrenamientoComunidadDTO dto = new EntrenamientoComunidadDTO();
+        dto.setId(12L);
+        dto.setNombre("Comunidad WOD");
+
+        PaginaResponse<EntrenamientoComunidadDTO> pagina = new PaginaResponse<>(
+                List.of(dto), 0, 20, 1, 1);
+
+        when(entrenamientoComunidadService.listarOFiltrarPaginado(any(), any(), any(), any(), any(Pageable.class)))
+                .thenReturn(pagina);
+
+        mockMvc.perform(get("/api/entrenamientos-comunidad")
+                        .with(user("usuario1").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(12))
+                .andExpect(jsonPath("$.content[0].nombre").value("Comunidad WOD"))
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /api/entrenamientos/mi-historial devuelve PaginaResponse")
+    void testListarMiHistorialPaginado() throws Exception {
+        HistorialEntrenamientosDTO dto = new HistorialEntrenamientosDTO();
+        dto.setId(30L);
+
+        PaginaResponse<HistorialEntrenamientosDTO> pagina = new PaginaResponse<>(
+                List.of(dto), 0, 20, 1, 1);
+
+        when(historialEntrenamientosService.listarOFiltrarHistorialPaginado(eq("usuario1"), any(), any(), any(Pageable.class)))
+                .thenReturn(pagina);
+
+        mockMvc.perform(get("/api/entrenamientos/mi-historial")
+                        .with(user("usuario1").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(30))
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /api/mis-centros-privados devuelve PaginaResponse")
+    void testListarMisCentrosPrivadosPaginado() throws Exception {
+        CentroPrivadoUsuarioDTO dto = new CentroPrivadoUsuarioDTO();
+        dto.setId(40L);
+        dto.setNombre("Mi Gym Privado");
+
+        PaginaResponse<CentroPrivadoUsuarioDTO> pagina = new PaginaResponse<>(
+                List.of(dto), 0, 20, 1, 1);
+
+        when(centroPrivadoUsuarioService.listarOFiltrarPaginado(eq("usuario1"), any(), any(), any(), any(Pageable.class)))
+                .thenReturn(pagina);
+
+        mockMvc.perform(get("/api/mis-centros-privados")
+                        .with(user("usuario1").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(40))
+                .andExpect(jsonPath("$.content[0].nombre").value("Mi Gym Privado"))
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /api/lugares-publicos devuelve PaginaResponse")
+    void testListarLugaresPublicosPaginado() throws Exception {
+        LugarPublicoBaseDTO dto = new LugarPublicoBaseDTO();
+        dto.setId(50L);
+        dto.setNombre("Parque Calistenia Base");
+
+        PaginaResponse<LugarPublicoBaseDTO> pagina = new PaginaResponse<>(
+                List.of(dto), 0, 20, 1, 1);
+
+        when(lugarPublicoBaseService.listarOFiltrarPaginado(any(), any(), any(), any(Pageable.class)))
+                .thenReturn(pagina);
+
+        mockMvc.perform(get("/api/lugares-publicos")
+                        .with(user("usuario1").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(50))
+                .andExpect(jsonPath("$.content[0].nombre").value("Parque Calistenia Base"))
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /api/mis-lugares-publicos devuelve PaginaResponse")
+    void testListarMisLugaresPublicosPaginado() throws Exception {
+        LugarPublicoUsuarioDTO dto = new LugarPublicoUsuarioDTO();
+        dto.setId(60L);
+        dto.setNombre("Mi Parque Favorito");
+
+        PaginaResponse<LugarPublicoUsuarioDTO> pagina = new PaginaResponse<>(
+                List.of(dto), 0, 20, 1, 1);
+
+        when(lugarPublicoUsuarioService.listarOFiltrarPaginado(eq("usuario1"), any(), any(), any(), any(Pageable.class)))
+                .thenReturn(pagina);
+
+        mockMvc.perform(get("/api/mis-lugares-publicos")
+                        .with(user("usuario1").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(60))
+                .andExpect(jsonPath("$.content[0].nombre").value("Mi Parque Favorito"))
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /api/valoraciones/mis-valoraciones devuelve PaginaResponse")
+    void testListarMisValoracionesPaginado() throws Exception {
+        ValoracionDTO dto = new ValoracionDTO();
+        dto.setId(70L);
+        dto.setPuntuacion(4);
+
+        PaginaResponse<ValoracionDTO> pagina = new PaginaResponse<>(
+                List.of(dto), 0, 20, 1, 1);
+
+        when(valoracionService.listarMisValoracionesPaginado(eq("usuario1"), any(Pageable.class)))
+                .thenReturn(pagina);
+
+        mockMvc.perform(get("/api/valoraciones/mis-valoraciones")
+                        .with(user("usuario1").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(70))
+                .andExpect(jsonPath("$.content[0].puntuacion").value(4))
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /api/valoraciones/{tipoContenido}/{idContenido} devuelve PaginaResponse")
+    void testListarValoracionesPorContenidoPaginado() throws Exception {
+        ValoracionDTO dto = new ValoracionDTO();
+        dto.setId(80L);
+        dto.setPuntuacion(5);
+
+        PaginaResponse<ValoracionDTO> pagina = new PaginaResponse<>(
+                List.of(dto), 0, 20, 1, 1);
+
+        when(valoracionService.listarPorContenidoPaginado(eq(TipoDeValoracion.ENTRENAMIENTO_BASE), eq(1L), any(Pageable.class)))
+                .thenReturn(pagina);
+
+        mockMvc.perform(get("/api/valoraciones/ENTRENAMIENTO_BASE/1")
+                        .with(user("usuario1").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(80))
                 .andExpect(jsonPath("$.content[0].puntuacion").value(5))
                 .andExpect(jsonPath("$.totalElements").value(1));
     }

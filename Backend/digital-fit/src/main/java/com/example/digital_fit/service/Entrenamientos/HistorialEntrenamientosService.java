@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.example.digital_fit.dto.Comun.PaginaResponse;
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.dto.Entrenamientos.CrearEntrenamientoHistorialDTO;
 import com.example.digital_fit.dto.Entrenamientos.HistorialEntrenamientosDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;

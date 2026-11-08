@@ -1,7 +1,5 @@
 package com.example.digital_fit.controller.CentroPrivado;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -19,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.digital_fit.dto.CentroPrivado.AutocompletarCentroPrivadoDTO;
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoUsuarioDTO;
 import com.example.digital_fit.dto.CentroPrivado.CrearCentroPrivadoDTO;
-import com.example.digital_fit.dto.Comun.PaginaResponse;
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.service.CentroPrivado.AutocompletadoCentroPrivadoService;
 import com.example.digital_fit.service.CentroPrivado.CentroPrivadoUsuarioService;
 

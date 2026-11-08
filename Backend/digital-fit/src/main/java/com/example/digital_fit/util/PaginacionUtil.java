@@ -21,21 +21,20 @@ public final class PaginacionUtil {
         if (size > TAMANO_MAXIMO) {
             size = TAMANO_MAXIMO;
         }
-        Sort sort = pageable.getSort();
-        return PageRequest.of(page, size, sort != null ? sort : Sort.unsorted());
+        return PageRequest.of(page, size, pageable.getSort());
     }
 
     public static Pageable normalizar(Pageable pageable, Sort ordenPorDefecto) {
+        Sort fallback = ordenPorDefecto != null ? ordenPorDefecto : Sort.unsorted();
         if (pageable == null || pageable.isUnpaged()) {
-            return PageRequest.of(0, TAMANO_POR_DEFECTO, ordenPorDefecto != null ? ordenPorDefecto : Sort.unsorted());
+            return PageRequest.of(0, TAMANO_POR_DEFECTO, fallback);
         }
         int page = Math.max(0, pageable.getPageNumber());
         int size = pageable.getPageSize() <= 0 ? TAMANO_POR_DEFECTO : pageable.getPageSize();
         if (size > TAMANO_MAXIMO) {
             size = TAMANO_MAXIMO;
         }
-        Sort sort = pageable.getSort().isSorted() ? pageable.getSort()
-                : (ordenPorDefecto != null ? ordenPorDefecto : Sort.unsorted());
+        Sort sort = pageable.getSort().isSorted() ? pageable.getSort() : fallback;
         return PageRequest.of(page, size, sort);
     }
 }

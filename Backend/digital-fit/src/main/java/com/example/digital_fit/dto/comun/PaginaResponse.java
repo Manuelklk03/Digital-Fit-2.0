@@ -1,4 +1,4 @@
-package com.example.digital_fit.dto.Comun;
+package com.example.digital_fit.dto.comun;
 
 import java.util.List;
 import java.util.function.Function;

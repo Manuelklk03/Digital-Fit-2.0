@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.digital_fit.dto.Comun.PaginaResponse;
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.dto.LugarPublico.CrearLugarPublicoDTO;
 import com.example.digital_fit.dto.LugarPublico.LugarPublicoBaseDTO;
 import com.example.digital_fit.exception.OperacionNoPermitida;

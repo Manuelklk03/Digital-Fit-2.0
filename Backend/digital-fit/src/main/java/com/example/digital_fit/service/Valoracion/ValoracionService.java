@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.example.digital_fit.dto.Comun.PaginaResponse;
+import com.example.digital_fit.dto.comun.PaginaResponse;
 import com.example.digital_fit.dto.Valoracion.CrearValoracionDTO;
 import com.example.digital_fit.dto.Valoracion.ValoracionDTO;
 import com.example.digital_fit.exception.ErrorArgumentoException;
@@ -39,12 +39,15 @@ import com.example.digital_fit.repository.Entrenamientos.HistorialEntrenamientos
 import com.example.digital_fit.repository.LugarPublico.LugarPublicoBaseRepository;
 import com.example.digital_fit.repository.LugarPublico.LugarPublicoUsuarioRepository;
 import com.example.digital_fit.repository.Valoracion.ValoracionRepository;
+import com.example.digital_fit.util.LogSanitizer;
 import com.example.digital_fit.util.PaginacionUtil;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class ValoracionService {
+
+    private static final String CAMPO_FECHA = "fecha";
 
     @Autowired
     private ValoracionRepository valoracionRepository;
@@ -80,15 +83,15 @@ public class ValoracionService {
 
     public PaginaResponse<ValoracionDTO> listarPorContenidoPaginado(TipoDeValoracion tipo, Long contenidoId, Pageable pageable) {
         log.info("Listando valoraciones de un contenido con paginación");
-        Pageable paginacion = PaginacionUtil.normalizar(pageable, Sort.by(Sort.Direction.DESC, "fecha"));
+        Pageable paginacion = PaginacionUtil.normalizar(pageable, Sort.by(Sort.Direction.DESC, CAMPO_FECHA));
         Page<Valoracion> pagina = valoracionRepository.findByTipoDeValoracionAndIdRelacionado(tipo, contenidoId, paginacion);
         return PaginaResponse.de(pagina, this::entityToDto);
     }
 
     public PaginaResponse<ValoracionDTO> listarValoracionesPublicasPaginado(String categoria, Pageable pageable) {
-        log.info("Listando valoraciones públicas con paginación. Categoría: {}", categoria);
+        log.info("Listando valoraciones públicas con paginación. Categoría: {}", LogSanitizer.sanitize(categoria));
         List<TipoDeValoracion> tiposPermitidos = obtenerTiposSegunCategoria(categoria);
-        Pageable paginacion = PaginacionUtil.normalizar(pageable, Sort.by(Sort.Direction.DESC, "fecha"));
+        Pageable paginacion = PaginacionUtil.normalizar(pageable, Sort.by(Sort.Direction.DESC, CAMPO_FECHA));
         Page<Valoracion> pagina = valoracionRepository.findByTipoDeValoracionIn(tiposPermitidos, paginacion);
         return PaginaResponse.de(pagina, this::entityToDto);
     }
@@ -97,7 +100,7 @@ public class ValoracionService {
         log.info("Listando mis valoraciones con paginación");
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
-        Pageable paginacion = PaginacionUtil.normalizar(pageable, Sort.by(Sort.Direction.DESC, "fecha"));
+        Pageable paginacion = PaginacionUtil.normalizar(pageable, Sort.by(Sort.Direction.DESC, CAMPO_FECHA));
         Page<Valoracion> pagina = valoracionRepository.findByUsuario(usuario, paginacion);
         return PaginaResponse.de(pagina, this::entityToDto);
     }
@@ -121,7 +124,7 @@ public class ValoracionService {
     // Listar valoraciones públicas por categoría general
     public List<ValoracionDTO> listarValoracionesPublicas(String categoria) {
 
-        log.info("Listando valoraciones públicas. Categoría: {}", categoria);
+        log.info("Listando valoraciones públicas. Categoría: {}", LogSanitizer.sanitize(categoria));
 
         List<TipoDeValoracion> tiposPermitidos = obtenerTiposSegunCategoria(categoria);
 
