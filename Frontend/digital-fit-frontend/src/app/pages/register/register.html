@@ -1,56 +1,132 @@
-<app-header></app-header>
+<app-header />
 
-<main class="zona-registro">
+<main class="zona-registro" id="contenido-principal">
+  <div class="registro-wrapper">
 
-  @if (mostrarPopup) {
-  <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'" [class.popup-exito]="tipoPopup === 'exito'">
-    <span>{{ textoPopup }}</span>
-    <button type="button" class="boton-cerrar-popup" (click)="cerrarPopup()">×</button>
+    @if (mensajeAlerta) {
+      <div
+        class="alerta-banner"
+        [class.alerta-error]="tipoAlerta === 'error'"
+        [class.alerta-exito]="tipoAlerta === 'exito'"
+        role="alert"
+        aria-live="polite"
+      >
+        <div class="alerta-contenido">
+          @if (tipoAlerta === 'error') {
+            <svg class="alerta-icono" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          } @else {
+            <svg class="alerta-icono" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          }
+          <span class="alerta-texto">{{ mensajeAlerta }}</span>
+        </div>
+        <button
+          type="button"
+          class="alerta-boton-cerrar"
+          (click)="cerrarAlerta()"
+          aria-label="Cerrar notificación"
+        >
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    }
+
+    <app-card class="tarjeta-registro">
+      <header class="cabecera-registro">
+        <app-badge variant="accent" badgeStyle="subtle" [dot]="true">
+          {{ i18n.t().auth.registroBadge }}
+        </app-badge>
+
+        <div class="emblema-deportivo" aria-hidden="true">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="emblema-icono">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+          </svg>
+        </div>
+
+        <h1 class="titulo-registro">{{ i18n.t().auth.registroTitulo }}</h1>
+        <p class="subtitulo-registro">{{ i18n.t().auth.registroSubtitulo }}</p>
+      </header>
+
+      <form class="formulario-registro" (ngSubmit)="registrar()" novalidate>
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="username">
+            {{ i18n.t().auth.usuarioLabel }}
+          </label>
+          <input
+            df-input
+            id="username"
+            name="username"
+            type="text"
+            autocomplete="username"
+            [(ngModel)]="username"
+            required
+            [placeholder]="i18n.t().auth.usuarioPlaceholder"
+            [disabled]="cargando"
+          />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="email">
+            {{ i18n.t().auth.emailLabel }}
+          </label>
+          <input
+            df-input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            [(ngModel)]="email"
+            required
+            [placeholder]="i18n.t().auth.emailPlaceholder"
+            [disabled]="cargando"
+          />
+        </div>
+
+        <div class="grupo-campo">
+          <label class="etiqueta-campo" for="password">
+            {{ i18n.t().auth.passwordLabel }}
+          </label>
+          <input
+            df-input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            [(ngModel)]="password"
+            required
+            [placeholder]="i18n.t().auth.passwordPlaceholder"
+            [disabled]="cargando"
+          />
+          <span class="pista-campo">{{ i18n.t().auth.errorPasswordCorta }}</span>
+        </div>
+
+        <button
+          df-button
+          variant="primary"
+          size="lg"
+          type="submit"
+          [loading]="cargando"
+          [disabled]="cargando"
+          class="boton-submit"
+        >
+          {{ cargando ? i18n.t().auth.botonRegistrando : i18n.t().auth.botonRegistrar }}
+        </button>
+      </form>
+
+      <footer class="pie-registro">
+        <p class="texto-pie">
+          {{ i18n.t().auth.conCuenta }}
+          <a routerLink="/login" class="enlace-login">{{ i18n.t().auth.enlaceLogin }}</a>
+        </p>
+      </footer>
+    </app-card>
+
   </div>
-  }
-
-  <section class="caja-registro">
-    <div class="bloque-superior">
-      <div class="insignia-registro">Nuevo usuario</div>
-      <h1>Crear cuenta</h1>
-      <p class="texto-secundario">
-        Regístrate para empezar a usar Digital-FIT.
-      </p>
-    </div>
-
-    <form class="formulario-registro" (ngSubmit)="registrar()">
-
-      <div class="grupo-campo">
-        <label for="username">Nombre de usuario</label>
-        <input type="text" id="username" name="username" [(ngModel)]="username" required
-          placeholder="Introduce tu nombre de usuario">
-      </div>
-
-      <div class="grupo-campo">
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" name="email" [(ngModel)]="email" required placeholder="Introduce tu correo">
-      </div>
-
-      <div class="grupo-campo">
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" required
-          placeholder="Introduce tu contraseña">
-      </div>
-
-      <button class="boton-principal" type="submit" [disabled]="cargando">
-        @if (cargando) {
-        Registrando...
-        } @else {
-        Registrarse
-        }
-      </button>
-    </form>
-
-    <p class="texto-login">
-      ¿Ya tienes cuenta?
-      <a routerLink="/login">Inicia sesión</a>
-    </p>
-  </section>
 </main>
 
-<app-footer></app-footer>
+<app-footer />
