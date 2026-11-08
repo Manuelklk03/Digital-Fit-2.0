@@ -19,7 +19,7 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 
 | Parada | Estado | Espera a | Qué se necesita |
 |---|---|---|---|
-| G1 | Pendiente | Antigravity → Claude | Al terminar 4.8, Antigravity añade aquí el contrato de la API paginada (forma de la respuesta y parámetros). Claude no empieza 5.2–5.4 sin él |
+| G1 | LIBRE | Antigravity → Claude | Tarea 4.8 completada. Contrato de API paginada documentado abajo. Listo para que Claude adapte el frontend |
 | G2 | Pendiente | Claude → Antigravity | Antigravity no retira el backend de tickets hasta que Claude quite las pantallas de soporte |
 | G3 | Pendiente | Claude → Antigravity | Claude confirma que no queda ninguna llamada a `/api/soporte` en el frontend |
 | G4 | Pendiente | Manuel → Antigravity | Cuentas de Netlify, Render y Neon y secretos con `gh secret set`. Sin ellos no hay 2.3 ni 2.4 |
@@ -33,3 +33,4 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 
 | Fecha | Parada | Estado | Nota |
 |---|---|---|---|
+| 2026-11-09 | G1 | LIBRE | Tarea 4.8 completada y fusionada (PR #62). Contrato de API paginada publicado para que Claude adapte el frontend |
