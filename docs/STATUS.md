@@ -2,6 +2,11 @@
 
 Última actualización: **2026-11-09**.
 
+> **2026-11-09 (Retirada de soporte en el frontend, paradas G2 y G3):**
+> - **Eliminado:** pantallas `soporte` y `admin/soporte` (con detalle de ticket), servicios `soporte` y `admin-soporte-service`, sus 4 rutas, el enlace del panel de soporte en cabecera y portada y la clave `nav.panelSoporte` de los 4 idiomas. Cero referencias a soporte o tickets en `Frontend/`.
+> - **Pendiente de Antigravity:** retirar el backend de tickets (controladores, servicios, entidades y migración Flyway). Hasta entonces los endpoints existen sin ningún cliente.
+> - **Verificaciones:** `ng build` correcto, 55 suites y 134 tests en verde (las 6 suites de soporte desaparecen con el código), 0 errores ESLint (357 avisos de deuda conocida).
+
 > **2026-11-09 (Frontend adaptado a la API paginada, tras la parada G1):**
 > - **Servicios:** nueva interfaz `PaginaResponse<T>` en `models/pagina-response.ts`. Los 9 servicios con listados (entrenamientos, mis entrenamientos, comunidad, historial, centros, mis centros, lugares, mis lugares y valoraciones) piden `size=100` y devuelven `content`, así que las pantallas no cambian. Límite conocido: máximo 100 elementos por listado hasta que cada pantalla pagine (recorridos 5.2–5.4).
 > - **Corrección en HANDOFF.md:** el filtro de centros se llama `precioMensual` (como en el backend), no `precioMaximo`.

@@ -4,7 +4,6 @@ import { RegisterComponent } from './pages/register/register';
 import { PrivadosComponent } from './pages/privados/privados';
 import { PublicosComponent } from './pages/publicos/publicos';
 import { EntrenamientosComponent } from './pages/entrenamientos/entrenamientos';
-import { SoporteComponent } from './pages/soporte/soporte';
 import { ValoracionesComponent } from './pages/valoraciones/valoraciones';
 import { DetallePrivadoComponent } from './pages/detalle-privado/detalle-privado';
 import { DetallePublicoComponent } from './pages/detalle-publico/detalle-publico/detalle-publico';
@@ -20,10 +19,7 @@ import { DetalleEntrenamientoComunidadComponent } from './pages/detalle-entrenam
 import { HistorialEntrenamientosComponent } from './pages/entrenamientos/historial/historial-entrenamientos';
 import { DetalleHistorialEntrenamientoComponent } from './pages/detalle-entrenamientos/detalle-historial/detalle-historial';
 import { EstadisticasComponent } from './pages/estadisticas/estadisticas';
-import { AdminSoporteComponent } from './pages/admin/soporte/soporte-admin/soporte-admin';
 import { CrearAdminComponent } from './pages/admin/crear-admin/crear-admin';
-import { DetalleTicketComponent } from './pages/soporte/detalle-ticket/detalle-ticket';
-import { AdminDetalleTicketComponent } from './pages/admin/soporte/admin-detalle-ticket/admin-detalle-ticket';
 import { EntrenarComponent } from './pages/entrenar/entrenar';
 import { ExplorarComponent } from './pages/explorar/explorar';
 import { authGuard } from './guards/auth-guard';
@@ -68,13 +64,8 @@ export const routes: Routes = [
 
   { path: 'estadisticas', component: EstadisticasComponent, canActivate: [userGuard] },
 
-  { path: 'soporte', component: SoporteComponent, canActivate: [userGuard] },
-  { path: 'soporte/:id', component: DetalleTicketComponent, canActivate: [userGuard] },
-
   { path: 'valoraciones', component: ValoracionesComponent, canActivate: [userGuard] },
 
-  { path: 'admin/soporte', component: AdminSoporteComponent, canActivate: [adminGuard] },
-  { path: 'admin/soporte/:id', component: AdminDetalleTicketComponent, canActivate: [adminGuard] },
   { path: 'admin/crear-admin', component: CrearAdminComponent, canActivate: [adminGuard] },
 
   { path: '**', redirectTo: 'login' }

@@ -47,6 +47,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Cambiado
 
+- Retirada del sistema de tickets de soporte en el frontend (decisión de la tarea 3.1): pantallas, rutas, servicios, enlaces y textos en los 4 idiomas. El backend de tickets se retira aparte.
+
 - Imágenes Docker sin root (usuario `app` en el backend, `nginx-unprivileged` en el puerto 8080 en el frontend) y `npm ci --ignore-scripts`.
 - `main` exige los checks de la CI en verde (cinco desde 1B.5) y la rama al día para fusionar.
 - Spring Boot 4.0.6 → 4.1.2.
