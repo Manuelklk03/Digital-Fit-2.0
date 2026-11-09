@@ -52,4 +52,12 @@ class FlywayMigrationScriptsTest {
         assertTrue(sql.contains("USER"), "Debe asignar rol USER a usuario regular");
         assertTrue(sql.contains("ON CONFLICT (username) DO NOTHING"), "Debe ser idempotente");
     }
+
+    @Test
+    @DisplayName("V4__eliminar_soporte.sql contiene eliminacion de tablas de soporte")
+    void testV4EliminarSoporte() throws Exception {
+        String sql = readMigrationScript("V4__eliminar_soporte.sql");
+        assertTrue(sql.contains("DROP TABLE IF EXISTS mensajes_soporte"), "Debe eliminar mensajes_soporte");
+        assertTrue(sql.contains("DROP TABLE IF EXISTS soporte"), "Debe eliminar soporte");
+    }
 }
