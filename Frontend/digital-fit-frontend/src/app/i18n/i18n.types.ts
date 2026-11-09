@@ -1,5 +1,6 @@
 import type { Categoria, Nivel, TipoUbicacionHistorial } from '../models/entrenamiento';
 import type { TipoLugar } from '../models/lugar';
+import type { CategoriaValoracion, TipoValoracion } from '../models/progreso';
 
 export type Idioma = 'es' | 'ca' | 'en' | 'fr';
 
@@ -25,6 +26,7 @@ export interface DiccionarioTraduccion {
     misEntrenamientos: string;
     misCentros: string;
     misLugares: string;
+    progreso: string;
     crearAdmin: string;
   };
   header: {
@@ -116,8 +118,22 @@ export interface DiccionarioTraduccion {
     errorRegistro: string;
     exitoRegistro: string;
   };
+  admin: {
+    badge: string;
+    titulo: string;
+    subtitulo: string;
+    formTitulo: string;
+    crear: string;
+    creando: string;
+    exito: string;
+    error: string;
+    errorUsuario: string;
+    emailPlaceholder: string;
+    ayudaContrasena: string;
+  };
   entrenamientos: DiccionarioEntrenamientos;
   lugares: DiccionarioLugares;
+  progreso: DiccionarioProgreso;
 }
 
 /** Textos del recorrido de entrenamientos (catálogo, mis entrenamientos, comunidad, historial y detalles). */
@@ -316,4 +332,61 @@ export interface DiccionarioLugares {
   lugaresBase: SeccionLugares;
   misCentros: SeccionLugares;
   misLugares: SeccionLugares;
+}
+
+/** Textos del recorrido de progreso (estadísticas y valoraciones). */
+export interface DiccionarioProgreso {
+  tiposValoracion: Record<TipoValoracion, string>;
+  categorias: Record<CategoriaValoracion, string>;
+  estadisticas: {
+    badge: string;
+    titulo: string;
+    subtitulo: string;
+    entrenamientos: string;
+    minutos: string;
+    promedio: string;
+    centros: string;
+    lugares: string;
+    masRealizado: string;
+    minutosAbrev: string;
+    sinDatos: string;
+    vacio: string;
+    irHistorial: string;
+    irValoraciones: string;
+    errorCarga: string;
+  };
+  valoraciones: {
+    badge: string;
+    titulo: string;
+    subtitulo: string;
+    nueva: string;
+    formCrear: string;
+    formEditar: string;
+    campoCategoria: string;
+    campoContenido: string;
+    seleccionaContenido: string;
+    campoPuntuacion: string;
+    campoComentario: string;
+    comentarioPlaceholder: string;
+    deCinco: string;
+    puntuaciones: [string, string, string, string, string];
+    errorContenido: string;
+    errorComentario: string;
+    errorOpciones: string;
+    guardar: string;
+    exitoGuardada: string;
+    errorGuardar: string;
+    confirmarBorrado: string;
+    exitoBorrada: string;
+    errorBorrar: string;
+    mias: string;
+    comunidad: string;
+    vacioMias: string;
+    vacioComunidad: string;
+    todas: string;
+    filtrarCategoria: string;
+    sinNombre: string;
+    autor: string;
+    tuya: string;
+  };
 }

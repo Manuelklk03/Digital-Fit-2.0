@@ -1,6 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { UsuarioSesion } from '../models/entrenamiento';
+
+/** Cuerpo de `POST /api/auth/registro`. */
+export interface RegistroUsuario {
+  username: string;
+  email: string;
+  password: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +18,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private apiUrl = '/api/auth';
 
-  private usuarioSubject = new BehaviorSubject<any | null>(null);
+  private usuarioSubject = new BehaviorSubject<UsuarioSesion | null>(null);
   usuario$ = this.usuarioSubject.asObservable();
 
   login(username: string, password: string): Observable<string> {
@@ -33,7 +41,7 @@ export class AuthService {
     );
   }
 
-  registrar(usuario: any): Observable<string> {
+  registrar(usuario: RegistroUsuario): Observable<string> {
     return this.http.post(
       `${this.apiUrl}/registro`,
       usuario,
@@ -44,8 +52,8 @@ export class AuthService {
     );
   }
 
-  me(): Observable<any> {
-    return this.http.get<any>(
+  me(): Observable<UsuarioSesion> {
+    return this.http.get<UsuarioSesion>(
       `${this.apiUrl}/me`,
       {
         withCredentials: true

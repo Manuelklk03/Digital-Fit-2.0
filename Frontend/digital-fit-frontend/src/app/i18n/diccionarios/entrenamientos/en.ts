@@ -57,7 +57,7 @@ export const entrenamientosEn: DiccionarioEntrenamientos = {
   cancelarEdicion: 'Cancel editing',
   guardando: 'Saving...',
   errorNombre: 'Name is required (100 characters max).',
-  errorDescripcion: 'Description is required (1500 characters max).',
+  errorDescripcion: 'Description is required (1000 characters max).',
   errorDuracion: 'Duration must be at least 1 minute.',
   total: 'Total',
   cargandoListado: 'Loading workouts...',

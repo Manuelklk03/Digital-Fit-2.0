@@ -45,7 +45,7 @@ export const lugaresEn: DiccionarioLugares = {
   errorNombre: 'Enter a name.',
   errorDireccion: 'Enter an address.',
   errorPrecio: 'The price must be 0 or more.',
-  errorDescripcion: 'The description can be at most 1500 characters.',
+  errorDescripcion: 'The description can be at most 1000 characters.',
   errorUbicacion: 'Mark the location on the map.',
   ayudaUbicacion: 'Search for an address or click the map to mark the location.',
   autocompletando: 'Looking up data for that location…',

@@ -1,4 +1,5 @@
 import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { UsuarioSesion } from '../../models/entrenamiento';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import { I18nService } from '../../i18n/i18n.service';
@@ -16,7 +17,7 @@ export class HeaderComponent implements OnInit {
   private router = inject(Router);
   readonly i18n = inject(I18nService);
 
-  usuarioActual: any = null;
+  usuarioActual: UsuarioSesion | null = null;
   desplegableIdiomaAbierto = false;
 
   ngOnInit(): void {

@@ -45,7 +45,7 @@ export const lugaresFr: DiccionarioLugares = {
   errorNombre: 'Saisissez un nom.',
   errorDireccion: 'Saisissez une adresse.',
   errorPrecio: 'Le prix doit être supérieur ou égal à 0.',
-  errorDescripcion: 'La description ne peut pas dépasser 1500 caractères.',
+  errorDescripcion: 'La description ne peut pas dépasser 1000 caractères.',
   errorUbicacion: "Indiquez l'emplacement sur la carte.",
   ayudaUbicacion: "Cherchez une adresse ou cliquez sur la carte pour indiquer l'emplacement.",
   autocompletando: 'Recherche des données de cet emplacement…',

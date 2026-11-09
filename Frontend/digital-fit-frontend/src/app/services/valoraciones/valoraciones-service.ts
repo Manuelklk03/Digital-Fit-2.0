@@ -1,38 +1,35 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { getContenido } from '../../models/pagina-response';
+import { getPagina, PaginaResponse } from '../../models/pagina-response';
+import { CategoriaValoracion, CrearValoracion, TipoValoracion, Valoracion } from '../../models/progreso';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValoracionesService {
 
-  private http = inject(HttpClient);
-  private apiUrl = '/api/valoraciones';
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = '/api/valoraciones';
 
-  getMisValoraciones(): Observable<any[]> {
-    return getContenido(this.http, `${this.apiUrl}/mis-valoraciones`);
+  getPaginaMisValoraciones(page = 0): Observable<PaginaResponse<Valoracion>> {
+    return getPagina<Valoracion>(this.http, `${this.apiUrl}/mis-valoraciones`, {}, page);
   }
 
-  getValoracionesPublicas(categoria?: string | null): Observable<any[]> {
-    return getContenido(this.http, `${this.apiUrl}/publicas`, {
-      categoria: categoria === 'TODOS' ? undefined : categoria
-    });
+  /** Sin categoría devuelve las de todos los tipos. */
+  getPaginaPublicas(categoria: CategoriaValoracion | null, page = 0): Observable<PaginaResponse<Valoracion>> {
+    return getPagina<Valoracion>(this.http, `${this.apiUrl}/publicas`, { categoria }, page);
   }
 
-  getValoracionesPorContenido(tipoContenido: string, idContenido: number): Observable<any[]> {
-    return getContenido(this.http, `${this.apiUrl}/${tipoContenido}/${idContenido}`);
-  }
-
-  crearOActualizarValoracion(tipoContenido: string, idContenido: number, valoracion: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/${tipoContenido}/${idContenido}`, valoracion, {
+  /** Crea la valoración o, si el usuario ya valoró ese contenido, la sustituye. */
+  crearOActualizarValoracion(tipo: TipoValoracion, idContenido: number, valoracion: CrearValoracion): Observable<Valoracion> {
+    return this.http.post<Valoracion>(`${this.apiUrl}/${tipo}/${idContenido}`, valoracion, {
       withCredentials: true
     });
   }
 
-  borrarValoracion(tipoContenido: string, idContenido: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${tipoContenido}/${idContenido}`, {
+  borrarValoracion(tipo: TipoValoracion, idContenido: number): Observable<unknown> {
+    return this.http.delete(`${this.apiUrl}/${tipo}/${idContenido}`, {
       withCredentials: true
     });
   }

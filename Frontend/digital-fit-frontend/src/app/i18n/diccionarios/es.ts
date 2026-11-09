@@ -1,6 +1,7 @@
 import { DiccionarioTraduccion } from '../i18n.types';
 import { entrenamientosEs } from './entrenamientos/es';
 import { lugaresEs } from './lugares/es';
+import { progresoEs } from './progreso/es';
 
 export const diccionarioEs: DiccionarioTraduccion = {
   nav: {
@@ -10,6 +11,7 @@ export const diccionarioEs: DiccionarioTraduccion = {
     misEntrenamientos: 'Mis entrenamientos',
     misCentros: 'Mis centros',
     misLugares: 'Mis lugares',
+    progreso: 'Progreso',
     crearAdmin: 'Crear admin',
   },
   header: {
@@ -102,6 +104,20 @@ export const diccionarioEs: DiccionarioTraduccion = {
     errorRegistro: 'No se pudo completar el registro. Comprueba los datos.',
     exitoRegistro: 'Cuenta creada correctamente. Redirigiendo a inicio de sesión...',
   },
+  admin: {
+    badge: 'Administración',
+    titulo: 'Crear administrador',
+    subtitulo: 'Da de alta otra cuenta con rol ADMIN. Podrá gestionar los catálogos de entrenamientos, centros y lugares.',
+    formTitulo: 'Nueva cuenta de administrador',
+    crear: 'Crear administrador',
+    creando: 'Creando…',
+    exito: 'Administrador creado.',
+    error: 'No se pudo crear el administrador.',
+    errorUsuario: 'Indica un nombre de usuario.',
+    emailPlaceholder: 'correo@ejemplo.com',
+    ayudaContrasena: 'Mínimo 6 caracteres.',
+  },
   entrenamientos: entrenamientosEs,
   lugares: lugaresEs,
+  progreso: progresoEs,
 };

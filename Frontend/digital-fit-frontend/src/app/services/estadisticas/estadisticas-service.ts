@@ -1,17 +1,18 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { EstadisticaUsuario } from '../../models/progreso';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstadisticasService {
 
-  private http = inject(HttpClient);
-  private apiUrl = '/api/estadisticas';
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = '/api/estadisticas';
 
-  getEstadisticas(): Observable<any> {
-    return this.http.get<any>(this.apiUrl, {
+  getEstadisticas(): Observable<EstadisticaUsuario> {
+    return this.http.get<EstadisticaUsuario>(this.apiUrl, {
       withCredentials: true
     });
   }

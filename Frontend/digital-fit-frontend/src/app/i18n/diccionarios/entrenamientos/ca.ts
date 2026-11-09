@@ -57,7 +57,7 @@ export const entrenamientosCa: DiccionarioEntrenamientos = {
   cancelarEdicion: "Cancel·la l'edició",
   guardando: 'Guardant...',
   errorNombre: 'El nom és obligatori (màxim 100 caràcters).',
-  errorDescripcion: 'La descripció és obligatòria (màxim 1500 caràcters).',
+  errorDescripcion: 'La descripció és obligatòria (màxim 1000 caràcters).',
   errorDuracion: "La durada ha de ser d'almenys 1 minut.",
   total: 'Total',
   cargandoListado: 'Carregant entrenaments...',

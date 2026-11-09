@@ -21,6 +21,30 @@ import { PublicosService } from '../../services/publicos/publicos-service';
 
 export type CategoriaLugar = 'GIMNASIO' | 'CALISTENIA' | 'POLIDEPORTIVO' | 'PISCINA' | 'OTRO';
 
+/** `LugarExploracionDTO` de `/api/explorar/lugares`. */
+interface LugarExploracionDTO {
+  id: number | null;
+  osmId: number | null;
+  nombre: string;
+  categoria: string | null;
+  tipoOrigen: 'LOCAL_PRIVADO' | 'LOCAL_PUBLICO' | 'OSM';
+  direccion: string;
+  latitud: number;
+  longitud: number;
+  telefono: string | null;
+  horario: string | null;
+  precioMensual: number | null;
+  equipamiento: string | null;
+  distanciaKm: number | null;
+}
+
+/** El backend distingue los sitios propios de la app con el prefijo LOCAL_. */
+const ORIGEN: Record<LugarExploracionDTO['tipoOrigen'], LugarDeportivo['tipoOrigen']> = {
+  LOCAL_PRIVADO: 'PRIVADO',
+  LOCAL_PUBLICO: 'PUBLICO',
+  OSM: 'OSM',
+};
+
 export interface LugarDeportivo {
   id?: number;
   osmId?: number;
@@ -337,22 +361,22 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
       params = params.set('categoria', categoria);
     }
 
-    this.http.get<any[]>('/api/explorar/lugares', { params }).subscribe({
+    this.http.get<LugarExploracionDTO[]>('/api/explorar/lugares', { params }).subscribe({
       next: (res) => {
         if (Array.isArray(res) && res.length > 0) {
           const nuevos: LugarDeportivo[] = res.map((r) => ({
-            id: r.id ?? r.osmId,
-            osmId: r.osmId,
+            id: r.id ?? r.osmId ?? undefined,
+            osmId: r.osmId ?? undefined,
             nombre: r.nombre,
-            categoria: (r.categoria as CategoriaLugar) ?? 'OTRO',
-            tipoOrigen: (r.tipoOrigen as 'PRIVADO' | 'PUBLICO' | 'OSM') ?? 'OSM',
+            categoria: (r.categoria as CategoriaLugar | null) ?? 'OTRO',
+            tipoOrigen: ORIGEN[r.tipoOrigen] ?? 'OSM',
             direccion: r.direccion,
             latitud: r.latitud,
             longitud: r.longitud,
-            precioMensual: r.precioMensual,
-            equipamiento: r.equipamiento,
-            horario: r.horario,
-            distanciaKm: r.distanciaKm,
+            precioMensual: r.precioMensual ?? undefined,
+            equipamiento: r.equipamiento ?? undefined,
+            horario: r.horario ?? undefined,
+            distanciaKm: r.distanciaKm ?? undefined,
           }));
           this.lugares.set(nuevos);
           this.actualizarMarcadoresEnMapa();
