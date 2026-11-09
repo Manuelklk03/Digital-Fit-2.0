@@ -2,6 +2,12 @@
 
 Última actualización: **2026-11-09**.
 
+> **2026-11-09 (Fase 5 completada — Recorridos 4 Progreso y 5 Administración; rama `feat/recorrido-progreso`, en automático):**
+> - **Pantallas:** `/estadisticas`, `/valoraciones` y `/admin/crear-admin` reescritas (OnPush, signals, i18n, estados reales). Enlace «Progreso» en la cabecera (antes no había forma de llegar a estas pantallas). Proxy de `ng serve` (P1) comprobado contra el backend y P7 cerrado (sin `any`).
+> - **Corregido:** insignia de origen en `/explorar` (`LOCAL_PRIVADO`), errores JSON sin parsear con `responseType: 'text'` y límite de 1000 caracteres en descripciones y comentarios (lo que admite la BD).
+> - **Verificaciones:** `ng build` correcto, 53 suites y 227 tests en verde, 0 errores ESLint (4 avisos, antes 66). Revisión de Codex (5 hallazgos medios: 1 corregido en frontend, 3 de backend para G9 y 1 límite conocido de 100 elementos por selector) y revisión de UI (6 medios y 5 opcionales, todos corregidos). Capturas con Playwright contra Docker a 1440 y 390 px: sin scroll horizontal; login de demo `usuario1`/`admin1` verificado tras rehacer el backend con V5.
+> - **Coordinación:** G5 y G6 → LIBRE para Antigravity. Nueva parada G9 con fallos de backend (ver `docs/HANDOFF.md`).
+
 > **2026-11-09 (Fase 5, Recorrido 3 — Lugares; rama `feat/recorrido-lugares`, en automático por petición de Manuel, incluido el mapa):**
 > - **Pantallas:** `/privados`, `/publicos`, `/mis-centros`, `/mis-lugares` y sus 4 detalles reescritos sobre `pages/lugares/` (listado, detalle, formulario con mapa, filtro y tarjeta). Servicios de centros, lugares y administración tipados con `buscar(filtro, page)`. Selector de mapa con signals, i18n y limpieza de Leaflet.
 > - **Historial:** buscador con el parámetro `q` (G8 resuelta por Antigravity en la PR #68).
@@ -135,7 +141,7 @@
 
 ## Resumen
 
-- **Fase activa:** 5 — Renovación del frontend por recorridos (Recorridos 1, 2 y 3 completados; siguiente: Recorrido 4, Progreso). Fase 4 (Backend, API y datos) completada al 100% (tareas 4.1 a 4.10 cerradas).
+- **Fase activa:** 5 — Renovación del frontend por recorridos (los 5 recorridos completados; fase 5 cerrada). Fase 4 (Backend, API y datos) completada al 100% (tareas 4.1 a 4.10 cerradas).
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 156 tests unitarios en verde.
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` configurado.
 - **Versión publicada:** `v1.0.0` (tag anotado). `v2.0.0` se publicará al completar la fase 7.
@@ -197,8 +203,8 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **Frontend (Claude):** Fase 5, Recorrido 4: Progreso (estadísticas y valoraciones); después, administración.
-2. **Backend y DevOps (Antigravity):** Parada G8 completada (PR abierta). En espera por parada G5 hasta que Claude finalice las pantallas de la Fase 5, para implementar las pruebas E2E con Playwright (6.2) y CI (6.1).
+1. **Frontend (Claude):** fase 5 cerrada. Queda la parte de frontend de la tarea 7.0 (CSRF) cuando Antigravity la habilite, y las mejoras opcionales anotadas en el roadmap.
+2. **Backend y DevOps (Antigravity):** G5 (E2E 6.2 y CI 6.1), G6 (Prettier 6.5) y G9 (fallos de backend) LIBRES.
 3. **Despliegue (Fases 2.3/2.4 y 7.1):** Pendiente de que Manuel provisione las cuentas/secretos (parada G4) antes de la release final `v2.0.0`.
 
 ## Cómo actualizar este archivo

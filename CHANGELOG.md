@@ -8,6 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Rediseño de los recorridos de **Progreso** y **Administración** (fase 5, completada): estadísticas con cifras del historial, estado vacío y media con el separador decimal del idioma; valoraciones con estrellas accesibles (radios nativos), listados paginados de las propias y de la comunidad filtrada por categoría, y edición o borrado de las propias; alta de administradores con validación. Enlace «Progreso» en la cabecera. Modelos tipados (`models/progreso.ts`) y textos en los 4 idiomas.
+- Proxy de desarrollo `proxy.conf.json` para `ng serve` (P1).
 - Rediseño del recorrido de **Lugares** (fase 5): catálogos de centros privados y lugares públicos, mis centros, mis lugares y sus cuatro detalles con Neutral Sport / Industrial, OnPush y signals, modelos tipados sin `any` (`models/lugar.ts`), paginación real con filtro de un solo campo (nombre, dirección y precio máximo o tipo) y textos en los 4 idiomas. Las ocho pantallas son envoltorios de dos componentes comunes (`pages/lugares/listado-sitios` y `detalle-sitio`) configurados por pantalla. Formulario con mapa que autocompleta desde OpenStreetMap solo los campos vacíos o autocompletados antes, sin pisar lo escrito por el usuario. En el catálogo, las acciones esperan a conocer el rol para no mostrar un botón que después cambia.
 - Selector de mapa (`mapa-selector`) con OnPush y signals: mueve el marcador cuando cambian las coordenadas (antes, al editar otro sitio el mapa no se movía), libera Leaflet y los temporizadores al destruirse, mensajes en una región viva y marcador fuera del orden de tabulación.
 - Búsqueda por texto en el historial de entrenamientos con el parámetro `q` del backend.
@@ -78,6 +80,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
+- `explorar.ts` mostraba los centros privados de la app como lugares públicos: el backend envía `LOCAL_PRIVADO`/`LOCAL_PUBLICO` y el frontend esperaba `PRIVADO`/`PUBLICO`.
+- Los errores de peticiones con `responseType: 'text'` (crear administrador) mostraban el JSON del `ProblemDetail` sin parsear.
+- Descripciones y comentarios limitados a 1000 caracteres en los formularios: las columnas de la base de datos admiten 1000 aunque los DTO aceptan 1500 (corrección de fondo, para Antigravity en G9).
+- Eliminados los últimos `any` del frontend (P7).
 - `explorar.ts` leía un campo `equipamiento` que el DTO de lugares públicos no tiene y situaba en el mapa sitios sin coordenadas; ahora los omite.
 - Hashes bcrypt de usuarios demo en migración Flyway `V5__actualizar_hashes_demo.sql` para `admin1` (`Admin123!`) y `usuario1` (`Usuario123!`), solventando el fallo 401 en el panel de login demo (parada G8).
 - Manejo de `NoResourceFoundException` en `GlobalExceptionHandler`, respondiendo con código 404 ProblemDetail en lugar de error interno 500 ante rutas no mapeadas de la API (parada G8).

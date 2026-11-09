@@ -100,13 +100,13 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 
 | # | Problema | Dónde | Fase |
 |---|---|---|---|
-| P1 | `npm start` no tiene proxy hacia el backend: con `ng serve` las llamadas `/api` van a `localhost:4200` (sin comprobar en ejecución) | `angular.json` | 4 |
+| P1 | ~~`npm start` no tiene proxy hacia el backend~~ **Resuelto (2026-11-09):** `proxy.conf.json` reenvía `/api` a `localhost:8080`; comprobado con `ng serve` | `angular.json` | 4 |
 | P2 | CSRF desactivado con autenticación por cookie | `SecurityConfig` | 4 |
 | P3 | CORS con origen fijo; sin configuración por entorno | `CorsConfig` | Resuelto en 4.1 (`CORS_ALLOWED_ORIGINS`) |
 | P4 | `ddl-auto=update` y `data.sql` en cada arranque, `continue-on-error=true`; sin migraciones | `application.properties` | Resuelto en 4.4 (Flyway V1, V2, V3) |
 | P5 | Errores de la API sin formato común (texto o mapa) | `GlobalExceptionHandler` | Resuelto en 4.3 (`ProblemDetail` RFC 7807) |
 | P6 | Sin paginación en ningún listado | servicios/repositorios | 4 |
-| P7 | `any` en servicios y modelos del frontend | `src/app/services` | 5 |
+| P7 | ~~`any` en servicios y modelos del frontend~~ **Resuelto (2026-11-09):** modelos en `src/app/models` y cero `any` en el código de producción | `src/app/services` | 5 |
 | P10 | `show-sql=true` y logs DEBUG por defecto | `application.properties` | Resuelto en 4.7 (perfiles dev y prod) |
 | P11 | Búsqueda Nominatim desde el navegador sin limitación ni atribución revisada | `mapa-selector` | Resuelto en 3.7 (proxy en backend) |
 | P12 | Imágenes sueltas o sin uso aparente (`public/img/.png`, `e.ico`, `e2.ico`) | `public/` | 5 |
