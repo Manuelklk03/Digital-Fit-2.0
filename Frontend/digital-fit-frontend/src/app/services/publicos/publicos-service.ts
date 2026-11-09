@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { getContenido } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,7 @@ export class PublicosService {
   private apiUrl = '/api/lugares-publicos';
 
   getLugaresPublicos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, {
-      withCredentials: true
-    });
+    return getContenido(this.http, this.apiUrl);
   }
 
   getLugaresPublicosFiltrados(
@@ -21,23 +20,10 @@ export class PublicosService {
     direccion?: string,
     tipo?: string
   ): Observable<any[]> {
-    let params = new HttpParams();
-
-    if (nombre) {
-      params = params.set('nombre', nombre);
-    }
-
-    if (direccion) {
-      params = params.set('direccion', direccion);
-    }
-
-    if (tipo) {
-      params = params.set('tipo', tipo.toUpperCase().replaceAll(' ', '_'));
-    }
-
-    return this.http.get<any[]>(this.apiUrl, {
-      params,
-      withCredentials: true
+    return getContenido(this.http, this.apiUrl, {
+      nombre,
+      direccion,
+      tipo: tipo?.toUpperCase().replaceAll(' ', '_')
     });
   }
 

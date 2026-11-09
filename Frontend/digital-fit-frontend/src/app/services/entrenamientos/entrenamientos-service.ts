@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { getContenido } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,7 @@ export class EntrenamientosService {
   private apiUrl = '/api/entrenamientos';
 
   getEntrenamientos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, {
-      withCredentials: true
-    });
+    return getContenido(this.http, this.apiUrl);
   }
 
   getEntrenamientosFiltrados(
@@ -22,27 +21,11 @@ export class EntrenamientosService {
     duracionEnMinutos?: number,
     nombre?: string
   ): Observable<any[]> {
-    let params = new HttpParams();
-
-    if (categoria) {
-      params = params.set('categoria', categoria.toUpperCase().replaceAll(' ', '_'));
-    }
-
-    if (nivel) {
-      params = params.set('nivel', nivel.toUpperCase().replaceAll(' ', '_'));
-    }
-
-    if (duracionEnMinutos !== undefined) {
-      params = params.set('duracionEnMinutos', duracionEnMinutos.toString());
-    }
-
-    if (nombre) {
-      params = params.set('nombre', nombre);
-    }
-
-    return this.http.get<any[]>(this.apiUrl, {
-      params,
-      withCredentials: true
+    return getContenido(this.http, this.apiUrl, {
+      categoria: categoria?.toUpperCase().replaceAll(' ', '_'),
+      nivel: nivel?.toUpperCase().replaceAll(' ', '_'),
+      duracionEnMinutos,
+      nombre
     });
   }
 

@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { getContenido } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,7 @@ export class MisCentrosService {
   private apiUrl = '/api/mis-centros-privados';
 
   getMisCentros(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, {
-      withCredentials: true
-    });
+    return getContenido(this.http, this.apiUrl);
   }
 
   getMisCentrosFiltrados(
@@ -21,23 +20,10 @@ export class MisCentrosService {
     direccion?: string,
     precioMensual?: number
   ): Observable<any[]> {
-    let params = new HttpParams();
-
-    if (nombre) {
-      params = params.set('nombre', nombre);
-    }
-
-    if (direccion) {
-      params = params.set('direccion', direccion);
-    }
-
-    if (precioMensual !== undefined) {
-      params = params.set('precioMensual', precioMensual.toString());
-    }
-
-    return this.http.get<any[]>(this.apiUrl, {
-      params,
-      withCredentials: true
+    return getContenido(this.http, this.apiUrl, {
+      nombre,
+      direccion,
+      precioMensual
     });
   }
 

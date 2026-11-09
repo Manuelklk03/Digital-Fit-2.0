@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { getContenido } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,27 +12,17 @@ export class ValoracionesService {
   private apiUrl = '/api/valoraciones';
 
   getMisValoraciones(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/mis-valoraciones`, {
-      withCredentials: true
-    });
+    return getContenido(this.http, `${this.apiUrl}/mis-valoraciones`);
   }
 
   getValoracionesPublicas(categoria?: string | null): Observable<any[]> {
-    let url = `${this.apiUrl}/publicas`;
-
-    if (categoria && categoria !== 'TODOS') {
-      url += `?categoria=${encodeURIComponent(categoria)}`;
-    }
-
-    return this.http.get<any[]>(url, {
-      withCredentials: true
+    return getContenido(this.http, `${this.apiUrl}/publicas`, {
+      categoria: categoria === 'TODOS' ? undefined : categoria
     });
   }
 
   getValoracionesPorContenido(tipoContenido: string, idContenido: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${tipoContenido}/${idContenido}`, {
-      withCredentials: true
-    });
+    return getContenido(this.http, `${this.apiUrl}/${tipoContenido}/${idContenido}`);
   }
 
   crearOActualizarValoracion(tipoContenido: string, idContenido: number, valoracion: any): Observable<any> {
