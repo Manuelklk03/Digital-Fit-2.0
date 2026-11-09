@@ -1,0 +1,27 @@
+# ===================================================================
+# Digital-Fit 2.0 — Configuración de despliegue en Netlify (D2, D9)
+# ===================================================================
+# Frontend estático Angular servido en CDN global con proxy inverso
+# para /api/* hacia el backend en Render, manteniendo cookies de
+# primera parte (SameSite=Lax, HttpOnly) y evitando problemas de CORS.
+
+[build]
+  base = "Frontend/digital-fit-frontend"
+  publish = "dist/digital-fit-frontend/browser"
+  command = "npm run build"
+
+# Proxy reverso hacia la API en Render (D2, D9)
+# En staging o prod la URL de destino se puede sobrescribir con variables
+# de entorno en el panel de Netlify.
+[[redirects]]
+  from = "/api/*"
+  to = "https://digital-fit-backend.onrender.com/api/:splat"
+  status = 200
+  force = true
+  headers = {X-Forwarded-Host = "digitalfit.netlify.app"}
+
+# Soporte para Angular Single Page Application (HTML5 pushState routing)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
