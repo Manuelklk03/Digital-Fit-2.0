@@ -114,14 +114,12 @@
 
 ## Resumen
 
-- **Fase activa:** 4 — Backend, API y datos (tareas 4.1, 4.2, 4.3, 4.4, 4.5 y 4.7 cerradas; 4.6 ya hecha en 3.7; 3.9 SEO reservada para Claude) ([roadmap](roadmap.md#fase-4--backend-api-y-datos)); 2.1 y propuesta documental 2.2 hechas, 2.3–2.4 aplazadas. Con el backend saneado y asegurado, el proyecto está listo para el rediseño visual de la aplicación.
-- **Rama de la tarea 2.2:** `docs/hosting-decision`; `main` está protegida: todo entra por PR.
-- **Rama de la tarea 2.1:** `docs/hosting-feasibility` (PR #39); `main` está protegida: todo entra por PR.
-- **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (demostrado con la PR #32, bloqueada por un error de lint) (backend con PostgreSQL + frontend + ESLint desde 1B.2: 0 errores, 446 avisos de deuda conocida). Primera ejecución en la PR #30: verde en ambos jobs (backend 1/1 tests en 1 min 6 s; frontend 51/51 tests y build en 30 s).
-- **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, método de análisis GitHub Actions (según Manuel), secreto `SONAR_TOKEN` guardado en el repositorio (verificado con `gh secret list`).
-- **Versión publicada:** `v1.0.0` (tag anotado, ver abajo). `v2.0.0` no existe todavía.
-- **Despliegue público:** ninguno. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`, etiquetas `latest` y `sha-xxxxxxx`) desde la CI en cada merge a `main`; verificadas el 2026-11-02 con la API de Docker Hub.
-- **Modo de trabajo:** guiado por defecto (decisión de Manuel, 2026-10-26; ver `AGENTS.md`). La preparación de esta entrega (tag, limpieza y documentación) se hizo en automático porque el encargo inicial lo autorizaba expresamente. Las tareas siguientes empiezan solo cuando Manuel lo indique y, salvo que pida otra cosa, de forma guiada.
+- **Fase activa:** 5 — Renovación del frontend por recorridos (Recorrido 1 completado en PR #49; Recorrido 2: Entrenamientos en curso por Claude). Fase 4 (Backend, API y datos) completada al 100% (tareas 4.1 a 4.10 cerradas).
+- **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 134 tests unitarios en verde.
+- **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` configurado.
+- **Versión publicada:** `v1.0.0` (tag anotado). `v2.0.0` se publicará al completar la fase 7.
+- **Despliegue público:** Pendiente de configuración en 2.3/2.4 y 7.1. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`).
+- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Antigravity en parada G5 (BLOQUEADO en espera de que Claude complete las pantallas de la Fase 5 para poder acometer la suite E2E 6.2 y CI 6.1).
 
 ## Versión original `v1.0.0`
 
@@ -178,9 +176,9 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. Esperar la indicación de Manuel para empezar 3.1 (definición del producto). La configuración de staging y producción y la prueba 2.4 quedan para antes del despliegue final; entonces habrá que comprobar los datos de alta de los proveedores, el coste de ambos entornos y si el backend cabe en los 512 MB de Render.
-2. Rediseño: mapa tipo Google Maps, i18n y SEO registrados como tareas 3.6–3.9 (D10, D11), en modo mixto.
-3. Reparto de las tareas restantes entre Claude (SEO y frontend) y Antigravity (el resto), con paradas de coordinación, en [HANDOFF.md](HANDOFF.md). Primera tarea de Antigravity: 4.9, 1B.5, 1B.6 y 4.8 (parada G1).
+1. **Frontend (Claude):** Continuar con la Fase 5 (Recorrido 2: Entrenamientos — catálogo base, mis entrenamientos, comunidad e historial con estética Neutral Sport y paginación `PaginaResponse`).
+2. **Backend y DevOps (Antigravity):** En espera por parada G5 hasta que Claude finalice las pantallas de la Fase 5, para implementar las pruebas E2E con Playwright (6.2) y CI (6.1).
+3. **Despliegue (Fases 2.3/2.4 y 7.1):** Pendiente de que Manuel provisione las cuentas/secretos (parada G4) antes de la release final `v2.0.0`.
 
 ## Cómo actualizar este archivo
 
