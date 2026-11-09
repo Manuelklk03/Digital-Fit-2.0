@@ -95,7 +95,7 @@ export function fechaLegible(fecha: string | null | undefined, idioma: string): 
 }
 
 /** Filtro de pantalla a parámetros de consulta (vacío si no hay valor). */
-export function aParametros(filtro: FiltroEntrenamiento | null): Record<string, string> {
+export function aParametros(filtro: { campo: string; valor: string } | null): Record<string, string> {
   const valor = filtro?.valor.trim();
   return filtro && valor ? { [filtro.campo]: valor } : {};
 }

@@ -152,5 +152,8 @@ export const entrenamientosEs: DiccionarioEntrenamientos = {
     tipoUbicacion: 'Tipo de ubicación',
     errorDetalle: 'No se encontró el registro o no tienes acceso a él.',
     tituloDetalle: 'Registro de sesión',
+    buscarEtiqueta: 'Buscar en el historial',
+    buscarPlaceholder: 'Entrenamiento, lugar o notas',
+    vacioBusqueda: 'Ningún registro coincide con la búsqueda.',
   },
 };

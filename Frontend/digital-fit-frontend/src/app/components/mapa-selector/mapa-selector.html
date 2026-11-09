@@ -1,30 +1,27 @@
-<div class="mapa-contenedor">
-
-  @if (!soloVista) {
-  <div class="barra-superior-mapa">
-    <input type="text" name="textoBusqueda" [(ngModel)]="textoBusqueda" placeholder="Buscar calle, zona o sitio"
-      (keyup.enter)="buscarDireccion()">
-
-    <button type="button" (click)="buscarDireccion()" [disabled]="buscando">
-      {{ buscando ? 'Buscando...' : 'Buscar' }}
-    </button>
-
-    <button type="button" (click)="volverAValencia()">
-      Volver a Valencia
-    </button>
-
-    <button type="button" (click)="volverAMarcador()">
-      Ir a ubicación marcada
-    </button>
-  </div>
+@let m = i18n.t().lugares.mapa;
+<div class="mapa">
+  @if (!soloVista()) {
+    <div class="barra" role="search">
+      <label class="sr-only" for="mapa-busqueda">{{ m.buscarEtiqueta }}</label>
+      <input df-input size="sm" id="mapa-busqueda" type="search" name="textoBusqueda" autocomplete="off"
+        [(ngModel)]="textoBusqueda" [placeholder]="m.buscarPlaceholder"
+        (keydown.enter)="$event.preventDefault(); buscarDireccion()" />
+      <button df-button variant="primary" size="sm" type="button" [loading]="buscando()" [disabled]="buscando()"
+        (click)="buscarDireccion()">{{ buscando() ? m.buscando : m.buscar }}</button>
+      <button df-button variant="ghost" size="sm" type="button" (click)="volverAValencia()">{{ m.volverValencia }}</button>
+      <button df-button variant="ghost" size="sm" type="button" [disabled]="!hayMarcador()" (click)="volverAMarcador()">{{ m.irMarcador }}</button>
+    </div>
   }
 
-  @if (mostrarMensajeBusqueda && !soloVista) {
-  <div class="mensaje-busqueda">
-    <span>{{ mensajeBusqueda }}</span>
-    <button type="button" (click)="cerrarMensaje()">Cerrar</button>
+  <!-- Región viva siempre presente: los lectores de pantalla no anuncian bien una región recién insertada. -->
+  <div role="status">
+    @if (mensaje(); as texto) {
+      <div class="mensaje">
+        <span>{{ texto }}</span>
+        <button df-button variant="ghost" size="sm" type="button" [attr.aria-label]="m.cerrarMensaje" (click)="mensaje.set(null)">×</button>
+      </div>
+    }
   </div>
-  }
 
-  <div #mapContainer class="mapa-leaflet"></div>
+  <div #mapContainer class="lienzo" [class.lienzo-vista]="soloVista()" role="region" [attr.aria-label]="soloVista() ? m.regionVista : m.region"></div>
 </div>

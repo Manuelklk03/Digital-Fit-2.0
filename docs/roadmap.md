@@ -94,9 +94,11 @@ Aceptación: tests de backend en verde (con PostgreSQL o Testcontainers), permis
 
 Dependencias: 3.4 y los endpoints de la fase 4 que use cada recorrido.
 
-Recorridos, en este orden: **acceso** (login, registro, sesión — **Hecho 2026-11-08**) → **entrenamientos** (catálogo, mis entrenamientos, comunidad, historial y sus detalles — **Hecho 2026-11-09**; búsqueda del historial pendiente del parámetro `q` del backend, G8) → **lugares** (centros privados, lugares públicos, mapa) → **progreso** (estadísticas, valoraciones) → **administración** (soporte retirado según D13).
+Recorridos, en este orden: **acceso** (login, registro, sesión — **Hecho 2026-11-08**) → **entrenamientos** (catálogo, mis entrenamientos, comunidad, historial y sus detalles — **Hecho 2026-11-09**, con búsqueda en el historial desde G8) → **lugares** (centros privados, lugares públicos, mapa — **Hecho 2026-11-09**) → **progreso** (estadísticas, valoraciones) → **administración** (soporte retirado según D13).
 
 Para cada recorrido [P]: modelos tipados sin `any` (P7), interceptor HTTP común, estados de carga/error/vacío/éxito, accesibilidad, revisión antislop y de UI, tests de lo que tenga lógica.
+
+Pendientes anotados en el recorrido de lugares [+]: mover las piezas genéricas de `pages/entrenamientos/compartido/` (estado, listado, encabezado, paginador, `pagina.css`) a una carpeta común; iconos del marcador de Leaflet servidos desde `assets` en lugar de unpkg; distinguir 404/403 de un fallo de red en los detalles; devolver el foco al botón «Editar» al cerrar una edición.
 
 Además: proxy de desarrollo para `ng serve` (P1) [P], `lang="es"` [P], carga diferida de rutas [+], limpieza de `public/img` (P12) [+].
 
@@ -118,6 +120,7 @@ Dependencias: fase 6.
 
 | ID | Tarea |
 |---|---|
+| 7.0 [P] | Revisión de seguridad antes de publicar (pedida por Manuel, 2026-11-09). La autenticación usa **sesión de servidor con cookie `JSESSIONID`** (`HttpOnly`, `SameSite=Lax`, `Secure` por entorno desde 4.1), no JWT. Decidir: a) mantener la sesión y **activar CSRF** (hoy `csrf.disable()` en `SecurityConfig`) con `CookieCsrfTokenRepository` y el interceptor XSRF de Angular, o b) migrar a JWT de acceso corto + refresh token rotatorio en cookie `HttpOnly` (cambio de stack: plan, motivos y aprobación). Revisar también la cookie entre dominios Netlify ↔ Render (`SameSite=None; Secure` o proxy del frontend), cabeceras de seguridad (CSP, HSTS) y límite de intentos de login |
 | 7.1 [P] | Despliegue final con la configuración de la fase 2 y verificación en producción |
 | 7.2 [P] | README de portfolio con URL, capturas reales y credenciales de demostración |
 | 7.3 [P] | CHANGELOG `[2.0.0]`, tag `v2.0.0` y GitHub Release (con indicación de Manuel) |

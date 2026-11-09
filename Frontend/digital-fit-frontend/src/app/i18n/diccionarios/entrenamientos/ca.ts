@@ -152,5 +152,8 @@ export const entrenamientosCa: DiccionarioEntrenamientos = {
     tipoUbicacion: "Tipus d'ubicació",
     errorDetalle: "No s'ha trobat el registre o no hi tens accés.",
     tituloDetalle: 'Registre de sessió',
+    buscarEtiqueta: "Cercar en l'historial",
+    buscarPlaceholder: 'Entrenament, lloc o notes',
+    vacioBusqueda: 'Cap registre coincideix amb la cerca.',
   },
 };

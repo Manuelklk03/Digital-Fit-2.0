@@ -152,5 +152,8 @@ export const entrenamientosEn: DiccionarioEntrenamientos = {
     tipoUbicacion: 'Location type',
     errorDetalle: 'The entry was not found or you do not have access to it.',
     tituloDetalle: 'Session entry',
+    buscarEtiqueta: 'Search history',
+    buscarPlaceholder: 'Workout, place or notes',
+    vacioBusqueda: 'No entries match your search.',
   },
 };

@@ -1,5 +1,6 @@
 import { DiccionarioTraduccion } from '../i18n.types';
 import { entrenamientosCa } from './entrenamientos/ca';
+import { lugaresCa } from './lugares/ca';
 
 export const diccionarioCa: DiccionarioTraduccion = {
   nav: {
@@ -102,4 +103,5 @@ export const diccionarioCa: DiccionarioTraduccion = {
     exitoRegistro: 'Compte creat correctament. Redirigint a inici de sessió...',
   },
   entrenamientos: entrenamientosCa,
+  lugares: lugaresCa,
 };

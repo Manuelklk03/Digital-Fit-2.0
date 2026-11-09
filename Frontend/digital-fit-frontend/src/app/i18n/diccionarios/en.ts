@@ -1,5 +1,6 @@
 import { DiccionarioTraduccion } from '../i18n.types';
 import { entrenamientosEn } from './entrenamientos/en';
+import { lugaresEn } from './lugares/en';
 
 export const diccionarioEn: DiccionarioTraduccion = {
   nav: {
@@ -102,4 +103,5 @@ export const diccionarioEn: DiccionarioTraduccion = {
     exitoRegistro: 'Account created successfully. Redirecting to sign in...',
   },
   entrenamientos: entrenamientosEn,
+  lugares: lugaresEn,
 };

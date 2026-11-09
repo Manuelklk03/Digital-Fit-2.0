@@ -31,6 +31,24 @@ describe('HistorialEntrenamientosComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('Aún no has registrado ninguna sesión.');
   });
 
+  it('busca por texto desde la página 0 y avisa si no hay coincidencias', () => {
+    http.expectOne((r) => r.url === '/api/entrenamientos/mi-historial').flush(VACIA);
+    component.busqueda = ' Turia ';
+    component.buscar();
+    const req = http.expectOne((r) => r.url === '/api/entrenamientos/mi-historial');
+    expect(req.request.params.get('q')).toBe('Turia');
+    expect(req.request.params.get('page')).toBe('0');
+    req.flush(VACIA);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Ningún registro coincide con la búsqueda.');
+
+    component.limpiarBusqueda();
+    const limpia = http.expectOne((r) => r.url === '/api/entrenamientos/mi-historial');
+    expect(limpia.request.params.has('q')).toBe(false);
+    limpia.flush(VACIA);
+    expect(component.hayBusqueda()).toBe(false);
+  });
+
   it('valida el formulario sin enviar nada', () => {
     http.expectOne((r) => r.url === '/api/entrenamientos/mi-historial').flush(VACIA);
     component.crearRegistro();

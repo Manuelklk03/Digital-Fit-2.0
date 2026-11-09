@@ -14,16 +14,19 @@ import {
 })
 export class HistorialEntrenamientosService {
 
-  private http = inject(HttpClient);
-  private apiUrl = '/api/entrenamientos/mi-historial';
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = '/api/entrenamientos/mi-historial';
 
   getHistorial(): Observable<HistorialEntrenamiento[]> {
     return getContenido<HistorialEntrenamiento>(this.http, this.apiUrl);
   }
 
-  /** Página del historial, del más reciente al más antiguo (orden por defecto del backend). */
-  getPaginaHistorial(page = 0): Observable<PaginaResponse<HistorialEntrenamiento>> {
-    return getPagina<HistorialEntrenamiento>(this.http, this.apiUrl, {}, page);
+  /**
+   * Página del historial, del más reciente al más antiguo (orden por defecto del backend).
+   * `q` busca sin distinguir mayúsculas en notas, entrenamiento y ubicación.
+   */
+  getPaginaHistorial(page = 0, q = ''): Observable<PaginaResponse<HistorialEntrenamiento>> {
+    return getPagina<HistorialEntrenamiento>(this.http, this.apiUrl, { q: q.trim() }, page);
   }
 
   getHistorialById(id: number): Observable<HistorialEntrenamiento> {
