@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
+import { vi } from 'vitest';
 import { EntrenamientosComponent } from './entrenamientos';
 
 const BASE = { id: 1, nombre: 'Full body', descripcion: 'd', categoria: 'FUERZA_TOTAL', nivel: 'PRINCIPIANTE', duracionEnMinutos: 40 };
@@ -72,5 +73,37 @@ describe('EntrenamientosComponent', () => {
     expect(texto).toContain('Editar');
     expect(texto).toContain('Nuevo entrenamiento');
     expect(texto).not.toContain('Añadir a mis entrenamientos');
+  });
+
+  it('el administrador crea y edita, y cierra el formulario al guardar', () => {
+    sesion('ADMIN');
+    listado().flush({ content: [BASE], page: 0, size: 12, totalElements: 1, totalPages: 1 });
+    const c = fixture.componentInstance;
+    const datos = { nombre: 'N', descripcion: 'd', categoria: 'HIIT' as const, nivel: 'EXPERTO' as const, duracionEnMinutos: 10 };
+
+    c.enEdicion.set(null);
+    c.guardar(datos);
+    http.expectOne((r) => r.method === 'POST' && r.url === '/api/admin/entrenamientos-base').flush(BASE);
+    listado().flush({ content: [BASE], page: 0, size: 12, totalElements: 1, totalPages: 1 });
+    expect(c.enEdicion()).toBeUndefined();
+
+    c.enEdicion.set(BASE as never);
+    c.guardar(datos);
+    http.expectOne((r) => r.method === 'PUT' && r.url === '/api/admin/entrenamientos-base/1').flush({ detail: 'Duplicado' }, { status: 409, statusText: 'Conflict' });
+    expect(c.aviso.actual()).toEqual({ texto: 'Duplicado', tipo: 'error' });
+  });
+
+  it('borra tras confirmar y no hace nada si se cancela', () => {
+    sesion('ADMIN');
+    listado().flush({ content: [BASE], page: 0, size: 12, totalElements: 1, totalPages: 1 });
+    const confirmar = vi.spyOn(window, 'confirm').mockReturnValue(false);
+    fixture.componentInstance.borrar(BASE as never);
+    http.expectNone((r) => r.method === 'DELETE');
+
+    confirmar.mockReturnValue(true);
+    fixture.componentInstance.borrar(BASE as never);
+    http.expectOne((r) => r.method === 'DELETE').flush(null);
+    listado().flush({ content: [], page: 0, size: 12, totalElements: 0, totalPages: 0 });
+    expect(fixture.componentInstance.aviso.actual()?.tipo).toBe('exito');
   });
 });

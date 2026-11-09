@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 
+import { vi } from 'vitest';
 import { HistorialEntrenamientosComponent } from './historial-entrenamientos';
 
 const VACIA = { content: [], page: 0, size: 12, totalElements: 0, totalPages: 0 };
@@ -59,5 +60,43 @@ describe('HistorialEntrenamientosComponent', () => {
       duracionEnMinutos: 50,
       notas: 'Buen ritmo',
     });
+  });
+
+  it('borra un registro tras confirmar y recarga la página', () => {
+    const r = { id: 5, entrenamiento: 'Core', tipoEntrenamiento: 'MI_ENTRENAMIENTO', ubicacion: null, tipoUbicacion: null, fecha: '2026-11-09 10:00:00', duracionEnMinutos: 20, notas: null };
+    http.expectOne((q) => q.url === '/api/entrenamientos/mi-historial').flush({ ...VACIA, content: [r], totalElements: 1, totalPages: 1 });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('li.registro').length).toBe(1);
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
+
+    component.borrarRegistro(r as never);
+    http.expectOne('/api/entrenamientos/mi-historial/5').flush(null);
+    http.expectOne((q) => q.url === '/api/entrenamientos/mi-historial').flush(VACIA);
+
+    expect(component.aviso.actual()?.tipo).toBe('exito');
+  });
+
+  it('carga las opciones al abrir el formulario y permite reintentar si alguna falla', () => {
+    http.expectOne((r) => r.url === '/api/entrenamientos/mi-historial').flush(VACIA);
+    component.abrirFormulario();
+    const urls = ['/api/entrenamientos', '/api/mis-entrenamientos', '/api/lugares-publicos', '/api/mis-lugares-publicos', '/api/centros-privados', '/api/mis-centros-privados'];
+    for (const url of urls) {
+      const req = http.expectOne((r) => r.url === url);
+      if (url === '/api/mis-entrenamientos') {
+        req.flush(null, { status: 500, statusText: 'Error' });
+      } else {
+        req.flush({ ...VACIA, content: [{ id: 1, nombre: 'X', duracionEnMinutos: 10 }] });
+      }
+    }
+    fixture.detectChanges();
+    expect(component.errorOpciones()).toBe(true);
+    expect(component.opciones()?.base.length).toBe(1);
+
+    component.cerrarFormulario();
+    component.abrirFormulario();
+    for (const url of urls) {
+      http.expectOne((r) => r.url === url).flush(VACIA);
+    }
+    expect(component.errorOpciones()).toBe(false);
   });
 });
