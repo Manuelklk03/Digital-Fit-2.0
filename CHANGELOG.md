@@ -8,6 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Parámetro opcional de búsqueda textual `q` en `GET /api/entrenamientos/mi-historial`, con filtrado `LIKE` insensible a mayúsculas sobre notas, rutinas y centros o espacios públicos, preservando la paginación y el orden descendente por fecha (parada G8).
 - Rediseño del recorrido de **Entrenamientos** (fase 5): catálogo base, mis entrenamientos, comunidad, historial y sus cuatro detalles con el sistema Neutral Sport / Industrial, componentes OnPush con signals, modelos tipados sin `any` (`models/entrenamiento.ts`), estados reales de carga, vacío, error y recarga, y textos en los 4 idiomas. Paginación real en pantalla (12 por página) con filtro de un solo campo, como aplica el backend; errores `ProblemDetail` mostrados al usuario; confirmación antes de borrar; foco gestionado al abrir y cerrar formularios. Piezas compartidas en `pages/entrenamientos/compartido/` (estado paginado, filtro, tarjeta, formulario y paginador).
 - Frontend adaptado a la API paginada: interfaz `PaginaResponse<T>` y los 9 servicios de listados (entrenamientos, centros, lugares y valoraciones) piden `size=100` y devuelven el contenido, sin cambiar las pantallas. Paginación visible en cada pantalla: recorridos 5.2–5.4.
 - Paginación y ordenación en los listados de la API REST mediante Spring Data `Pageable` (`page`, `size` [por defecto 20, máximo 100], `sort`) y encapsulación en el DTO genérico `PaginaResponse<T>` (`content`, `page`, `size`, `totalElements`, `totalPages`), resolviendo la deuda técnica P6 y optimizando consultas N+1 con `@EntityGraph` en comunidad, historial y valoraciones (tarea 4.8).
@@ -74,6 +75,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
+- Hashes bcrypt de usuarios demo en migración Flyway `V5__actualizar_hashes_demo.sql` para `admin1` (`Admin123!`) y `usuario1` (`Usuario123!`), solventando el fallo 401 en el panel de login demo (parada G8).
+- Manejo de `NoResourceFoundException` en `GlobalExceptionHandler`, respondiendo con código 404 ProblemDetail en lugar de error interno 500 ante rutas no mapeadas de la API (parada G8).
 - Los guards `authGuard` y `publicGuard` llamaban a `/api/auth/yo`, retirado en la tarea 4.1, y redirigían siempre a `/login` (afectaba a `/entrenamientos`). Ahora usan `/api/auth/me`.
 - Contraste AA en los chips sutiles `primary` y `danger` de `BadgeComponent`.
 
