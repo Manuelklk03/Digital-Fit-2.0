@@ -48,8 +48,8 @@ Dependencias: 1.8. La investigación y la elección documental (2.1–2.2) se ha
 |---|---|
 | 2.1 [P] | **Investigación hecha (2026-11-03).** Comparativa de frontend estático (Cloudflare Pages, Netlify, Vercel, GitHub Pages), backend en contenedor (Render, Koyeb, Fly.io, Google Cloud Run) y PostgreSQL gestionado (Neon, Supabase, Render Postgres) en [deployment.md](deployment.md). Proveedor final y prueba real pendientes |
 | 2.2 [P] | **Propuesta documental hecha (2026-11-03).** Netlify, Render y Neon; sesión por cookie mediante proxy `/api`. Decisiones D2 y D9 en [architecture.md](architecture.md#4-registro-de-decisiones), pendientes de validar en 2.4 |
-| 2.3 [P] | **Aplazada hasta preparar el despliegue.** Configurar `dev`, `staging` y `prod` con bases de datos, variables y secretos separados; preparar CORS y cookies por entorno |
-| 2.4 [P] | **Aplazada hasta preparar el despliegue.** Probar en URLs reales registro, login, creación de un recurso propio, cierre de sesión y persistencia al volver a entrar; validar primero en staging |
+| 2.3 [P] | Configurar `dev`, `staging` y `prod` con bases de datos, variables y secretos separados; preparar CORS y cookies por entorno. **Hecha (2026-11-09)** |
+| 2.4 [P] | **Aplazada hasta preparar el despliegue (bloqueada por Parada G4: requiere cuentas y secretos de Manuel).** Probar en URLs reales registro, login, creación de un recurso propio, cierre de sesión y persistencia al volver a entrar; validar primero en staging |
 
 Aceptación ahora: proveedores y modelo de sesión documentados como propuesta. Antes del despliegue final: configuración 2.3 y recorrido real 2.4 verificados, con límites y costes comprobados. Si no es viable, registrar una decisión alternativa.
 
