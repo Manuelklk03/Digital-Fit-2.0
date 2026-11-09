@@ -1,63 +1,41 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
+import { BadgeComponent, ButtonComponent, CardComponent } from '../../../components/ui';
+import { I18nService } from '../../../i18n/i18n.service';
+import { fechaLegible, HistorialEntrenamiento } from '../../../models/entrenamiento';
 import { HistorialEntrenamientosService } from '../../../services/entrenamientos/historial-entrenamientos';
+import { Detalle } from '../../entrenamientos/compartido/estado';
 
 @Component({
   selector: 'app-detalle-historial-entrenamiento',
-  imports: [HeaderComponent, Footer, RouterLink],
+  imports: [RouterLink, HeaderComponent, Footer, BadgeComponent, ButtonComponent, CardComponent],
   templateUrl: './detalle-historial.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './detalle-historial.css',
+  styleUrl: '../../entrenamientos/compartido/pagina.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetalleHistorialEntrenamientoComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private historialService = inject(HistorialEntrenamientosService);
-  private cdr = inject(ChangeDetectorRef);
+  readonly i18n = inject(I18nService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly historialService = inject(HistorialEntrenamientosService);
 
-  registro: any = null;
+  readonly detalle = new Detalle<HistorialEntrenamiento>(() =>
+    this.historialService.getHistorialById(Number(this.route.snapshot.paramMap.get('id'))),
+  );
+  readonly registro = this.detalle.item;
+  readonly estado = this.detalle.estado;
+  readonly fecha = computed(() => fechaLegible(this.registro()?.fecha, this.i18n.idiomaActual()));
+  readonly tipoEntrenamiento = computed(() => {
+    const h = this.i18n.t().entrenamientos.historial;
+    return this.registro()?.tipoEntrenamiento === 'ENTRENAMIENTO_BASE' ? h.tipoBase : h.tipoMio;
+  });
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-
-    this.historialService.getHistorialById(id).subscribe({
-      next: (data: any) => {
-        this.registro = data;
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => {
-        console.error('ERROR DETALLE HISTORIAL:', err);
-      },
-    });
+    this.detalle.cargar();
   }
 
-  mostrarTipoEntrenamiento(tipo: string): string {
-    switch (tipo) {
-      case 'ENTRENAMIENTO_BASE':
-        return 'Entrenamiento base';
-      case 'MI_ENTRENAMIENTO':
-      case 'ENTRENAMIENTO_USUARIO':
-        return 'Mi entrenamiento';
-      default:
-        return 'No indicado';
-    }
-  }
-
-  mostrarTipoUbicacion(tipo: string): string {
-    switch (tipo) {
-      case 'LUGAR_PUBLICO_BASE':
-        return 'Lugar público base';
-      case 'MI_LUGAR_PUBLICO':
-      case 'LUGAR_PUBLICO_USUARIO':
-        return 'Mi lugar público';
-      case 'CENTRO_PRIVADO_BASE':
-        return 'Centro privado base';
-      case 'MI_CENTRO_PRIVADO':
-      case 'CENTRO_PRIVADO_USUARIO':
-        return 'Mi centro privado';
-      default:
-        return 'Sin ubicación';
-    }
+  cargar(): void {
+    this.detalle.cargar();
   }
 }

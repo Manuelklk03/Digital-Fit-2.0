@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { getContenido } from '../../models/pagina-response';
+import { getContenido, getPagina, PaginaResponse } from '../../models/pagina-response';
+import { aParametros, EntrenamientoBase, FiltroEntrenamiento } from '../../models/entrenamiento';
 
 @Injectable({
   providedIn: 'root'
@@ -11,26 +12,16 @@ export class EntrenamientosService {
   private http = inject(HttpClient);
   private apiUrl = '/api/entrenamientos';
 
-  getEntrenamientos(): Observable<any[]> {
-    return getContenido(this.http, this.apiUrl);
+  getEntrenamientos(): Observable<EntrenamientoBase[]> {
+    return getContenido<EntrenamientoBase>(this.http, this.apiUrl);
   }
 
-  getEntrenamientosFiltrados(
-    categoria?: string,
-    nivel?: string,
-    duracionEnMinutos?: number,
-    nombre?: string
-  ): Observable<any[]> {
-    return getContenido(this.http, this.apiUrl, {
-      categoria: categoria?.toUpperCase().replaceAll(' ', '_'),
-      nivel: nivel?.toUpperCase().replaceAll(' ', '_'),
-      duracionEnMinutos,
-      nombre
-    });
+  buscar(filtro: FiltroEntrenamiento | null, page = 0): Observable<PaginaResponse<EntrenamientoBase>> {
+    return getPagina<EntrenamientoBase>(this.http, this.apiUrl, aParametros(filtro), page);
   }
 
-  getEntrenamientoById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+  getEntrenamientoById(id: number): Observable<EntrenamientoBase> {
+    return this.http.get<EntrenamientoBase>(`${this.apiUrl}/${id}`, {
       withCredentials: true
     });
   }

@@ -1,3 +1,5 @@
+import type { Categoria, Nivel, TipoUbicacionHistorial } from '../models/entrenamiento';
+
 export type Idioma = 'es' | 'ca' | 'en' | 'fr';
 
 export interface InfoIdioma {
@@ -112,5 +114,126 @@ export interface DiccionarioTraduccion {
     errorContrasenaCorta: string;
     errorRegistro: string;
     exitoRegistro: string;
+  };
+  entrenamientos: DiccionarioEntrenamientos;
+}
+
+/** Textos del recorrido de entrenamientos (catálogo, mis entrenamientos, comunidad, historial y detalles). */
+export interface DiccionarioEntrenamientos {
+  categorias: Record<Categoria, string>;
+  niveles: Record<Nivel, string>;
+  minutos: string;
+  campoNombre: string;
+  campoCategoria: string;
+  campoNivel: string;
+  campoDuracion: string;
+  campoDescripcion: string;
+  filtrarPor: string;
+  filtroDuracionMax: string;
+  valorFiltro: string;
+  nombrePlaceholder: string;
+  seleccionar: string;
+  botonBuscar: string;
+  botonLimpiar: string;
+  anadirAMis: string;
+  editar: string;
+  borrar: string;
+  nuevo: string;
+  cerrarFormulario: string;
+  crear: string;
+  guardarCambios: string;
+  cancelarEdicion: string;
+  guardando: string;
+  errorNombre: string;
+  errorDescripcion: string;
+  errorDuracion: string;
+  total: string;
+  cargandoListado: string;
+  errorCarga: string;
+  reintentar: string;
+  vacioFiltro: string;
+  paginacion: string;
+  paginaAnterior: string;
+  paginaSiguiente: string;
+  pagina: string;
+  de: string;
+  confirmarBorrado: string;
+  exitoAnadido: string;
+  errorAnadir: string;
+  exitoCreado: string;
+  exitoActualizado: string;
+  exitoBorrado: string;
+  errorGuardar: string;
+  errorBorrar: string;
+  volverListado: string;
+  errorDetalle: string;
+  sinDescripcion: string;
+  catalogo: {
+    badge: string;
+    titulo: string;
+    subtitulo: string;
+    vacio: string;
+    formCrear: string;
+    formEditar: string;
+  };
+  mis: {
+    badge: string;
+    titulo: string;
+    subtitulo: string;
+    vacio: string;
+    irCatalogo: string;
+    formCrear: string;
+    marcarRealizado: string;
+    exitoRealizado: string;
+    errorRealizado: string;
+    verHistorial: string;
+  };
+  comunidad: {
+    badge: string;
+    titulo: string;
+    subtitulo: string;
+    vacio: string;
+    formCrear: string;
+    formEditar: string;
+    publicar: string;
+    tuyo: string;
+    autor: string;
+    publicado: string;
+  };
+  historial: {
+    badge: string;
+    titulo: string;
+    subtitulo: string;
+    vacio: string;
+    formCrear: string;
+    campoEntrenamiento: string;
+    campoUbicacion: string;
+    campoFecha: string;
+    campoNotas: string;
+    notasPlaceholder: string;
+    seleccionaEntrenamiento: string;
+    sinUbicacion: string;
+    grupoBase: string;
+    grupoMios: string;
+    grupoLugaresBase: string;
+    grupoMisLugares: string;
+    grupoCentrosBase: string;
+    grupoMisCentros: string;
+    guardarRegistro: string;
+    errorEntrenamiento: string;
+    errorFecha: string;
+    exitoRegistro: string;
+    errorRegistro: string;
+    exitoBorrado: string;
+    errorBorrar: string;
+    confirmarBorrado: string;
+    tipoBase: string;
+    tipoMio: string;
+    tiposUbicacion: Record<TipoUbicacionHistorial, string>;
+    sinNotas: string;
+    tipoEntrenamiento: string;
+    tipoUbicacion: string;
+    errorDetalle: string;
+    tituloDetalle: string;
   };
 }

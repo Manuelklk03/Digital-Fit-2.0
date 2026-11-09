@@ -16,18 +16,40 @@ export type Filtros = Record<string, string | number | null | undefined>;
 /** Tamaño máximo de página que acepta el backend; si se pide más, lo acota a 100. */
 export const TAMANO_MAXIMO_PAGINA = 100;
 
-/**
- * GET de un listado paginado que devuelve solo el array `content`, para las pantallas que aún no paginan.
- * shortcut: devuelve como mucho 100 elementos; paginar en pantalla (recorridos 5.2-5.4) cuando haya más.
- */
-export function getContenido<T = unknown>(http: HttpClient, url: string, filtros: Filtros = {}): Observable<T[]> {
-  let params = new HttpParams().set('size', TAMANO_MAXIMO_PAGINA);
+/** Tamaño de página de las pantallas que paginan. */
+export const TAMANO_PAGINA = 12;
+
+/** GET de una página concreta de un listado, con sus filtros. */
+export function getPagina<T>(
+  http: HttpClient,
+  url: string,
+  filtros: Filtros = {},
+  page = 0,
+  size = TAMANO_PAGINA,
+): Observable<PaginaResponse<T>> {
+  let params = new HttpParams().set('page', page).set('size', size);
   for (const [clave, valor] of Object.entries(filtros)) {
     if (valor !== undefined && valor !== null && valor !== '') {
       params = params.set(clave, String(valor));
     }
   }
-  return http
-    .get<PaginaResponse<T>>(url, { params, withCredentials: true })
-    .pipe(map((pagina) => pagina.content));
+  return http.get<PaginaResponse<T>>(url, { params, withCredentials: true });
+}
+
+/**
+ * GET de un listado paginado que devuelve solo el array `content`, para listas auxiliares (selects).
+ * shortcut: devuelve como mucho 100 elementos; paginar o buscar en servidor si un select necesita más.
+ */
+export function getContenido<T = unknown>(http: HttpClient, url: string, filtros: Filtros = {}): Observable<T[]> {
+  return getPagina<T>(http, url, filtros, 0, TAMANO_MAXIMO_PAGINA).pipe(map((pagina) => pagina.content));
+}
+
+/** Mensaje de un error HTTP: `detail` de ProblemDetail (RFC 7807), texto plano o el mensaje por defecto. */
+export function mensajeError(err: unknown, porDefecto: string): string {
+  const cuerpo = (err as { error?: unknown } | null)?.error;
+  if (typeof cuerpo === 'string' && cuerpo.trim() !== '') {
+    return cuerpo;
+  }
+  const detalle = (cuerpo as { detail?: unknown } | null)?.detail;
+  return typeof detalle === 'string' && detalle.trim() !== '' ? detalle : porDefecto;
 }

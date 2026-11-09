@@ -19,13 +19,14 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 
 | Parada | Estado | Espera a | Qué se necesita |
 |---|---|---|---|
-| G1 | LIBRE | Antigravity → Claude | Tarea 4.8 completada. Contrato de API paginada documentado abajo. Listo para que Claude adapte el frontend |
-| G2 | LIBRE | Claude → Antigravity | Pantallas, rutas y servicios de soporte retirados del frontend. Antigravity ya puede retirar el backend de tickets |
-| G3 | LIBRE | Claude → Antigravity | Confirmado: no queda ninguna llamada a `/api/soporte` ni a `/api/admin/soporte` en el frontend |
+| G1 | Resuelta | Antigravity → Claude | Tarea 4.8 completada (PR #62) y adaptada por Claude en frontend (PR #64) |
+| G2 | Resuelta | Claude → Antigravity | Pantallas y servicios de soporte retirados en frontend (PR #65) y backend purgado con Flyway V4 (PR #66) |
+| G3 | Resuelta | Claude → Antigravity | Confirmado: cero referencias residuales a soporte o tickets en frontend y backend |
 | G4 | Pendiente | Manuel → Antigravity | Cuentas de Netlify, Render y Neon y secretos con `gh secret set`. Sin ellos no hay 2.3 ni 2.4 |
-| G5 | Pendiente | Claude → Antigravity | 6.2 (E2E) espera a que Claude cierre todo el frontend |
+| G5 | BLOQUEADO | Claude → Antigravity | 6.2 (E2E) y 6.1 (CI) esperan a que Claude cierre la fase 5 completa del frontend |
 | G6 | Pendiente | Claude → Antigravity | 6.5 (Prettier) espera a que Claude no tenga ramas abiertas |
 | G7 | Pendiente | Manuel → Antigravity | 7.3 (tag `v2.0.0`) solo con orden expresa de Manuel |
+| G8 | LIBRE | Claude → Antigravity | 3 fallos de backend detectados al probar el recorrido de entrenamientos (detalle abajo). No bloquean a Claude |
 
 ## Registro de avisos
 
@@ -36,6 +37,19 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 | 2026-11-09 | G1 | LIBRE | Tarea 4.8 completada y fusionada (PR #62). Contrato de API paginada publicado para que Claude adapte el frontend |
 | 2026-11-09 | G1 | Resuelta | Frontend adaptado a la API paginada (PR #64). Límite: 100 elementos por listado hasta que cada pantalla pagine |
 | 2026-11-09 | G2 y G3 | LIBRE | Soporte retirado del frontend (rama `feat/frontend-retirar-soporte`). Antigravity puede retirar tickets en el backend |
+| 2026-11-09 | G2 y G3 | Resuelta | Backend de tickets y soporte eliminado por completo con migración Flyway V4 (PR #66) |
+| 2026-11-09 | G5 | BLOQUEADO | Antigravity espera a que Claude complete la renovación de las pantallas del frontend (Fase 5) para iniciar las suites E2E (6.2) y CI (6.1) |
+| 2026-11-09 | G8 | LIBRE | Recorrido 2 (entrenamientos) cerrado en `feat/recorrido-entrenamientos`. Al probarlo contra Docker aparecen 3 fallos de backend para Antigravity (ver «Fallos de backend para Antigravity») |
+
+## Fallos de backend para Antigravity (G8, 2026-11-09)
+
+Detectados por Claude al probar el recorrido de entrenamientos contra `docker compose up` (volumen nuevo, Flyway en V4).
+
+1. **Contraseñas demo rotas.** Los hashes bcrypt de `V3__usuarios_demo.sql` no corresponden a `Admin123!` ni a `Usuario123!` (comprobado con `bcrypt.checkpw`: ambos `False`; login → 401). El panel demo de `/login` no funciona. V3 ya está aplicada: hace falta una migración nueva (V5) que actualice los hashes, y un test que verifique hash ↔ contraseña documentada.
+2. **Recurso inexistente → 500.** `GlobalExceptionHandler` convierte `NoResourceFoundException` (p. ej. una ruta `/api/...` que no existe) en 500 «Error no controlado». Debería ser 404 ProblemDetail.
+3. **Búsqueda en el historial.** `GET /api/entrenamientos/mi-historial` solo filtra por `duracionMinutos` y `fecha`. La pantalla v1 buscaba por texto (entrenamiento, ubicación, notas) sobre la lista completa; con paginación eso ya no es posible en el cliente. Propuesta: parámetro opcional `q` (texto, sin distinguir mayúsculas) sobre nombre del entrenamiento, ubicación y notas, paginado y ordenado por fecha descendente. Claude añadirá el campo de búsqueda cuando exista.
+
+Ya corregido en el frontend (no requiere backend): los guards `authGuard` y `publicGuard` llamaban a `/api/auth/yo`, retirado en 4.1; ahora usan `/api/auth/me`.
 
 ## Contrato de la API paginada (para Claude — Adaptación de Frontend)
 

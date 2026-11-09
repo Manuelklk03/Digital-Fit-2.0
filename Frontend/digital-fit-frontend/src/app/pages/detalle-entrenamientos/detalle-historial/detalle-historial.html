@@ -1,74 +1,52 @@
-<app-header></app-header>
+@let t = i18n.t().entrenamientos;
+@let h = t.historial;
+<app-header />
 
-<main class="detalle-historial">
+<main class="pagina" id="contenido-principal">
+  <a df-button variant="ghost" size="sm" class="volver" routerLink="/historial-entrenamientos"><span aria-hidden="true">←</span> {{ t.volverListado }}</a>
 
-  @if (registro) {
-  <section class="cabecera-detalle">
-    <div class="cabecera-badge">Registro individual</div>
-    <h1>{{ registro.entrenamiento }}</h1>
-    <p>Consulta toda la información del registro de historial.</p>
-  </section>
-
-  <section class="bloque-detalle">
-
-    <div class="resumen-superior">
-      <div class="chip-resumen chip-azul">
-        {{ mostrarTipoEntrenamiento(registro.tipoEntrenamiento) }}
+  @switch (estado()) {
+    @case ('cargando') {
+      <div role="status">
+        <span class="sr-only">{{ i18n.t().comun.cargando }}</span>
+        <div class="esqueleto" aria-hidden="true"></div>
       </div>
-
-      <div class="chip-resumen chip-gris">
-        {{ registro.duracionEnMinutos }} min
+    }
+    @case ('error') {
+      <div class="estado estado-error" role="alert">
+        <p>{{ h.errorDetalle }}</p>
+        <button df-button variant="outline" size="sm" type="button" (click)="cargar()">{{ t.reintentar }}</button>
       </div>
-    </div>
-
-    <div class="grid-detalle">
-      <div class="dato-detalle">
-        <span class="etiqueta">Entrenamiento</span>
-        <span>{{ registro.entrenamiento }}</span>
-      </div>
-
-      <div class="dato-detalle">
-        <span class="etiqueta">Tipo de entrenamiento</span>
-        <span>{{ mostrarTipoEntrenamiento(registro.tipoEntrenamiento) }}</span>
-      </div>
-
-      <div class="dato-detalle">
-        <span class="etiqueta">Ubicación</span>
-        <span>{{ registro.ubicacion || 'Sin ubicación' }}</span>
-      </div>
-
-      <div class="dato-detalle">
-        <span class="etiqueta">Tipo de ubicación</span>
-        <span>{{ mostrarTipoUbicacion(registro.tipoUbicacion) }}</span>
-      </div>
-
-      <div class="dato-detalle">
-        <span class="etiqueta">Fecha</span>
-        <span>{{ registro.fecha }}</span>
-      </div>
-
-      <div class="dato-detalle">
-        <span class="etiqueta">Duración</span>
-        <span>{{ registro.duracionEnMinutos }} min</span>
-      </div>
-    </div>
-
-    <div class="descripcion-detalle">
-      <h2>Notas</h2>
-      <p>{{ registro.notas || 'Sin notas' }}</p>
-    </div>
-
-    <div class="acciones-detalle">
-      <a class="boton-volver" routerLink="/historial-entrenamientos">Volver</a>
-    </div>
-  </section>
-  } @else {
-  <section class="cabecera-detalle">
-    <h1>Detalle de historial</h1>
-    <p>Cargando detalle...</p>
-  </section>
+    }
+    @default {
+      @if (registro(); as r) {
+        <app-card>
+          <article class="detalle">
+            <div class="chips">
+              <span df-badge variant="primary" [dot]="true">{{ h.tituloDetalle }}</span>
+              <span df-badge badgeStyle="outline">{{ tipoEntrenamiento() }}</span>
+              @if (r.tipoUbicacion) {
+                <span df-badge>{{ h.tiposUbicacion[r.tipoUbicacion] }}</span>
+              }
+            </div>
+            <h1 class="cabecera-detalle">{{ r.entrenamiento }}</h1>
+            <dl class="datos">
+              <div class="dato"><dt>{{ h.campoFecha }}</dt><dd>{{ fecha() }}</dd></div>
+              <div class="dato"><dt>{{ t.campoDuracion }}</dt><dd class="num">{{ r.duracionEnMinutos }} {{ t.minutos }}</dd></div>
+              <div class="dato">
+                <dt>{{ h.campoUbicacion }}</dt>
+                <dd>{{ r.ubicacion || h.sinUbicacion }}</dd>
+              </div>
+            </dl>
+            <section>
+              <h2 class="subtitulo">{{ h.campoNotas }}</h2>
+              <p class="texto-largo">{{ r.notas || h.sinNotas }}</p>
+            </section>
+          </article>
+        </app-card>
+      }
+    }
   }
-
 </main>
 
-<app-footer></app-footer>
+<app-footer />

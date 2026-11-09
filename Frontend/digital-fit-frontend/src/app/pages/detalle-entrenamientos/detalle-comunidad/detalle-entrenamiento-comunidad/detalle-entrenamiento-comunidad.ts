@@ -1,152 +1,82 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { EntrenamientosComunidadService } from '../../../../services/entrenamientos/entrenamiento-comunidad-service';
-import { MisEntrenamientosService } from '../../../../services/entrenamientos/mis-entrenamientos-service';
-import { AuthService } from '../../../../services/auth-service';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from '../../../../components/header/header';
 import { Footer } from '../../../../components/footer/footer';
+import { AlertComponent, BadgeComponent, ButtonComponent } from '../../../../components/ui';
+import { I18nService } from '../../../../i18n/i18n.service';
+import { EntrenamientoComunidad, fechaLegible, UsuarioSesion } from '../../../../models/entrenamiento';
+import { AuthService } from '../../../../services/auth-service';
+import { EntrenamientosComunidadService } from '../../../../services/entrenamientos/entrenamiento-comunidad-service';
+import { MisEntrenamientosService } from '../../../../services/entrenamientos/mis-entrenamientos-service';
+import { Aviso, Detalle, ejecutarAccion } from '../../../entrenamientos/compartido/estado';
+import { DetalleVistaComponent } from '../../../entrenamientos/compartido/detalle-vista';
 
 @Component({
   selector: 'app-detalle-entrenamiento-comunidad',
-  imports: [HeaderComponent, Footer, RouterLink],
+  imports: [HeaderComponent, Footer, AlertComponent, BadgeComponent, ButtonComponent, DetalleVistaComponent],
   templateUrl: './detalle-entrenamiento-comunidad.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './detalle-entrenamiento-comunidad.css',
+  styleUrl: '../../../entrenamientos/compartido/pagina.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetalleEntrenamientoComunidadComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private entrenamientosComunidadService = inject(EntrenamientosComunidadService);
-  private misEntrenamientosService = inject(MisEntrenamientosService);
-  private authService = inject(AuthService);
-  private cdr = inject(ChangeDetectorRef);
+  readonly i18n = inject(I18nService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly comunidadService = inject(EntrenamientosComunidadService);
+  private readonly misEntrenamientosService = inject(MisEntrenamientosService);
+  private readonly authService = inject(AuthService);
 
-  entrenamiento: any = null;
-  usuarioActual: any = null;
-
-  mostrarPopup = false;
-  textoPopup = '';
-  tipoPopup: 'exito' | 'error' = 'exito';
-  private popupTimeout: any;
+  readonly detalle = new Detalle<EntrenamientoComunidad>(() =>
+    this.comunidadService.getEntrenamientoComunidadById(Number(this.route.snapshot.paramMap.get('id'))),
+  );
+  readonly usuario = signal<UsuarioSesion | null>(null);
+  readonly esMio = computed(() => {
+    const u = this.usuario();
+    return u !== null && u.username === this.detalle.item()?.usuario;
+  });
+  readonly datosExtra = computed(() => {
+    const e = this.detalle.item();
+    const t = this.i18n.t().entrenamientos.comunidad;
+    return e
+      ? [
+          { etiqueta: t.autor, valor: e.usuario },
+          { etiqueta: t.publicado, valor: fechaLegible(e.fechaPublicacion, this.i18n.idiomaActual()) },
+        ]
+      : [];
+  });
+  readonly ocupado = signal(false);
+  readonly aviso = new Aviso();
 
   ngOnInit(): void {
     this.authService.me().subscribe({
-      next: (usuario: any) => {
-        this.usuarioActual = usuario;
-        this.cargarDetalle();
-      },
-      error: () => {
-        this.cargarDetalle();
-      },
+      next: (u: UsuarioSesion) => this.usuario.set(u),
+      error: () => this.usuario.set(null),
+    });
+    this.detalle.cargar();
+  }
+
+  anadir(e: EntrenamientoComunidad): void {
+    const t = this.i18n.t().entrenamientos;
+    this.ocupado.set(true);
+    ejecutarAccion(this.misEntrenamientosService.anadirDesdeComunidad(e.id), {
+      aviso: this.aviso,
+      exito: t.exitoAnadido,
+      error: t.errorAnadir,
+      alTerminar: () => this.ocupado.set(false),
     });
   }
 
-  cargarDetalle(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-
-    this.entrenamientosComunidadService.getEntrenamientoComunidadById(id).subscribe({
-      next: (data: any) => {
-        this.entrenamiento = data;
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => {
-        console.error('ERROR DETALLE ENTRENAMIENTO COMUNIDAD:', err);
-        this.abrirPopup('No se pudo cargar el detalle del entrenamiento.', 'error');
-      },
-    });
-  }
-
-  esMio(): boolean {
-    return this.usuarioActual?.username === this.entrenamiento?.usuario;
-  }
-
-  anadirAMisEntrenamientos(): void {
-    if (!this.entrenamiento?.id) {
+  borrar(e: EntrenamientoComunidad): void {
+    const t = this.i18n.t().entrenamientos;
+    if (!confirm(t.confirmarBorrado)) {
       return;
     }
-
-    this.misEntrenamientosService.anadirDesdeComunidad(this.entrenamiento.id).subscribe({
-      next: () => {
-        this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
-      },
-      error: (err: any) => {
-        this.abrirPopup(
-          this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'),
-          'error',
-        );
-      },
+    this.ocupado.set(true);
+    ejecutarAccion(this.comunidadService.borrarEntrenamientoComunidad(e.id), {
+      aviso: this.aviso,
+      error: t.errorBorrar,
+      alTerminar: () => this.ocupado.set(false),
+      alExito: () => void this.router.navigate(['/entrenamientos-comunidad']),
     });
-  }
-
-  borrarEntrenamiento(): void {
-    if (!this.entrenamiento?.id) {
-      return;
-    }
-
-    this.entrenamientosComunidadService
-      .borrarEntrenamientoComunidad(this.entrenamiento.id)
-      .subscribe({
-        next: () => {
-          this.abrirPopup('Entrenamiento borrado correctamente.', 'exito');
-
-          setTimeout(() => {
-            this.router.navigate(['/entrenamientos-comunidad']);
-          }, 1200);
-        },
-        error: () => {
-          this.abrirPopup('No se pudo borrar el entrenamiento.', 'error');
-        },
-      });
-  }
-
-  mostrarCategoriaLegible(categoria: string): string {
-    if (!categoria) {
-      return 'Sin categoría';
-    }
-
-    return categoria
-      .replaceAll('_', ' ')
-      .toLowerCase()
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
-  }
-
-  mostrarNivelLegible(nivel: string): string {
-    if (!nivel) {
-      return 'Sin nivel';
-    }
-
-    return nivel
-      .replaceAll('_', ' ')
-      .toLowerCase()
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
-  }
-
-  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
-    this.textoPopup = texto;
-    this.tipoPopup = tipo;
-    this.mostrarPopup = true;
-    this.cdr.detectChanges();
-
-    if (this.popupTimeout) {
-      clearTimeout(this.popupTimeout);
-    }
-
-    this.popupTimeout = setTimeout(() => {
-      this.mostrarPopup = false;
-      this.cdr.detectChanges();
-    }, 3000);
-  }
-
-  cerrarPopup(): void {
-    this.mostrarPopup = false;
-    this.cdr.detectChanges();
-  }
-
-  private obtenerMensajeError(err: any, mensajePorDefecto: string): string {
-    if (typeof err?.error === 'string' && err.error.trim() !== '') {
-      return err.error;
-    }
-
-    return mensajePorDefecto;
   }
 }

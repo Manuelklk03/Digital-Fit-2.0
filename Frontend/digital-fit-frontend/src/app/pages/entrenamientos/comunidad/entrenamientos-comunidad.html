@@ -1,227 +1,63 @@
-<app-header></app-header>
+@let t = i18n.t().entrenamientos;
+<app-header />
 
-<main class="pagina-entrenamientos-comunidad">
+<main class="pagina" id="contenido-principal">
+  <app-encabezado-pagina [badge]="t.comunidad.badge" [titulo]="t.comunidad.titulo" [subtitulo]="t.comunidad.subtitulo">
+    @if (enEdicion() === undefined) {
+      <button id="boton-nuevo" df-button variant="primary" type="button" (click)="enEdicion.set(null)">{{ t.comunidad.formCrear }}</button>
+    }
+  </app-encabezado-pagina>
 
-  @if (mostrarPopup) {
-  <div class="popup-overlay">
-    <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
-      <p>{{ textoPopup }}</p>
-      <button type="button" (click)="cerrarPopup()">Cerrar</button>
-    </div>
-  </div>
+  @if (aviso.actual(); as a) {
+    <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
   }
 
-  <section class="hero-pagina">
-    <div class="hero-contenido">
-      <span class="etiqueta-seccion">Zona comunidad</span>
-      <h1>Entrenamientos comunidad</h1>
-      <p>
-        Publica entrenamientos, gestiona los tuyos y descubre los compartidos por otros usuarios.
+  @if (enEdicion() !== undefined) {
+    <app-formulario-entrenamiento
+      idPrefijo="form-comunidad"
+      [titulo]="enEdicion() ? t.comunidad.formEditar : t.comunidad.formCrear"
+      [textoEnviar]="enEdicion() ? t.guardarCambios : t.comunidad.publicar"
+      [inicial]="enEdicion() ?? null"
+      [guardando]="guardando()"
+      (guardar)="guardar($event)"
+      (cancelar)="cerrarFormulario()" />
+  }
+
+  <section class="listado" aria-labelledby="titulo-listado">
+    <h2 id="titulo-listado" class="sr-only">{{ t.comunidad.titulo }}</h2>
+    <div class="listado-cabecera">
+      <app-filtro-entrenamientos (filtrar)="filtrar($event)" />
+      <p class="total" aria-live="polite">
+        @if (listado.pagina(); as p) {
+          {{ t.total }}: <strong>{{ p.totalElements }}</strong>
+        }
       </p>
     </div>
-  </section>
 
-  <section class="bloque-formulario">
-    <div class="titulo-bloque">
-      <div>
-        <span class="mini-etiqueta">Publicación</span>
-        <h2>
-          @if (editandoId !== null) {
-          Editar entrenamiento de comunidad
-          } @else {
-          Crear entrenamiento de comunidad
-          }
-        </h2>
-      </div>
-    </div>
-
-    <form class="formulario-entrenamiento" (ngSubmit)="guardarEntrenamiento()">
-
-      <div class="grid-formulario">
-        <div class="grupo-campo">
-          <label for="nombre">Nombre</label>
-          <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
-        </div>
-
-        <div class="grupo-campo">
-          <label for="duracionEnMinutos">Duración (minutos)</label>
-          <input type="number" id="duracionEnMinutos" name="duracionEnMinutos" [(ngModel)]="duracionEnMinutos" required>
-        </div>
-
-        <div class="grupo-campo">
-          <label for="categoria">Categoría</label>
-          <select id="categoria" name="categoria" [(ngModel)]="categoria">
-            <option value="FUERZA_TOTAL">Fuerza total</option>
-            <option value="FUERZA_TREN_SUPERIOR">Fuerza tren superior</option>
-            <option value="FUERZA_TREN_INFERIOR">Fuerza tren inferior</option>
-            <option value="FUERZA_CORE">Fuerza core</option>
-            <option value="CARDIO_SUAVE">Cardio suave</option>
-            <option value="CARDIO_INTENSO">Cardio intenso</option>
-            <option value="HIIT">HIIT</option>
-            <option value="RESISTENCIA">Resistencia</option>
-            <option value="CALISTENIA_BASICA">Calistenia básica</option>
-            <option value="CALISTENIA_AVANZADA">Calistenia avanzada</option>
-            <option value="CALISTENIA_FULL_BODY">Calistenia full body</option>
-            <option value="ENTRENAMIENTO_FUNCIONAL">Entrenamiento funcional</option>
-            <option value="CIRCUITO_FUNCIONAL">Circuito funcional</option>
-            <option value="MOVILIDAD">Movilidad</option>
-            <option value="FLEXIBILIDAD">Flexibilidad</option>
-            <option value="ESTIRAMIENTOS">Estiramientos</option>
-            <option value="RUNNING">Running</option>
-            <option value="TRAIL_RUNNING">Trail running</option>
-            <option value="CICLISMO">Ciclismo</option>
-            <option value="BOXEO">Boxeo</option>
-            <option value="ARTES_MARCIALES">Artes marciales</option>
-            <option value="CROSSFIT">Crossfit</option>
-            <option value="EQUILIBRIO">Equilibrio</option>
-            <option value="COORDINACION">Coordinación</option>
-            <option value="RECUPERACION">Recuperación</option>
-          </select>
-        </div>
-
-        <div class="grupo-campo">
-          <label for="nivel">Nivel</label>
-          <select id="nivel" name="nivel" [(ngModel)]="nivel">
-            <option value="PRINCIPIANTE">Principiante</option>
-            <option value="INTERMEDIO">Intermedio</option>
-            <option value="AVANZADO">Avanzado</option>
-            <option value="EXPERTO">Experto</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="grupo-campo grupo-campo-completo">
-        <label for="descripcion">Descripción</label>
-        <textarea id="descripcion" name="descripcion" rows="4" [(ngModel)]="descripcion" required></textarea>
-      </div>
-
-      <div class="acciones-formulario">
-        <button type="submit" class="boton-guardar">
-          @if (editandoId !== null) {
-          Guardar cambios
-          } @else {
-          Publicar entrenamiento
-          }
-        </button>
-
-        @if (editandoId !== null) {
-        <button type="button" class="boton-cancelar" (click)="cancelarEdicion()">
-          Cancelar edición
-        </button>
+    <app-estado-listado [listado]="listado" [vacio]="hayFiltro() ? t.vacioFiltro : t.comunidad.vacio">
+      <div class="rejilla" [attr.aria-busy]="listado.recargando()">
+        @for (e of listado.items(); track e.id) {
+          <app-tarjeta-entrenamiento [entrenamiento]="e" [ruta]="['/entrenamientos-comunidad', e.id]">
+            @if (esMio(e)) {
+              <span chip df-badge variant="accent">{{ t.comunidad.tuyo }}</span>
+            }
+            <dl meta class="meta">
+              <dt>{{ t.comunidad.autor }}</dt><dd>{{ e.usuario }}</dd>
+              <dt>{{ t.comunidad.publicado }}</dt><dd>{{ fecha(e) }}</dd>
+            </dl>
+            @if (esMio(e)) {
+              <button df-button variant="outline" size="sm" type="button" [disabled]="guardando()" (click)="enEdicion.set(e)">{{ t.editar }}</button>
+              <button df-button variant="danger" size="sm" type="button"
+                [loading]="ocupado() === e.id" [disabled]="ocupado() === e.id" (click)="borrar(e)">{{ t.borrar }}</button>
+            } @else {
+              <button df-button variant="secondary" size="sm" type="button"
+                [loading]="ocupado() === e.id" [disabled]="ocupado() === e.id" (click)="anadir(e)">{{ t.anadirAMis }}</button>
+            }
+          </app-tarjeta-entrenamiento>
         }
       </div>
-    </form>
+    </app-estado-listado>
   </section>
-
-  <section class="bloque-listado">
-    <div class="cabecera-listado">
-      <div class="resumen-listado">
-        <span class="mini-etiqueta">Tus publicaciones</span>
-        <h2>Mis entrenamientos subidos</h2>
-        <p class="texto-secundario">{{ misEntrenamientosSubidos.length }} entrenamiento(s)</p>
-      </div>
-
-      <div class="barra-busqueda">
-        <select name="tipoBusqueda" [(ngModel)]="tipoBusqueda" (ngModelChange)="alCambiarBusqueda()">
-          <option value="nombre">Buscar por nombre</option>
-          <option value="categoria">Buscar por categoría</option>
-          <option value="nivel">Buscar por nivel</option>
-          <option value="duracionEnMinutos">Buscar por duración máxima</option>
-        </select>
-
-        <input type="text" name="valorBusqueda" [(ngModel)]="valorBusqueda" (input)="alCambiarBusqueda()"
-          placeholder="Escribe aquí...">
-
-        <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">Limpiar</button>
-      </div>
-    </div>
-
-    @if (misEntrenamientosSubidos.length > 0) {
-    <div class="grid-entrenamientos">
-      @for (entrenamiento of misEntrenamientosSubidos; track entrenamiento.id) {
-      <article class="tarjeta-entrenamiento">
-        <div class="cabecera-tarjeta">
-          <span class="badge-categoria">{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
-          <span class="badge-nivel">{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
-        </div>
-
-        <h3>{{ entrenamiento.nombre }}</h3>
-
-        <div class="detalle-resumen">
-          <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
-          <p><strong>Fecha:</strong> {{ entrenamiento.fechaPublicacion }}</p>
-          <p>{{ entrenamiento.descripcion }}</p>
-        </div>
-
-        <div class="acciones-entrenamiento">
-          <a class="boton-detalle" [routerLink]="['/entrenamientos-comunidad', entrenamiento.id]">
-            Ver detalle
-          </a>
-
-          <button class="boton-editar" type="button" (click)="editarEntrenamiento(entrenamiento)">
-            Editar
-          </button>
-
-          <button class="boton-borrar" type="button" (click)="borrarEntrenamiento(entrenamiento.id)">
-            Borrar
-          </button>
-        </div>
-      </article>
-      }
-    </div>
-    } @else {
-    <div class="bloque-vacio">
-      <p class="sin-datos">No has subido entrenamientos todavía o no coinciden con la búsqueda.</p>
-    </div>
-    }
-  </section>
-
-  <section class="bloque-listado">
-    <div class="cabecera-listado">
-      <div class="resumen-listado">
-        <span class="mini-etiqueta">Comunidad</span>
-        <h2>Entrenamientos de la comunidad</h2>
-        <p class="texto-secundario">{{ entrenamientosRestoComunidad.length }} entrenamiento(s)</p>
-      </div>
-    </div>
-
-    @if (entrenamientosRestoComunidad.length > 0) {
-    <div class="grid-entrenamientos">
-      @for (entrenamiento of entrenamientosRestoComunidad; track entrenamiento.id) {
-      <article class="tarjeta-entrenamiento">
-        <div class="cabecera-tarjeta">
-          <span class="badge-categoria">{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
-          <span class="badge-nivel">{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
-        </div>
-
-        <h3>{{ entrenamiento.nombre }}</h3>
-
-        <div class="detalle-resumen">
-          <p><strong>Duración:</strong> {{ entrenamiento.duracionEnMinutos }} min</p>
-          <p><strong>Usuario:</strong> {{ entrenamiento.usuario }}</p>
-          <p><strong>Fecha:</strong> {{ entrenamiento.fechaPublicacion }}</p>
-          <p>{{ entrenamiento.descripcion }}</p>
-        </div>
-
-        <div class="acciones-entrenamiento">
-          <a class="boton-detalle" [routerLink]="['/entrenamientos-comunidad', entrenamiento.id]">
-            Ver detalle
-          </a>
-
-          <button class="boton-anadir" type="button" (click)="anadirAMisEntrenamientos(entrenamiento.id)">
-            Añadir a mis entrenamientos
-          </button>
-        </div>
-      </article>
-      }
-    </div>
-    } @else {
-    <div class="bloque-vacio">
-      <p class="sin-datos">No hay entrenamientos de otros usuarios o no coinciden con la búsqueda.</p>
-    </div>
-    }
-  </section>
-
 </main>
 
-<app-footer></app-footer>
+<app-footer />

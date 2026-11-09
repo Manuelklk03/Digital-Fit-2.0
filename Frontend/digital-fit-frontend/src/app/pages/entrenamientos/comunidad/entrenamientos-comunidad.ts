@@ -1,299 +1,134 @@
-import { HeaderComponent } from './../../../components/header/header';
-import { Footer } from './../../../components/footer/footer';
-import { AuthService } from './../../../services/auth-service';
-import { EntrenamientosComunidadService } from './../../../services/entrenamientos/entrenamiento-comunidad-service';
-import { MisEntrenamientosService } from './../../../services/entrenamientos/mis-entrenamientos-service';
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, inject, Injector, OnInit, signal } from '@angular/core';
+import { HeaderComponent } from '../../../components/header/header';
+import { Footer } from '../../../components/footer/footer';
+import { AlertComponent, BadgeComponent, ButtonComponent } from '../../../components/ui';
+import { I18nService } from '../../../i18n/i18n.service';
+import {
+  EntrenamientoComunidad,
+  EntrenamientoForm,
+  fechaLegible,
+  FiltroEntrenamiento,
+  UsuarioSesion,
+} from '../../../models/entrenamiento';
+import { AuthService } from '../../../services/auth-service';
+import { EntrenamientosComunidadService } from '../../../services/entrenamientos/entrenamiento-comunidad-service';
+import { MisEntrenamientosService } from '../../../services/entrenamientos/mis-entrenamientos-service';
+import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../compartido/estado';
+import { EncabezadoPaginaComponent } from '../compartido/encabezado-pagina';
+import { EstadoListadoComponent } from '../compartido/estado-listado';
+import { FiltroEntrenamientosComponent } from '../compartido/filtro-entrenamientos';
+import { FormularioEntrenamientoComponent } from '../compartido/formulario-entrenamiento';
+import { TarjetaEntrenamientoComponent } from '../compartido/tarjeta-entrenamiento';
 
 @Component({
   selector: 'app-entrenamientos-comunidad',
-  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
+  imports: [
+    HeaderComponent,
+    Footer,
+    AlertComponent,
+    BadgeComponent,
+    ButtonComponent,
+    EncabezadoPaginaComponent,
+    EstadoListadoComponent,
+    FiltroEntrenamientosComponent,
+    FormularioEntrenamientoComponent,
+    TarjetaEntrenamientoComponent,
+  ],
   templateUrl: './entrenamientos-comunidad.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './entrenamientos-comunidad.css',
+  styleUrl: '../compartido/pagina.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EntrenamientosComunidadComponent implements OnInit {
-  private entrenamientosComunidadService = inject(EntrenamientosComunidadService);
-  private misEntrenamientosService = inject(MisEntrenamientosService);
-  private authService = inject(AuthService);
-  private cdr = inject(ChangeDetectorRef);
+  readonly i18n = inject(I18nService);
+  private readonly injector = inject(Injector);
+  private readonly comunidadService = inject(EntrenamientosComunidadService);
+  private readonly misEntrenamientosService = inject(MisEntrenamientosService);
+  private readonly authService = inject(AuthService);
 
-  entrenamientos: any[] = [];
-  misEntrenamientosSubidos: any[] = [];
-  entrenamientosRestoComunidad: any[] = [];
+  private filtro: FiltroEntrenamiento | null = null;
+  readonly listado = new ListadoPaginado<EntrenamientoComunidad>((page) =>
+    this.comunidadService.buscar(this.filtro, page),
+  );
+  readonly aviso = new Aviso();
+  readonly usuario = signal<UsuarioSesion | null>(null);
+  readonly hayFiltro = signal(false);
 
-  usuarioActual: any = null;
-
-  nombre = '';
-  descripcion = '';
-  categoria = 'FUERZA_TOTAL';
-  nivel = 'PRINCIPIANTE';
-  duracionEnMinutos = 30;
-
-  editandoId: number | null = null;
-
-  tipoBusqueda = 'nombre';
-  valorBusqueda = '';
-
-  mostrarPopup = false;
-  textoPopup = '';
-  tipoPopup: 'exito' | 'error' = 'exito';
-  private popupTimeout: any;
+  /** `undefined`: formulario cerrado; `null`: publicar; entrenamiento: editar. */
+  readonly enEdicion = signal<EntrenamientoComunidad | null | undefined>(undefined);
+  readonly guardando = signal(false);
+  readonly ocupado = signal<number | null>(null);
 
   ngOnInit(): void {
     this.authService.me().subscribe({
-      next: (usuario: any) => {
-        this.usuarioActual = usuario;
-        this.cargarEntrenamientosComunidad();
-      },
-      error: () => {
-        this.cargarEntrenamientosComunidad();
-      },
+      next: (u: UsuarioSesion) => this.usuario.set(u),
+      error: () => this.usuario.set(null),
     });
+    this.listado.cargar();
   }
 
-  cargarEntrenamientosComunidad(): void {
-    this.entrenamientosComunidadService.getEntrenamientosComunidad().subscribe({
-      next: (data: any[]) => {
-        this.entrenamientos = data;
-        this.separarEntrenamientos();
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => {
-        console.error('ERROR ENTRENAMIENTOS COMUNIDAD:', err);
-        this.abrirPopup('No se pudieron cargar los entrenamientos de comunidad.', 'error');
-      },
-    });
+  esMio(entrenamiento: EntrenamientoComunidad): boolean {
+    return this.usuario()?.username === entrenamiento.usuario;
   }
 
-  separarEntrenamientos(): void {
-    this.misEntrenamientosSubidos = this.entrenamientos.filter((entrenamiento: any) =>
-      this.esMio(entrenamiento),
+  fecha(entrenamiento: EntrenamientoComunidad): string {
+    return fechaLegible(entrenamiento.fechaPublicacion, this.i18n.idiomaActual());
+  }
+
+  cerrarFormulario(): void {
+    this.enEdicion.set(undefined);
+    enfocarTrasRender(this.injector, '#boton-nuevo');
+  }
+
+  filtrar(filtro: FiltroEntrenamiento | null): void {
+    this.filtro = filtro;
+    this.hayFiltro.set(filtro !== null);
+    this.listado.cargar(0);
+  }
+
+  guardar(datos: EntrenamientoForm): void {
+    const t = this.i18n.t().entrenamientos;
+    const editando = this.enEdicion();
+    this.guardando.set(true);
+    ejecutarAccion(
+      editando
+        ? this.comunidadService.actualizarEntrenamientoComunidad(editando.id, datos)
+        : this.comunidadService.crearEntrenamientoComunidad(datos),
+      {
+        aviso: this.aviso,
+        exito: editando ? t.exitoActualizado : t.exitoCreado,
+        error: t.errorGuardar,
+        alTerminar: () => this.guardando.set(false),
+        alExito: () => {
+          this.cerrarFormulario();
+          this.listado.recargar();
+        },
+      },
     );
-
-    this.entrenamientosRestoComunidad = this.entrenamientos.filter(
-      (entrenamiento: any) => !this.esMio(entrenamiento),
-    );
   }
 
-  buscarEntrenamientos(): void {
-    const texto = this.valorBusqueda.trim();
-
-    if (!texto) {
-      this.cargarEntrenamientosComunidad();
+  borrar(entrenamiento: EntrenamientoComunidad): void {
+    const t = this.i18n.t().entrenamientos;
+    if (!confirm(t.confirmarBorrado)) {
       return;
     }
-
-    if (this.tipoBusqueda === 'categoria') {
-      this.entrenamientosComunidadService
-        .getEntrenamientosComunidadFiltrados(texto, undefined, undefined, undefined)
-        .subscribe({
-          next: (data: any[]) => {
-            this.entrenamientos = data;
-            this.separarEntrenamientos();
-            this.cdr.detectChanges();
-          },
-          error: (err: any) => console.error('ERROR FILTRO CATEGORIA COMUNIDAD:', err),
-        });
-      return;
-    }
-
-    if (this.tipoBusqueda === 'nivel') {
-      this.entrenamientosComunidadService
-        .getEntrenamientosComunidadFiltrados(undefined, texto, undefined, undefined)
-        .subscribe({
-          next: (data: any[]) => {
-            this.entrenamientos = data;
-            this.separarEntrenamientos();
-            this.cdr.detectChanges();
-          },
-          error: (err: any) => console.error('ERROR FILTRO NIVEL COMUNIDAD:', err),
-        });
-      return;
-    }
-
-    if (this.tipoBusqueda === 'duracionEnMinutos') {
-      const duracion = Number(texto);
-
-      if (isNaN(duracion)) {
-        this.entrenamientos = [];
-        this.separarEntrenamientos();
-        return;
-      }
-
-      this.entrenamientosComunidadService
-        .getEntrenamientosComunidadFiltrados(undefined, undefined, duracion, undefined)
-        .subscribe({
-          next: (data: any[]) => {
-            this.entrenamientos = data;
-            this.separarEntrenamientos();
-            this.cdr.detectChanges();
-          },
-          error: (err: any) => console.error('ERROR FILTRO DURACION COMUNIDAD:', err),
-        });
-      return;
-    }
-
-    this.entrenamientosComunidadService
-      .getEntrenamientosComunidadFiltrados(undefined, undefined, undefined, texto)
-      .subscribe({
-        next: (data: any[]) => {
-          this.entrenamientos = data;
-          this.separarEntrenamientos();
-          this.cdr.detectChanges();
-        },
-        error: (err: any) => console.error('ERROR FILTRO NOMBRE COMUNIDAD:', err),
-      });
-  }
-
-  alCambiarBusqueda(): void {
-    this.buscarEntrenamientos();
-  }
-
-  limpiarBusqueda(): void {
-    this.tipoBusqueda = 'nombre';
-    this.valorBusqueda = '';
-    this.cargarEntrenamientosComunidad();
-  }
-
-  esMio(entrenamiento: any): boolean {
-    return this.usuarioActual?.username === entrenamiento.usuario;
-  }
-
-  guardarEntrenamiento(): void {
-    const payload = {
-      nombre: this.nombre,
-      descripcion: this.descripcion,
-      categoria: this.categoria,
-      nivel: this.nivel,
-      duracionEnMinutos: this.duracionEnMinutos,
-    };
-
-    if (this.editandoId !== null) {
-      this.entrenamientosComunidadService
-        .actualizarEntrenamientoComunidad(this.editandoId, payload)
-        .subscribe({
-          next: () => {
-            this.abrirPopup('Entrenamiento actualizado correctamente.', 'exito');
-            this.limpiarFormulario();
-            this.cargarEntrenamientosComunidad();
-          },
-          error: () => {
-            this.abrirPopup('No se pudo actualizar el entrenamiento.', 'error');
-          },
-        });
-    } else {
-      this.entrenamientosComunidadService.crearEntrenamientoComunidad(payload).subscribe({
-        next: () => {
-          this.abrirPopup('Entrenamiento de comunidad creado correctamente.', 'exito');
-          this.limpiarFormulario();
-          this.cargarEntrenamientosComunidad();
-        },
-        error: () => {
-          this.abrirPopup('No se pudo crear el entrenamiento de comunidad.', 'error');
-        },
-      });
-    }
-  }
-
-  editarEntrenamiento(entrenamiento: any): void {
-    this.editandoId = entrenamiento.id;
-    this.nombre = entrenamiento.nombre;
-    this.descripcion = entrenamiento.descripcion;
-    this.categoria = entrenamiento.categoria;
-    this.nivel = entrenamiento.nivel;
-    this.duracionEnMinutos = entrenamiento.duracionEnMinutos;
-  }
-
-  borrarEntrenamiento(id: number): void {
-    this.entrenamientosComunidadService.borrarEntrenamientoComunidad(id).subscribe({
-      next: () => {
-        this.abrirPopup('Entrenamiento borrado correctamente.', 'exito');
-        this.cargarEntrenamientosComunidad();
-      },
-      error: () => {
-        this.abrirPopup('No se pudo borrar el entrenamiento.', 'error');
-      },
+    this.ocupado.set(entrenamiento.id);
+    ejecutarAccion(this.comunidadService.borrarEntrenamientoComunidad(entrenamiento.id), {
+      aviso: this.aviso,
+      exito: t.exitoBorrado,
+      error: t.errorBorrar,
+      alTerminar: () => this.ocupado.set(null),
+      alExito: () => this.listado.recargar(),
     });
   }
 
-  anadirAMisEntrenamientos(id: number): void {
-    this.misEntrenamientosService.anadirDesdeComunidad(id).subscribe({
-      next: () => {
-        this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
-      },
-      error: (err: any) => {
-        this.abrirPopup(
-          this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'),
-          'error',
-        );
-      },
+  anadir(entrenamiento: EntrenamientoComunidad): void {
+    const t = this.i18n.t().entrenamientos;
+    this.ocupado.set(entrenamiento.id);
+    ejecutarAccion(this.misEntrenamientosService.anadirDesdeComunidad(entrenamiento.id), {
+      aviso: this.aviso,
+      exito: t.exitoAnadido,
+      error: t.errorAnadir,
+      alTerminar: () => this.ocupado.set(null),
     });
-  }
-
-  cancelarEdicion(): void {
-    this.limpiarFormulario();
-  }
-
-  limpiarFormulario(): void {
-    this.editandoId = null;
-    this.nombre = '';
-    this.descripcion = '';
-    this.categoria = 'FUERZA_TOTAL';
-    this.nivel = 'PRINCIPIANTE';
-    this.duracionEnMinutos = 30;
-  }
-
-  mostrarCategoriaLegible(categoria: string): string {
-    if (!categoria) {
-      return 'Sin categoría';
-    }
-
-    return categoria
-      .replaceAll('_', ' ')
-      .toLowerCase()
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
-  }
-
-  mostrarNivelLegible(nivel: string): string {
-    if (!nivel) {
-      return 'Sin nivel';
-    }
-
-    return nivel
-      .replaceAll('_', ' ')
-      .toLowerCase()
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
-  }
-
-  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
-    this.textoPopup = texto;
-    this.tipoPopup = tipo;
-    this.mostrarPopup = true;
-    this.cdr.detectChanges();
-
-    if (this.popupTimeout) {
-      clearTimeout(this.popupTimeout);
-    }
-
-    this.popupTimeout = setTimeout(() => {
-      this.mostrarPopup = false;
-      this.cdr.detectChanges();
-    }, 3000);
-  }
-
-  cerrarPopup(): void {
-    this.mostrarPopup = false;
-    this.cdr.detectChanges();
-  }
-
-  private obtenerMensajeError(err: any, mensajePorDefecto: string): string {
-    if (typeof err?.error === 'string' && err.error.trim() !== '') {
-      return err.error;
-    }
-
-    return mensajePorDefecto;
   }
 }
