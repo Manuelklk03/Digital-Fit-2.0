@@ -3,18 +3,12 @@
 
 <main class="pagina" id="contenido-principal">
   <app-detalle-vista volver="/entrenamientos-comunidad" [badge]="t.comunidad.badge" [estado]="detalle.estado()"
-    [entrenamiento]="detalle.item()" (reintentar)="detalle.cargar()">
+    [entrenamiento]="detalle.item()" [datosExtra]="datosExtra()" (reintentar)="detalle.cargar()">
     @if (aviso.actual(); as a) {
       <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
     }
     @if (esMio()) {
       <span chip df-badge variant="accent">{{ t.comunidad.tuyo }}</span>
-    }
-    @if (detalle.item(); as e) {
-      <div dato class="dato"><dt>{{ t.comunidad.autor }}</dt><dd>{{ e.usuario }}</dd></div>
-    }
-    @if (detalle.item()) {
-      <div dato class="dato"><dt>{{ t.comunidad.publicado }}</dt><dd>{{ fecha() }}</dd></div>
     }
     @if (detalle.item(); as e) {
       @if (esMio()) {

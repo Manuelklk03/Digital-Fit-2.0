@@ -8,7 +8,7 @@ import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
 
 /**
  * Vista común del detalle de un entrenamiento (base, propio o de comunidad): volver, estados de carga
- * y error y ficha. Slots: `app-alert`, `[chip]`, `[dato]` y las acciones (contenido por defecto).
+ * y error y ficha. Slots: `app-alert`, `[chip]` y las acciones; `datosExtra` añade filas a la ficha (contenido por defecto).
  */
 @Component({
   selector: 'app-detalle-vista',
@@ -46,7 +46,9 @@ import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
               <h1 class="cabecera-detalle">{{ e.nombre }}</h1>
               <dl class="datos">
                 <div class="dato"><dt>{{ t.campoDuracion }}</dt><dd class="num">{{ e.duracionEnMinutos }} {{ t.minutos }}</dd></div>
-                <ng-content select="[dato]" />
+                @for (d of datosExtra(); track d.etiqueta) {
+                  <div class="dato"><dt>{{ d.etiqueta }}</dt><dd>{{ d.valor }}</dd></div>
+                }
               </dl>
               <section>
                 <h2 class="subtitulo">{{ t.campoDescripcion }}</h2>
@@ -67,6 +69,7 @@ export class DetalleVistaComponent {
   readonly entrenamiento = input.required<Entrenamiento | null>();
   readonly badge = input.required<string>();
   readonly volver = input.required<string>();
+  readonly datosExtra = input<{ etiqueta: string; valor: string }[]>([]);
   readonly reintentar = output<void>();
   readonly varianteNivel = VARIANTE_NIVEL;
 }

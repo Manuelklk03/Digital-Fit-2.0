@@ -34,9 +34,16 @@ export class DetalleEntrenamientoComunidadComponent implements OnInit {
     const u = this.usuario();
     return u !== null && u.username === this.detalle.item()?.usuario;
   });
-  readonly fecha = computed(() =>
-    fechaLegible(this.detalle.item()?.fechaPublicacion, this.i18n.idiomaActual()),
-  );
+  readonly datosExtra = computed(() => {
+    const e = this.detalle.item();
+    const t = this.i18n.t().entrenamientos.comunidad;
+    return e
+      ? [
+          { etiqueta: t.autor, valor: e.usuario },
+          { etiqueta: t.publicado, valor: fechaLegible(e.fechaPublicacion, this.i18n.idiomaActual()) },
+        ]
+      : [];
+  });
   readonly ocupado = signal(false);
   readonly aviso = new Aviso();
 
