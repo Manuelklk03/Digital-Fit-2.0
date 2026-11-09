@@ -119,6 +119,15 @@
   <section class="listado" aria-labelledby="titulo-listado">
     <div class="listado-cabecera">
       <h2 id="titulo-listado" class="sr-only">{{ h.titulo }}</h2>
+      <form class="busqueda" role="search" (ngSubmit)="buscar()">
+        <label for="historial-busqueda">{{ h.buscarEtiqueta }}</label>
+        <div class="busqueda-fila">
+          <input df-input size="sm" id="historial-busqueda" name="busqueda" type="search" autocomplete="off"
+            [(ngModel)]="busqueda" [placeholder]="h.buscarPlaceholder" />
+          <button df-button variant="primary" size="sm" type="submit">{{ t.botonBuscar }}</button>
+          <button df-button variant="ghost" size="sm" type="button" (click)="limpiarBusqueda()">{{ t.botonLimpiar }}</button>
+        </div>
+      </form>
       <p class="total" aria-live="polite">
         @if (listado.pagina(); as p) {
           {{ t.total }}: <strong>{{ p.totalElements }}</strong>
@@ -126,7 +135,7 @@
       </p>
     </div>
 
-    <app-estado-listado [listado]="listado" [vacio]="h.vacio" [fila]="true" [esqueletos]="[1, 2, 3]">
+    <app-estado-listado [listado]="listado" [vacio]="hayBusqueda() ? h.vacioBusqueda : h.vacio" [fila]="true" [esqueletos]="[1, 2, 3]">
       <ol class="lista" [attr.aria-busy]="listado.recargando()">
         @for (r of listado.items(); track r.id) {
           <li class="registro">

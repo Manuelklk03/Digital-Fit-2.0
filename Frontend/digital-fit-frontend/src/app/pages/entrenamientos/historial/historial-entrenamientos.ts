@@ -85,9 +85,12 @@ export class HistorialEntrenamientosComponent implements OnInit {
   private readonly publicosService = inject(PublicosService);
   private readonly misLugaresService = inject(MisLugaresService);
 
+  private busquedaAplicada = '';
   readonly listado = new ListadoPaginado<HistorialEntrenamiento>((page) =>
-    this.historialService.getPaginaHistorial(page),
+    this.historialService.getPaginaHistorial(page, this.busquedaAplicada),
   );
+  readonly hayBusqueda = signal(false);
+  busqueda = '';
   readonly aviso = new Aviso();
   readonly opciones = signal<Opciones | null>(null);
   readonly errorOpciones = signal(false);
@@ -104,6 +107,17 @@ export class HistorialEntrenamientosComponent implements OnInit {
 
   ngOnInit(): void {
     this.listado.cargar();
+  }
+
+  buscar(): void {
+    this.busquedaAplicada = this.busqueda.trim();
+    this.hayBusqueda.set(this.busquedaAplicada !== '');
+    this.listado.cargar(0);
+  }
+
+  limpiarBusqueda(): void {
+    this.busqueda = '';
+    this.buscar();
   }
 
   abrirFormulario(): void {

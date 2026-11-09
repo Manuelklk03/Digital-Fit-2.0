@@ -1,277 +1,251 @@
 import {
   AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
   ChangeDetectionStrategy,
+  Component,
+  effect,
+  ElementRef,
   inject,
+  input,
+  OnDestroy,
+  output,
+  signal,
+  untracked,
+  viewChild,
 } from '@angular/core';
-import * as L from 'leaflet';
-import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import * as L from 'leaflet';
+import { ButtonComponent, InputDirective } from '../ui';
+import { I18nService } from '../../i18n/i18n.service';
+import { Coordenadas, ResultadoGeocodificacion, UBICACION_INICIAL } from '../../models/lugar';
 
+const ZOOM_CIUDAD = 12;
+const ZOOM_DETALLE = 17;
+const ZOOM_BUSQUEDA = 16;
+/** Pausa entre consultas de geocodificación (Nominatim pide como máximo 1 por segundo). */
+const PAUSA_CONSULTA_MS = 1200;
+
+const LIMITES_COMUNIDAD_VALENCIANA = L.latLngBounds(L.latLng(37.84, -1.58), L.latLng(40.79, 0.56));
+
+/**
+ * Mapa Leaflet (teselas de OpenStreetMap) para elegir o mostrar una ubicación en la Comunidad Valenciana.
+ * Con `soloVista` solo muestra el marcador; si no, permite buscar una dirección (proxy del backend) o hacer clic.
+ */
 @Component({
   selector: 'app-mapa-selector',
-  standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ButtonComponent, InputDirective],
   templateUrl: './mapa-selector.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './mapa-selector.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MapaSelectorComponent implements AfterViewInit {
-  @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef<HTMLDivElement>;
+export class MapaSelectorComponent implements AfterViewInit, OnDestroy {
+  readonly i18n = inject(I18nService);
+  private readonly http = inject(HttpClient);
+  private readonly contenedor = viewChild.required<ElementRef<HTMLDivElement>>('mapContainer');
 
-  @Input() latitud: number | null = null;
-  @Input() longitud: number | null = null;
-  @Input() soloVista = false;
+  readonly latitud = input<number | null>(null);
+  readonly longitud = input<number | null>(null);
+  readonly soloVista = input(false);
+  readonly ubicacionSeleccionada = output<Coordenadas>();
 
-  @Output() ubicacionSeleccionada = new EventEmitter<{ latitud: number; longitud: number }>();
-
-  private map!: L.Map;
-  private marker: L.Marker | null = null;
-
+  readonly buscando = signal(false);
+  readonly mensaje = signal<string | null>(null);
+  readonly hayMarcador = signal(false);
   textoBusqueda = '';
-  mensajeBusqueda = '';
-  mostrarMensajeBusqueda = false;
-  buscando = false;
 
-  private timeoutMensaje: any;
+  private map?: L.Map;
+  private marker: L.Marker | null = null;
+  private busqueda?: Subscription;
+  private readonly temporizadores = new Set<ReturnType<typeof setTimeout>>();
 
-  private readonly valenciaCentro: L.LatLngExpression = [39.4699, -0.3763];
-  private readonly zoomValencia = 12;
-  private readonly zoomDetalle = 17;
-
-  private readonly limitesComunidadValenciana = L.latLngBounds(
-    L.latLng(37.84, -1.58),
-    L.latLng(40.79, 0.56),
-  );
-
-  private http = inject(HttpClient);
+  constructor() {
+    // Si el padre cambia las coordenadas (p. ej. al editar otro sitio), mueve el marcador.
+    effect(() => {
+      const lat = this.latitud();
+      const lng = this.longitud();
+      untracked(() => this.sincronizarMarcador(lat, lng));
+    });
+  }
 
   ngAfterViewInit(): void {
     this.configurarIconosLeaflet();
     this.inicializarMapa();
   }
 
+  ngOnDestroy(): void {
+    this.busqueda?.unsubscribe();
+    this.temporizadores.forEach(clearTimeout);
+    this.map?.remove();
+  }
+
   private configurarIconosLeaflet(): void {
-    const iconDefault = L.icon({
+    L.Marker.prototype.options.icon = L.icon({
       iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
       shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
       shadowSize: [41, 41],
     });
-
-    L.Marker.prototype.options.icon = iconDefault;
   }
 
   private inicializarMapa(): void {
-    const tieneUbicacion = this.coordenadasValidas(this.latitud, this.longitud);
+    const soloVista = this.soloVista();
+    const lat = this.latitud();
+    const lng = this.longitud();
+    const tieneUbicacion = this.coordenadasValidas(lat, lng);
+    const centro: L.LatLngTuple = tieneUbicacion
+      ? [Number(lat), Number(lng)]
+      : [UBICACION_INICIAL.latitud, UBICACION_INICIAL.longitud];
+    const zoom = tieneUbicacion ? ZOOM_DETALLE : ZOOM_CIUDAD;
 
-    const lat = tieneUbicacion ? Number(this.latitud) : 39.4699;
-    const lng = tieneUbicacion ? Number(this.longitud) : -0.3763;
-    const zoom = tieneUbicacion ? this.zoomDetalle : this.zoomValencia;
-
-    this.map = L.map(this.mapContainer.nativeElement, {
-      center: [lat, lng],
+    const map = L.map(this.contenedor().nativeElement, {
+      center: centro,
       zoom,
       minZoom: 8,
-      maxBounds: this.limitesComunidadValenciana,
-      maxBoundsViscosity: 1.0,
-      zoomControl: true,
-      dragging: !this.soloVista,
-      scrollWheelZoom: !this.soloVista,
-      doubleClickZoom: !this.soloVista,
-      boxZoom: !this.soloVista,
-      keyboard: !this.soloVista,
-      touchZoom: !this.soloVista,
+      maxBounds: LIMITES_COMUNIDAD_VALENCIANA,
+      maxBoundsViscosity: 1,
+      dragging: !soloVista,
+      scrollWheelZoom: !soloVista,
+      doubleClickZoom: !soloVista,
+      boxZoom: !soloVista,
+      keyboard: !soloVista,
+      touchZoom: !soloVista,
     });
+    this.map = map;
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
       noWrap: true,
-    }).addTo(this.map);
+    }).addTo(map);
 
-    this.map.on('dragend zoomend', () => {
-      this.map.panInsideBounds(this.limitesComunidadValenciana, { animate: false });
-    });
+    map.on('dragend zoomend', () => map.panInsideBounds(LIMITES_COMUNIDAD_VALENCIANA, { animate: false }));
 
     if (tieneUbicacion) {
-      this.colocarMarker(lat, lng);
+      this.colocarMarker(centro[0], centro[1]);
     }
 
-    if (!this.soloVista) {
-      this.map.on('click', (e: L.LeafletMouseEvent) => {
-        const nuevaLat = Number(e.latlng.lat.toFixed(6));
-        const nuevaLng = Number(e.latlng.lng.toFixed(6));
-
-        if (!this.coordenadasValidas(nuevaLat, nuevaLng)) {
-          this.mostrarMensaje('Selecciona una ubicación dentro de la Comunidad Valenciana.');
-          return;
-        }
-
-        this.colocarMarker(nuevaLat, nuevaLng);
-
-        this.ubicacionSeleccionada.emit({
-          latitud: nuevaLat,
-          longitud: nuevaLng,
-        });
-      });
+    if (!soloVista) {
+      map.on('click', (e: L.LeafletMouseEvent) => this.seleccionar(e.latlng.lat, e.latlng.lng));
     }
 
-    setTimeout(() => {
-      this.map.invalidateSize();
-      this.map.setView([lat, lng], zoom);
-      this.map.panInsideBounds(this.limitesComunidadValenciana, { animate: false });
-    }, 200);
+    // El contenedor puede aparecer con tamaño 0 (formularios que se abren): recalcula tras el render.
+    this.esperar(200, () => {
+      map.invalidateSize();
+      map.setView(centro, zoom);
+    });
+  }
+
+  private seleccionar(latitud: number, longitud: number, zoom?: number): void {
+    const lat = Number(latitud.toFixed(6));
+    const lng = Number(longitud.toFixed(6));
+    if (!this.coordenadasValidas(lat, lng)) {
+      this.mensaje.set(this.i18n.t().lugares.mapa.fueraDeZona);
+      return;
+    }
+    if (zoom) {
+      this.map?.setView([lat, lng], zoom);
+    }
+    this.colocarMarker(lat, lng);
+    this.mensaje.set(null);
+    this.ubicacionSeleccionada.emit({ latitud: lat, longitud: lng });
   }
 
   buscarDireccion(): void {
     const texto = this.textoBusqueda.trim();
-
-    if (!texto || this.soloVista || this.buscando) {
-      if (!texto) {
-        this.mostrarMensaje('Escribe una dirección, calle, zona o nombre de sitio.');
-      }
+    if (this.soloVista() || this.buscando()) {
       return;
     }
-
-    this.buscando = true;
-    this.ocultarMensaje();
-
+    if (!texto) {
+      this.mensaje.set(this.i18n.t().lugares.mapa.escribeDireccion);
+      return;
+    }
+    this.buscando.set(true);
+    this.mensaje.set(null);
+    // De más concreta a más general: el primer resultado dentro de la Comunidad Valenciana gana.
     const consultas = [
       `${texto}, Valencia, Comunidad Valenciana, España`,
-      `${texto}, València, Comunitat Valenciana, España`,
       `${texto}, Alicante, Comunidad Valenciana, España`,
       `${texto}, Castellón, Comunidad Valenciana, España`,
-      `${texto}, Castelló, Comunitat Valenciana, España`,
       `${texto}, Comunidad Valenciana, España`,
       texto,
     ];
-
     this.buscarConFallback(consultas, 0);
   }
 
   private buscarConFallback(consultas: string[], indice: number): void {
     if (indice >= consultas.length) {
-      this.buscando = false;
-      this.mostrarMensaje(
-        'No se ha encontrado la ubicación. Prueba con una dirección más concreta.',
-      );
+      this.buscando.set(false);
+      this.mensaje.set(this.i18n.t().lugares.mapa.noEncontrado);
       return;
     }
-
-    const params = new HttpParams()
-      .set('q', consultas[indice]);
-
-    // Llamada al backend de Digital-Fit como proxy hacia Nominatim (resuelve P11)
-    this.http.get<any[]>('/api/explorar/geocodificar', { params }).subscribe({
-      next: (resultados) => {
-        const resultadoValido = resultados?.find((resultado) => {
-          const lat = Number(resultado.latitud ?? resultado.lat);
-          const lng = Number(resultado.longitud ?? resultado.lon);
-          return this.coordenadasValidas(lat, lng);
-        });
-
-        if (!resultadoValido) {
-          setTimeout(() => {
-            this.buscarConFallback(consultas, indice + 1);
-          }, 1200);
-          return;
-        }
-
-        const lat = Number(Number(resultadoValido.latitud ?? resultadoValido.lat).toFixed(6));
-        const lng = Number(Number(resultadoValido.longitud ?? resultadoValido.lon).toFixed(6));
-
-        this.map.setView([lat, lng], 16);
-        this.colocarMarker(lat, lng);
-
-        this.ubicacionSeleccionada.emit({
-          latitud: lat,
-          longitud: lng,
-        });
-
-        this.buscando = false;
-        this.ocultarMensaje();
-      },
-      error: (err) => {
-        console.error('ERROR BUSQUEDA DIRECCION:', err);
-
-        setTimeout(() => {
-          this.buscarConFallback(consultas, indice + 1);
-        }, 1200);
-      },
-    });
+    const siguiente = () => this.esperar(PAUSA_CONSULTA_MS, () => this.buscarConFallback(consultas, indice + 1));
+    const params = new HttpParams().set('q', consultas[indice]);
+    this.busqueda = this.http
+      .get<ResultadoGeocodificacion[]>('/api/explorar/geocodificar', { params })
+      .subscribe({
+        next: (resultados) => {
+          const valido = resultados?.find((r) => this.coordenadasValidas(r.latitud, r.longitud));
+          if (!valido) {
+            siguiente();
+            return;
+          }
+          this.buscando.set(false);
+          this.seleccionar(valido.latitud, valido.longitud, ZOOM_BUSQUEDA);
+        },
+        error: () => siguiente(),
+      });
   }
 
   volverAValencia(): void {
-    if (this.soloVista) {
-      return;
-    }
-
-    this.map.setView(this.valenciaCentro, this.zoomValencia);
+    this.map?.setView([UBICACION_INICIAL.latitud, UBICACION_INICIAL.longitud], ZOOM_CIUDAD);
   }
 
   volverAMarcador(): void {
-    if (this.soloVista || !this.marker) {
+    const posicion = this.marker?.getLatLng();
+    if (posicion) {
+      this.map?.setView(posicion, ZOOM_BUSQUEDA);
+    }
+  }
+
+  private sincronizarMarcador(lat: number | null, lng: number | null): void {
+    if (!this.map || !this.coordenadasValidas(lat, lng)) {
       return;
     }
-
-    const posicion = this.marker.getLatLng();
-    this.map.setView([posicion.lat, posicion.lng], 16);
+    const actual = this.marker?.getLatLng();
+    if (actual?.lat === lat && actual?.lng === lng) {
+      return;
+    }
+    this.colocarMarker(Number(lat), Number(lng));
+    this.map.setView([Number(lat), Number(lng)], ZOOM_DETALLE);
   }
 
   private colocarMarker(lat: number, lng: number): void {
-    if (this.marker) {
-      this.marker.remove();
+    this.marker?.remove();
+    if (this.map) {
+      // Sin teclado: el marcador no hace nada al pulsarlo y Leaflet lo anunciaría como un botón «Marker».
+      this.marker = L.marker([lat, lng], { keyboard: false, alt: '' }).addTo(this.map);
+      this.hayMarcador.set(true);
     }
-
-    this.marker = L.marker([lat, lng]).addTo(this.map);
   }
 
-  private coordenadasValidas(
-    latitud: number | null | undefined,
-    longitud: number | null | undefined,
-  ): boolean {
-    if (latitud === null || latitud === undefined || longitud === null || longitud === undefined) {
+  private coordenadasValidas(latitud: number | null | undefined, longitud: number | null | undefined): boolean {
+    if (latitud == null || longitud == null) {
       return false;
     }
-
     const lat = Number(latitud);
     const lng = Number(longitud);
-
-    if (Number.isNaN(lat) || Number.isNaN(lng)) {
+    if (Number.isNaN(lat) || Number.isNaN(lng) || (lat === 0 && lng === 0)) {
       return false;
     }
-
-    if (lat === 0 && lng === 0) {
-      return false;
-    }
-
-    return this.limitesComunidadValenciana.contains(L.latLng(lat, lng));
+    return LIMITES_COMUNIDAD_VALENCIANA.contains(L.latLng(lat, lng));
   }
 
-  private mostrarMensaje(texto: string): void {
-    this.mensajeBusqueda = texto;
-    this.mostrarMensajeBusqueda = true;
-
-    if (this.timeoutMensaje) {
-      clearTimeout(this.timeoutMensaje);
-    }
-
-    this.timeoutMensaje = setTimeout(() => {
-      this.mostrarMensajeBusqueda = false;
-    }, 3500);
-  }
-
-  cerrarMensaje(): void {
-    this.mostrarMensajeBusqueda = false;
-  }
-
-  private ocultarMensaje(): void {
-    this.mostrarMensajeBusqueda = false;
+  private esperar(ms: number, accion: () => void): void {
+    const id = setTimeout(() => {
+      this.temporizadores.delete(id);
+      accion();
+    }, ms);
+    this.temporizadores.add(id);
   }
 }
