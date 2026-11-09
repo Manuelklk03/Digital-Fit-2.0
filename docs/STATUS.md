@@ -2,6 +2,12 @@
 
 Última actualización: **2026-11-09**.
 
+> **2026-11-09 (Fase 4, Retirada del backend de soporte y tickets — D13):**
+> - **Eliminación del backend de tickets:** Suprimidos `SoporteRestController`, `SoporteAdminRestController`, `SoporteService`, entidades `Soporte` y `MensajeSoporte`, enum `EstadoSoporte`, repositorios `SoporteRepository` y `MensajeSoporteRepository`, y DTOs (`SoporteDTO`, `MensajeSoporteDTO`, `CrearSoporteDTO`, `CrearMensajeSoporteDTO`, `CambiarEstadoSoporte`). Cero referencias residuales en el backend.
+> - **Migración de base de datos Flyway V4:** Creado `V4__eliminar_soporte.sql` con `DROP TABLE IF EXISTS mensajes_soporte; DROP TABLE IF EXISTS soporte;`, asegurando la coherencia del esquema relacional en PostgreSQL.
+> - **Seguridad y cobertura:** Actualizada suite `AdminRutasPermisosSecurityTest` manteniendo la verificación de los 4 controladores de administración restantes. Actualizada `FlywayMigrationScriptsTest` cubriendo V4. Total: 108 tests de backend pasando en verde.
+> - **Documentación:** Actualizados `README.md`, `docs/architecture.md` (decisión D13 completada), `docs/deployment.md` y `docs/roadmap.md`.
+
 > **2026-11-09 (Retirada de soporte en el frontend, paradas G2 y G3):**
 > - **Eliminado:** pantallas `soporte` y `admin/soporte` (con detalle de ticket), servicios `soporte` y `admin-soporte-service`, sus 4 rutas, el enlace del panel de soporte en cabecera y portada y la clave `nav.panelSoporte` de los 4 idiomas. Cero referencias a soporte o tickets en `Frontend/`.
 > - **Pendiente de Antigravity:** retirar el backend de tickets (controladores, servicios, entidades y migración Flyway). Hasta entonces los endpoints existen sin ningún cliente.

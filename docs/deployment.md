@@ -24,7 +24,7 @@ Al arrancar, Flyway aplica automáticamente las migraciones versionadas (`V1__es
 
 | Usuario | Contraseña | Rol | Finalidad |
 |---|---|---|---|
-| `admin1` | `Admin123!` | `ADMIN` | Gestión global del catálogo base y tickets de soporte (`/api/admin/**`) |
+| `admin1` | `Admin123!` | `ADMIN` | Gestión global del catálogo base (`/api/admin/**`) |
 | `usuario1` | `Usuario123!` | `USER` | Pruebas de deportista: rutinas propias, mapas, favoritos e historial |
 
 Consultar la base de datos: `docker exec -it digital-fit-postgres psql -U digitalfit -d digital_fit`.

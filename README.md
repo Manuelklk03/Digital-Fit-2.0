@@ -13,7 +13,7 @@ Aplicación web para organizar el entrenamiento: encontrar centros deportivos y 
 - **Entrenamientos**: catálogo base, entrenamientos propios (creados desde cero o copiados del catálogo o de la comunidad), entrenamientos publicados por la comunidad e historial de entrenamientos realizados.
 - **Lugares**: centros privados y lugares públicos con mapa (Leaflet + OpenStreetMap). Cada usuario guarda los suyos desde el mapa, con la dirección completada por geocodificación.
 - **Progreso**: estadísticas de actividad y valoraciones.
-- **Soporte**: tickets con conversación; los administradores los gestionan y pueden crear otros administradores.
+- **Administración**: gestión global del catálogo base (entrenamientos, centros privados y lugares públicos) y creación de nuevos administradores.
 
 ## Tecnología
 
