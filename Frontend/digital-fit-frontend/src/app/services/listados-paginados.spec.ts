@@ -24,15 +24,14 @@ interface Caso {
   esperado?: Record<string, string>;
 }
 
-const ENTRENAMIENTO = { args: ['fuerza total', 'principiante', 30, 'full'], esperado: { categoria: 'FUERZA_TOTAL', nivel: 'PRINCIPIANTE', duracionEnMinutos: '30', nombre: 'full' } };
 const CENTRO = { args: ['gym', 'valencia', 30], esperado: { nombre: 'gym', direccion: 'valencia', precioMensual: '30' } };
 const LUGAR = { args: ['parque', 'valencia', 'calistenia'], esperado: { nombre: 'parque', direccion: 'valencia', tipo: 'CALISTENIA' } };
 
 // Los servicios con listados piden size=100 y devuelven solo `content`; el filtrado conserva ambos.
 const CASOS: Caso[] = [
-  { servicio: EntrenamientosService, url: '/api/entrenamientos', lista: 'getEntrenamientos', filtrado: 'getEntrenamientosFiltrados', ...ENTRENAMIENTO },
-  { servicio: MisEntrenamientosService, url: '/api/mis-entrenamientos', lista: 'getMisEntrenamientos', filtrado: 'getMisEntrenamientosFiltrados', ...ENTRENAMIENTO },
-  { servicio: EntrenamientosComunidadService, url: '/api/entrenamientos-comunidad', lista: 'getEntrenamientosComunidad', filtrado: 'getEntrenamientosComunidadFiltrados', ...ENTRENAMIENTO },
+  { servicio: EntrenamientosService, url: '/api/entrenamientos', lista: 'getEntrenamientos' },
+  { servicio: MisEntrenamientosService, url: '/api/mis-entrenamientos', lista: 'getMisEntrenamientos' },
+  { servicio: EntrenamientosComunidadService, url: '/api/entrenamientos-comunidad', lista: 'getEntrenamientosComunidad' },
   { servicio: HistorialEntrenamientosService, url: '/api/entrenamientos/mi-historial', lista: 'getHistorial' },
   { servicio: PrivadosService, url: '/api/centros-privados', lista: 'getCentrosPrivados', filtrado: 'getCentrosPrivadosFiltrados', ...CENTRO },
   { servicio: MisCentrosService, url: '/api/mis-centros-privados', lista: 'getMisCentros', filtrado: 'getMisCentrosFiltrados', ...CENTRO },
@@ -80,4 +79,38 @@ describe('Servicios con listados paginados', () => {
       }
     });
   }
+
+  // Las pantallas de entrenamientos paginan: un único filtro por petición, como aplica el backend.
+  const PAGINADOS: { servicio: Type<object>; url: string }[] = [
+    { servicio: EntrenamientosService, url: '/api/entrenamientos' },
+    { servicio: MisEntrenamientosService, url: '/api/mis-entrenamientos' },
+    { servicio: EntrenamientosComunidadService, url: '/api/entrenamientos-comunidad' },
+  ];
+
+  for (const caso of PAGINADOS) {
+    it(`${caso.servicio.name}.buscar pide la página indicada con un solo filtro`, () => {
+      const servicio = TestBed.inject(caso.servicio) as unknown as {
+        buscar: (f: { campo: string; valor: string } | null, page: number) => Observable<unknown>;
+      };
+
+      servicio.buscar({ campo: 'categoria', valor: 'HIIT' }, 2).subscribe();
+
+      const req = http.expectOne((r) => r.url === caso.url);
+      expect(req.request.params.get('page')).toBe('2');
+      expect(req.request.params.get('size')).toBe('12');
+      expect(req.request.params.get('categoria')).toBe('HIIT');
+      expect(req.request.params.keys().sort()).toEqual(['categoria', 'page', 'size']);
+      req.flush({ content: [], page: 2, size: 12, totalElements: 0, totalPages: 0 });
+    });
+  }
+
+  it('HistorialEntrenamientosService.getPaginaHistorial pide la página sin filtros', () => {
+    const servicio = TestBed.inject(HistorialEntrenamientosService);
+    servicio.getPaginaHistorial(1).subscribe();
+
+    const req = http.expectOne((r) => r.url === '/api/entrenamientos/mi-historial');
+    expect(req.request.params.get('page')).toBe('1');
+    expect(req.request.params.keys().sort()).toEqual(['page', 'size']);
+    req.flush({ content: [], page: 1, size: 12, totalElements: 0, totalPages: 0 });
+  });
 });
