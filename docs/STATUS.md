@@ -2,6 +2,14 @@
 
 Última actualización: **2026-11-09**.
 
+> **2026-11-09 (Fase 4/5, Parada G9 — Resolución de fallos de backend para frontend; rama `fix/backend-g9-fallos`):**
+> - **Ampliación de columnas de texto libre (Flyway V6):** Creada migración no destructiva `V6__ampliar_descripciones_y_comentarios.sql` que amplía a `VARCHAR(1500)` las columnas `descripcion` (entrenamientos base y de usuario, centros privados y lugares públicos base y de usuario) y `valoraciones.comentario`. Actualizadas entidades JPA con `@Column(length = 1500)` y añadida suite `LongitudCamposDtoVsEsquemaTest` y comprobación en `FlywayMigrationScriptsTest`. Claude ya puede subir el límite de los formularios a 1500 caracteres.
+> - **Validación de valoraciones (@Valid):** Añadido `@Valid` en `@RequestBody CrearValoracionDTO` en `ValoracionRestController.crearOActualizar`, activando validaciones de `@Min(1)`, `@Max(5)` y `@Size(max = 1500)` con respuestas estándar 400 ProblemDetail.
+> - **Longitud mínima de contraseña en administración y registro:** Añadido `@Size(min = 6)` a `CrearAdmin.password` y `UsuarioDTO.password` para rechazar contraseñas de menos de 6 caracteres con 400 ProblemDetail.
+> - **Búsqueda textual en mis valoraciones (`q`):** Incorporado parámetro opcional `q` en `GET /api/valoraciones/mis-valoraciones` con consulta JPQL insensible a mayúsculas sobre `comentario`, respetando paginación, orden por fecha descendente y aislamiento por usuario.
+> - **Verificaciones:** 123 tests de backend en verde (todas las suites unitarias, de integración WebMvc, permisos, propiedades y Flyway superadas).
+> - **Coordinación (Parada G9):** Parada G9 marcada como **Resuelta** en `docs/HANDOFF.md`. Quedan libres G5 (E2E y CI) y G6 (Prettier) para Antigravity.
+
 > **2026-11-09 (Fase 5 completada — Recorridos 4 Progreso y 5 Administración; rama `feat/recorrido-progreso`, en automático):**
 > - **Pantallas:** `/estadisticas`, `/valoraciones` y `/admin/crear-admin` reescritas (OnPush, signals, i18n, estados reales). Enlace «Progreso» en la cabecera (antes no había forma de llegar a estas pantallas). Proxy de `ng serve` (P1) comprobado contra el backend y P7 cerrado (sin `any`).
 > - **Corregido:** insignia de origen en `/explorar` (`LOCAL_PRIVADO`), errores JSON sin parsear con `responseType: 'text'` y límite de 1000 caracteres en descripciones y comentarios (lo que admite la BD).
