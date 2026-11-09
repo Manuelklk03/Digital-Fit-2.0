@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.digital_fit.model.Enums.TipoDeValoracion;
@@ -29,6 +31,17 @@ public interface ValoracionRepository extends JpaRepository<Valoracion, Long> {
 
         @EntityGraph(attributePaths = {"usuario"})
         Page<Valoracion> findByUsuario(Usuario usuario, Pageable pageable);
+
+        @EntityGraph(attributePaths = {"usuario"})
+        @Query("""
+            SELECT v FROM Valoracion v
+            WHERE v.usuario = :usuario
+            AND LOWER(v.comentario) LIKE LOWER(CONCAT('%', :q, '%'))
+        """)
+        Page<Valoracion> buscarPorTexto(
+                @Param("usuario") Usuario usuario,
+                @Param("q") String q,
+                Pageable pageable);
 
         Optional<Valoracion> findByUsuarioAndTipoDeValoracionAndIdRelacionado(
                         Usuario usuario,

@@ -21,6 +21,8 @@ import com.example.digital_fit.dto.Valoracion.ValoracionDTO;
 import com.example.digital_fit.model.Enums.TipoDeValoracion;
 import com.example.digital_fit.service.Valoracion.ValoracionService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/valoraciones")
 public class ValoracionRestController {
@@ -31,9 +33,10 @@ public class ValoracionRestController {
     @GetMapping("/mis-valoraciones")
     public ResponseEntity<PaginaResponse<ValoracionDTO>> verMisValoraciones(
             Authentication authentication,
+            @RequestParam(required = false) String q,
             @PageableDefault(page = 0, size = 20) Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(valoracionService.listarMisValoracionesPaginado(authentication.getName(), pageable));
+                .body(valoracionService.listarMisValoracionesPaginado(authentication.getName(), q, pageable));
     }
 
     @GetMapping("/publicas")
@@ -55,7 +58,7 @@ public class ValoracionRestController {
 
     @PostMapping("/{tipoContenido}/{idContenido}")
     public ResponseEntity<ValoracionDTO> crearOActualizar(@PathVariable TipoDeValoracion tipoContenido,
-            @PathVariable Long idContenido, @RequestBody CrearValoracionDTO crearValoracionDTO,
+            @PathVariable Long idContenido, @Valid @RequestBody CrearValoracionDTO crearValoracionDTO,
             Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.CREATED)

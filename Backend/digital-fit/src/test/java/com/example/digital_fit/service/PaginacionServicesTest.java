@@ -451,5 +451,10 @@ class PaginacionServicesTest {
         PaginaResponse<ValoracionDTO> resMis = valoracionService.listarMisValoracionesPaginado("usuario1", PageRequest.of(0, 20));
         assertNotNull(resMis);
         assertEquals(1, resMis.totalElements());
+
+        when(valoracionRepository.buscarPorTexto(eq(usuario), eq("excelente"), any(Pageable.class))).thenReturn(page);
+        PaginaResponse<ValoracionDTO> resMisQ = valoracionService.listarMisValoracionesPaginado("usuario1", "excelente", PageRequest.of(0, 20));
+        assertNotNull(resMisQ);
+        assertEquals(1, resMisQ.totalElements());
     }
 }

@@ -31,7 +31,7 @@ public class EntrenamientoBase {
     @Column(nullable = false, name = "nombre", unique = true)
     private String nombre;
 
-    @Column(nullable = false, length = 1000, name = "descripcion")
+    @Column(nullable = false, length = 1500, name = "descripcion")
     private String descripcion;
 
     @Enumerated(EnumType.STRING)

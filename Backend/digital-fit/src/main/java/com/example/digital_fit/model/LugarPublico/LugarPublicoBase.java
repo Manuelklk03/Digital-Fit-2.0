@@ -33,7 +33,7 @@ public class LugarPublicoBase {
     @Column(nullable = false)
     private String direccion;
 
-    @Column(length = 1000)
+    @Column(length = 1500)
     private String descripcion;
 
     private String telefono;

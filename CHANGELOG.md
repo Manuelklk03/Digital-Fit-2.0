@@ -8,6 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Migración Flyway `V6__ampliar_descripciones_y_comentarios.sql` que amplía a `VARCHAR(1500)` las columnas `descripcion` (entrenamientos base y de usuario, centros privados y lugares públicos base y de usuario) y `valoraciones.comentario` sin pérdida de datos, alineando el esquema relacional con las reglas de validación de los DTOs y verificada mediante `LongitudCamposDtoVsEsquemaTest` (parada G9).
+- Parámetro opcional de búsqueda textual `q` en `GET /api/valoraciones/mis-valoraciones`, permitiendo filtrar por contenido de comentario de forma insensible a mayúsculas, preservando paginación, orden por fecha descendente y aislamiento por usuario (parada G9).
 - Rediseño de los recorridos de **Progreso** y **Administración** (fase 5, completada): estadísticas con cifras del historial, estado vacío y media con el separador decimal del idioma; valoraciones con estrellas accesibles (radios nativos), listados paginados de las propias y de la comunidad filtrada por categoría, y edición o borrado de las propias; alta de administradores con validación. Enlace «Progreso» en la cabecera. Modelos tipados (`models/progreso.ts`) y textos en los 4 idiomas.
 - Proxy de desarrollo `proxy.conf.json` para `ng serve` (P1).
 - Rediseño del recorrido de **Lugares** (fase 5): catálogos de centros privados y lugares públicos, mis centros, mis lugares y sus cuatro detalles con Neutral Sport / Industrial, OnPush y signals, modelos tipados sin `any` (`models/lugar.ts`), paginación real con filtro de un solo campo (nombre, dirección y precio máximo o tipo) y textos en los 4 idiomas. Las ocho pantallas son envoltorios de dos componentes comunes (`pages/lugares/listado-sitios` y `detalle-sitio`) configurados por pantalla. Formulario con mapa que autocompleta desde OpenStreetMap solo los campos vacíos o autocompletados antes, sin pisar lo escrito por el usuario. En el catálogo, las acciones esperan a conocer el rol para no mostrar un botón que después cambia.
@@ -80,6 +82,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
+- Validación `@Valid` en `@RequestBody CrearValoracionDTO` en `ValoracionRestController.crearOActualizar`, devolviendo 400 ProblemDetail cuando el comentario supera los 1500 caracteres o la puntuación queda fuera del rango 1–5, cubierto en la suite `ValidacionRestControllersTest` (parada G9).
+- Exigencia de longitud mínima de 6 caracteres (`@Size(min = 6)`) en contraseñas de `CrearAdmin` y `UsuarioDTO` para evitar contraseñas débiles mediante petición directa, devolviendo 400 ProblemDetail y verificado en `ValidacionRestControllersTest` (parada G9).
 - `explorar.ts` mostraba los centros privados de la app como lugares públicos: el backend envía `LOCAL_PRIVADO`/`LOCAL_PUBLICO` y el frontend esperaba `PRIVADO`/`PUBLICO`.
 - Los errores de peticiones con `responseType: 'text'` (crear administrador) mostraban el JSON del `ProblemDetail` sin parsear.
 - Descripciones y comentarios limitados a 1000 caracteres en los formularios: las columnas de la base de datos admiten 1000 aunque los DTO aceptan 1500 (corrección de fondo, para Antigravity en G9).

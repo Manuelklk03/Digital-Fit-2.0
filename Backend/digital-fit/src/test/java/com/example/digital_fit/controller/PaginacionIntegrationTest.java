@@ -364,7 +364,7 @@ class PaginacionIntegrationTest {
         PaginaResponse<ValoracionDTO> pagina = new PaginaResponse<>(
                 List.of(dto), 0, 20, 1, 1);
 
-        when(valoracionService.listarMisValoracionesPaginado(eq("usuario1"), any(Pageable.class)))
+        when(valoracionService.listarMisValoracionesPaginado(eq("usuario1"), any(), any(Pageable.class)))
                 .thenReturn(pagina);
 
         mockMvc.perform(get("/api/valoraciones/mis-valoraciones")
@@ -372,6 +372,28 @@ class PaginacionIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").value(70))
                 .andExpect(jsonPath("$.content[0].puntuacion").value(4))
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /api/valoraciones/mis-valoraciones con parametro q filtra por texto")
+    void testListarMisValoracionesConParametroQ() throws Exception {
+        ValoracionDTO dto = new ValoracionDTO();
+        dto.setId(71L);
+        dto.setPuntuacion(5);
+        dto.setComentario("Excelente entrenamiento");
+
+        PaginaResponse<ValoracionDTO> pagina = new PaginaResponse<>(
+                List.of(dto), 0, 20, 1, 1);
+
+        when(valoracionService.listarMisValoracionesPaginado(eq("usuario1"), eq("excelente"), any(Pageable.class)))
+                .thenReturn(pagina);
+
+        mockMvc.perform(get("/api/valoraciones/mis-valoraciones?q=excelente")
+                        .with(user("usuario1").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(71))
+                .andExpect(jsonPath("$.content[0].comentario").value("Excelente entrenamiento"))
                 .andExpect(jsonPath("$.totalElements").value(1));
     }
 
