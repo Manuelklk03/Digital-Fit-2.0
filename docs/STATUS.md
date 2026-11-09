@@ -5,7 +5,7 @@
 > **2026-11-09 (Frontend adaptado a la API paginada, tras la parada G1):**
 > - **Servicios:** nueva interfaz `PaginaResponse<T>` en `models/pagina-response.ts`. Los 9 servicios con listados (entrenamientos, mis entrenamientos, comunidad, historial, centros, mis centros, lugares, mis lugares y valoraciones) piden `size=100` y devuelven `content`, así que las pantallas no cambian. Límite conocido: máximo 100 elementos por listado hasta que cada pantalla pagine (recorridos 5.2–5.4).
 > - **Corrección en HANDOFF.md:** el filtro de centros se llama `precioMensual` (como en el backend), no `precioMaximo`.
-> - **Verificaciones:** 60 suites y 129 tests en verde (+9 tests), 0 errores ESLint (441 avisos de deuda conocida) y `ng build` correcto. Prueba contra el backend real: **pendiente**.
+> - **Verificaciones:** 61 suites y 140 tests en verde (+20 tests, con un spec parametrizado para los 8 servicios de listados), 0 errores ESLint (441 avisos de deuda conocida) y `ng build` correcto. Prueba contra el backend real: **pendiente**.
 
 > **2026-11-09 (Fase 4, Tarea 4.8 — Paginación, ordenación y resolución N+1 en listados - P6):**
 > - **Contrato de API REST paginada y estable (P6):** Incorporado `Pageable` (`page`, `size` [por defecto 20, máximo 100], `sort`) en todos los controladores de colecciones (entrenamientos base, propios y de comunidad, historial, centros y lugares públicos base y de usuario, y valoraciones). Las respuestas se encapsulan en el DTO genérico `PaginaResponse<T>` (`content`, `page`, `size`, `totalElements`, `totalPages`), fijando un contrato inmutable para el frontend.
