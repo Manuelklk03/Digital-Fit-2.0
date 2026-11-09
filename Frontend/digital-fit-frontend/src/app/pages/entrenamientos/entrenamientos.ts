@@ -1,288 +1,130 @@
-import { ChangeDetectorRef, Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject, Injector, OnInit, signal } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
+import { AlertComponent, BadgeComponent, ButtonComponent } from '../../components/ui';
+import { I18nService } from '../../i18n/i18n.service';
+import { EntrenamientoBase, EntrenamientoForm, FiltroEntrenamiento, UsuarioSesion } from '../../models/entrenamiento';
+import { mensajeError } from '../../models/pagina-response';
 import { EntrenamientosService } from '../../services/entrenamientos/entrenamientos-service';
 import { MisEntrenamientosService } from '../../services/entrenamientos/mis-entrenamientos-service';
 import { AdminEntrenamientosBaseService } from '../../services/admin/admin-entrenamiento-base';
 import { AuthService } from '../../services/auth-service';
+import { Aviso, enfocarTrasRender, ListadoPaginado } from './compartido/estado';
+import { FiltroEntrenamientosComponent } from './compartido/filtro-entrenamientos';
+import { FormularioEntrenamientoComponent } from './compartido/formulario-entrenamiento';
+import { PaginadorComponent } from './compartido/paginador';
+import { TarjetaEntrenamientoComponent } from './compartido/tarjeta-entrenamiento';
 
 @Component({
   selector: 'app-entrenamientos',
-  imports: [HeaderComponent, Footer, FormsModule, RouterLink],
+  imports: [
+    HeaderComponent,
+    Footer,
+    AlertComponent,
+    BadgeComponent,
+    ButtonComponent,
+    FiltroEntrenamientosComponent,
+    FormularioEntrenamientoComponent,
+    PaginadorComponent,
+    TarjetaEntrenamientoComponent,
+  ],
   templateUrl: './entrenamientos.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  styleUrl: './entrenamientos.css',
+  styleUrl: './compartido/pagina.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EntrenamientosComponent implements OnInit {
-  private entrenamientosService = inject(EntrenamientosService);
-  private misEntrenamientosService = inject(MisEntrenamientosService);
-  private adminEntrenamientosBaseService = inject(AdminEntrenamientosBaseService);
-  private authService = inject(AuthService);
-  private cdr = inject(ChangeDetectorRef);
+  readonly i18n = inject(I18nService);
+  private readonly injector = inject(Injector);
+  private readonly entrenamientosService = inject(EntrenamientosService);
+  private readonly misEntrenamientosService = inject(MisEntrenamientosService);
+  private readonly adminService = inject(AdminEntrenamientosBaseService);
+  private readonly authService = inject(AuthService);
 
-  entrenamientos: any[] = [];
-  usuarioActual: any = null;
+  private filtro: FiltroEntrenamiento | null = null;
+  readonly listado = new ListadoPaginado<EntrenamientoBase>((page) =>
+    this.entrenamientosService.buscar(this.filtro, page),
+  );
+  readonly aviso = new Aviso();
+  readonly usuario = signal<UsuarioSesion | null>(null);
+  readonly esAdmin = computed(() => this.usuario()?.rol === 'ADMIN');
+  readonly hayFiltro = signal(false);
 
-  nombre = '';
-  descripcion = '';
-  categoria = 'FUERZA_TOTAL';
-  nivel = 'PRINCIPIANTE';
-  duracionEnMinutos = 30;
-
-  editandoId: number | null = null;
-
-  tipoBusqueda = 'nombre';
-  valorBusqueda = '';
-
-  mostrarPopup = false;
-  textoPopup = '';
-  tipoPopup: 'exito' | 'error' = 'exito';
-  private popupTimeout: any;
+  /** `undefined`: formulario cerrado; `null`: crear; entrenamiento: editar. */
+  readonly enEdicion = signal<EntrenamientoBase | null | undefined>(undefined);
+  readonly guardando = signal(false);
+  readonly ocupado = signal<number | null>(null);
 
   ngOnInit(): void {
     this.authService.me().subscribe({
-      next: (usuario: any) => {
-        this.usuarioActual = usuario;
-        this.cargarEntrenamientos();
-      },
-      error: () => {
-        this.cargarEntrenamientos();
-      },
+      next: (u: UsuarioSesion) => this.usuario.set(u),
+      error: () => this.usuario.set(null),
     });
+    this.listado.cargar();
   }
 
-  cargarEntrenamientos(): void {
-    this.entrenamientosService.getEntrenamientos().subscribe({
-      next: (data: any[]) => {
-        this.entrenamientos = data;
-        this.cdr.detectChanges();
-      },
-      error: (err: any) => {
-        console.error('ERROR ENTRENAMIENTOS BASE:', err);
-        this.abrirPopup('No se pudieron cargar los entrenamientos base.', 'error');
-      },
-    });
+  cerrarFormulario(): void {
+    this.enEdicion.set(undefined);
+    enfocarTrasRender(this.injector, '#boton-nuevo');
   }
 
-  esAdmin(): boolean {
-    return this.usuarioActual?.rol === 'ADMIN';
+  filtrar(filtro: FiltroEntrenamiento | null): void {
+    this.filtro = filtro;
+    this.hayFiltro.set(filtro !== null);
+    this.listado.cargar(0);
   }
 
-  buscarEntrenamientos(): void {
-    const texto = this.valorBusqueda.trim();
-
-    if (!texto) {
-      this.cargarEntrenamientos();
-      return;
-    }
-
-    if (this.tipoBusqueda === 'categoria') {
-      this.entrenamientosService
-        .getEntrenamientosFiltrados(texto, undefined, undefined, undefined)
-        .subscribe({
-          next: (data: any[]) => {
-            this.entrenamientos = data;
-            this.cdr.detectChanges();
-          },
-          error: (err: any) => console.error('ERROR FILTRO CATEGORIA:', err),
-        });
-      return;
-    }
-
-    if (this.tipoBusqueda === 'nivel') {
-      this.entrenamientosService
-        .getEntrenamientosFiltrados(undefined, texto, undefined, undefined)
-        .subscribe({
-          next: (data: any[]) => {
-            this.entrenamientos = data;
-            this.cdr.detectChanges();
-          },
-          error: (err: any) => console.error('ERROR FILTRO NIVEL:', err),
-        });
-      return;
-    }
-
-    if (this.tipoBusqueda === 'duracionEnMinutos') {
-      const duracion = Number(texto);
-
-      if (isNaN(duracion)) {
-        this.entrenamientos = [];
-        return;
-      }
-
-      this.entrenamientosService
-        .getEntrenamientosFiltrados(undefined, undefined, duracion, undefined)
-        .subscribe({
-          next: (data: any[]) => {
-            this.entrenamientos = data;
-            this.cdr.detectChanges();
-          },
-          error: (err: any) => console.error('ERROR FILTRO DURACION:', err),
-        });
-      return;
-    }
-
-    this.entrenamientosService
-      .getEntrenamientosFiltrados(undefined, undefined, undefined, texto)
-      .subscribe({
-        next: (data: any[]) => {
-          this.entrenamientos = data;
-          this.cdr.detectChanges();
-        },
-        error: (err: any) => console.error('ERROR FILTRO NOMBRE:', err),
-      });
-  }
-
-  alCambiarBusqueda(): void {
-    this.buscarEntrenamientos();
-  }
-
-  limpiarBusqueda(): void {
-    this.tipoBusqueda = 'nombre';
-    this.valorBusqueda = '';
-    this.cargarEntrenamientos();
-  }
-
-  guardarEntrenamientoBase(): void {
-    const payload = {
-      nombre: this.nombre,
-      descripcion: this.descripcion,
-      categoria: this.categoria,
-      nivel: this.nivel,
-      duracionEnMinutos: this.duracionEnMinutos,
-    };
-
-    if (this.editandoId !== null) {
-      this.adminEntrenamientosBaseService
-        .actualizarEntrenamientoBase(this.editandoId, payload)
-        .subscribe({
-          next: () => {
-            this.abrirPopup('Entrenamiento base actualizado correctamente.', 'exito');
-            this.limpiarFormulario();
-            this.cargarEntrenamientos();
-          },
-          error: (err: any) => {
-            this.abrirPopup(
-              this.obtenerMensajeError(err, 'No se pudo actualizar el entrenamiento base.'),
-              'error',
-            );
-          },
-        });
-    } else {
-      this.adminEntrenamientosBaseService.crearEntrenamientoBase(payload).subscribe({
-        next: () => {
-          this.abrirPopup('Entrenamiento base creado correctamente.', 'exito');
-          this.limpiarFormulario();
-          this.cargarEntrenamientos();
-        },
-        error: (err: any) => {
-          this.abrirPopup(
-            this.obtenerMensajeError(err, 'No se pudo crear el entrenamiento base.'),
-            'error',
-          );
-        },
-      });
-    }
-  }
-
-  editarEntrenamientoBase(entrenamiento: any): void {
-    this.editandoId = entrenamiento.id;
-    this.nombre = entrenamiento.nombre;
-    this.descripcion = entrenamiento.descripcion;
-    this.categoria = entrenamiento.categoria;
-    this.nivel = entrenamiento.nivel;
-    this.duracionEnMinutos = entrenamiento.duracionEnMinutos;
-  }
-
-  borrarEntrenamientoBase(id: number): void {
-    this.adminEntrenamientosBaseService.borrarEntrenamientoBase(id).subscribe({
+  guardar(datos: EntrenamientoForm): void {
+    const t = this.i18n.t().entrenamientos;
+    const editando = this.enEdicion();
+    this.guardando.set(true);
+    const peticion = editando
+      ? this.adminService.actualizarEntrenamientoBase(editando.id, datos)
+      : this.adminService.crearEntrenamientoBase(datos);
+    peticion.subscribe({
       next: () => {
-        this.abrirPopup('Entrenamiento base borrado correctamente.', 'exito');
-        this.cargarEntrenamientos();
+        this.guardando.set(false);
+        this.cerrarFormulario();
+        this.aviso.mostrar(editando ? t.exitoActualizado : t.exitoCreado, 'exito');
+        this.listado.recargar();
       },
-      error: () => {
-        this.abrirPopup('No se pudo borrar el entrenamiento base.', 'error');
+      error: (err: unknown) => {
+        this.guardando.set(false);
+        this.aviso.mostrar(mensajeError(err, t.errorGuardar), 'error');
       },
     });
   }
 
-  anadirAMisEntrenamientos(id: number): void {
-    this.misEntrenamientosService.anadirDesdeBase(id).subscribe({
+  borrar(entrenamiento: EntrenamientoBase): void {
+    const t = this.i18n.t().entrenamientos;
+    if (!confirm(t.confirmarBorrado)) {
+      return;
+    }
+    this.ocupado.set(entrenamiento.id);
+    this.adminService.borrarEntrenamientoBase(entrenamiento.id).subscribe({
       next: () => {
-        this.abrirPopup('Entrenamiento añadido a mis entrenamientos.', 'exito');
+        this.ocupado.set(null);
+        this.aviso.mostrar(t.exitoBorrado, 'exito');
+        this.listado.recargar();
       },
-      error: (err: any) => {
-        this.abrirPopup(
-          this.obtenerMensajeError(err, 'No se pudo añadir a mis entrenamientos.'),
-          'error',
-        );
+      error: (err: unknown) => {
+        this.ocupado.set(null);
+        this.aviso.mostrar(mensajeError(err, t.errorBorrar), 'error');
       },
     });
   }
 
-  cancelarEdicion(): void {
-    this.limpiarFormulario();
-  }
-
-  limpiarFormulario(): void {
-    this.editandoId = null;
-    this.nombre = '';
-    this.descripcion = '';
-    this.categoria = 'FUERZA_TOTAL';
-    this.nivel = 'PRINCIPIANTE';
-    this.duracionEnMinutos = 30;
-  }
-
-  mostrarCategoriaLegible(categoria: string): string {
-    if (!categoria) {
-      return 'Sin categoría';
-    }
-
-    return categoria
-      .replaceAll('_', ' ')
-      .toLowerCase()
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
-  }
-
-  mostrarNivelLegible(nivel: string): string {
-    if (!nivel) {
-      return 'Sin nivel';
-    }
-
-    return nivel
-      .replaceAll('_', ' ')
-      .toLowerCase()
-      .replace(/\b\w/g, (letra) => letra.toUpperCase());
-  }
-
-  abrirPopup(texto: string, tipo: 'exito' | 'error'): void {
-    this.textoPopup = texto;
-    this.tipoPopup = tipo;
-    this.mostrarPopup = true;
-    this.cdr.detectChanges();
-
-    if (this.popupTimeout) {
-      clearTimeout(this.popupTimeout);
-    }
-
-    this.popupTimeout = setTimeout(() => {
-      this.mostrarPopup = false;
-      this.cdr.detectChanges();
-    }, 3000);
-  }
-
-  cerrarPopup(): void {
-    this.mostrarPopup = false;
-    this.cdr.detectChanges();
-  }
-
-  private obtenerMensajeError(err: any, mensajePorDefecto: string): string {
-    if (typeof err?.error === 'string' && err.error.trim() !== '') {
-      return err.error;
-    }
-
-    return mensajePorDefecto;
+  anadir(entrenamiento: EntrenamientoBase): void {
+    const t = this.i18n.t().entrenamientos;
+    this.ocupado.set(entrenamiento.id);
+    this.misEntrenamientosService.anadirDesdeBase(entrenamiento.id).subscribe({
+      next: () => {
+        this.ocupado.set(null);
+        this.aviso.mostrar(t.exitoAnadido, 'exito');
+      },
+      error: (err: unknown) => {
+        this.ocupado.set(null);
+        this.aviso.mostrar(mensajeError(err, t.errorAnadir), 'error');
+      },
+    });
   }
 }

@@ -1,4 +1,5 @@
 import { DiccionarioTraduccion } from '../i18n.types';
+import { entrenamientosCa } from './entrenamientos/ca';
 
 export const diccionarioCa: DiccionarioTraduccion = {
   nav: {
@@ -100,4 +101,5 @@ export const diccionarioCa: DiccionarioTraduccion = {
     errorRegistro: 'No es va poder completar el registre. Comprova les dades.',
     exitoRegistro: 'Compte creat correctament. Redirigint a inici de sessió...',
   },
+  entrenamientos: entrenamientosCa,
 };

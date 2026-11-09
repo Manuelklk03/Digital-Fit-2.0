@@ -1,199 +1,187 @@
-<app-header></app-header>
+@let t = i18n.t().entrenamientos;
+@let h = t.historial;
+<app-header />
 
-<main class="pagina-historial">
-
-  @if (mostrarPopup) {
-  <div class="popup-overlay">
-    <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
-      <p>{{ textoPopup }}</p>
-      <button type="button" (click)="cerrarPopup()">Cerrar</button>
+<main class="pagina" id="contenido-principal">
+  <header class="encabezado">
+    <div class="encabezado-texto">
+      <span df-badge variant="primary" [dot]="true">{{ h.badge }}</span>
+      <h1>{{ h.titulo }}</h1>
+      <p>{{ h.subtitulo }}</p>
     </div>
-  </div>
+    @if (!formAbierto()) {
+      <button id="boton-nuevo" df-button variant="primary" type="button" (click)="abrirFormulario()">{{ h.formCrear }}</button>
+    }
+  </header>
+
+  @if (aviso.actual(); as a) {
+    <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
   }
 
-  <section class="cabecera-pagina">
-    <div class="cabecera-badge">Seguimiento personal</div>
-    <h1>Historial de entrenamientos</h1>
-    <p>
-      Aquí puedes registrar entrenamientos realizados y consultar tu historial.
-    </p>
-  </section>
+  @if (formAbierto()) {
+    <app-card>
+      <form class="formulario" (ngSubmit)="crearRegistro()" novalidate aria-labelledby="titulo-registro">
+        <h2 id="titulo-registro" class="titulo-form" tabindex="-1">{{ h.formCrear }}</h2>
 
-  <section class="bloque-formulario">
-    <div class="titulo-bloque">
-      <div>
-        <span class="etiqueta-bloque">Nuevo registro</span>
-        <h2>Registrar entrenamiento realizado</h2>
-      </div>
-    </div>
-
-    <form class="formulario-historial" (ngSubmit)="crearRegistro()">
-
-      <div class="grid-formulario">
-        <div class="grupo-campo grupo-destacado">
-          <label for="entrenamientoSeleccionado">Entrenamiento</label>
-          <select id="entrenamientoSeleccionado" name="entrenamientoSeleccionado"
-            [(ngModel)]="entrenamientoSeleccionado">
-            <option value="">Selecciona un entrenamiento</option>
-
-            <optgroup label="Entrenamientos base">
-              @for (entrenamiento of entrenamientosBase; track entrenamiento.id) {
-              <option [value]="'BASE-' + entrenamiento.id">
-                {{ entrenamiento.nombre }} - {{ entrenamiento.nivel }} - {{ entrenamiento.duracionEnMinutos }} min
-              </option>
-              }
-            </optgroup>
-
-            <optgroup label="Mis entrenamientos">
-              @for (entrenamiento of misEntrenamientos; track entrenamiento.id) {
-              <option [value]="'MIS-' + entrenamiento.id">
-                {{ entrenamiento.nombre }} - {{ entrenamiento.nivel }} - {{ entrenamiento.duracionEnMinutos }} min
-              </option>
-              }
-            </optgroup>
-          </select>
-        </div>
-
-        <div class="grupo-campo grupo-destacado">
-          <label for="ubicacionSeleccionada">Ubicación</label>
-          <select id="ubicacionSeleccionada" name="ubicacionSeleccionada" [(ngModel)]="ubicacionSeleccionada">
-            <option value="">Sin ubicación</option>
-
-            <optgroup label="Lugares públicos base">
-              @for (lugar of lugaresBase; track lugar.id) {
-              <option [value]="'LPB-' + lugar.id">
-                {{ lugar.nombre }} - {{ lugar.tipo }}
-              </option>
-              }
-            </optgroup>
-
-            <optgroup label="Mis lugares">
-              @for (lugar of misLugares; track lugar.id) {
-              <option [value]="'LPU-' + lugar.id">
-                {{ lugar.nombre }} - {{ lugar.tipo }}
-              </option>
-              }
-            </optgroup>
-
-            <optgroup label="Centros privados base">
-              @for (centro of centrosBase; track centro.id) {
-              <option [value]="'CPB-' + centro.id">
-                {{ centro.nombre }} - {{ centro.direccion }}
-              </option>
-              }
-            </optgroup>
-
-            <optgroup label="Mis centros">
-              @for (centro of misCentros; track centro.id) {
-              <option [value]="'CPU-' + centro.id">
-                {{ centro.nombre }} - {{ centro.direccion }}
-              </option>
-              }
-            </optgroup>
-          </select>
-        </div>
-
-        <div class="grupo-campo">
-          <label for="fecha">Fecha y hora</label>
-          <input type="datetime-local" id="fecha" name="fecha" [(ngModel)]="fecha" required>
-        </div>
-
-        <div class="grupo-campo">
-          <label for="duracionEnMinutos">Duración (minutos)</label>
-          <input type="number" id="duracionEnMinutos" name="duracionEnMinutos" [(ngModel)]="duracionEnMinutos"
-            required>
-        </div>
-      </div>
-
-      <div class="grupo-campo">
-        <label for="notas">Notas</label>
-        <textarea id="notas" name="notas" rows="4" [(ngModel)]="notas"
-          placeholder="Añade observaciones del entrenamiento, sensaciones, progreso, etc."></textarea>
-      </div>
-
-      <div class="acciones-formulario">
-        <button type="submit" class="boton-guardar">
-          Guardar registro
-        </button>
-      </div>
-
-    </form>
-  </section>
-
-  <section class="bloque-listado">
-    <div class="cabecera-listado">
-      <div>
-        <span class="etiqueta-bloque">Tu actividad</span>
-        <h2>Mi historial</h2>
-        <p class="texto-secundario">{{ historialFiltrado.length }} registro(s)</p>
-      </div>
-
-      <div class="barra-busqueda">
-        <select name="tipoBusqueda" [(ngModel)]="tipoBusqueda" (ngModelChange)="alCambiarBusqueda()">
-          <option value="general">Búsqueda general</option>
-          <option value="entrenamiento">Entrenamiento</option>
-          <option value="ubicacion">Ubicación</option>
-          <option value="fecha">Fecha</option>
-          <option value="notas">Notas</option>
-        </select>
-
-        <input type="text" placeholder="Escribe aquí..." [(ngModel)]="busqueda" (input)="alCambiarBusqueda()">
-
-        <button type="button" class="boton-limpiar" (click)="limpiarBusqueda()">Limpiar</button>
-      </div>
-    </div>
-
-    @if (historialFiltrado.length > 0) {
-    <div class="grid-historial">
-
-      @for (registro of historialFiltrado; track registro.id) {
-      <article class="tarjeta-historial">
-
-        <div class="cabecera-tarjeta">
-          <div>
-            <div class="badge-tipo">
-              {{ mostrarTipoEntrenamiento(registro.tipoEntrenamiento) }}
+        @if (opciones(); as o) {
+          @if (errorOpciones()) {
+            <div class="aviso-opciones" role="alert">
+              <p>{{ t.errorCarga }}</p>
+              <button df-button variant="outline" size="sm" type="button" (click)="cargarOpciones()">{{ t.reintentar }}</button>
             </div>
-            <h3>{{ registro.entrenamiento }}</h3>
+          }
+          <div class="rejilla-form">
+            <div class="campo">
+              <label for="reg-entrenamiento">{{ h.campoEntrenamiento }}</label>
+              <select df-input id="reg-entrenamiento" name="entrenamiento" [(ngModel)]="entrenamientoSeleccionado"
+                [error]="errores().includes('entrenamiento')" [attr.aria-invalid]="errores().includes('entrenamiento')"
+                [attr.aria-describedby]="errores().includes('entrenamiento') ? 'reg-e-entrenamiento' : null">
+                <option value="">{{ h.seleccionaEntrenamiento }}</option>
+                <optgroup [label]="h.grupoBase">
+                  @for (e of o.base; track e.id) {
+                    <option [value]="'BASE-' + e.id">{{ e.nombre }} · {{ e.duracionEnMinutos }} {{ t.minutos }}</option>
+                  }
+                </optgroup>
+                <optgroup [label]="h.grupoMios">
+                  @for (e of o.mios; track e.id) {
+                    <option [value]="'MIS-' + e.id">{{ e.nombre }} · {{ e.duracionEnMinutos }} {{ t.minutos }}</option>
+                  }
+                </optgroup>
+              </select>
+              @if (errores().includes('entrenamiento')) {
+                <p class="error" id="reg-e-entrenamiento">{{ h.errorEntrenamiento }}</p>
+              }
+            </div>
+
+            <div class="campo">
+              <label for="reg-ubicacion">{{ h.campoUbicacion }}</label>
+              <select df-input id="reg-ubicacion" name="ubicacion" [(ngModel)]="ubicacionSeleccionada">
+                <option value="">{{ h.sinUbicacion }}</option>
+                <optgroup [label]="h.grupoLugaresBase">
+                  @for (l of o.lugaresBase; track l.id) {
+                    <option [value]="'LPB-' + l.id">{{ l.nombre }}</option>
+                  }
+                </optgroup>
+                <optgroup [label]="h.grupoMisLugares">
+                  @for (l of o.misLugares; track l.id) {
+                    <option [value]="'LPU-' + l.id">{{ l.nombre }}</option>
+                  }
+                </optgroup>
+                <optgroup [label]="h.grupoCentrosBase">
+                  @for (c of o.centrosBase; track c.id) {
+                    <option [value]="'CPB-' + c.id">{{ c.nombre }}</option>
+                  }
+                </optgroup>
+                <optgroup [label]="h.grupoMisCentros">
+                  @for (c of o.misCentros; track c.id) {
+                    <option [value]="'CPU-' + c.id">{{ c.nombre }}</option>
+                  }
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="campo">
+              <label for="reg-fecha">{{ h.campoFecha }}</label>
+              <input df-input id="reg-fecha" name="fecha" type="datetime-local" required [(ngModel)]="fecha"
+                [error]="errores().includes('fecha')" [attr.aria-invalid]="errores().includes('fecha')"
+                [attr.aria-describedby]="errores().includes('fecha') ? 'reg-e-fecha' : null" />
+              @if (errores().includes('fecha')) {
+                <p class="error" id="reg-e-fecha">{{ h.errorFecha }}</p>
+              }
+            </div>
+
+            <div class="campo">
+              <label for="reg-duracion">{{ t.campoDuracion }}</label>
+              <input df-input id="reg-duracion" name="duracion" type="number" min="1" inputmode="numeric" required
+                [(ngModel)]="duracionEnMinutos" [error]="errores().includes('duracion')"
+                [attr.aria-invalid]="errores().includes('duracion')"
+                [attr.aria-describedby]="errores().includes('duracion') ? 'reg-e-duracion' : null" />
+              @if (errores().includes('duracion')) {
+                <p class="error" id="reg-e-duracion">{{ t.errorDuracion }}</p>
+              }
+            </div>
+
+            <div class="campo campo-completo">
+              <label for="reg-notas">{{ h.campoNotas }}</label>
+              <textarea df-input id="reg-notas" name="notas" rows="3" maxlength="1500" [(ngModel)]="notas"
+                [placeholder]="h.notasPlaceholder"></textarea>
+            </div>
           </div>
 
-          <div class="duracion-chip">
-            {{ registro.duracionEnMinutos }} min
+          <div class="acciones">
+            <button df-button variant="primary" type="submit" [loading]="guardando()" [disabled]="guardando()">
+              {{ guardando() ? t.guardando : h.guardarRegistro }}
+            </button>
+            <button df-button variant="ghost" type="button" (click)="cerrarFormulario()">{{ t.cerrarFormulario }}</button>
           </div>
+        } @else {
+          <p class="cargando-form" role="status">{{ i18n.t().comun.cargando }}</p>
+        }
+      </form>
+    </app-card>
+  }
+
+  <section class="listado" aria-labelledby="titulo-listado">
+    <div class="listado-cabecera">
+      <h2 id="titulo-listado" class="sr-only">{{ h.titulo }}</h2>
+      <p class="total" aria-live="polite">
+        @if (listado.pagina(); as p) {
+          {{ t.total }}: <strong>{{ p.totalElements }}</strong>
+        }
+      </p>
+    </div>
+
+    @switch (listado.estado()) {
+      @case ('cargando') {
+        <div class="lista" role="status">
+          <span class="sr-only">{{ i18n.t().comun.cargando }}</span>
+          @for (i of [1, 2, 3]; track i) {
+            <div class="esqueleto esqueleto-fila" aria-hidden="true"></div>
+          }
         </div>
-
-        <div class="fila-badges">
-          <span class="badge-info">{{ mostrarTipoUbicacion(registro.tipoUbicacion) }}</span>
-          <span class="badge-fecha">{{ registro.fecha }}</span>
-        </div>
-
-        <div class="contenido-tarjeta">
-          <p><strong>Ubicación:</strong> {{ registro.ubicacion || 'Sin ubicación' }}</p>
-          <p><strong>Notas:</strong> {{ registro.notas || 'Sin notas' }}</p>
-        </div>
-
-        <div class="acciones-historial">
-          <a class="boton-detalle" [routerLink]="['/historial-entrenamientos', registro.id]">
-            Ver detalle
-          </a>
-
-          <button class="boton-borrar" (click)="borrarRegistro(registro.id)">
-            Borrar registro
-          </button>
-        </div>
-
-      </article>
       }
-
-    </div>
-    } @else {
-    <div class="estado-vacio">
-      <h3>Sin resultados</h3>
-      <p>No hay registros que coincidan con la búsqueda.</p>
-    </div>
+      @case ('error') {
+        <div class="estado estado-error" role="alert">
+          <p>{{ t.errorCarga }}</p>
+          <button df-button variant="outline" size="sm" type="button" (click)="listado.recargar()">{{ t.reintentar }}</button>
+        </div>
+      }
+      @default {
+        @if (listado.items().length === 0) {
+          <div class="estado">
+            <p>{{ h.vacio }}</p>
+          </div>
+        } @else {
+          <ol class="lista" [attr.aria-busy]="listado.recargando()">
+            @for (r of listado.items(); track r.id) {
+              <li class="registro">
+                <div class="registro-fecha">
+                  <time class="num" [attr.datetime]="r.fecha.replace(' ', 'T')">{{ fechaRegistro(r) }}</time>
+                </div>
+                <div class="registro-cuerpo">
+                  <div class="chips">
+                    <span df-badge badgeStyle="outline">{{ tipoEntrenamiento(r) }}</span>
+                    @if (r.tipoUbicacion) {
+                      <span df-badge>{{ h.tiposUbicacion[r.tipoUbicacion] }}</span>
+                    }
+                  </div>
+                  <h3><a [routerLink]="['/historial-entrenamientos', r.id]">{{ r.entrenamiento }}</a></h3>
+                  <p class="registro-sub">{{ r.ubicacion || h.sinUbicacion }}</p>
+                </div>
+                <div class="registro-lado">
+                  <span class="duracion num">{{ r.duracionEnMinutos }} {{ t.minutos }}</span>
+                  <button df-button variant="danger" size="sm" type="button"
+                    [loading]="ocupado() === r.id" [disabled]="ocupado() === r.id" (click)="borrarRegistro(r)">{{ t.borrar }}</button>
+                </div>
+              </li>
+            }
+          </ol>
+          <app-paginador [pagina]="listado.pagina()!.page" [totalPaginas]="listado.pagina()!.totalPages"
+            (cambiar)="listado.cargar($event)" />
+        }
+      }
     }
   </section>
-
 </main>
 
-<app-footer></app-footer>
+<app-footer />

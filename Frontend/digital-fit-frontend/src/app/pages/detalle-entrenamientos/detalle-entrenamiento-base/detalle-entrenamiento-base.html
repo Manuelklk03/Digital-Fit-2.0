@@ -1,83 +1,55 @@
-<app-header></app-header>
+@let t = i18n.t().entrenamientos;
+<app-header />
 
-<main class="pagina-detalle-entrenamiento">
+<main class="pagina" id="contenido-principal">
+  <a df-button variant="ghost" size="sm" class="volver" routerLink="/entrenamientos"><span aria-hidden="true">←</span> {{ t.volverListado }}</a>
 
-  @if (mostrarPopup) {
-  <div class="popup-overlay">
-    <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
-      <p>{{ textoPopup }}</p>
-      <button type="button" (click)="cerrarPopup()">Cerrar</button>
-    </div>
-  </div>
+  @if (aviso.actual(); as a) {
+    <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
   }
 
-  @if (entrenamiento) {
-  <section class="hero-detalle">
-    <div class="hero-detalle-contenido">
-      <span class="mini-etiqueta">Detalle del entrenamiento</span>
-      <h1>{{ entrenamiento.nombre }}</h1>
-      <p>Consulta toda la información del entrenamiento base.</p>
-
-      <div class="hero-badges">
-        <span class="badge-categoria">{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
-        <span class="badge-nivel">{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
-        <span class="badge-duracion">{{ entrenamiento.duracionEnMinutos }} min</span>
+  @switch (estado()) {
+    @case ('cargando') {
+      <div role="status">
+        <span class="sr-only">{{ i18n.t().comun.cargando }}</span>
+        <div class="esqueleto" aria-hidden="true"></div>
       </div>
-    </div>
-  </section>
-
-  <section class="bloque-detalle">
-    <div class="grid-datos">
-      <div class="dato-detalle">
-        <span class="etiqueta">Nombre</span>
-        <span>{{ entrenamiento.nombre }}</span>
+    }
+    @case ('error') {
+      <div class="estado estado-error" role="alert">
+        <p>{{ t.errorDetalle }}</p>
+        <button df-button variant="outline" size="sm" type="button" (click)="cargar()">{{ t.reintentar }}</button>
       </div>
-
-      <div class="dato-detalle">
-        <span class="etiqueta">Categoría</span>
-        <span>{{ mostrarCategoriaLegible(entrenamiento.categoria) }}</span>
-      </div>
-
-      <div class="dato-detalle">
-        <span class="etiqueta">Nivel</span>
-        <span>{{ mostrarNivelLegible(entrenamiento.nivel) }}</span>
-      </div>
-
-      <div class="dato-detalle">
-        <span class="etiqueta">Duración</span>
-        <span>{{ entrenamiento.duracionEnMinutos }} min</span>
-      </div>
-    </div>
-
-    <div class="descripcion-detalle">
-      <h2>Descripción</h2>
-      <p>{{ entrenamiento.descripcion || 'Sin descripción' }}</p>
-    </div>
-
-    <div class="acciones-detalle">
-      <a class="boton-volver" routerLink="/entrenamientos">Volver</a>
-
-      @if (esAdmin()) {
-      <button class="boton-borrar" type="button" (click)="borrarEntrenamientoBase()">
-        Borrar entrenamiento
-      </button>
-      } @else {
-      <button class="boton-anadir" type="button" (click)="anadirAMisEntrenamientos()">
-        Añadir a mis entrenamientos
-      </button>
+    }
+    @default {
+      @if (entrenamiento(); as e) {
+        <app-card>
+          <article class="detalle">
+            <div class="chips">
+              <span df-badge variant="primary" [dot]="true">{{ t.catalogo.badge }}</span>
+              <span df-badge badgeStyle="outline">{{ t.categorias[e.categoria] }}</span>
+              <span df-badge [variant]="varianteNivel[e.nivel]">{{ t.niveles[e.nivel] }}</span>
+            </div>
+            <h1 class="cabecera-detalle">{{ e.nombre }}</h1>
+            <dl class="datos">
+              <div class="dato"><dt>{{ t.campoDuracion }}</dt><dd class="num">{{ e.duracionEnMinutos }} {{ t.minutos }}</dd></div>
+            </dl>
+            <section>
+              <h2 class="subtitulo">{{ t.campoDescripcion }}</h2>
+              <p class="texto-largo">{{ e.descripcion || t.sinDescripcion }}</p>
+            </section>
+            <div class="acciones">
+              @if (esAdmin()) {
+                <button df-button variant="danger" type="button" [loading]="ocupado()" [disabled]="ocupado()" (click)="borrar(e)">{{ t.borrar }}</button>
+              } @else {
+                <button df-button variant="primary" type="button" [loading]="ocupado()" [disabled]="ocupado()" (click)="anadir(e)">{{ t.anadirAMis }}</button>
+              }
+            </div>
+          </article>
+        </app-card>
       }
-    </div>
-  </section>
-  } @else {
-  <section class="hero-detalle">
-    <div class="hero-detalle-contenido">
-      <span class="mini-etiqueta">Detalle del entrenamiento</span>
-      <h1>Detalle de entrenamiento</h1>
-      <p>Cargando información...</p>
-    </div>
-  </section>
+    }
   }
-
 </main>
 
-<app-footer></app-footer>
+<app-footer />

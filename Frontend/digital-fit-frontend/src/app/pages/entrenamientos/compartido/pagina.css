@@ -1,0 +1,62 @@
+/* Recorrido de entrenamientos — Neutral Sport / Industrial. Compartido por listados y detalles. */
+/* Ancho completo con el fondo del sistema (tapa el fondo v1 del body); contenido limitado a 1120px. */
+.pagina {
+  box-sizing: border-box;
+  min-height: calc(100vh - 140px);
+  padding: 32px max(16px, calc((100% - 1120px) / 2)) 64px;
+  background-color: var(--df-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  color: var(--df-text);
+  font-family: var(--df-font-sans);
+}
+
+.encabezado { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.encabezado-texto { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; max-width: 640px; }
+.encabezado h1 { margin: 0; font-size: clamp(26px, 4vw, 34px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+.encabezado p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--df-text-muted); }
+
+.listado { display: flex; flex-direction: column; gap: 20px; }
+.listado-cabecera {
+  display: flex; flex-direction: column; gap: 16px;
+  padding: 16px 20px; background: var(--df-surface); border: 1px solid var(--df-border); border-radius: 16px;
+}
+.total { margin: 0; font-size: 13px; color: var(--df-text-muted); font-variant-numeric: tabular-nums; }
+.total strong { color: var(--df-text); }
+
+.rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+@media (max-width: 400px) { .rejilla { grid-template-columns: 1fr; } }
+
+.esqueleto {
+  height: 210px; border-radius: 16px; border: 1px solid var(--df-border);
+  background: linear-gradient(90deg, var(--df-surface) 25%, var(--df-surface-hover) 50%, var(--df-surface) 75%);
+  background-size: 200% 100%; animation: brillo 1.4s ease-in-out infinite;
+}
+@keyframes brillo { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .esqueleto { animation: none; } }
+
+.estado {
+  display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center;
+  padding: 48px 20px; border: 1px dashed var(--df-border); border-radius: 16px; color: var(--df-text-muted);
+}
+.estado p { margin: 0; max-width: 46ch; line-height: 1.5; }
+.estado-error { border-style: solid; border-color: rgba(239, 68, 68, 0.4); }
+
+.meta { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 13px; }
+.meta dt { color: var(--df-text-muted); }
+.meta dd { margin: 0; color: var(--df-text-muted); overflow-wrap: anywhere; }
+
+/* Detalle */
+.volver { align-self: flex-start; gap: 6px; }
+.detalle { display: flex; flex-direction: column; gap: 20px; }
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.datos { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 0; }
+.dato { padding: 14px 16px; background: var(--df-bg); border: 1px solid var(--df-border); border-radius: 12px; }
+.dato dt { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--df-text-muted); }
+.dato dd { margin: 6px 0 0; font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
+.num { font-family: var(--df-font-mono); font-variant-numeric: tabular-nums; }
+.cabecera-detalle { margin: 0; font-size: clamp(24px, 4vw, 32px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+.subtitulo { margin: 0 0 8px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--df-text-muted); }
+.texto-largo { margin: 0; font-size: 15px; line-height: 1.65; color: var(--df-text-muted); white-space: pre-line; }
+.acciones { display: flex; flex-wrap: wrap; gap: 8px; }

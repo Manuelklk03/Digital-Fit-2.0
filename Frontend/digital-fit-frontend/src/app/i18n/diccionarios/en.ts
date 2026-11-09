@@ -1,4 +1,5 @@
 import { DiccionarioTraduccion } from '../i18n.types';
+import { entrenamientosEn } from './entrenamientos/en';
 
 export const diccionarioEn: DiccionarioTraduccion = {
   nav: {
@@ -100,4 +101,5 @@ export const diccionarioEn: DiccionarioTraduccion = {
     errorRegistro: 'Could not complete registration. Check your details.',
     exitoRegistro: 'Account created successfully. Redirecting to sign in...',
   },
+  entrenamientos: entrenamientosEn,
 };

@@ -44,7 +44,7 @@ export type BadgeStyle = 'subtle' | 'outline' | 'solid';
     }
     :host(.df-badge-subtle-primary) {
       background-color: rgba(59, 130, 246, 0.15);
-      color: var(--df-primary);
+      color: #60a5fa; /* var(--df-primary) da ~4:1 sobre el fondo tintado; este tono supera AA */
       border: 1px solid rgba(59, 130, 246, 0.35);
     }
     :host(.df-badge-subtle-accent) {
@@ -59,7 +59,7 @@ export type BadgeStyle = 'subtle' | 'outline' | 'solid';
     }
     :host(.df-badge-subtle-danger) {
       background-color: rgba(239, 68, 68, 0.15);
-      color: var(--df-danger);
+      color: #f87171; /* var(--df-danger) da ~4:1 sobre el fondo tintado; este tono supera AA */
       border: 1px solid rgba(239, 68, 68, 0.35);
     }
 
