@@ -26,7 +26,7 @@ const VACIO: EntrenamientoForm = {
 
 type Campo = 'nombre' | 'descripcion' | 'duracionEnMinutos';
 
-/** Formulario de creación y edición, con los mismos límites que la validación del backend. */
+/** Formulario de creación y edición. La descripción se limita a 1000: es lo que admite la columna en BD (el DTO admite 1500). */
 @Component({
   selector: 'app-formulario-entrenamiento',
   imports: [FormsModule, ButtonComponent, CardComponent, InputDirective],
@@ -80,7 +80,7 @@ type Campo = 'nombre' | 'descripcion' | 'duracionEnMinutos';
 
           <div class="campo campo-completo">
             <label [for]="idPrefijo() + '-descripcion'">{{ t.campoDescripcion }}</label>
-            <textarea df-input [id]="idPrefijo() + '-descripcion'" name="descripcion" rows="4" maxlength="1500" required
+            <textarea df-input [id]="idPrefijo() + '-descripcion'" name="descripcion" rows="4" maxlength="1000" required
               [(ngModel)]="modelo.descripcion" [error]="errores().includes('descripcion')"
               [attr.aria-invalid]="errores().includes('descripcion')"
               [attr.aria-describedby]="errores().includes('descripcion') ? idPrefijo() + '-e-descripcion' : null"></textarea>
@@ -154,7 +154,7 @@ export class FormularioEntrenamientoComponent {
     };
     const errores: Campo[] = [];
     if (!datos.nombre || datos.nombre.length > 100) errores.push('nombre');
-    if (!datos.descripcion || datos.descripcion.length > 1500) errores.push('descripcion');
+    if (!datos.descripcion || datos.descripcion.length > 1000) errores.push('descripcion');
     if (!Number.isInteger(datos.duracionEnMinutos) || datos.duracionEnMinutos < 1) errores.push('duracionEnMinutos');
     this.errores.set(errores);
     if (errores.length === 0) {
