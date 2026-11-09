@@ -19,24 +19,18 @@ interface Caso {
   servicio: Type<object>;
   url: string;
   lista: string;
-  filtrado?: string;
-  args?: unknown[];
-  esperado?: Record<string, string>;
 }
 
-const CENTRO = { args: ['gym', 'valencia', 30], esperado: { nombre: 'gym', direccion: 'valencia', precioMensual: '30' } };
-const LUGAR = { args: ['parque', 'valencia', 'calistenia'], esperado: { nombre: 'parque', direccion: 'valencia', tipo: 'CALISTENIA' } };
-
-// Los servicios con listados piden size=100 y devuelven solo `content`; el filtrado conserva ambos.
+// Los listados auxiliares (selects) piden size=100 y devuelven solo `content`.
 const CASOS: Caso[] = [
   { servicio: EntrenamientosService, url: '/api/entrenamientos', lista: 'getEntrenamientos' },
   { servicio: MisEntrenamientosService, url: '/api/mis-entrenamientos', lista: 'getMisEntrenamientos' },
   { servicio: EntrenamientosComunidadService, url: '/api/entrenamientos-comunidad', lista: 'getEntrenamientosComunidad' },
   { servicio: HistorialEntrenamientosService, url: '/api/entrenamientos/mi-historial', lista: 'getHistorial' },
-  { servicio: PrivadosService, url: '/api/centros-privados', lista: 'getCentrosPrivados', filtrado: 'getCentrosPrivadosFiltrados', ...CENTRO },
-  { servicio: MisCentrosService, url: '/api/mis-centros-privados', lista: 'getMisCentros', filtrado: 'getMisCentrosFiltrados', ...CENTRO },
-  { servicio: PublicosService, url: '/api/lugares-publicos', lista: 'getLugaresPublicos', filtrado: 'getLugaresPublicosFiltrados', ...LUGAR },
-  { servicio: MisLugaresService, url: '/api/mis-lugares-publicos', lista: 'getMisLugares', filtrado: 'getMisLugaresFiltrados', ...LUGAR },
+  { servicio: PrivadosService, url: '/api/centros-privados', lista: 'getCentrosPrivados' },
+  { servicio: MisCentrosService, url: '/api/mis-centros-privados', lista: 'getMisCentros' },
+  { servicio: PublicosService, url: '/api/lugares-publicos', lista: 'getLugaresPublicos' },
+  { servicio: MisLugaresService, url: '/api/mis-lugares-publicos', lista: 'getMisLugares' },
 ];
 
 describe('Servicios con listados paginados', () => {
@@ -62,21 +56,6 @@ describe('Servicios con listados paginados', () => {
         req.flush({ content: [{ id: 1 }], page: 0, size: 100, totalElements: 1, totalPages: 1 });
         expect(resultado).toEqual([{ id: 1 }]);
       });
-
-      if (caso.filtrado) {
-        it('conserva los filtros y el tamaño al filtrar', () => {
-          const servicio = TestBed.inject(caso.servicio) as unknown as Record<string, Metodo>;
-
-          servicio[caso.filtrado as string](...(caso.args ?? [])).subscribe();
-
-          const req = http.expectOne((r) => r.url === caso.url);
-          expect(req.request.params.get('size')).toBe('100');
-          for (const [clave, valor] of Object.entries(caso.esperado ?? {})) {
-            expect(req.request.params.get(clave)).toBe(valor);
-          }
-          req.flush({ content: [], page: 0, size: 100, totalElements: 0, totalPages: 0 });
-        });
-      }
     });
   }
 
@@ -85,6 +64,10 @@ describe('Servicios con listados paginados', () => {
     { servicio: EntrenamientosService, url: '/api/entrenamientos' },
     { servicio: MisEntrenamientosService, url: '/api/mis-entrenamientos' },
     { servicio: EntrenamientosComunidadService, url: '/api/entrenamientos-comunidad' },
+    { servicio: PrivadosService, url: '/api/centros-privados' },
+    { servicio: MisCentrosService, url: '/api/mis-centros-privados' },
+    { servicio: PublicosService, url: '/api/lugares-publicos' },
+    { servicio: MisLugaresService, url: '/api/mis-lugares-publicos' },
   ];
 
   for (const caso of PAGINADOS) {
@@ -112,5 +95,14 @@ describe('Servicios con listados paginados', () => {
     expect(req.request.params.get('page')).toBe('1');
     expect(req.request.params.keys().sort()).toEqual(['page', 'size']);
     req.flush({ content: [], page: 1, size: 12, totalElements: 0, totalPages: 0 });
+  });
+
+  it('HistorialEntrenamientosService.getPaginaHistorial envía la búsqueda q recortada', () => {
+    const servicio = TestBed.inject(HistorialEntrenamientosService);
+    servicio.getPaginaHistorial(0, '  turia ').subscribe();
+
+    const req = http.expectOne((r) => r.url === '/api/entrenamientos/mi-historial');
+    expect(req.request.params.get('q')).toBe('turia');
+    req.flush({ content: [], page: 0, size: 12, totalElements: 0, totalPages: 0 });
   });
 });
