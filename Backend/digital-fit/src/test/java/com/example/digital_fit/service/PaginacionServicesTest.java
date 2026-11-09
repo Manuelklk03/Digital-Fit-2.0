@@ -283,6 +283,11 @@ class PaginacionServicesTest {
         PaginaResponse<HistorialEntrenamientosDTO> resFecha = historialEntrenamientosService.listarOFiltrarHistorialPaginado(
                 "usuario1", null, ahora, PageRequest.of(0, 20));
         assertEquals(1, resFecha.totalElements());
+
+        when(historialEntrenamientosRepository.buscarPorTexto(eq(usuario), eq("fuerza"), any(Pageable.class))).thenReturn(page);
+        PaginaResponse<HistorialEntrenamientosDTO> resQ = historialEntrenamientosService.listarOFiltrarHistorialPaginado(
+                "usuario1", "fuerza", null, null, PageRequest.of(0, 20));
+        assertEquals(1, resQ.totalElements());
     }
 
     @Test
