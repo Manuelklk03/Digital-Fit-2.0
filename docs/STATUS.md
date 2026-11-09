@@ -2,6 +2,13 @@
 
 Última actualización: **2026-11-09**.
 
+> **2026-11-09 (Fase 5, Recorrido 3 — Lugares; rama `feat/recorrido-lugares`, en automático por petición de Manuel, incluido el mapa):**
+> - **Pantallas:** `/privados`, `/publicos`, `/mis-centros`, `/mis-lugares` y sus 4 detalles reescritos sobre `pages/lugares/` (listado, detalle, formulario con mapa, filtro y tarjeta). Servicios de centros, lugares y administración tipados con `buscar(filtro, page)`. Selector de mapa con signals, i18n y limpieza de Leaflet.
+> - **Historial:** buscador con el parámetro `q` (G8 resuelta por Antigravity en la PR #68).
+> - **Corregido:** el mapa no seguía las coordenadas al editar otro sitio; `explorar.ts` leía un campo inexistente (`equipamiento`) y no filtraba los sitios sin coordenadas.
+> - **Verificaciones:** `ng build` correcto (solo avisos de presupuesto ya existentes en otras pantallas), 53 suites y 219 tests en verde, 0 errores ESLint (66 avisos, antes 203). Revisión de Codex (2 hallazgos medios en el autocompletado, corregidos) y revisión de UI (2 altos y 7 medios corregidos; 4 opcionales anotados en el roadmap). Capturas con Playwright contra `docker compose` a 1440 y 390 px en las 6 rutas: sin scroll horizontal; foco en «Nombre» al abrir el formulario; autocompletado probado contra el backend real. Choque con la clase global v1 `.bloque-mapa` detectado en captura y corregido.
+> - **Seguridad (pedido de Manuel):** anotada la tarea 7.0 en el roadmap. La app usa sesión con cookie `HttpOnly`, no JWT; lo pendiente es CSRF (desactivado), la cookie entre dominios en el despliegue, cabeceras y límite de intentos de login.
+
 > **2026-11-09 (Fase 4/5, Parada G8 — Resolución de fallos de backend para el frontend; rama `fix/backend-g8-fallos`):**
 > - **Contraseñas demo corregidas (Flyway V5):** Creada la migración `V5__actualizar_hashes_demo.sql` actualizando los hashes bcrypt de `admin1` (`Admin123!`) y `usuario1` (`Usuario123!`). Añadida la suite unitaria `UsuariosDemoPasswordTest` validando con `PasswordEncoder` la coincidencia exacta con `docs/deployment.md` y ampliada `FlywayMigrationScriptsTest` para validar V5.
 > - **Manejo de rutas no mapeadas (404 ProblemDetail):** Incorporado manejador para `NoResourceFoundException` en `GlobalExceptionHandler`, evitando que las rutas inexistente caigan en error interno 500 no controlado. Añadido test unitario en `GlobalExceptionHandlerTest`.
@@ -128,7 +135,7 @@
 
 ## Resumen
 
-- **Fase activa:** 5 — Renovación del frontend por recorridos (Recorridos 1 y 2 completados; siguiente: Recorrido 3, Lugares). Fase 4 (Backend, API y datos) completada al 100% (tareas 4.1 a 4.10 cerradas).
+- **Fase activa:** 5 — Renovación del frontend por recorridos (Recorridos 1, 2 y 3 completados; siguiente: Recorrido 4, Progreso). Fase 4 (Backend, API y datos) completada al 100% (tareas 4.1 a 4.10 cerradas).
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 156 tests unitarios en verde.
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` configurado.
 - **Versión publicada:** `v1.0.0` (tag anotado). `v2.0.0` se publicará al completar la fase 7.
@@ -190,7 +197,7 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **Frontend (Claude):** Fase 5, Recorrido 3: Lugares (centros privados, lugares públicos y mapa), pudiendo además integrar la búsqueda con el parámetro `q` en el historial ya habilitado.
+1. **Frontend (Claude):** Fase 5, Recorrido 4: Progreso (estadísticas y valoraciones); después, administración.
 2. **Backend y DevOps (Antigravity):** Parada G8 completada (PR abierta). En espera por parada G5 hasta que Claude finalice las pantallas de la Fase 5, para implementar las pruebas E2E con Playwright (6.2) y CI (6.1).
 3. **Despliegue (Fases 2.3/2.4 y 7.1):** Pendiente de que Manuel provisione las cuentas/secretos (parada G4) antes de la release final `v2.0.0`.
 
