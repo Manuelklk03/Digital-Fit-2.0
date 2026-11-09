@@ -21,6 +21,8 @@ import com.example.digital_fit.dto.Valoracion.ValoracionDTO;
 import com.example.digital_fit.model.Enums.TipoDeValoracion;
 import com.example.digital_fit.service.Valoracion.ValoracionService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/valoraciones")
 public class ValoracionRestController {
@@ -55,7 +57,7 @@ public class ValoracionRestController {
 
     @PostMapping("/{tipoContenido}/{idContenido}")
     public ResponseEntity<ValoracionDTO> crearOActualizar(@PathVariable TipoDeValoracion tipoContenido,
-            @PathVariable Long idContenido, @RequestBody CrearValoracionDTO crearValoracionDTO,
+            @PathVariable Long idContenido, @Valid @RequestBody CrearValoracionDTO crearValoracionDTO,
             Authentication authentication) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
