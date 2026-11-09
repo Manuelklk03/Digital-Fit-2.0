@@ -94,13 +94,13 @@ Aceptación: tests de backend en verde (con PostgreSQL o Testcontainers), permis
 
 Dependencias: 3.4 y los endpoints de la fase 4 que use cada recorrido.
 
-Recorridos, en este orden: **acceso** (login, registro, sesión — **Hecho 2026-11-08**) → **entrenamientos** (catálogo, mis entrenamientos, comunidad, historial y sus detalles — **Hecho 2026-11-09**, con búsqueda en el historial desde G8) → **lugares** (centros privados, lugares públicos, mapa — **Hecho 2026-11-09**) → **progreso** (estadísticas, valoraciones) → **administración** (soporte retirado según D13).
+Recorridos, en este orden: **acceso** (login, registro, sesión — **Hecho 2026-11-08**) → **entrenamientos** (catálogo, mis entrenamientos, comunidad, historial y sus detalles — **Hecho 2026-11-09**, con búsqueda en el historial desde G8) → **lugares** (centros privados, lugares públicos, mapa — **Hecho 2026-11-09**) → **progreso** (estadísticas, valoraciones — **Hecho 2026-11-09**) → **administración** (crear administrador; soporte retirado según D13 — **Hecho 2026-11-09**). **Fase 5 completada.**
 
 Para cada recorrido [P]: modelos tipados sin `any` (P7), interceptor HTTP común, estados de carga/error/vacío/éxito, accesibilidad, revisión antislop y de UI, tests de lo que tenga lógica.
 
 Pendientes anotados en el recorrido de lugares [+]: mover las piezas genéricas de `pages/entrenamientos/compartido/` (estado, listado, encabezado, paginador, `pagina.css`) a una carpeta común; iconos del marcador de Leaflet servidos desde `assets` en lugar de unpkg; distinguir 404/403 de un fallo de red en los detalles; devolver el foco al botón «Editar» al cerrar una edición.
 
-Además: proxy de desarrollo para `ng serve` (P1) [P], `lang="es"` [P], carga diferida de rutas [+], limpieza de `public/img` (P12) [+].
+Además: proxy de desarrollo para `ng serve` (P1) [P] — **Hecho**, `lang="es"` [P] — **Hecho**, carga diferida de rutas [+], limpieza de `public/img` (P12) [+]. Límite conocido: los selectores de contenido (valoraciones, historial) cargan como mucho 100 elementos por lista; con más haría falta búsqueda en servidor.
 
 ## Fase 6 — Integración, depuración y pruebas
 

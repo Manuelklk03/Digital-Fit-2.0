@@ -45,7 +45,7 @@ export const lugaresCa: DiccionarioLugares = {
   errorNombre: 'Escriu un nom.',
   errorDireccion: 'Escriu una adreça.',
   errorPrecio: 'El preu ha de ser 0 o major.',
-  errorDescripcion: 'La descripció admet com a màxim 1500 caràcters.',
+  errorDescripcion: 'La descripció admet com a màxim 1000 caràcters.',
   errorUbicacion: 'Marca la ubicació en el mapa.',
   ayudaUbicacion: 'Cerca una adreça o fes clic en el mapa per a marcar la ubicació.',
   autocompletando: "Cercant dades d'eixa ubicació…",

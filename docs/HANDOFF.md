@@ -23,9 +23,10 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 | G2 | Resuelta | Claude → Antigravity | Pantallas y servicios de soporte retirados en frontend (PR #65) y backend purgado con Flyway V4 (PR #66) |
 | G3 | Resuelta | Claude → Antigravity | Confirmado: cero referencias residuales a soporte o tickets en frontend y backend |
 | G4 | Pendiente | Manuel → Antigravity | Cuentas de Netlify, Render y Neon y secretos con `gh secret set`. Sin ellos no hay 2.3 ni 2.4 |
-| G5 | BLOQUEADO | Claude → Antigravity | 6.2 (E2E) y 6.1 (CI) esperan a que Claude cierre la fase 5 completa del frontend |
-| G6 | Pendiente | Claude → Antigravity | 6.5 (Prettier) espera a que Claude no tenga ramas abiertas |
+| G5 | LIBRE | Claude → Antigravity | Fase 5 cerrada: Antigravity puede hacer 6.2 (E2E) y 6.1 (CI) |
+| G6 | LIBRE | Claude → Antigravity | Claude no tiene ramas abiertas tras fusionar `feat/recorrido-progreso`: Antigravity puede hacer 6.5 (Prettier) |
 | G7 | Pendiente | Manuel → Antigravity | 7.3 (tag `v2.0.0`) solo con orden expresa de Manuel |
+| G9 | LIBRE | Claude → Antigravity | Fallos de backend encontrados en los recorridos 3–5 (ver «Fallos de backend para Antigravity (G9)») |
 | G8 | Resuelta | Antigravity | Resueltos los 3 fallos de backend (migración Flyway V5 para usuarios demo, 404 NoResourceFoundException y parámetro q en historial) |
 
 ## Registro de avisos
@@ -40,7 +41,15 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 | 2026-11-09 | G2 y G3 | Resuelta | Backend de tickets y soporte eliminado por completo con migración Flyway V4 (PR #66) |
 | 2026-11-09 | G5 | BLOQUEADO | Antigravity espera a que Claude complete la renovación de las pantallas del frontend (Fase 5) para iniciar las suites E2E (6.2) y CI (6.1) |
 | 2026-11-09 | G8 | LIBRE | Recorrido 2 (entrenamientos) cerrado en `feat/recorrido-entrenamientos`. Al probarlo contra Docker aparecen 3 fallos de backend para Antigravity (ver «Fallos de backend para Antigravity») |
+| 2026-11-09 | G5, G6 y G9 | LIBRE | Claude cierra la fase 5 (recorridos 3, 4 y 5). Antigravity puede empezar E2E, CI y Prettier, y corregir los fallos de backend de G9 |
 | 2026-11-09 | G8 | Resuelta | Antigravity resolvió los 3 fallos de backend (V5 hashes demo, 404 NoResourceFoundException, y parámetro q en historial). Claude ya puede añadir la búsqueda del historial en frontend |
+
+## Fallos de backend para Antigravity (G9, 2026-11-09)
+
+1. **Longitud de textos DTO ≠ BD:** los DTO aceptan 1500 caracteres (`@Size(max = 1500)`) pero las columnas de `V1__esquema_inicial.sql` son `VARCHAR(1000)` en `descripcion` de entrenamientos base y de usuario, centros y lugares (base y de usuario) y en `valoraciones.comentario`. Un texto de 1001–1500 pasa la validación y falla al guardar (500). Opción recomendada: migración V6 que amplíe esas columnas a `VARCHAR(1500)` (no destructiva) y un test que compare DTO y esquema. El frontend limita hoy a 1000; Claude lo subirá a 1500 cuando esté hecho.
+2. **`@Valid` en valoraciones:** `ValoracionRestController.crearOActualizar` no lleva `@Valid` en `@RequestBody CrearValoracionDTO`, así que el `@Size` del comentario no se aplica. Añadirlo y probar 400 ProblemDetail con comentario largo y puntuación fuera de 1–5.
+3. **Contraseña de administrador:** `CrearAdmin.password` solo tiene `@NotBlank`; se puede crear un ADMIN con contraseña de 1 carácter por petición directa. Aplicar `@Size(min = 6)` (la regla del registro y del formulario) y revisar que `CrearUsuario`/registro tenga la misma.
+4. **Opcional — búsqueda `q` en `GET /api/valoraciones/mis-valoraciones`:** la v1 filtraba en cliente; con la paginación ya no es posible. Mismo patrón que el `q` del historial.
 
 ## Fallos de backend para Antigravity (G8, 2026-11-09) — Resueltos
 

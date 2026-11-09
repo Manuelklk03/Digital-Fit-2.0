@@ -57,7 +57,7 @@ export const entrenamientosEs: DiccionarioEntrenamientos = {
   cancelarEdicion: 'Cancelar edición',
   guardando: 'Guardando...',
   errorNombre: 'El nombre es obligatorio (máximo 100 caracteres).',
-  errorDescripcion: 'La descripción es obligatoria (máximo 1500 caracteres).',
+  errorDescripcion: 'La descripción es obligatoria (máximo 1000 caracteres).',
   errorDuracion: 'La duración debe ser de al menos 1 minuto.',
   total: 'Total',
   cargandoListado: 'Cargando entrenamientos...',

@@ -1,6 +1,7 @@
 import { DiccionarioTraduccion } from '../i18n.types';
 import { entrenamientosFr } from './entrenamientos/fr';
 import { lugaresFr } from './lugares/fr';
+import { progresoFr } from './progreso/fr';
 
 export const diccionarioFr: DiccionarioTraduccion = {
   nav: {
@@ -10,6 +11,7 @@ export const diccionarioFr: DiccionarioTraduccion = {
     misEntrenamientos: 'Mes entraînements',
     misCentros: 'Mes centres',
     misLugares: 'Mes lieux',
+    progreso: 'Progrès',
     crearAdmin: 'Créer admin',
   },
   header: {
@@ -102,6 +104,20 @@ export const diccionarioFr: DiccionarioTraduccion = {
     errorRegistro: "Échec de l'inscription. Vérifiez les informations saisies.",
     exitoRegistro: 'Compte créé avec succès. Redirection vers la page de connexion...',
   },
+  admin: {
+    badge: 'Administration',
+    titulo: 'Créer un administrateur',
+    subtitulo: 'Créez un autre compte avec le rôle ADMIN. Il pourra gérer les catalogues d’entraînements, de centres et de lieux.',
+    formTitulo: 'Nouveau compte administrateur',
+    crear: 'Créer un administrateur',
+    creando: 'Création…',
+    exito: 'Administrateur créé.',
+    error: "Impossible de créer l'administrateur.",
+    errorUsuario: "Indiquez un nom d'utilisateur.",
+    emailPlaceholder: 'courriel@exemple.com',
+    ayudaContrasena: 'Au moins 6 caractères.',
+  },
   entrenamientos: entrenamientosFr,
   lugares: lugaresFr,
+  progreso: progresoFr,
 };

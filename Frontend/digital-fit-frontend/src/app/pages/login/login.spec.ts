@@ -52,7 +52,7 @@ describe('LoginComponent', () => {
 
   it('debe gestionar el inicio de sesión exitoso', () => {
     vi.spyOn(authService, 'login').mockReturnValue(of('ok'));
-    vi.spyOn(authService, 'me').mockReturnValue(of({ username: 'usuario1' }));
+    vi.spyOn(authService, 'me').mockReturnValue(of({ username: 'usuario1', email: 'u@u.es', rol: 'USER' }));
 
     component.username = 'usuario1';
     component.password = 'Usuario123!';

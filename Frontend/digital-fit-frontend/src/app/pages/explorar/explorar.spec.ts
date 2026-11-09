@@ -204,6 +204,15 @@ describe('ExplorarComponent', () => {
         longitud: -0.376,
         distanciaKm: 0.3,
       },
+      {
+        id: 4,
+        nombre: 'Centro de la app',
+        categoria: 'GIMNASIO',
+        tipoOrigen: 'LOCAL_PRIVADO',
+        direccion: 'Calle Colón 1',
+        latitud: 39.47,
+        longitud: -0.375,
+      },
     ];
 
     const httpTesting = TestBed.inject(HttpTestingController);
@@ -214,6 +223,8 @@ describe('ExplorarComponent', () => {
     req.flush(mockLugaresBackend);
 
     expect(component.lugares().some((l) => l.nombre === 'Gimnasio Backend OSM')).toBe(true);
+    // El backend marca los sitios de la app como LOCAL_PRIVADO / LOCAL_PUBLICO.
+    expect(component.lugares().find((l) => l.nombre === 'Centro de la app')?.tipoOrigen).toBe('PRIVADO');
   });
 });
 

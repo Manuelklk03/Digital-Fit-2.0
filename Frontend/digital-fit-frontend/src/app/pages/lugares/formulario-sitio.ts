@@ -59,7 +59,7 @@ const VACIO: Modelo = {
 
 /**
  * Formulario de centro o lugar con selector de mapa. Valida como el backend (nombre, dirección y ubicación
- * obligatorios, precio ≥ 0, descripción ≤ 1500) y, si recibe `autocompletar`, rellena los datos al marcar.
+ * obligatorios, precio ≥ 0, descripción ≤ 1000) y, si recibe `autocompletar`, rellena los datos al marcar.
  */
 @Component({
   selector: 'app-formulario-sitio',
@@ -141,7 +141,7 @@ const VACIO: Modelo = {
 
           <div class="campo campo-completo">
             <label for="sitio-descripcion">{{ t.campoDescripcion }}</label>
-            <textarea df-input id="sitio-descripcion" name="descripcion" rows="3" maxlength="1500"
+            <textarea df-input id="sitio-descripcion" name="descripcion" rows="3" maxlength="1000"
               [(ngModel)]="modelo.descripcion" [error]="errores().includes('descripcion')"
               [attr.aria-invalid]="errores().includes('descripcion')"
               [attr.aria-describedby]="errores().includes('descripcion') ? 'sitio-e-descripcion' : null"></textarea>
@@ -331,7 +331,7 @@ export class FormularioSitioComponent {
     if (!comunes.nombre) errores.push('nombre');
     if (!comunes.direccion) errores.push('direccion');
     if (this.clase() === 'centro' && precio !== null && (Number.isNaN(precio) || precio < 0)) errores.push('precioMensual');
-    if ((comunes.descripcion?.length ?? 0) > 1500) errores.push('descripcion');
+    if ((comunes.descripcion?.length ?? 0) > 1000) errores.push('descripcion');
     this.errores.set(errores);
     if (errores.length > 0 || !u) {
       const selector = errores.includes('ubicacion') ? '#mapa-busqueda' : '[aria-invalid="true"]';

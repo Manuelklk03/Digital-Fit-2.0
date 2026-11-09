@@ -1,184 +1,174 @@
-<app-header></app-header>
+@let t = i18n.t().progreso;
+@let v = t.valoraciones;
+@let te = i18n.t().entrenamientos;
+<app-header />
 
-<main class="pagina-valoraciones">
+<main class="pagina" id="contenido-principal">
+  <app-encabezado-pagina [badge]="v.badge" [titulo]="v.titulo" [subtitulo]="v.subtitulo">
+    @if (enEdicion() === undefined) {
+      <button id="boton-nuevo" df-button variant="primary" type="button" (click)="abrirNueva()">{{ v.nueva }}</button>
+    }
+  </app-encabezado-pagina>
 
-  @if (mostrarPopup) {
-  <div class="popup-overlay">
-    <div class="popup-mensaje" [class.popup-error]="tipoPopup === 'error'">
-      <p>{{ textoPopup }}</p>
-      <button type="button" (click)="cerrarPopup()">Cerrar</button>
-    </div>
-  </div>
+  @if (aviso.actual(); as a) {
+    <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
   }
 
-  <section class="cabecera-valoraciones">
-    <h1>Valoraciones</h1>
-    <p>
-      Aquí puedes crear nuevas valoraciones, consultar tus valoraciones y ver las valoraciones públicas realizadas por
-      otros usuarios.
-    </p>
-  </section>
+  @if (enEdicion() !== undefined) {
+    @let editando = enEdicion();
+    <app-card>
+      <form class="formulario" (ngSubmit)="guardar()" novalidate aria-labelledby="val-titulo">
+        <h2 id="val-titulo" class="titulo-form" tabindex="-1">{{ editando ? v.formEditar : v.formCrear }}</h2>
 
-  <section class="bloque-formulario">
-    <h2>Crear o actualizar valoración</h2>
+        @if (editando) {
+          <p class="editando">
+            <span df-badge badgeStyle="outline">{{ t.tiposValoracion[editando.tipoDeValoracion] }}</span>
+            <strong>{{ editando.contenidoNombre || v.sinNombre }}</strong>
+          </p>
+        } @else {
+          <div class="rejilla-form">
+            <div class="campo">
+              <label for="val-categoria">{{ v.campoCategoria }}</label>
+              <select df-input id="val-categoria" name="categoria" [ngModel]="categoria" (ngModelChange)="cambiarCategoria($event)">
+                @for (c of categorias; track c) {
+                  <option [value]="c">{{ t.categorias[c] }}</option>
+                }
+              </select>
+            </div>
 
-    <form class="formulario-valoracion" (ngSubmit)="guardarValoracion()">
+            <div class="campo">
+              <label for="val-contenido">{{ v.campoContenido }}</label>
+              @if (grupos(); as gs) {
+                <select df-input id="val-contenido" name="contenido" [(ngModel)]="seleccion"
+                  [error]="errores().includes('contenido')" [attr.aria-invalid]="errores().includes('contenido')"
+                  [attr.aria-describedby]="errores().includes('contenido') ? 'val-e-contenido' : null">
+                  <option value="">{{ v.seleccionaContenido }}</option>
+                  @for (g of gs; track g.tipo) {
+                    @if (g.opciones.length > 0) {
+                      <optgroup [label]="t.tiposValoracion[g.tipo]">
+                        @for (o of g.opciones; track o.id) {
+                          <option [value]="o.tipo + '|' + o.id">{{ o.texto }}</option>
+                        }
+                      </optgroup>
+                    }
+                  }
+                </select>
+                @if (errores().includes('contenido')) {
+                  <p class="error" id="val-e-contenido">{{ v.errorContenido }}</p>
+                }
+              } @else {
+                <p class="cargando-opciones" role="status">{{ i18n.t().comun.cargando }}</p>
+              }
+            </div>
+          </div>
+          @if (errorOpciones()) {
+            <div class="aviso-opciones" role="alert">
+              <p>{{ v.errorOpciones }}</p>
+              <button df-button variant="outline" size="sm" type="button" (click)="cargarOpciones()">{{ te.reintentar }}</button>
+            </div>
+          }
+        }
 
-      <div class="grupo-campo">
-        <label for="categoriaContenido">Seleccione contenido a valorar</label>
-        <select id="categoriaContenido" name="categoriaContenido" [(ngModel)]="categoriaContenido"
-          (change)="cambiarCategoriaContenido()">
-          <option value="ENTRENAMIENTOS">Entrenamientos</option>
-          <option value="CENTROS_PRIVADOS">Centros privados</option>
-          <option value="LUGARES_PUBLICOS">Lugares públicos</option>
-        </select>
-      </div>
-
-      <div class="grupo-campo">
-        <label for="contenidoSeleccionado">Contenido</label>
-        <select id="contenidoSeleccionado" name="contenidoSeleccionado" [ngModel]="getValorSeleccionadoContenido()"
-          (ngModelChange)="seleccionarContenido($event)">
-          <option value="">Selecciona un contenido</option>
-
-          @for (grupo of getOpcionesActuales(); track grupo.grupo) {
-          <optgroup [label]="grupo.grupo">
-            @for (item of grupo.items; track item.id) {
-            <option [value]="grupo.tipoReal + '|' + item.id">
-              {{ getTextoOpcion(item, grupo.tipoReal) }}
-            </option>
+        <fieldset class="puntuacion">
+          <legend>{{ v.campoPuntuacion }}</legend>
+          <div class="estrellas">
+            @for (n of estrellas; track n) {
+              <input class="sr-only" type="radio" name="puntuacion" [id]="'val-estrella-' + n" [value]="n" [(ngModel)]="puntuacion" />
+              <label [for]="'val-estrella-' + n" class="estrella" [class.activa]="n <= puntuacion">
+                <span aria-hidden="true">★</span>
+                <span class="sr-only">{{ n }} {{ v.deCinco }}, {{ v.puntuaciones[n - 1] }}</span>
+              </label>
             }
-          </optgroup>
-          }
-        </select>
-      </div>
+            <span class="texto-puntuacion" aria-hidden="true">{{ v.puntuaciones[puntuacion - 1] }}</span>
+          </div>
+        </fieldset>
 
-      <div class="grupo-campo">
-        <span id="etiqueta-puntuacion" class="etiqueta-campo">Puntuación</span>
-
-        <div class="selector-estrellas" role="group" aria-labelledby="etiqueta-puntuacion"
-          (mouseleave)="quitarHoverEstrella()">
-          @for (estrella of estrellas; track estrella) {
-          <button type="button" class="estrella" [class.estrella-activa]="estrellaActiva(estrella)"
-            (click)="seleccionarEstrella(estrella)" (mouseenter)="activarHoverEstrella(estrella)"
-            [attr.aria-label]="'Puntuar con ' + estrella + ' estrellas'">
-            ★
-          </button>
+        <div class="campo">
+          <label for="val-comentario">{{ v.campoComentario }}</label>
+          <textarea df-input id="val-comentario" name="comentario" rows="3" maxlength="1000" [(ngModel)]="comentario"
+            [placeholder]="v.comentarioPlaceholder" [error]="errores().includes('comentario')"
+            [attr.aria-invalid]="errores().includes('comentario')"
+            [attr.aria-describedby]="errores().includes('comentario') ? 'val-e-comentario' : null"></textarea>
+          @if (errores().includes('comentario')) {
+            <p class="error" id="val-e-comentario">{{ v.errorComentario }}</p>
           }
         </div>
 
-        <p class="texto-puntuacion">
-          {{ puntuacion }}/5 - {{ getTextoPuntuacion() }}
-        </p>
-      </div>
-
-      <div class="grupo-campo">
-        <label for="comentario">Comentario</label>
-        <textarea id="comentario" name="comentario" rows="5" [(ngModel)]="comentario"
-          placeholder="Escribe aquí tu opinión..."></textarea>
-      </div>
-
-      <div class="acciones-formulario">
-        <button type="submit" class="boton-guardar">
-          Guardar valoración
-        </button>
-      </div>
-
-    </form>
-  </section>
-
-  <section class="bloque-listado">
-    <div class="cabecera-listado">
-      <div>
-        <h2>Mis valoraciones</h2>
-        <p class="texto-secundario">{{ misValoracionesFiltradas.length }} valoración(es)</p>
-      </div>
-
-      <div class="barra-busqueda">
-        <select name="tipoBusquedaMisValoraciones" [(ngModel)]="tipoBusquedaMisValoraciones"
-          (ngModelChange)="alCambiarBusquedaMisValoraciones()">
-          <option value="general">Búsqueda general</option>
-          <option value="tipo">Tipo</option>
-          <option value="contenido">Contenido</option>
-          <option value="comentario">Comentario</option>
-          <option value="fecha">Fecha</option>
-        </select>
-
-        <input type="text" placeholder="Escribe aquí..." [(ngModel)]="busquedaMisValoraciones"
-          (input)="alCambiarBusquedaMisValoraciones()">
-
-        <button type="button" class="boton-limpiar" (click)="limpiarBusquedaMisValoraciones()">
-          Limpiar
-        </button>
-      </div>
-    </div>
-
-    @if (misValoracionesFiltradas.length > 0) {
-    <div class="grid-valoraciones">
-
-      @for (valoracion of misValoracionesFiltradas; track valoracion.id) {
-      <article class="tarjeta-valoracion">
-
-        <h3>{{ valoracion.contenidoNombre || 'Contenido sin nombre' }}</h3>
-
-        <p><strong>Tipo:</strong> {{ mostrarTipoContenido(valoracion.tipoDeValoracion) }}</p>
-        <p><strong>Puntuación:</strong> {{ valoracion.puntuacion }}/5</p>
-        <p><strong>Comentario:</strong> {{ valoracion.comentario || 'Sin comentario' }}</p>
-        <p><strong>Fecha:</strong> {{ valoracion.fecha }}</p>
-
-        <div class="acciones-valoracion">
-          <button class="boton-borrar" (click)="borrarValoracion(valoracion.tipoDeValoracion, valoracion.contenidoId)">
-            Borrar valoración
+        <div class="acciones">
+          <button df-button variant="primary" type="submit" [loading]="guardando()" [disabled]="guardando()">
+            {{ guardando() ? te.guardando : v.guardar }}
+          </button>
+          <button df-button variant="ghost" type="button" [disabled]="guardando()" (click)="cerrarFormulario()">
+            {{ editando ? te.cancelarEdicion : te.cerrarFormulario }}
           </button>
         </div>
+      </form>
+    </app-card>
+  }
 
-      </article>
+  <ng-template #tarjeta let-r let-propia="propia">
+    <article class="valoracion">
+      <div class="valoracion-cabecera">
+        <span class="chips">
+          <span df-badge badgeStyle="outline">{{ textoCategoria(r) }}</span>
+          @if (!propia && esMia(r)) {
+            <span df-badge variant="accent">{{ v.tuya }}</span>
+          }
+        </span>
+        <span class="valor-estrellas">
+          <span aria-hidden="true">{{ '★★★★★'.slice(0, r.puntuacion) }}<span class="apagadas">{{ '★★★★★'.slice(r.puntuacion) }}</span></span>
+          <span class="sr-only">{{ r.puntuacion }} {{ v.deCinco }}</span>
+        </span>
+      </div>
+      <h3>{{ r.contenidoNombre || v.sinNombre }}</h3>
+      @if (r.comentario) {
+        <p class="comentario">{{ r.comentario }}</p>
       }
+      <p class="meta-valoracion">
+        @if (!propia) {
+          {{ v.autor }} <strong>{{ r.username }}</strong> ·
+        }
+        <time [attr.datetime]="r.fecha.replace(' ', 'T')">{{ fecha(r) }}</time>
+      </p>
+      @if (propia) {
+        <div class="acciones">
+          <button df-button variant="outline" size="sm" type="button" [disabled]="guardando()" (click)="editar(r)">{{ te.editar }}</button>
+          <button df-button variant="danger" size="sm" type="button" [loading]="ocupado() === r.id"
+            [disabled]="ocupado() === r.id || enEdicion()?.id === r.id" (click)="borrar(r)">{{ te.borrar }}</button>
+        </div>
+      }
+    </article>
+  </ng-template>
 
-    </div>
-    } @else {
-    <p class="sin-datos">No tienes valoraciones todavía o no coinciden con la búsqueda.</p>
-    }
+  <section class="listado" aria-labelledby="titulo-mias">
+    <h2 id="titulo-mias" class="titulo-seccion" tabindex="-1">{{ v.mias }}</h2>
+    <app-estado-listado [listado]="mias" [vacio]="v.vacioMias" [esqueletos]="[1, 2, 3]">
+      <div class="rejilla" [attr.aria-busy]="mias.recargando()">
+        @for (r of mias.items(); track r.id) {
+          <ng-container *ngTemplateOutlet="tarjeta; context: { $implicit: r, propia: true }" />
+        }
+      </div>
+    </app-estado-listado>
   </section>
 
-  <section class="bloque-listado">
-    <div class="cabecera-listado">
-      <div>
-        <h2>Valoraciones públicas de usuarios</h2>
-        <p class="texto-secundario">{{ valoracionesPublicas.length }} valoración(es)</p>
-      </div>
-
-      <div class="barra-busqueda">
-        <select name="filtroValoracionesPublicas" [(ngModel)]="filtroValoracionesPublicas"
-          (change)="cambiarFiltroValoracionesPublicas()">
-          <option value="TODOS">Todos los tipos</option>
-          <option value="ENTRENAMIENTOS">Entrenamientos</option>
-          <option value="CENTROS_PRIVADOS">Centros privados</option>
-          <option value="LUGARES_PUBLICOS">Lugares públicos</option>
-        </select>
+  <section class="listado" aria-labelledby="titulo-comunidad">
+    <div class="cabecera-seccion">
+      <h2 id="titulo-comunidad" class="titulo-seccion">{{ v.comunidad }}</h2>
+      <div class="segmentos" role="group" [attr.aria-label]="v.filtrarCategoria">
+        <button type="button" class="segmento" [attr.aria-pressed]="filtroComunidad() === null" (click)="filtrarComunidad(null)">{{ v.todas }}</button>
+        @for (c of categorias; track c) {
+          <button type="button" class="segmento" [attr.aria-pressed]="filtroComunidad() === c" (click)="filtrarComunidad(c)">{{ t.categorias[c] }}</button>
+        }
       </div>
     </div>
-
-    @if (valoracionesPublicas.length > 0) {
-    <div class="grid-valoraciones">
-
-      @for (valoracion of valoracionesPublicas; track valoracion.id) {
-      <article class="tarjeta-valoracion">
-        <h3>{{ valoracion.contenidoNombre || 'Contenido' }}</h3>
-
-        <p><strong>Usuario:</strong> {{ valoracion.username || valoracion.usuario || 'Usuario' }}</p>
-        <p><strong>Categoría:</strong> {{ mostrarCategoriaGeneral(valoracion.tipoDeValoracion) }}</p>
-        <p><strong>Puntuación:</strong> {{ valoracion.puntuacion }}/5</p>
-        <p><strong>Comentario:</strong> {{ valoracion.comentario || 'Sin comentario' }}</p>
-        <p><strong>Fecha:</strong> {{ valoracion.fecha }}</p>
-      </article>
-      }
-
-    </div>
-    } @else {
-    <p class="sin-datos">No hay valoraciones públicas para el filtro seleccionado.</p>
-    }
+    <app-estado-listado [listado]="comunidad" [vacio]="v.vacioComunidad" [esqueletos]="[1, 2, 3]">
+      <div class="rejilla" [attr.aria-busy]="comunidad.recargando()">
+        @for (r of comunidad.items(); track r.id) {
+          <ng-container *ngTemplateOutlet="tarjeta; context: { $implicit: r, propia: false }" />
+        }
+      </div>
+    </app-estado-listado>
   </section>
-
 </main>
 
-<app-footer></app-footer>
+<app-footer />

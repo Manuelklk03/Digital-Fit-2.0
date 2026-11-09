@@ -93,7 +93,7 @@ npm ci
 npm start                       # ng serve en http://localhost:4200
 ```
 
-> Pendiente de comprobar (P1): el frontend llama a rutas relativas `/api/...` y no hay `proxy.conf` para `ng serve`, así que en este modo las llamadas probablemente no llegan al backend. Hasta que se añada el proxy (fase 5), usa Docker Compose para probar la aplicación completa.
+> `ng serve` reenvía `/api` al backend en `http://localhost:8080` con `proxy.conf.json` (P1, resuelto). Arranca antes el backend (o `docker compose up postgres backend`). Si el contenedor `frontend` de Compose ocupa el puerto 4200, usa `npx ng serve --port 4300`.
 
 ## 3. Problemas frecuentes
 
@@ -103,7 +103,7 @@ npm start                       # ng serve en http://localhost:4200
 | El backend no conecta con PostgreSQL | Base parada o credenciales distintas | `docker compose up -d postgres`; revisa `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`. Si cambiaste `.env` después de crear el volumen, PostgreSQL conserva el usuario antiguo: `docker compose down -v` (borra los datos) |
 | Tablas o datos base no aparecen | Error en JPA o en `data.sql` (los errores de `data.sql` se ignoran por `continue-on-error=true`) | Revisa la consola del backend y `logs/digitalfit.log` |
 | El frontend no arranca | Faltan dependencias | `npm ci` en `Frontend/digital-fit-frontend` |
-| El frontend no recibe datos | Backend parado, otro puerto, CORS (solo admite `http://localhost:4200`) o falta de proxy en `ng serve` | Arranca el backend en 8080; usa Docker Compose |
+| El frontend no recibe datos | Backend parado u otro puerto (el proxy apunta a 8080) | Arranca el backend en 8080 o usa Docker Compose |
 | Puerto ocupado (5433, 4200, 8080) | Otra aplicación lo usa | Ciérrala o cambia el puerto en `docker-compose.yml` |
 | `docker` no conecta con la API | Docker Desktop no está iniciado | Inicia Docker Desktop y espera a que el motor esté listo |
 

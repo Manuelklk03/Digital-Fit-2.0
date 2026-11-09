@@ -46,9 +46,18 @@ export function getContenido<T = unknown>(http: HttpClient, url: string, filtros
 
 /** Mensaje de un error HTTP: `detail` de ProblemDetail (RFC 7807), texto plano o el mensaje por defecto. */
 export function mensajeError(err: unknown, porDefecto: string): string {
-  const cuerpo = (err as { error?: unknown } | null)?.error;
+  let cuerpo = (err as { error?: unknown } | null)?.error;
   if (typeof cuerpo === 'string' && cuerpo.trim() !== '') {
-    return cuerpo;
+    const texto = cuerpo;
+    // Con responseType 'text', un ProblemDetail llega como JSON sin parsear.
+    try {
+      cuerpo = JSON.parse(texto);
+    } catch {
+      return texto;
+    }
+    if (typeof cuerpo === 'string') {
+      return cuerpo;
+    }
   }
   const detalle = (cuerpo as { detail?: unknown } | null)?.detail;
   return typeof detalle === 'string' && detalle.trim() !== '' ? detalle : porDefecto;

@@ -1,6 +1,7 @@
 import { DiccionarioTraduccion } from '../i18n.types';
 import { entrenamientosEn } from './entrenamientos/en';
 import { lugaresEn } from './lugares/en';
+import { progresoEn } from './progreso/en';
 
 export const diccionarioEn: DiccionarioTraduccion = {
   nav: {
@@ -10,6 +11,7 @@ export const diccionarioEn: DiccionarioTraduccion = {
     misEntrenamientos: 'My workouts',
     misCentros: 'My gyms',
     misLugares: 'My places',
+    progreso: 'Progress',
     crearAdmin: 'Create admin',
   },
   header: {
@@ -102,6 +104,20 @@ export const diccionarioEn: DiccionarioTraduccion = {
     errorRegistro: 'Could not complete registration. Check your details.',
     exitoRegistro: 'Account created successfully. Redirecting to sign in...',
   },
+  admin: {
+    badge: 'Administration',
+    titulo: 'Create administrator',
+    subtitulo: 'Register another account with the ADMIN role. It will be able to manage the workout, centre and place catalogues.',
+    formTitulo: 'New administrator account',
+    crear: 'Create administrator',
+    creando: 'Creating…',
+    exito: 'Administrator created.',
+    error: 'Could not create the administrator.',
+    errorUsuario: 'Enter a username.',
+    emailPlaceholder: 'email@example.com',
+    ayudaContrasena: 'At least 6 characters.',
+  },
   entrenamientos: entrenamientosEn,
   lugares: lugaresEn,
+  progreso: progresoEn,
 };

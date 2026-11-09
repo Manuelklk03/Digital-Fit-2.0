@@ -1,6 +1,7 @@
 import { DiccionarioTraduccion } from '../i18n.types';
 import { entrenamientosCa } from './entrenamientos/ca';
 import { lugaresCa } from './lugares/ca';
+import { progresoCa } from './progreso/ca';
 
 export const diccionarioCa: DiccionarioTraduccion = {
   nav: {
@@ -10,6 +11,7 @@ export const diccionarioCa: DiccionarioTraduccion = {
     misEntrenamientos: 'Els meus entrenaments',
     misCentros: 'Els meus centres',
     misLugares: 'Els meus llocs',
+    progreso: 'Progrés',
     crearAdmin: 'Crear admin',
   },
   header: {
@@ -102,6 +104,20 @@ export const diccionarioCa: DiccionarioTraduccion = {
     errorRegistro: 'No es va poder completar el registre. Comprova les dades.',
     exitoRegistro: 'Compte creat correctament. Redirigint a inici de sessió...',
   },
+  admin: {
+    badge: 'Administració',
+    titulo: 'Crear administrador',
+    subtitulo: 'Dona d’alta un altre compte amb rol ADMIN. Podrà gestionar els catàlegs d’entrenaments, centres i llocs.',
+    formTitulo: "Nou compte d'administrador",
+    crear: 'Crear administrador',
+    creando: 'Creant…',
+    exito: 'Administrador creat.',
+    error: "No s'ha pogut crear l'administrador.",
+    errorUsuario: "Indica un nom d'usuari.",
+    emailPlaceholder: 'correu@exemple.com',
+    ayudaContrasena: 'Mínim 6 caràcters.',
+  },
   entrenamientos: entrenamientosCa,
   lugares: lugaresCa,
+  progreso: progresoCa,
 };
