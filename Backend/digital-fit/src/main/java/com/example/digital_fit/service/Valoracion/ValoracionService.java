@@ -96,13 +96,22 @@ public class ValoracionService {
         return PaginaResponse.de(pagina, this::entityToDto);
     }
 
-    public PaginaResponse<ValoracionDTO> listarMisValoracionesPaginado(String username, Pageable pageable) {
+    public PaginaResponse<ValoracionDTO> listarMisValoracionesPaginado(String username, String q, Pageable pageable) {
         log.info("Listando mis valoraciones con paginación");
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
         Pageable paginacion = PaginacionUtil.normalizar(pageable, Sort.by(Sort.Direction.DESC, CAMPO_FECHA));
-        Page<Valoracion> pagina = valoracionRepository.findByUsuario(usuario, paginacion);
+        Page<Valoracion> pagina;
+        if (q != null && !q.trim().isEmpty()) {
+            pagina = valoracionRepository.buscarPorTexto(usuario, q.trim(), paginacion);
+        } else {
+            pagina = valoracionRepository.findByUsuario(usuario, paginacion);
+        }
         return PaginaResponse.de(pagina, this::entityToDto);
+    }
+
+    public PaginaResponse<ValoracionDTO> listarMisValoracionesPaginado(String username, Pageable pageable) {
+        return listarMisValoracionesPaginado(username, null, pageable);
     }
 
     // Listar valoraciones de un contenido

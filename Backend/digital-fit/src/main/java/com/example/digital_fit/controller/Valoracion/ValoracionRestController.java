@@ -33,9 +33,10 @@ public class ValoracionRestController {
     @GetMapping("/mis-valoraciones")
     public ResponseEntity<PaginaResponse<ValoracionDTO>> verMisValoraciones(
             Authentication authentication,
+            @RequestParam(required = false) String q,
             @PageableDefault(page = 0, size = 20) Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(valoracionService.listarMisValoracionesPaginado(authentication.getName(), pageable));
+                .body(valoracionService.listarMisValoracionesPaginado(authentication.getName(), q, pageable));
     }
 
     @GetMapping("/publicas")
