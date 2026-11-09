@@ -2,6 +2,15 @@
 
 Última actualización: **2026-11-09**.
 
+> **2026-11-09 (Fase 2, Tarea 2.3 — Configuración de entornos dev, staging y prod; Parada G4 BLOQUEADO; rama `feat/configuracion-entornos-dev-staging-prod`):**
+> - **Perfil staging en Spring Boot:** Creado `application-staging.properties` con `spring.jpa.hibernate.ddl-auto=validate`, `show-sql=false`, registro en `logs/digitalfit-staging.log` y `server.error.include-stacktrace=never`. Ampliada suite `PerfilesPropertiesTest` para validar `dev`, `staging` y `prod`.
+> - **Parametrización de variables de entorno y cookies:** Incorporada matriz completa de variables para `dev`, `staging` y `prod` en `.env.example` y parametrizadas `SESSION_COOKIE_SECURE` y `CORS_ALLOWED_ORIGINS` en `docker-compose.yml` sin secretos versionados.
+> - **Configuración de Netlify con proxy inverso (D2, D9):** Creado `netlify.toml` con build de frontend Angular y reglas de redirección `200` reenviando `/api/*` al backend en Render y `/*` a `/index.html` para SPA fallback. Añadida suite `NetlifyConfigTest`.
+> - **Documentación:** Añadida sección 4.1 en `docs/deployment.md` detallando la matriz de entornos, URLs y arquitectura de cookies de primera parte.
+> - **Coordinación (Parada G4):** Parada G4 en estado **BLOQUEADO** en `docs/HANDOFF.md`. Para continuar con la tarea 2.4 (despliegue y pruebas en URLs reales), Manuel debe crear las cuentas de Netlify, Render y Neon y registrar los secretos requeridos (`RENDER_DEPLOY_HOOK`, `NETLIFY_AUTH_TOKEN`, `NETLIFY_SITE_ID`, `NEON_DATABASE_URL`) con `gh secret set`.
+> - **Verificaciones:** 125 tests de backend pasando en verde (todas las suites unitarias, perfiles, Netlify, Compose, integración WebMvc, permisos, migraciones y Flyway).
+
+
 > **2026-11-09 (Fase 4/5, Parada G9 — Resolución de fallos de backend para frontend; rama `fix/backend-g9-fallos`):**
 > - **Ampliación de columnas de texto libre (Flyway V6):** Creada migración no destructiva `V6__ampliar_descripciones_y_comentarios.sql` que amplía a `VARCHAR(1500)` las columnas `descripcion` (entrenamientos base y de usuario, centros privados y lugares públicos base y de usuario) y `valoraciones.comentario`. Actualizadas entidades JPA con `@Column(length = 1500)` y añadida suite `LongitudCamposDtoVsEsquemaTest` y comprobación en `FlywayMigrationScriptsTest`. Claude ya puede subir el límite de los formularios a 1500 caracteres.
 > - **Validación de valoraciones (@Valid):** Añadido `@Valid` en `@RequestBody CrearValoracionDTO` en `ValoracionRestController.crearOActualizar`, activando validaciones de `@Min(1)`, `@Max(5)` y `@Size(max = 1500)` con respuestas estándar 400 ProblemDetail.

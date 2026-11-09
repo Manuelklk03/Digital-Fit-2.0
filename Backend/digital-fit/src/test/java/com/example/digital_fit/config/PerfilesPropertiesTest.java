@@ -42,6 +42,18 @@ class PerfilesPropertiesTest {
     }
 
     @Test
+    @DisplayName("application-staging.properties valida esquema y configura logs para preproduccion")
+    void testApplicationStagingProperties() throws Exception {
+        Properties staging = loadProperties("application-staging.properties");
+        assertEquals("validate", staging.getProperty("spring.jpa.hibernate.ddl-auto"));
+        assertEquals("false", staging.getProperty("spring.jpa.show-sql"));
+        assertEquals("false", staging.getProperty("spring.jpa.properties.hibernate.format_sql"));
+        assertEquals("INFO", staging.getProperty("logging.level.com.example.digital_fit"));
+        assertEquals("never", staging.getProperty("server.error.include-stacktrace"));
+        assertEquals("logs/digitalfit-staging.log", staging.getProperty("logging.file.name"));
+    }
+
+    @Test
     @DisplayName("application-prod.properties desactiva show-sql y configura logs seguros para produccion")
     void testApplicationProdProperties() throws Exception {
         Properties prod = loadProperties("application-prod.properties");

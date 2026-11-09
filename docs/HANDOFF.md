@@ -22,7 +22,7 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 | G1 | Resuelta | Antigravity → Claude | Tarea 4.8 completada (PR #62) y adaptada por Claude en frontend (PR #64) |
 | G2 | Resuelta | Claude → Antigravity | Pantallas y servicios de soporte retirados en frontend (PR #65) y backend purgado con Flyway V4 (PR #66) |
 | G3 | Resuelta | Claude → Antigravity | Confirmado: cero referencias residuales a soporte o tickets en frontend y backend |
-| G4 | Pendiente | Manuel → Antigravity | Cuentas de Netlify, Render y Neon y secretos con `gh secret set`. Sin ellos no hay 2.3 ni 2.4 |
+| G4 | BLOQUEADO | Manuel → Antigravity | Tarea 2.3 completada. Se necesita que Manuel cree las cuentas de Netlify, Render y Neon y guarde los secretos con `gh secret set` para abordar 2.4 |
 | G5 | LIBRE | Claude → Antigravity | Fase 5 cerrada: Antigravity puede hacer 6.2 (E2E) y 6.1 (CI) |
 | G6 | LIBRE | Claude → Antigravity | Claude no tiene ramas abiertas tras fusionar `feat/recorrido-progreso`: Antigravity puede hacer 6.5 (Prettier) |
 | G7 | Pendiente | Manuel → Antigravity | 7.3 (tag `v2.0.0`) solo con orden expresa de Manuel |
@@ -44,6 +44,23 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 | 2026-11-09 | G5, G6 y G9 | LIBRE | Claude cierra la fase 5 (recorridos 3, 4 y 5). Antigravity puede empezar E2E, CI y Prettier, y corregir los fallos de backend de G9 |
 | 2026-11-09 | G8 | Resuelta | Antigravity resolvió los 3 fallos de backend (V5 hashes demo, 404 NoResourceFoundException, y parámetro q en historial). Claude ya puede añadir la búsqueda del historial en frontend |
 | 2026-11-09 | G9 | Resuelta | Antigravity resolvió los fallos de G9 (V6 amplía columnas a VARCHAR(1500), @Valid en valoraciones, contraseñas mínimo 6 caracteres en admin y registro, y parámetro opcional q en mis-valoraciones). Claude ya puede subir el límite de los formularios a 1500 e integrar la búsqueda textual en mis valoraciones cuando lo requiera |
+| 2026-11-09 | G4 | BLOQUEADO | Tarea 2.3 completada. Antigravity queda a la espera de que Manuel cree las 3 cuentas gratuitas (Netlify, Render, Neon) y configure los 4 secretos en GitHub Actions (ver detalle abajo) para abordar la tarea 2.4 |
+
+## Requisitos para desbloquear la Parada G4 (Manuel)
+
+Para que Antigravity pueda proceder con la tarea **2.4 (Despliegue y pruebas en URLs reales)**, se requiere que Manuel cree las cuentas gratuitas y registre los siguientes secretos en el repositorio con `gh secret set`:
+
+### 1. Cuentas requeridas (planes gratuitos, sin tarjeta requerida según documentación):
+- **Netlify** (Free tier): para el alojamiento del frontend estático Angular y proxy inverso `/api/*` configurado en `netlify.toml`.
+- **Render** (Free tier): para el Web Service en contenedor Docker de Spring Boot (`manuelklk03/digital-fit-backend:latest`).
+- **Neon** (Free tier): base de datos PostgreSQL Serverless 17 con ramas `staging` y `main`.
+
+### 2. Secretos de GitHub Actions a registrar (`gh secret set <NOMBRE>`):
+- `RENDER_DEPLOY_HOOK`: URL del Deploy Hook del servicio web de Render (backend) para disparar el despliegue automático tras publicar la imagen en Docker Hub.
+- `NETLIFY_AUTH_TOKEN`: Personal Access Token de Netlify para despliegues automáticos desde CI.
+- `NETLIFY_SITE_ID`: ID del sitio creado en Netlify para vincular el repositorio.
+- `NEON_DATABASE_URL`: Cadena de conexión JDBC PostgreSQL proporcionada por Neon para la base de datos de producción/staging (o `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`).
+
 
 ## Fallos de backend para Antigravity (G9, 2026-11-09) — Resueltos
 

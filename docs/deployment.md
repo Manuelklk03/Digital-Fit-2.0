@@ -147,6 +147,28 @@ Puntos que condicionan la elección:
 - **Sesión por cookie**: el proxy `/api/*` propuesto permite que el navegador llame al origen del frontend. Hay que comprobar que transmite `Set-Cookie` y que la cookie de primera parte funciona; CSRF debe activarse antes de publicar (decisión D2). Si se prescinde del proxy y el navegador llama a otro dominio, habrá que rediseñar la configuración de cookies y CORS.
 - **Suspensión**: un backend que se duerme tarda en responder a la primera petición; la interfaz debe mostrar un estado de carga honesto.
 
+### 4.1 Matriz de entornos dev, staging y prod (Tarea 2.3)
+
+La configuración de la aplicación está parametrizada para operar en tres entornos segregados sin compartir datos ni secretos:
+
+| Variable / Parámetro | Desarrollo local (`dev`) | Staging (`staging`) | Producción (`prod`) |
+|---|---|---|---|
+| **Frontend** | `http://localhost:4200` (Angular CLI / nginx) | `https://staging--digitalfit.netlify.app` (Netlify) | `https://digitalfit.netlify.app` (Netlify / dominio propio) |
+| **Backend API** | `http://localhost:8080` (Spring Boot local / Compose) | `https://digital-fit-backend-staging.onrender.com` (Render Web Service) | `https://digital-fit-backend.onrender.com` (Render Web Service) |
+| **Base de datos** | PostgreSQL 17 local (`localhost:5433/digital_fit`) | Neon Serverless PostgreSQL (rama `staging`) | Neon Serverless PostgreSQL (rama `main`) |
+| `SPRING_PROFILES_ACTIVE` | `dev` | `staging` | `prod` |
+| `spring.jpa.hibernate.ddl-auto` | `update` | `validate` | `validate` |
+| `show-sql` / logs SQL | `true` (SQL formateado en consola) | `false` | `false` |
+| Nivel de logs | `DEBUG` (en consola y `logs/digitalfit.log`) | `INFO` (`logs/digitalfit-staging.log`) | `INFO` (`logs/digitalfit.log`) |
+| `server.error.include-stacktrace` | `always` | `never` | `never` |
+| `SESSION_COOKIE_SECURE` | `false` (permite cookies HTTP sobre `localhost`) | `true` (requiere HTTPS estricto) | `true` (requiere HTTPS estricto) |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:4200` | `https://staging--digitalfit.netlify.app` | `https://digitalfit.netlify.app` |
+| **Proxy inverso `/api/*`** | `proxy.conf.json` / nginx Docker Compose | `netlify.toml` (`/api/*` → Render staging) | `netlify.toml` (`/api/*` → Render prod) |
+
+**Arquitectura de sesión y cookies (D2, D9):**
+El frontend en Netlify reenvía las llamadas `/api/*` mediante las reglas de redirección de `netlify.toml` hacia el servicio web de Render con código `200` (proxy inverso transparente). Esto permite que el navegador se comunique únicamente con el origen del frontend, recibiendo la cookie de sesión `JSESSIONID` (`HttpOnly`, `SameSite=Lax`, `Secure`) como cookie de primera parte (*first-party cookie*), evitando las restricciones modernas de navegadores contra cookies de terceros (*third-party cookies*).
+
+
 ## 5. Verificación de un despliegue
 
 1. Backend: un endpoint de salud responde (por ejemplo `/actuator/health`, si se expone) y los logs no muestran errores de conexión.
