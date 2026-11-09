@@ -8,7 +8,6 @@ export const diccionarioFr: DiccionarioTraduccion = {
     misEntrenamientos: 'Mes entraînements',
     misCentros: 'Mes centres',
     misLugares: 'Mes lieux',
-    panelSoporte: 'Panneau support',
     crearAdmin: 'Créer admin',
   },
   header: {

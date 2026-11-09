@@ -22,7 +22,6 @@ export interface DiccionarioTraduccion {
     misEntrenamientos: string;
     misCentros: string;
     misLugares: string;
-    panelSoporte: string;
     crearAdmin: string;
   };
   header: {
