@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { PaginaResponse, PARAMS_PAGINA_COMPLETA, soloContenido } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,10 @@ export class PublicosService {
   private apiUrl = '/api/lugares-publicos';
 
   getLugaresPublicos(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl, {
+    return this.http.get<PaginaResponse<any>>(this.apiUrl, {
+      params: PARAMS_PAGINA_COMPLETA,
       withCredentials: true
-    });
+    }).pipe(soloContenido());
   }
 
   getLugaresPublicosFiltrados(
@@ -21,7 +23,7 @@ export class PublicosService {
     direccion?: string,
     tipo?: string
   ): Observable<any[]> {
-    let params = new HttpParams();
+    let params = PARAMS_PAGINA_COMPLETA;
 
     if (nombre) {
       params = params.set('nombre', nombre);
@@ -35,10 +37,10 @@ export class PublicosService {
       params = params.set('tipo', tipo.toUpperCase().replaceAll(' ', '_'));
     }
 
-    return this.http.get<any[]>(this.apiUrl, {
+    return this.http.get<PaginaResponse<any>>(this.apiUrl, {
       params,
       withCredentials: true
-    });
+    }).pipe(soloContenido());
   }
 
   getLugarPublicoById(id: number): Observable<any> {
