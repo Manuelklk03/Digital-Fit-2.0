@@ -11,12 +11,14 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.example.digital_fit.exception.EmailYaExisteException;
 import com.example.digital_fit.exception.ErrorArgumentoException;
@@ -42,6 +44,19 @@ class GlobalExceptionHandlerTest {
         assertEquals(HttpStatus.NOT_FOUND.value(), problem.getStatus());
         assertEquals("Recurso no encontrado", problem.getTitle());
         assertEquals("Centro no encontrado", problem.getDetail());
+        assertNotNull(problem.getProperties().get("timestamp"));
+    }
+
+    @Test
+    void testHandleNoResourceFound() {
+        NoResourceFoundException ex = new NoResourceFoundException(HttpMethod.GET, "api/ruta-inexistente", "No resource found");
+        ProblemDetail problem = handler.handleNoResourceFound(ex);
+
+        assertNotNull(problem);
+        assertEquals(HttpStatus.NOT_FOUND.value(), problem.getStatus());
+        assertEquals("Recurso no encontrado", problem.getTitle());
+        assertNotNull(problem.getDetail());
+        assertTrue(problem.getDetail().contains("Recurso no encontrado"));
         assertNotNull(problem.getProperties().get("timestamp"));
     }
 

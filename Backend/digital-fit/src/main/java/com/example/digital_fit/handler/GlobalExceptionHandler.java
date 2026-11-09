@@ -13,6 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.example.digital_fit.exception.EmailYaExisteException;
 import com.example.digital_fit.exception.ErrorArgumentoException;
@@ -33,6 +34,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RecursoNoEncontradoException.class)
     public ProblemDetail handleRecursoNoEncontrado(RecursoNoEncontradoException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+        problem.setTitle("Recurso no encontrado");
+        problem.setType(URI.create("urn:problem-type:recurso-no-encontrado"));
+        problem.setProperty("timestamp", Instant.now());
+        return problem;
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ProblemDetail handleNoResourceFound(NoResourceFoundException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "Recurso no encontrado: " + ex.getResourcePath());
         problem.setTitle("Recurso no encontrado");
         problem.setType(URI.create("urn:problem-type:recurso-no-encontrado"));
         problem.setProperty("timestamp", Instant.now());

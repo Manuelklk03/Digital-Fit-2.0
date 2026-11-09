@@ -26,7 +26,7 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 | G5 | BLOQUEADO | Claude → Antigravity | 6.2 (E2E) y 6.1 (CI) esperan a que Claude cierre la fase 5 completa del frontend |
 | G6 | Pendiente | Claude → Antigravity | 6.5 (Prettier) espera a que Claude no tenga ramas abiertas |
 | G7 | Pendiente | Manuel → Antigravity | 7.3 (tag `v2.0.0`) solo con orden expresa de Manuel |
-| G8 | LIBRE | Claude → Antigravity | 3 fallos de backend detectados al probar el recorrido de entrenamientos (detalle abajo). No bloquean a Claude |
+| G8 | Resuelta | Antigravity | Resueltos los 3 fallos de backend (migración Flyway V5 para usuarios demo, 404 NoResourceFoundException y parámetro q en historial) |
 
 ## Registro de avisos
 
@@ -40,14 +40,13 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 | 2026-11-09 | G2 y G3 | Resuelta | Backend de tickets y soporte eliminado por completo con migración Flyway V4 (PR #66) |
 | 2026-11-09 | G5 | BLOQUEADO | Antigravity espera a que Claude complete la renovación de las pantallas del frontend (Fase 5) para iniciar las suites E2E (6.2) y CI (6.1) |
 | 2026-11-09 | G8 | LIBRE | Recorrido 2 (entrenamientos) cerrado en `feat/recorrido-entrenamientos`. Al probarlo contra Docker aparecen 3 fallos de backend para Antigravity (ver «Fallos de backend para Antigravity») |
+| 2026-11-09 | G8 | Resuelta | Antigravity resolvió los 3 fallos de backend (V5 hashes demo, 404 NoResourceFoundException, y parámetro q en historial). Claude ya puede añadir la búsqueda del historial en frontend |
 
-## Fallos de backend para Antigravity (G8, 2026-11-09)
+## Fallos de backend para Antigravity (G8, 2026-11-09) — Resueltos
 
-Detectados por Claude al probar el recorrido de entrenamientos contra `docker compose up` (volumen nuevo, Flyway en V4).
-
-1. **Contraseñas demo rotas.** Los hashes bcrypt de `V3__usuarios_demo.sql` no corresponden a `Admin123!` ni a `Usuario123!` (comprobado con `bcrypt.checkpw`: ambos `False`; login → 401). El panel demo de `/login` no funciona. V3 ya está aplicada: hace falta una migración nueva (V5) que actualice los hashes, y un test que verifique hash ↔ contraseña documentada.
-2. **Recurso inexistente → 500.** `GlobalExceptionHandler` convierte `NoResourceFoundException` (p. ej. una ruta `/api/...` que no existe) en 500 «Error no controlado». Debería ser 404 ProblemDetail.
-3. **Búsqueda en el historial.** `GET /api/entrenamientos/mi-historial` solo filtra por `duracionMinutos` y `fecha`. La pantalla v1 buscaba por texto (entrenamiento, ubicación, notas) sobre la lista completa; con paginación eso ya no es posible en el cliente. Propuesta: parámetro opcional `q` (texto, sin distinguir mayúsculas) sobre nombre del entrenamiento, ubicación y notas, paginado y ordenado por fecha descendente. Claude añadirá el campo de búsqueda cuando exista.
+1. **Contraseñas demo rotas (Resuelto):** Creada la migración Flyway `V5__actualizar_hashes_demo.sql` con los hashes bcrypt válidos de `Admin123!` y `Usuario123!`. Añadida la suite `UsuariosDemoPasswordTest` que valida con `PasswordEncoder` la correspondencia con las credenciales documentadas en `docs/deployment.md`. Ampliada `FlywayMigrationScriptsTest` para validar V5.
+2. **Recurso inexistente → 500 (Resuelto):** Añadido manejador para `NoResourceFoundException` en `GlobalExceptionHandler`, devolviendo `404 ProblemDetail` RFC 7807 uniforme. Verificado en `GlobalExceptionHandlerTest`.
+3. **Búsqueda en el historial (Resuelto):** Incorporado el parámetro opcional `q` en `GET /api/entrenamientos/mi-historial`, con búsqueda insensible a mayúsculas sobre notas, nombre de rutinas y ubicaciones deportivas, respetando el orden por fecha descendente, paginación y aislamiento por usuario. Cubierto con tests de servicio y WebMvc. Claude ya puede añadir el campo de búsqueda en el frontend cuando lo requiera.
 
 Ya corregido en el frontend (no requiere backend): los guards `authGuard` y `publicGuard` llamaban a `/api/auth/yo`, retirado en 4.1; ahora usan `/api/auth/me`.
 
@@ -97,7 +96,7 @@ Todos los endpoints paginados aceptan los siguientes parámetros opcionales:
 | `/api/entrenamientos` | GET | `nombre,asc` | `nombre`, `nivel`, `categoria`, `duracionEnMinutos` | Entrenamientos base del catálogo general |
 | `/api/mis-entrenamientos` | GET | `id,desc` | `nombre`, `nivel`, `categoria`, `duracionEnMinutos` | Entrenamientos propios del usuario autenticado |
 | `/api/entrenamientos-comunidad` | GET | `fechaPublicacion,desc` | `nombre`, `nivel`, `categoria`, `duracionEnMinutos` | Entrenamientos compartidos por la comunidad (`@EntityGraph` autor) |
-| `/api/entrenamientos/mi-historial` | GET | `fechaHora,desc` | `duracionMinutos`, `fecha` (ISO datetime) | Historial de entrenamientos completados (`@EntityGraph`) |
+| `/api/entrenamientos/mi-historial` | GET | `fechaHora,desc` | `q` (texto sobre rutina, ubicación y notas), `duracionMinutos`, `fecha` (ISO datetime) | Historial de entrenamientos completados (`@EntityGraph`) |
 | `/api/centros-privados` | GET | `nombre,asc` | `nombre`, `direccion`, `precioMensual` | Centros deportivos base del catálogo |
 | `/api/mis-centros-privados` | GET | `id,desc` | `nombre`, `direccion`, `precioMensual` | Centros deportivos propios del usuario |
 | `/api/lugares-publicos` | GET | `nombre,asc` | `nombre`, `direccion`, `tipo` | Espacios públicos de entrenamiento (parques, calistenia) |

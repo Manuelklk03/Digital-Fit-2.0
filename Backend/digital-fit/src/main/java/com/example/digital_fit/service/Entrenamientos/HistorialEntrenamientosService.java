@@ -68,6 +68,7 @@ public class HistorialEntrenamientosService {
 
     public PaginaResponse<HistorialEntrenamientosDTO> listarOFiltrarHistorialPaginado(
             String username,
+            String q,
             Integer duracionEnMinutos,
             LocalDateTime fecha,
             Pageable pageable) {
@@ -80,7 +81,9 @@ public class HistorialEntrenamientosService {
         Pageable paginacion = PaginacionUtil.normalizar(pageable, Sort.by(Sort.Direction.DESC, "fechaHora"));
         Page<HistorialEntrenamientos> pagina;
 
-        if (duracionEnMinutos != null) {
+        if (q != null && !q.trim().isEmpty()) {
+            pagina = historialEntrenamientosRepository.buscarPorTexto(usuario, q.trim(), paginacion);
+        } else if (duracionEnMinutos != null) {
             pagina = historialEntrenamientosRepository
                     .findByUsuarioAndDuracionMinutosLessThanEqual(usuario, duracionEnMinutos, paginacion);
         } else if (fecha != null) {
@@ -91,6 +94,14 @@ public class HistorialEntrenamientosService {
         }
 
         return PaginaResponse.de(pagina, this::entityToDto);
+    }
+
+    public PaginaResponse<HistorialEntrenamientosDTO> listarOFiltrarHistorialPaginado(
+            String username,
+            Integer duracionEnMinutos,
+            LocalDateTime fecha,
+            Pageable pageable) {
+        return listarOFiltrarHistorialPaginado(username, null, duracionEnMinutos, fecha, pageable);
     }
 
     // Listar filtrado

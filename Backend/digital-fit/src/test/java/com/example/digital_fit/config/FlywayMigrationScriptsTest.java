@@ -60,4 +60,14 @@ class FlywayMigrationScriptsTest {
         assertTrue(sql.contains("DROP TABLE IF EXISTS mensajes_soporte"), "Debe eliminar mensajes_soporte");
         assertTrue(sql.contains("DROP TABLE IF EXISTS soporte"), "Debe eliminar soporte");
     }
+
+    @Test
+    @DisplayName("V5__actualizar_hashes_demo.sql actualiza contraseñas de admin1 y usuario1")
+    void testV5ActualizarHashesDemo() throws Exception {
+        String sql = readMigrationScript("V5__actualizar_hashes_demo.sql");
+        assertTrue(sql.contains("UPDATE usuarios"), "Debe actualizar usuarios");
+        assertTrue(sql.contains("admin1"), "Debe actualizar admin1");
+        assertTrue(sql.contains("usuario1"), "Debe actualizar usuario1");
+        assertTrue(sql.contains("$2a$10$"), "Debe contener hashes bcrypt validos");
+    }
 }

@@ -2,6 +2,13 @@
 
 Última actualización: **2026-11-09**.
 
+> **2026-11-09 (Fase 4/5, Parada G8 — Resolución de fallos de backend para el frontend; rama `fix/backend-g8-fallos`):**
+> - **Contraseñas demo corregidas (Flyway V5):** Creada la migración `V5__actualizar_hashes_demo.sql` actualizando los hashes bcrypt de `admin1` (`Admin123!`) y `usuario1` (`Usuario123!`). Añadida la suite unitaria `UsuariosDemoPasswordTest` validando con `PasswordEncoder` la coincidencia exacta con `docs/deployment.md` y ampliada `FlywayMigrationScriptsTest` para validar V5.
+> - **Manejo de rutas no mapeadas (404 ProblemDetail):** Incorporado manejador para `NoResourceFoundException` en `GlobalExceptionHandler`, evitando que las rutas inexistente caigan en error interno 500 no controlado. Añadido test unitario en `GlobalExceptionHandlerTest`.
+> - **Búsqueda por texto en historial (`q`):** Añadido parámetro opcional `q` en `GET /api/entrenamientos/mi-historial`, con consulta JPQL `buscarPorTexto` insensible a mayúsculas sobre notas, rutinas y centros/lugares públicos, preservando la paginación `PaginaResponse<HistorialEntrenamientosDTO>`, el orden por fecha descendente y el aislamiento de recursos por usuario. Cubierto con tests de servicio y WebMvc.
+> - **Parada G8:** Marcada como **Resuelta** en `docs/HANDOFF.md`. Claude ya puede incorporar la búsqueda del historial en el frontend.
+> - **Verificaciones:** 113 tests de backend pasando en verde (todas las suites unitarias, de integración, permisos, seguridad, migración y properties superadas). Quality Gate de SonarCloud conforme.
+
 > **2026-11-09 (Fase 5, Recorrido 2 — Entrenamientos; rama `feat/recorrido-entrenamientos`):**
 > - **Pantallas:** catálogo base, mis entrenamientos, comunidad, historial y sus 4 detalles reescritos con Neutral Sport / Industrial, OnPush + signals, componentes `ui/`, i18n en 4 idiomas y sin `any` (modelos en `models/entrenamiento.ts`). Paginación real (12 por página) con filtro de un solo campo, como el backend; estados de carga, vacío, error y recarga; errores `ProblemDetail`; confirmación al borrar; foco gestionado al abrir/cerrar formularios. Comunidad pasa a una lista paginada única con las publicaciones propias marcadas «Tuyo».
 > - **Corregido:** `authGuard`/`publicGuard` usaban `/api/auth/yo` (retirado en 4.1) y redirigían siempre a `/login`; ahora `/api/auth/me`. Contraste AA en chips sutiles `primary`/`danger`.
@@ -183,9 +190,8 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **Frontend (Claude):** Fase 5, Recorrido 3: Lugares (centros privados, lugares públicos y mapa).
-1. **Backend (Antigravity, G8):** corregir hashes demo (migración V5), 404 para recursos inexistentes y parámetro `q` en el historial.
-2. **Backend y DevOps (Antigravity):** En espera por parada G5 hasta que Claude finalice las pantallas de la Fase 5, para implementar las pruebas E2E con Playwright (6.2) y CI (6.1).
+1. **Frontend (Claude):** Fase 5, Recorrido 3: Lugares (centros privados, lugares públicos y mapa), pudiendo además integrar la búsqueda con el parámetro `q` en el historial ya habilitado.
+2. **Backend y DevOps (Antigravity):** Parada G8 completada (PR abierta). En espera por parada G5 hasta que Claude finalice las pantallas de la Fase 5, para implementar las pruebas E2E con Playwright (6.2) y CI (6.1).
 3. **Despliegue (Fases 2.3/2.4 y 7.1):** Pendiente de que Manuel provisione las cuentas/secretos (parada G4) antes de la release final `v2.0.0`.
 
 ## Cómo actualizar este archivo

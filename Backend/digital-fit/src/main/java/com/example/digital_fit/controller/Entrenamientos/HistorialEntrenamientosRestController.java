@@ -35,6 +35,7 @@ public class HistorialEntrenamientosRestController {
     @GetMapping
     public ResponseEntity<PaginaResponse<HistorialEntrenamientosDTO>> listarHistorialEntrenamientos(
             Authentication authentication,
+            @RequestParam(required = false) String q,
             @RequestParam(required = false) Integer duracionMinutos,
             @RequestParam(required = false) LocalDateTime fecha,
             @PageableDefault(page = 0, size = 20) Pageable pageable) {
@@ -42,6 +43,7 @@ public class HistorialEntrenamientosRestController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(historialEntrenamientosService.listarOFiltrarHistorialPaginado(
                         authentication.getName(),
+                        q,
                         duracionMinutos,
                         fecha,
                         pageable));

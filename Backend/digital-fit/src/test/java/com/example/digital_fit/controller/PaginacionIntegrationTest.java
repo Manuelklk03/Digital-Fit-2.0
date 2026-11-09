@@ -261,13 +261,33 @@ class PaginacionIntegrationTest {
         PaginaResponse<HistorialEntrenamientosDTO> pagina = new PaginaResponse<>(
                 List.of(dto), 0, 20, 1, 1);
 
-        when(historialEntrenamientosService.listarOFiltrarHistorialPaginado(eq("usuario1"), any(), any(), any(Pageable.class)))
+        when(historialEntrenamientosService.listarOFiltrarHistorialPaginado(eq("usuario1"), any(), any(), any(), any(Pageable.class)))
                 .thenReturn(pagina);
 
         mockMvc.perform(get("/api/entrenamientos/mi-historial")
                         .with(user("usuario1").roles("USER")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").value(30))
+                .andExpect(jsonPath("$.totalElements").value(1));
+    }
+
+    @Test
+    @DisplayName("GET /api/entrenamientos/mi-historial?q=fuerza busca por texto y devuelve PaginaResponse")
+    void testListarMiHistorialConParametroQPaginado() throws Exception {
+        HistorialEntrenamientosDTO dto = new HistorialEntrenamientosDTO();
+        dto.setId(31L);
+
+        PaginaResponse<HistorialEntrenamientosDTO> pagina = new PaginaResponse<>(
+                List.of(dto), 0, 20, 1, 1);
+
+        when(historialEntrenamientosService.listarOFiltrarHistorialPaginado(eq("usuario1"), eq("fuerza"), any(), any(), any(Pageable.class)))
+                .thenReturn(pagina);
+
+        mockMvc.perform(get("/api/entrenamientos/mi-historial")
+                        .param("q", "fuerza")
+                        .with(user("usuario1").roles("USER")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id").value(31))
                 .andExpect(jsonPath("$.totalElements").value(1));
     }
 
