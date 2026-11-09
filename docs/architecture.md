@@ -41,7 +41,7 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 | `config` | `SecurityConfig` (Spring Security), `CorsConfig` |
 | `controller` | 17 controladores REST; los de administración en subcarpetas `Admin` |
 | `dto` | DTOs de entrada (`Crear*`) y salida (`*DTO`) |
-| `model` | Entidades JPA y enums (`Rol`, `NivelEntrenamiento`, `EstadoSoporte`…) |
+| `model` | Entidades JPA y enums (`Rol`, `NivelEntrenamiento`…) |
 | `repository` | Repositorios Spring Data JPA |
 | `service` | Lógica de negocio y comprobación de propiedad |
 | `exception`, `handler` | Excepciones propias y `GlobalExceptionHandler` |
@@ -59,10 +59,9 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 | Lugares públicos | `/api/lugares-publicos`, `/api/mis-lugares-publicos` | admin en `/api/admin/lugares-publicos-base` |
 | Valoraciones | `/api/valoraciones` | |
 | Estadísticas | `/api/estadisticas` | |
-| Soporte | `/api/soporte`, `/api/admin/soporte` | tickets con mensajes |
 | Admin | `/api/admin` | crear administradores |
 
-**Modelo de datos.** Patrón *base / de usuario*: un catálogo común (`EntrenamientoBase`, `CentroPrivadoBase`, `LugarPublicoBase`) y copias o registros propios del usuario (`EntrenamientoUsuario`, `CentroPrivadoUsuario`, `LugarPublicoUsuario`, `HistorialEntrenamientos`), todos con `@ManyToOne` hacia `Usuario`. `Soporte` tiene `@OneToMany` hacia `MensajeSoporte` con borrado en cascada.
+**Modelo de datos.** Patrón *base / de usuario*: un catálogo común (`EntrenamientoBase`, `CentroPrivadoBase`, `LugarPublicoBase`) y copias o registros propios del usuario (`EntrenamientoUsuario`, `CentroPrivadoUsuario`, `LugarPublicoUsuario`, `HistorialEntrenamientos`), todos con `@ManyToOne` hacia `Usuario`. Se eliminó el módulo de soporte y tickets (D13).
 
 **Persistencia.** Hibernate crea y actualiza el esquema (`ddl-auto=update`); `data.sql` inserta el catálogo y dos usuarios de ejemplo (`admin1`, `usuario1`) con `INSERT IGNORE` en cada arranque. No hay migraciones versionadas. Las contraseñas de esos usuarios no figuran en el repositorio (solo sus hashes BCrypt).
 
@@ -141,6 +140,6 @@ Propuesta; cada punto se confirma en su fase.
 | D10 | Búsqueda de lugares con datos de OpenStreetMap (Overpass) a través del backend, y mapa Leaflet Dark Matter | Gratis y sin tarjeta; incluye zonas de calistenia; Google Places exige facturación y prohíbe sus datos en mapas que no sean de Google | Implementado en 3.7 con ExploracionOsmService (fusión con BD local, rate limit de 1s y caché geográfica) y GeocodificacionService (proxy Nominatim sin llamadas cliente) | Aceptada e implementada (3.7, 2026-11-05) |
 | D11 | Interfaz multilingüe: español (por defecto), valenciano, inglés y francés | Portfolio, público de Valencia y proyección internacional | Servicio reactivo I18nService en Angular con Signals, diccionarios tipados desacoplados en src/app/i18n, persistencia en localStorage y selector accesible en cabecera | Aceptada y aplicada (2026-11-06; tarea 3.8) |
 | D12 | Modelo de entrenamiento interactivo (series, repeticiones, peso, cronómetro) y gamificación (metas, retos, amigos) | Evolución de CRUD estático a asistente deportivo real | Cambian las entidades de entrenamiento e historial, y se añade lógica de retos y marcas personales | Aceptada (2026-11-03) |
-| D13 | Retirar módulo de tickets de soporte y consolidar 27 rutas en 5 vistas | Reducir deuda técnica, eliminar duplicación de pantallas espejo y enfocar la app a producto fitness real | Se eliminan rutas y controladores de soporte; la app se centra en Dashboard, Entrenar, Explorar, Progreso y Perfil | Aceptada (2026-11-03) |
+| D13 | Retirar módulo de tickets de soporte y consolidar 27 rutas en 5 vistas | Reducir deuda técnica, eliminar duplicación de pantallas espejo y enfocar la app a producto fitness real | Se eliminan rutas y controladores de soporte; la app se centra en Dashboard, Entrenar, Explorar, Progreso y Perfil | Aceptada y completada (2026-11-09) |
 | D14 | Tokens de diseño desacoplados («Neutral Sport») | Permitir avanzar en lógica y componentes sin bloquear por la decisión final de la paleta/tema | Variables CSS semánticas en :root que permiten cambiar el tema visual modificando pocas líneas | Aceptada (2026-11-03) |
 | D15 | Portada `/inicio` con animación al hacer scroll (GSAP ScrollTrigger y Lenis, skill `cinematic-scroll-storytelling`); sin Three.js ni vídeo por scroll | La portada explica el producto por secciones y es la única página larga; el resto de pantallas son herramientas de uso diario y el mapa será MapLibre (D10) | Condiciones: (1) después de cerrar 3.3 y 3.4; (2) solo en `/inicio`, con carga diferida, para que el resto de pantallas no paguen el peso; (3) alternativa estática con `prefers-reduced-motion`; (4) contenido en HTML real, no en canvas, para que la prerenderización de 3.9 lo indexe; (5) medir el peso real de las librerías al instalarlas contra el presupuesto de 500 kB (aviso) y 1 MB (error) del bundle inicial | Aplicada (2026-11-06; tarea 3.5) |

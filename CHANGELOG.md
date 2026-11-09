@@ -57,6 +57,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Eliminado
 
+- Backend completo de tickets de soporte: eliminados controladores (`SoporteRestController`, `SoporteAdminRestController`), servicio `SoporteService`, entidades `Soporte` y `MensajeSoporte`, enum `EstadoSoporte`, repositorios y DTOs asociados. Incorporada migración Flyway `V4__eliminar_soporte.sql` para eliminar las tablas `mensajes_soporte` y `soporte` de la base de datos (decisión D13).
 - Dependencias no utilizadas `spring-boot-starter-thymeleaf` y `spring-boot-starter-thymeleaf-test` en `Backend/digital-fit/pom.xml`, preservando `spring-boot-starter-actuator` para las sondas de salud `/actuator/health` en Docker Compose (tarea 4.9).
 - Tests del frontend: 51/51 en verde (los specs usaban nombres de clase inexistentes y no daban router ni `HttpClient`).
 - Roadmap: actualización de Spring Boot y Angular (1.10, 1.11) y rediseño con mapa tipo Google Maps, i18n y SEO (3.6–3.9).

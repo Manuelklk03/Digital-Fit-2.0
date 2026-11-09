@@ -86,6 +86,7 @@ Dependencias: 2.2 (autenticación y base de datos decididas). Puede solaparse co
 | 4.7 [P] | Logs y SQL de depuración solo en `dev` (P10); eliminar `/api/auth/yo` si nada lo usa (P13) | **Hecha (2026-11-06)** |
 | 4.8 [+] | Paginación y ordenación en listados (P6); resolución N+1 con EntityGraph y PaginaResponse | **Hecha (2026-11-09)** |
 | 4.9 [+] | Retirar dependencias sin uso (Thymeleaf en `pom.xml`; Actuator preservado para `/actuator/health`) | **Hecha (2026-11-08)** |
+| 4.10 [+] | Retirada completa del backend de soporte y tickets (D13); migración Flyway V4 | **Hecha (2026-11-09)** |
 
 Aceptación: tests de backend en verde (con PostgreSQL o Testcontainers), permisos cubiertos, sin secretos en el repositorio.
 
@@ -93,7 +94,7 @@ Aceptación: tests de backend en verde (con PostgreSQL o Testcontainers), permis
 
 Dependencias: 3.4 y los endpoints de la fase 4 que use cada recorrido.
 
-Recorridos, en este orden: **acceso** (login, registro, sesión — **Hecho 2026-11-08**) → **entrenamientos** (catálogo, mis entrenamientos, comunidad, historial) → **lugares** (centros privados, lugares públicos, mapa) → **progreso** (estadísticas, valoraciones) → **soporte y administración**.
+Recorridos, en este orden: **acceso** (login, registro, sesión — **Hecho 2026-11-08**) → **entrenamientos** (catálogo, mis entrenamientos, comunidad, historial) → **lugares** (centros privados, lugares públicos, mapa) → **progreso** (estadísticas, valoraciones) → **administración** (soporte retirado según D13).
 
 Para cada recorrido [P]: modelos tipados sin `any` (P7), interceptor HTTP común, estados de carga/error/vacío/éxito, accesibilidad, revisión antislop y de UI, tests de lo que tenga lógica.
 

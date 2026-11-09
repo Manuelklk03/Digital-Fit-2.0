@@ -8,8 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ import com.example.digital_fit.controller.Auth.AdminRestController;
 import com.example.digital_fit.controller.CentroPrivado.Admin.CentroPrivadoBaseAdminRestController;
 import com.example.digital_fit.controller.Entrenamientos.Admin.EntrenamientoBaseAdminRestController;
 import com.example.digital_fit.controller.LugarPublico.Admin.LugarPublicoBaseAdminRestController;
-import com.example.digital_fit.controller.Soporte.Admin.SoporteAdminRestController;
 import com.example.digital_fit.dto.CentroPrivado.CentroPrivadoBaseDTO;
 import com.example.digital_fit.dto.Entrenamientos.EntrenamientoBaseDTO;
 import com.example.digital_fit.dto.LugarPublico.LugarPublicoBaseDTO;
@@ -33,14 +30,12 @@ import com.example.digital_fit.service.Auth.AuthService;
 import com.example.digital_fit.service.CentroPrivado.CentroPrivadoBaseService;
 import com.example.digital_fit.service.Entrenamientos.EntrenamientoBaseService;
 import com.example.digital_fit.service.LugarPublico.LugarPublicoBaseService;
-import com.example.digital_fit.service.Soporte.SoporteService;
 
 @WebMvcTest(controllers = {
         AdminRestController.class,
         EntrenamientoBaseAdminRestController.class,
         CentroPrivadoBaseAdminRestController.class,
-        LugarPublicoBaseAdminRestController.class,
-        SoporteAdminRestController.class
+        LugarPublicoBaseAdminRestController.class
 })
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})
 class AdminRutasPermisosSecurityTest {
@@ -59,9 +54,6 @@ class AdminRutasPermisosSecurityTest {
 
     @MockitoBean
     private LugarPublicoBaseService lugarPublicoBaseService;
-
-    @MockitoBean
-    private SoporteService soporteService;
 
     // --- 1. ACCESO NO AUTENTICADO (ANÓNIMO: 401 UNAUTHORIZED) ---
 
@@ -94,13 +86,6 @@ class AdminRutasPermisosSecurityTest {
     @DisplayName("DELETE /api/admin/lugares-publicos-base/1 sin autenticación retorna 401 Unauthorized")
     void testLugaresPublicosBaseAnonimoRetorna401() throws Exception {
         mockMvc.perform(delete("/api/admin/lugares-publicos-base/1"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @DisplayName("GET /api/admin/soporte sin autenticación retorna 401 Unauthorized")
-    void testSoporteAdminAnonimoRetorna401() throws Exception {
-        mockMvc.perform(get("/api/admin/soporte"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -138,14 +123,6 @@ class AdminRutasPermisosSecurityTest {
     @DisplayName("DELETE /api/admin/lugares-publicos-base/1 con rol USER retorna 403 Forbidden")
     void testLugaresPublicosBaseRolUserRetorna403() throws Exception {
         mockMvc.perform(delete("/api/admin/lugares-publicos-base/1")
-                .with(user("usuario1").roles("USER")))
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
-    @DisplayName("GET /api/admin/soporte con rol USER retorna 403 Forbidden")
-    void testSoporteAdminRolUserRetorna403() throws Exception {
-        mockMvc.perform(get("/api/admin/soporte")
                 .with(user("usuario1").roles("USER")))
                 .andExpect(status().isForbidden());
     }
@@ -189,15 +166,5 @@ class AdminRutasPermisosSecurityTest {
         mockMvc.perform(delete("/api/admin/lugares-publicos-base/1")
                 .with(user("admin1").roles("ADMIN")))
                 .andExpect(status().isNoContent());
-    }
-
-    @Test
-    @DisplayName("GET /api/admin/soporte con rol ADMIN es procesado exitosamente (200 OK)")
-    void testSoporteAdminRolAdminPermitido() throws Exception {
-        when(soporteService.listarTicketsAdmin()).thenReturn(List.of());
-
-        mockMvc.perform(get("/api/admin/soporte")
-                .with(user("admin1").roles("ADMIN")))
-                .andExpect(status().isOk());
     }
 }
