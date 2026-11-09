@@ -1,6 +1,6 @@
 import { afterNextRender, computed, DestroyRef, inject, Injector, signal } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { PaginaResponse } from '../../../models/pagina-response';
+import { mensajeError, PaginaResponse } from '../../../models/pagina-response';
 import { AlertType } from '../../../components/ui';
 
 export type EstadoCarga = 'cargando' | 'listo' | 'error';
@@ -53,9 +53,51 @@ export class ListadoPaginado<T> {
   }
 }
 
+/** Estado de una pantalla de detalle: carga un elemento y expone carga, error y dato. */
+export class Detalle<T> {
+  readonly item = signal<T | null>(null);
+  readonly estado = signal<EstadoCarga>('cargando');
+
+  constructor(private readonly fuente: () => Observable<T>) {}
+
+  cargar(): void {
+    this.estado.set('cargando');
+    this.fuente().subscribe({
+      next: (r) => {
+        this.item.set(r);
+        this.estado.set('listo');
+      },
+      error: () => this.estado.set('error'),
+    });
+  }
+}
+
 /** Enfoca, tras el siguiente render, el primer elemento que coincida con el selector (por defecto, en todo el documento). */
 export function enfocarTrasRender(injector: Injector, selector: string, raiz: () => ParentNode = () => document): void {
   afterNextRender(() => raiz().querySelector<HTMLElement>(selector)?.focus(), { injector });
+}
+
+/**
+ * Ejecuta una acción (crear, borrar, añadir...): muestra el aviso de éxito o el error del backend
+ * y llama a `alTerminar` en ambos casos (p. ej. para quitar el estado «ocupado»).
+ */
+export function ejecutarAccion<T>(
+  peticion: Observable<T>,
+  opciones: { aviso: Aviso; exito?: string; error: string; alExito?: (r: T) => void; alTerminar?: () => void },
+): void {
+  peticion.subscribe({
+    next: (r) => {
+      opciones.alTerminar?.();
+      if (opciones.exito) {
+        opciones.aviso.mostrar(opciones.exito, 'exito');
+      }
+      opciones.alExito?.(r);
+    },
+    error: (err: unknown) => {
+      opciones.alTerminar?.();
+      opciones.aviso.mostrar(mensajeError(err, opciones.error), 'error');
+    },
+  });
 }
 
 /** Mensaje en línea: los de éxito se ocultan solos; los de error quedan hasta cerrarlos. */

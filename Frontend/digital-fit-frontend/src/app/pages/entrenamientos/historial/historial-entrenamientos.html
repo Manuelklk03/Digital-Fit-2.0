@@ -3,16 +3,11 @@
 <app-header />
 
 <main class="pagina" id="contenido-principal">
-  <header class="encabezado">
-    <div class="encabezado-texto">
-      <span df-badge variant="primary" [dot]="true">{{ h.badge }}</span>
-      <h1>{{ h.titulo }}</h1>
-      <p>{{ h.subtitulo }}</p>
-    </div>
+  <app-encabezado-pagina [badge]="h.badge" [titulo]="h.titulo" [subtitulo]="h.subtitulo">
     @if (!formAbierto()) {
       <button id="boton-nuevo" df-button variant="primary" type="button" (click)="abrirFormulario()">{{ h.formCrear }}</button>
     }
-  </header>
+  </app-encabezado-pagina>
 
   @if (aviso.actual(); as a) {
     <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
@@ -131,56 +126,32 @@
       </p>
     </div>
 
-    @switch (listado.estado()) {
-      @case ('cargando') {
-        <div class="lista" role="status">
-          <span class="sr-only">{{ i18n.t().comun.cargando }}</span>
-          @for (i of [1, 2, 3]; track i) {
-            <div class="esqueleto esqueleto-fila" aria-hidden="true"></div>
-          }
-        </div>
-      }
-      @case ('error') {
-        <div class="estado estado-error" role="alert">
-          <p>{{ t.errorCarga }}</p>
-          <button df-button variant="outline" size="sm" type="button" (click)="listado.recargar()">{{ t.reintentar }}</button>
-        </div>
-      }
-      @default {
-        @if (listado.items().length === 0) {
-          <div class="estado">
-            <p>{{ h.vacio }}</p>
-          </div>
-        } @else {
-          <ol class="lista" [attr.aria-busy]="listado.recargando()">
-            @for (r of listado.items(); track r.id) {
-              <li class="registro">
-                <div class="registro-fecha">
-                  <time class="num" [attr.datetime]="r.fecha.replace(' ', 'T')">{{ fechaRegistro(r) }}</time>
-                </div>
-                <div class="registro-cuerpo">
-                  <div class="chips">
-                    <span df-badge badgeStyle="outline">{{ tipoEntrenamiento(r) }}</span>
-                    @if (r.tipoUbicacion) {
-                      <span df-badge>{{ h.tiposUbicacion[r.tipoUbicacion] }}</span>
-                    }
-                  </div>
-                  <h3><a [routerLink]="['/historial-entrenamientos', r.id]">{{ r.entrenamiento }}</a></h3>
-                  <p class="registro-sub">{{ r.ubicacion || h.sinUbicacion }}</p>
-                </div>
-                <div class="registro-lado">
-                  <span class="duracion num">{{ r.duracionEnMinutos }} {{ t.minutos }}</span>
-                  <button df-button variant="danger" size="sm" type="button"
-                    [loading]="ocupado() === r.id" [disabled]="ocupado() === r.id" (click)="borrarRegistro(r)">{{ t.borrar }}</button>
-                </div>
-              </li>
-            }
-          </ol>
-          <app-paginador [pagina]="listado.pagina()!.page" [totalPaginas]="listado.pagina()!.totalPages"
-            (cambiar)="listado.cargar($event)" />
+    <app-estado-listado [listado]="listado" [vacio]="h.vacio" [fila]="true" [esqueletos]="[1, 2, 3]">
+      <ol class="lista" [attr.aria-busy]="listado.recargando()">
+        @for (r of listado.items(); track r.id) {
+          <li class="registro">
+            <div class="registro-fecha">
+              <time class="num" [attr.datetime]="r.fecha.replace(' ', 'T')">{{ fechaRegistro(r) }}</time>
+            </div>
+            <div class="registro-cuerpo">
+              <div class="chips">
+                <span df-badge badgeStyle="outline">{{ tipoEntrenamiento(r) }}</span>
+                @if (r.tipoUbicacion) {
+                  <span df-badge>{{ h.tiposUbicacion[r.tipoUbicacion] }}</span>
+                }
+              </div>
+              <h3><a [routerLink]="['/historial-entrenamientos', r.id]">{{ r.entrenamiento }}</a></h3>
+              <p class="registro-sub">{{ r.ubicacion || h.sinUbicacion }}</p>
+            </div>
+            <div class="registro-lado">
+              <span class="duracion num">{{ r.duracionEnMinutos }} {{ t.minutos }}</span>
+              <button df-button variant="danger" size="sm" type="button"
+                [loading]="ocupado() === r.id" [disabled]="ocupado() === r.id" (click)="borrarRegistro(r)">{{ t.borrar }}</button>
+            </div>
+          </li>
         }
-      }
-    }
+      </ol>
+    </app-estado-listado>
   </section>
 </main>
 

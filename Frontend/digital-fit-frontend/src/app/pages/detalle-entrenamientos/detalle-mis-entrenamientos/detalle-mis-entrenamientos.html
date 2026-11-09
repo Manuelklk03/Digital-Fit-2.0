@@ -2,56 +2,21 @@
 <app-header />
 
 <main class="pagina" id="contenido-principal">
-  <a df-button variant="ghost" size="sm" class="volver" routerLink="/mis-entrenamientos"><span aria-hidden="true">←</span> {{ t.volverListado }}</a>
-
-  @if (aviso.actual(); as a) {
-    <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
-  }
-
-  @switch (estado()) {
-    @case ('cargando') {
-      <div role="status">
-        <span class="sr-only">{{ i18n.t().comun.cargando }}</span>
-        <div class="esqueleto" aria-hidden="true"></div>
-      </div>
+  <app-detalle-vista volver="/mis-entrenamientos" [badge]="t.mis.badge" [estado]="detalle.estado()"
+    [entrenamiento]="detalle.item()" (reintentar)="detalle.cargar()">
+    @if (aviso.actual(); as a) {
+      <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
     }
-    @case ('error') {
-      <div class="estado estado-error" role="alert">
-        <p>{{ t.errorDetalle }}</p>
-        <button df-button variant="outline" size="sm" type="button" (click)="cargar()">{{ t.reintentar }}</button>
-      </div>
-    }
-    @default {
-      @if (entrenamiento(); as e) {
-        <app-card>
-          <article class="detalle">
-            <div class="chips">
-              <span df-badge variant="primary" [dot]="true">{{ t.mis.badge }}</span>
-              <span df-badge badgeStyle="outline">{{ t.categorias[e.categoria] }}</span>
-              <span df-badge [variant]="varianteNivel[e.nivel]">{{ t.niveles[e.nivel] }}</span>
-            </div>
-            <h1 class="cabecera-detalle">{{ e.nombre }}</h1>
-            <dl class="datos">
-              <div class="dato"><dt>{{ t.campoDuracion }}</dt><dd class="num">{{ e.duracionEnMinutos }} {{ t.minutos }}</dd></div>
-            </dl>
-            <section>
-              <h2 class="subtitulo">{{ t.campoDescripcion }}</h2>
-              <p class="texto-largo">{{ e.descripcion || t.sinDescripcion }}</p>
-            </section>
-            <div class="acciones">
-              <button df-button variant="primary" type="button" [loading]="guardandoHistorial()"
-                [disabled]="guardandoHistorial()" (click)="marcarComoRealizado(e)">{{ t.mis.marcarRealizado }}</button>
-              @if (realizado()) {
-                <a df-button variant="outline" routerLink="/historial-entrenamientos">{{ t.mis.verHistorial }}</a>
-              }
-              <button df-button variant="danger" type="button" [loading]="borrando()" [disabled]="borrando()"
-                (click)="borrar(e)">{{ t.borrar }}</button>
-            </div>
-          </article>
-        </app-card>
+    @if (detalle.item(); as e) {
+      <button df-button variant="primary" type="button" [loading]="guardandoHistorial()"
+        [disabled]="guardandoHistorial()" (click)="marcarComoRealizado(e)">{{ t.mis.marcarRealizado }}</button>
+      @if (realizado()) {
+        <a df-button variant="outline" routerLink="/historial-entrenamientos">{{ t.mis.verHistorial }}</a>
       }
+      <button df-button variant="danger" type="button" [loading]="borrando()" [disabled]="borrando()"
+        (click)="borrar(e)">{{ t.borrar }}</button>
     }
-  }
+  </app-detalle-vista>
 </main>
 
 <app-footer />

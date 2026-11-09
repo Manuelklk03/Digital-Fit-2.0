@@ -11,8 +11,6 @@
 
 .listado-cabecera { flex-direction: row; align-items: baseline; justify-content: space-between; flex-wrap: wrap; }
 
-.lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.esqueleto-fila { height: 88px; }
 
 .registro {
   display: grid; grid-template-columns: 150px 1fr auto; align-items: center; gap: 16px;

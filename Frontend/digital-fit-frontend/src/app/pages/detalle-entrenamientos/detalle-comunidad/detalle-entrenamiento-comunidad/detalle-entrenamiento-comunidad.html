@@ -2,59 +2,28 @@
 <app-header />
 
 <main class="pagina" id="contenido-principal">
-  <a df-button variant="ghost" size="sm" class="volver" routerLink="/entrenamientos-comunidad"><span aria-hidden="true">←</span> {{ t.volverListado }}</a>
-
-  @if (aviso.actual(); as a) {
-    <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
-  }
-
-  @switch (estado()) {
-    @case ('cargando') {
-      <div role="status">
-        <span class="sr-only">{{ i18n.t().comun.cargando }}</span>
-        <div class="esqueleto" aria-hidden="true"></div>
-      </div>
+  <app-detalle-vista volver="/entrenamientos-comunidad" [badge]="t.comunidad.badge" [estado]="detalle.estado()"
+    [entrenamiento]="detalle.item()" (reintentar)="detalle.cargar()">
+    @if (aviso.actual(); as a) {
+      <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
     }
-    @case ('error') {
-      <div class="estado estado-error" role="alert">
-        <p>{{ t.errorDetalle }}</p>
-        <button df-button variant="outline" size="sm" type="button" (click)="cargar()">{{ t.reintentar }}</button>
-      </div>
+    @if (esMio()) {
+      <span chip df-badge variant="accent">{{ t.comunidad.tuyo }}</span>
     }
-    @default {
-      @if (entrenamiento(); as e) {
-        <app-card>
-          <article class="detalle">
-            <div class="chips">
-              <span df-badge variant="primary" [dot]="true">{{ t.comunidad.badge }}</span>
-              <span df-badge badgeStyle="outline">{{ t.categorias[e.categoria] }}</span>
-              <span df-badge [variant]="varianteNivel[e.nivel]">{{ t.niveles[e.nivel] }}</span>
-              @if (esMio()) {
-                <span df-badge variant="accent">{{ t.comunidad.tuyo }}</span>
-              }
-            </div>
-            <h1 class="cabecera-detalle">{{ e.nombre }}</h1>
-            <dl class="datos">
-              <div class="dato"><dt>{{ t.campoDuracion }}</dt><dd class="num">{{ e.duracionEnMinutos }} {{ t.minutos }}</dd></div>
-              <div class="dato"><dt>{{ t.comunidad.autor }}</dt><dd>{{ e.usuario }}</dd></div>
-              <div class="dato"><dt>{{ t.comunidad.publicado }}</dt><dd>{{ fecha() }}</dd></div>
-            </dl>
-            <section>
-              <h2 class="subtitulo">{{ t.campoDescripcion }}</h2>
-              <p class="texto-largo">{{ e.descripcion || t.sinDescripcion }}</p>
-            </section>
-            <div class="acciones">
-              @if (esMio()) {
-                <button df-button variant="danger" type="button" [loading]="ocupado()" [disabled]="ocupado()" (click)="borrar(e)">{{ t.borrar }}</button>
-              } @else {
-                <button df-button variant="primary" type="button" [loading]="ocupado()" [disabled]="ocupado()" (click)="anadir(e)">{{ t.anadirAMis }}</button>
-              }
-            </div>
-          </article>
-        </app-card>
+    @if (detalle.item(); as e) {
+      <div dato class="dato"><dt>{{ t.comunidad.autor }}</dt><dd>{{ e.usuario }}</dd></div>
+    }
+    @if (detalle.item()) {
+      <div dato class="dato"><dt>{{ t.comunidad.publicado }}</dt><dd>{{ fecha() }}</dd></div>
+    }
+    @if (detalle.item(); as e) {
+      @if (esMio()) {
+        <button df-button variant="danger" type="button" [loading]="ocupado()" [disabled]="ocupado()" (click)="borrar(e)">{{ t.borrar }}</button>
+      } @else {
+        <button df-button variant="primary" type="button" [loading]="ocupado()" [disabled]="ocupado()" (click)="anadir(e)">{{ t.anadirAMis }}</button>
       }
     }
-  }
+  </app-detalle-vista>
 </main>
 
 <app-footer />

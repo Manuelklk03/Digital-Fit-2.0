@@ -2,16 +2,11 @@
 <app-header />
 
 <main class="pagina" id="contenido-principal">
-  <header class="encabezado">
-    <div class="encabezado-texto">
-      <span df-badge variant="primary" [dot]="true">{{ t.comunidad.badge }}</span>
-      <h1>{{ t.comunidad.titulo }}</h1>
-      <p>{{ t.comunidad.subtitulo }}</p>
-    </div>
+  <app-encabezado-pagina [badge]="t.comunidad.badge" [titulo]="t.comunidad.titulo" [subtitulo]="t.comunidad.subtitulo">
     @if (enEdicion() === undefined) {
       <button id="boton-nuevo" df-button variant="primary" type="button" (click)="enEdicion.set(null)">{{ t.comunidad.formCrear }}</button>
     }
-  </header>
+  </app-encabezado-pagina>
 
   @if (aviso.actual(); as a) {
     <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
@@ -39,53 +34,29 @@
       </p>
     </div>
 
-    @switch (listado.estado()) {
-      @case ('cargando') {
-        <div class="rejilla" role="status">
-          <span class="sr-only">{{ t.cargandoListado }}</span>
-          @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-            <div class="esqueleto" aria-hidden="true"></div>
-          }
-        </div>
-      }
-      @case ('error') {
-        <div class="estado estado-error" role="alert">
-          <p>{{ t.errorCarga }}</p>
-          <button df-button variant="outline" size="sm" type="button" (click)="listado.recargar()">{{ t.reintentar }}</button>
-        </div>
-      }
-      @default {
-        @if (listado.items().length === 0) {
-          <div class="estado">
-            <p>{{ hayFiltro() ? t.vacioFiltro : t.comunidad.vacio }}</p>
-          </div>
-        } @else {
-          <div class="rejilla" [attr.aria-busy]="listado.recargando()">
-            @for (e of listado.items(); track e.id) {
-              <app-tarjeta-entrenamiento [entrenamiento]="e" [ruta]="['/entrenamientos-comunidad', e.id]">
-                @if (esMio(e)) {
-                  <span chip df-badge variant="accent">{{ t.comunidad.tuyo }}</span>
-                }
-                <dl meta class="meta">
-                  <dt>{{ t.comunidad.autor }}</dt><dd>{{ e.usuario }}</dd>
-                  <dt>{{ t.comunidad.publicado }}</dt><dd>{{ fecha(e) }}</dd>
-                </dl>
-                @if (esMio(e)) {
-                  <button df-button variant="outline" size="sm" type="button" [disabled]="guardando()" (click)="enEdicion.set(e)">{{ t.editar }}</button>
-                  <button df-button variant="danger" size="sm" type="button"
-                    [loading]="ocupado() === e.id" [disabled]="ocupado() === e.id" (click)="borrar(e)">{{ t.borrar }}</button>
-                } @else {
-                  <button df-button variant="secondary" size="sm" type="button"
-                    [loading]="ocupado() === e.id" [disabled]="ocupado() === e.id" (click)="anadir(e)">{{ t.anadirAMis }}</button>
-                }
-              </app-tarjeta-entrenamiento>
+    <app-estado-listado [listado]="listado" [vacio]="hayFiltro() ? t.vacioFiltro : t.comunidad.vacio">
+      <div class="rejilla" [attr.aria-busy]="listado.recargando()">
+        @for (e of listado.items(); track e.id) {
+          <app-tarjeta-entrenamiento [entrenamiento]="e" [ruta]="['/entrenamientos-comunidad', e.id]">
+            @if (esMio(e)) {
+              <span chip df-badge variant="accent">{{ t.comunidad.tuyo }}</span>
             }
-          </div>
-          <app-paginador [pagina]="listado.pagina()!.page" [totalPaginas]="listado.pagina()!.totalPages"
-            (cambiar)="listado.cargar($event)" />
+            <dl meta class="meta">
+              <dt>{{ t.comunidad.autor }}</dt><dd>{{ e.usuario }}</dd>
+              <dt>{{ t.comunidad.publicado }}</dt><dd>{{ fecha(e) }}</dd>
+            </dl>
+            @if (esMio(e)) {
+              <button df-button variant="outline" size="sm" type="button" [disabled]="guardando()" (click)="enEdicion.set(e)">{{ t.editar }}</button>
+              <button df-button variant="danger" size="sm" type="button"
+                [loading]="ocupado() === e.id" [disabled]="ocupado() === e.id" (click)="borrar(e)">{{ t.borrar }}</button>
+            } @else {
+              <button df-button variant="secondary" size="sm" type="button"
+                [loading]="ocupado() === e.id" [disabled]="ocupado() === e.id" (click)="anadir(e)">{{ t.anadirAMis }}</button>
+            }
+          </app-tarjeta-entrenamiento>
         }
-      }
-    }
+      </div>
+    </app-estado-listado>
   </section>
 </main>
 

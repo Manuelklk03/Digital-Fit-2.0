@@ -10,14 +10,14 @@ import {
   FiltroEntrenamiento,
   UsuarioSesion,
 } from '../../../models/entrenamiento';
-import { mensajeError } from '../../../models/pagina-response';
 import { AuthService } from '../../../services/auth-service';
 import { EntrenamientosComunidadService } from '../../../services/entrenamientos/entrenamiento-comunidad-service';
 import { MisEntrenamientosService } from '../../../services/entrenamientos/mis-entrenamientos-service';
-import { Aviso, enfocarTrasRender, ListadoPaginado } from '../compartido/estado';
+import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../compartido/estado';
+import { EncabezadoPaginaComponent } from '../compartido/encabezado-pagina';
+import { EstadoListadoComponent } from '../compartido/estado-listado';
 import { FiltroEntrenamientosComponent } from '../compartido/filtro-entrenamientos';
 import { FormularioEntrenamientoComponent } from '../compartido/formulario-entrenamiento';
-import { PaginadorComponent } from '../compartido/paginador';
 import { TarjetaEntrenamientoComponent } from '../compartido/tarjeta-entrenamiento';
 
 @Component({
@@ -28,9 +28,10 @@ import { TarjetaEntrenamientoComponent } from '../compartido/tarjeta-entrenamien
     AlertComponent,
     BadgeComponent,
     ButtonComponent,
+    EncabezadoPaginaComponent,
+    EstadoListadoComponent,
     FiltroEntrenamientosComponent,
     FormularioEntrenamientoComponent,
-    PaginadorComponent,
     TarjetaEntrenamientoComponent,
   ],
   templateUrl: './entrenamientos-comunidad.html',
@@ -88,21 +89,21 @@ export class EntrenamientosComunidadComponent implements OnInit {
     const t = this.i18n.t().entrenamientos;
     const editando = this.enEdicion();
     this.guardando.set(true);
-    const peticion = editando
-      ? this.comunidadService.actualizarEntrenamientoComunidad(editando.id, datos)
-      : this.comunidadService.crearEntrenamientoComunidad(datos);
-    peticion.subscribe({
-      next: () => {
-        this.guardando.set(false);
-        this.cerrarFormulario();
-        this.aviso.mostrar(editando ? t.exitoActualizado : t.exitoCreado, 'exito');
-        this.listado.recargar();
+    ejecutarAccion(
+      editando
+        ? this.comunidadService.actualizarEntrenamientoComunidad(editando.id, datos)
+        : this.comunidadService.crearEntrenamientoComunidad(datos),
+      {
+        aviso: this.aviso,
+        exito: editando ? t.exitoActualizado : t.exitoCreado,
+        error: t.errorGuardar,
+        alTerminar: () => this.guardando.set(false),
+        alExito: () => {
+          this.cerrarFormulario();
+          this.listado.recargar();
+        },
       },
-      error: (err: unknown) => {
-        this.guardando.set(false);
-        this.aviso.mostrar(mensajeError(err, t.errorGuardar), 'error');
-      },
-    });
+    );
   }
 
   borrar(entrenamiento: EntrenamientoComunidad): void {
@@ -111,31 +112,23 @@ export class EntrenamientosComunidadComponent implements OnInit {
       return;
     }
     this.ocupado.set(entrenamiento.id);
-    this.comunidadService.borrarEntrenamientoComunidad(entrenamiento.id).subscribe({
-      next: () => {
-        this.ocupado.set(null);
-        this.aviso.mostrar(t.exitoBorrado, 'exito');
-        this.listado.recargar();
-      },
-      error: (err: unknown) => {
-        this.ocupado.set(null);
-        this.aviso.mostrar(mensajeError(err, t.errorBorrar), 'error');
-      },
+    ejecutarAccion(this.comunidadService.borrarEntrenamientoComunidad(entrenamiento.id), {
+      aviso: this.aviso,
+      exito: t.exitoBorrado,
+      error: t.errorBorrar,
+      alTerminar: () => this.ocupado.set(null),
+      alExito: () => this.listado.recargar(),
     });
   }
 
   anadir(entrenamiento: EntrenamientoComunidad): void {
     const t = this.i18n.t().entrenamientos;
     this.ocupado.set(entrenamiento.id);
-    this.misEntrenamientosService.anadirDesdeComunidad(entrenamiento.id).subscribe({
-      next: () => {
-        this.ocupado.set(null);
-        this.aviso.mostrar(t.exitoAnadido, 'exito');
-      },
-      error: (err: unknown) => {
-        this.ocupado.set(null);
-        this.aviso.mostrar(mensajeError(err, t.errorAnadir), 'error');
-      },
+    ejecutarAccion(this.misEntrenamientosService.anadirDesdeComunidad(entrenamiento.id), {
+      aviso: this.aviso,
+      exito: t.exitoAnadido,
+      error: t.errorAnadir,
+      alTerminar: () => this.ocupado.set(null),
     });
   }
 }

@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, Component, inject, Injector, OnInit, signal } 
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
-import { AlertComponent, BadgeComponent, ButtonComponent } from '../../../components/ui';
+import { AlertComponent, ButtonComponent } from '../../../components/ui';
 import { I18nService } from '../../../i18n/i18n.service';
 import { EntrenamientoForm, EntrenamientoUsuario, FiltroEntrenamiento } from '../../../models/entrenamiento';
-import { mensajeError } from '../../../models/pagina-response';
 import { MisEntrenamientosService } from '../../../services/entrenamientos/mis-entrenamientos-service';
-import { Aviso, enfocarTrasRender, ListadoPaginado } from '../compartido/estado';
+import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../compartido/estado';
+import { EncabezadoPaginaComponent } from '../compartido/encabezado-pagina';
+import { EstadoListadoComponent } from '../compartido/estado-listado';
 import { FiltroEntrenamientosComponent } from '../compartido/filtro-entrenamientos';
 import { FormularioEntrenamientoComponent } from '../compartido/formulario-entrenamiento';
-import { PaginadorComponent } from '../compartido/paginador';
 import { TarjetaEntrenamientoComponent } from '../compartido/tarjeta-entrenamiento';
 
 @Component({
@@ -20,11 +20,11 @@ import { TarjetaEntrenamientoComponent } from '../compartido/tarjeta-entrenamien
     HeaderComponent,
     Footer,
     AlertComponent,
-    BadgeComponent,
     ButtonComponent,
+    EncabezadoPaginaComponent,
+    EstadoListadoComponent,
     FiltroEntrenamientosComponent,
     FormularioEntrenamientoComponent,
-    PaginadorComponent,
     TarjetaEntrenamientoComponent,
   ],
   templateUrl: './mis-entrenamientos.html',
@@ -64,16 +64,14 @@ export class MisEntrenamientosComponent implements OnInit {
   crear(datos: EntrenamientoForm): void {
     const t = this.i18n.t().entrenamientos;
     this.guardando.set(true);
-    this.misEntrenamientosService.crearEntrenamiento(datos).subscribe({
-      next: () => {
-        this.guardando.set(false);
+    ejecutarAccion(this.misEntrenamientosService.crearEntrenamiento(datos), {
+      aviso: this.aviso,
+      exito: t.exitoCreado,
+      error: t.errorGuardar,
+      alTerminar: () => this.guardando.set(false),
+      alExito: () => {
         this.cerrarFormulario();
-        this.aviso.mostrar(t.exitoCreado, 'exito');
         this.listado.cargar(0);
-      },
-      error: (err: unknown) => {
-        this.guardando.set(false);
-        this.aviso.mostrar(mensajeError(err, t.errorGuardar), 'error');
       },
     });
   }
@@ -84,16 +82,12 @@ export class MisEntrenamientosComponent implements OnInit {
       return;
     }
     this.ocupado.set(entrenamiento.id);
-    this.misEntrenamientosService.borrarEntrenamiento(entrenamiento.id).subscribe({
-      next: () => {
-        this.ocupado.set(null);
-        this.aviso.mostrar(t.exitoBorrado, 'exito');
-        this.listado.recargar();
-      },
-      error: (err: unknown) => {
-        this.ocupado.set(null);
-        this.aviso.mostrar(mensajeError(err, t.errorBorrar), 'error');
-      },
+    ejecutarAccion(this.misEntrenamientosService.borrarEntrenamiento(entrenamiento.id), {
+      aviso: this.aviso,
+      exito: t.exitoBorrado,
+      error: t.errorBorrar,
+      alTerminar: () => this.ocupado.set(null),
+      alExito: () => this.listado.recargar(),
     });
   }
 }

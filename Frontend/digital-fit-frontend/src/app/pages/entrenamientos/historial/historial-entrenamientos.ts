@@ -18,7 +18,6 @@ import {
   fechaLegible,
   HistorialEntrenamiento,
 } from '../../../models/entrenamiento';
-import { mensajeError } from '../../../models/pagina-response';
 import { HistorialEntrenamientosService } from '../../../services/entrenamientos/historial-entrenamientos';
 import { EntrenamientosService } from '../../../services/entrenamientos/entrenamientos-service';
 import { MisEntrenamientosService } from '../../../services/entrenamientos/mis-entrenamientos-service';
@@ -26,8 +25,9 @@ import { PrivadosService } from '../../../services/centros/privados-service';
 import { MisCentrosService } from '../../../services/centros/mis-centros-service';
 import { PublicosService } from '../../../services/publicos/publicos-service';
 import { MisLugaresService } from '../../../services/publicos/mis-lugares';
-import { Aviso, enfocarTrasRender, ListadoPaginado } from '../compartido/estado';
-import { PaginadorComponent } from '../compartido/paginador';
+import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../compartido/estado';
+import { EncabezadoPaginaComponent } from '../compartido/encabezado-pagina';
+import { EstadoListadoComponent } from '../compartido/estado-listado';
 
 /** Lo mínimo que el formulario necesita de un centro o lugar (sus modelos se tipan en el recorrido de lugares). */
 interface OpcionUbicacion {
@@ -66,7 +66,8 @@ const CAMPO_POR_PREFIJO = {
     ButtonComponent,
     CardComponent,
     InputDirective,
-    PaginadorComponent,
+    EncabezadoPaginaComponent,
+    EstadoListadoComponent,
   ],
   templateUrl: './historial-entrenamientos.html',
   styleUrls: ['../compartido/pagina.css', './historial-entrenamientos.css'],
@@ -175,17 +176,15 @@ export class HistorialEntrenamientosComponent implements OnInit {
     }
 
     this.guardando.set(true);
-    this.historialService.crearRegistro(registro).subscribe({
-      next: () => {
-        this.guardando.set(false);
+    ejecutarAccion(this.historialService.crearRegistro(registro), {
+      aviso: this.aviso,
+      exito: t.historial.exitoRegistro,
+      error: t.historial.errorRegistro,
+      alTerminar: () => this.guardando.set(false),
+      alExito: () => {
         this.limpiarFormulario();
         this.cerrarFormulario();
-        this.aviso.mostrar(t.historial.exitoRegistro, 'exito');
         this.listado.cargar(0);
-      },
-      error: (err: unknown) => {
-        this.guardando.set(false);
-        this.aviso.mostrar(mensajeError(err, t.historial.errorRegistro), 'error');
       },
     });
   }
@@ -196,16 +195,12 @@ export class HistorialEntrenamientosComponent implements OnInit {
       return;
     }
     this.ocupado.set(registro.id);
-    this.historialService.borrarRegistro(registro.id).subscribe({
-      next: () => {
-        this.ocupado.set(null);
-        this.aviso.mostrar(t.exitoBorrado, 'exito');
-        this.listado.recargar();
-      },
-      error: (err: unknown) => {
-        this.ocupado.set(null);
-        this.aviso.mostrar(mensajeError(err, t.errorBorrar), 'error');
-      },
+    ejecutarAccion(this.historialService.borrarRegistro(registro.id), {
+      aviso: this.aviso,
+      exito: t.exitoBorrado,
+      error: t.errorBorrar,
+      alTerminar: () => this.ocupado.set(null),
+      alExito: () => this.listado.recargar(),
     });
   }
 
