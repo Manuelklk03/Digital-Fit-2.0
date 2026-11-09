@@ -4,7 +4,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 
 import { ValoracionesService } from './valoraciones-service';
 
-const PAGINA_VACIA = { content: [], page: 0, size: 100, totalElements: 0, totalPages: 0 };
+const VACIA = { content: [], page: 0, size: 12, totalElements: 0, totalPages: 0 };
 
 describe('ValoracionesService', () => {
   let service: ValoracionesService;
@@ -18,39 +18,29 @@ describe('ValoracionesService', () => {
 
   afterEach(() => http.verify());
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-
-  it('mis valoraciones devuelve solo el contenido y pide el tamaño máximo', () => {
-    let resultado: unknown[] | undefined;
-    service.getMisValoraciones().subscribe((r) => (resultado = r));
-
+  it('pide la página indicada de mis valoraciones', () => {
+    service.getPaginaMisValoraciones(2).subscribe();
     const req = http.expectOne((r) => r.url === '/api/valoraciones/mis-valoraciones');
-    expect(req.request.params.get('size')).toBe('100');
-    req.flush({ ...PAGINA_VACIA, content: [{ id: 3 }], totalElements: 1, totalPages: 1 });
-
-    expect(resultado).toEqual([{ id: 3 }]);
+    expect(req.request.params.get('page')).toBe('2');
+    expect(req.request.params.get('size')).toBe('12');
+    req.flush(VACIA);
   });
 
-  it('las públicas envían la categoría, salvo TODOS', () => {
-    service.getValoracionesPublicas('ENTRENAMIENTOS').subscribe();
-    const conCategoria = http.expectOne((r) => r.url === '/api/valoraciones/publicas');
-    expect(conCategoria.request.params.get('categoria')).toBe('ENTRENAMIENTOS');
-    expect(conCategoria.request.params.get('size')).toBe('100');
-    conCategoria.flush(PAGINA_VACIA);
+  it('filtra las públicas por categoría y la omite si no hay', () => {
+    service.getPaginaPublicas('CENTROS_PRIVADOS').subscribe();
+    expect(http.expectOne((r) => r.url === '/api/valoraciones/publicas').request.params.get('categoria')).toBe('CENTROS_PRIVADOS');
 
-    service.getValoracionesPublicas('TODOS').subscribe();
-    const todos = http.expectOne((r) => r.url === '/api/valoraciones/publicas');
-    expect(todos.request.params.has('categoria')).toBe(false);
-    todos.flush(PAGINA_VACIA);
+    service.getPaginaPublicas(null).subscribe();
+    expect(http.expectOne((r) => r.url === '/api/valoraciones/publicas').request.params.has('categoria')).toBe(false);
   });
 
-  it('las de un contenido usan la ruta con tipo e id', () => {
-    service.getValoracionesPorContenido('ENTRENAMIENTOS', 5).subscribe();
+  it('crea o actualiza y borra por tipo y contenido', () => {
+    service.crearOActualizarValoracion('LUGAR_PUBLICO_BASE', 3, { puntuacion: 4, comentario: null }).subscribe();
+    const post = http.expectOne('/api/valoraciones/LUGAR_PUBLICO_BASE/3');
+    expect(post.request.method).toBe('POST');
+    expect(post.request.body).toEqual({ puntuacion: 4, comentario: null });
 
-    const req = http.expectOne((r) => r.url === '/api/valoraciones/ENTRENAMIENTOS/5');
-    expect(req.request.params.get('size')).toBe('100');
-    req.flush(PAGINA_VACIA);
+    service.borrarValoracion('LUGAR_PUBLICO_BASE', 3).subscribe();
+    expect(http.expectOne('/api/valoraciones/LUGAR_PUBLICO_BASE/3').request.method).toBe('DELETE');
   });
 });

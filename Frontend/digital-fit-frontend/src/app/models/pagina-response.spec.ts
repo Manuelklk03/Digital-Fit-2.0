@@ -61,5 +61,8 @@ describe('mensajeError', () => {
     expect(mensajeError({ error: 'Texto' }, 'x')).toBe('Texto');
     expect(mensajeError({ error: { detail: '  ' } }, 'x')).toBe('x');
     expect(mensajeError(null, 'x')).toBe('x');
+    // responseType 'text': el ProblemDetail llega como JSON en texto.
+    expect(mensajeError({ error: '{"detail":"Duplicado"}' }, 'x')).toBe('Duplicado');
+    expect(mensajeError({ error: '"citado"' }, 'x')).toBe('citado');
   });
 });
