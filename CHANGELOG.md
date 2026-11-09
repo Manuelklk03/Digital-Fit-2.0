@@ -8,6 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Rediseño del recorrido de **Entrenamientos** (fase 5): catálogo base, mis entrenamientos, comunidad, historial y sus cuatro detalles con el sistema Neutral Sport / Industrial, componentes OnPush con signals, modelos tipados sin `any` (`models/entrenamiento.ts`), estados reales de carga, vacío, error y recarga, y textos en los 4 idiomas. Paginación real en pantalla (12 por página) con filtro de un solo campo, como aplica el backend; errores `ProblemDetail` mostrados al usuario; confirmación antes de borrar; foco gestionado al abrir y cerrar formularios. Piezas compartidas en `pages/entrenamientos/compartido/` (estado paginado, filtro, tarjeta, formulario y paginador).
 - Frontend adaptado a la API paginada: interfaz `PaginaResponse<T>` y los 9 servicios de listados (entrenamientos, centros, lugares y valoraciones) piden `size=100` y devuelven el contenido, sin cambiar las pantallas. Paginación visible en cada pantalla: recorridos 5.2–5.4.
 - Paginación y ordenación en los listados de la API REST mediante Spring Data `Pageable` (`page`, `size` [por defecto 20, máximo 100], `sort`) y encapsulación en el DTO genérico `PaginaResponse<T>` (`content`, `page`, `size`, `totalElements`, `totalPages`), resolviendo la deuda técnica P6 y optimizando consultas N+1 con `@EntityGraph` en comunidad, historial y valoraciones (tarea 4.8).
 - Orquestador de producción `docker-compose.prod.yml` que utiliza las imágenes inmutables de Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`) en lugar de compilación local, preservando sondas de salud (`/actuator/health`), sincronización con `service_healthy` y parametrización por entorno para cookies seguras, CORS y perfil `prod` (tarea 1B.6).
@@ -70,6 +71,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 - Tres archivos `.log` que estaban versionados.
 - Materiales de la entrega académica: memoria, guía del centro, manuales de uso y despliegue, presentación de defensa y guías de preparación. Se conservan en el tag `v1.0.0`; la información técnica vigente del manual de despliegue pasa a `docs/deployment.md`.
+
+### Corregido
+
+- Los guards `authGuard` y `publicGuard` llamaban a `/api/auth/yo`, retirado en la tarea 4.1, y redirigían siempre a `/login` (afectaba a `/entrenamientos`). Ahora usan `/api/auth/me`.
+- Contraste AA en los chips sutiles `primary` y `danger` de `BadgeComponent`.
 
 ## [1.0.0] — 2026-10-26
 

@@ -2,6 +2,13 @@
 
 Última actualización: **2026-11-09**.
 
+> **2026-11-09 (Fase 5, Recorrido 2 — Entrenamientos; rama `feat/recorrido-entrenamientos`):**
+> - **Pantallas:** catálogo base, mis entrenamientos, comunidad, historial y sus 4 detalles reescritos con Neutral Sport / Industrial, OnPush + signals, componentes `ui/`, i18n en 4 idiomas y sin `any` (modelos en `models/entrenamiento.ts`). Paginación real (12 por página) con filtro de un solo campo, como el backend; estados de carga, vacío, error y recarga; errores `ProblemDetail`; confirmación al borrar; foco gestionado al abrir/cerrar formularios. Comunidad pasa a una lista paginada única con las publicaciones propias marcadas «Tuyo».
+> - **Corregido:** `authGuard`/`publicGuard` usaban `/api/auth/yo` (retirado en 4.1) y redirigían siempre a `/login`; ahora `/api/auth/me`. Contraste AA en chips sutiles `primary`/`danger`.
+> - **Limitación:** el historial pierde la búsqueda por texto de la v1 hasta que el backend ofrezca un parámetro `q` (parada G8).
+> - **Verificaciones:** `ng build` correcto (sin avisos en los archivos tocados), 58 suites y 156 tests en verde, 0 errores ESLint (203 avisos, antes 357). Revisión de Codex (5 hallazgos medios/bajos, 4 corregidos y 1 registrado en G8) y revisión de UI (15 hallazgos, corregidos). Verificado en navegador (Playwright) contra `docker compose` a 1440 y 390 px: sin scroll horizontal y foco correcto al abrir y cerrar el formulario.
+> - **Bloqueos para Antigravity (G8, LIBRE):** hashes demo de V3 que no corresponden a las contraseñas documentadas (login demo → 401), `NoResourceFoundException` → 500 y parámetro `q` del historial. Detalle en `docs/HANDOFF.md`.
+
 > **2026-11-09 (Fase 4, Retirada del backend de soporte y tickets — D13):**
 > - **Eliminación del backend de tickets:** Suprimidos `SoporteRestController`, `SoporteAdminRestController`, `SoporteService`, entidades `Soporte` y `MensajeSoporte`, enum `EstadoSoporte`, repositorios `SoporteRepository` y `MensajeSoporteRepository`, y DTOs (`SoporteDTO`, `MensajeSoporteDTO`, `CrearSoporteDTO`, `CrearMensajeSoporteDTO`, `CambiarEstadoSoporte`). Cero referencias residuales en el backend.
 > - **Migración de base de datos Flyway V4:** Creado `V4__eliminar_soporte.sql` con `DROP TABLE IF EXISTS mensajes_soporte; DROP TABLE IF EXISTS soporte;`, asegurando la coherencia del esquema relacional en PostgreSQL.
@@ -114,8 +121,8 @@
 
 ## Resumen
 
-- **Fase activa:** 5 — Renovación del frontend por recorridos (Recorrido 1 completado en PR #49; Recorrido 2: Entrenamientos en curso por Claude). Fase 4 (Backend, API y datos) completada al 100% (tareas 4.1 a 4.10 cerradas).
-- **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 134 tests unitarios en verde.
+- **Fase activa:** 5 — Renovación del frontend por recorridos (Recorridos 1 y 2 completados; siguiente: Recorrido 3, Lugares). Fase 4 (Backend, API y datos) completada al 100% (tareas 4.1 a 4.10 cerradas).
+- **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 156 tests unitarios en verde.
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` configurado.
 - **Versión publicada:** `v1.0.0` (tag anotado). `v2.0.0` se publicará al completar la fase 7.
 - **Despliegue público:** Pendiente de configuración en 2.3/2.4 y 7.1. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`).
@@ -176,7 +183,8 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **Frontend (Claude):** Continuar con la Fase 5 (Recorrido 2: Entrenamientos — catálogo base, mis entrenamientos, comunidad e historial con estética Neutral Sport y paginación `PaginaResponse`).
+1. **Frontend (Claude):** Fase 5, Recorrido 3: Lugares (centros privados, lugares públicos y mapa).
+1. **Backend (Antigravity, G8):** corregir hashes demo (migración V5), 404 para recursos inexistentes y parámetro `q` en el historial.
 2. **Backend y DevOps (Antigravity):** En espera por parada G5 hasta que Claude finalice las pantallas de la Fase 5, para implementar las pruebas E2E con Playwright (6.2) y CI (6.1).
 3. **Despliegue (Fases 2.3/2.4 y 7.1):** Pendiente de que Manuel provisione las cuentas/secretos (parada G4) antes de la release final `v2.0.0`.
 
