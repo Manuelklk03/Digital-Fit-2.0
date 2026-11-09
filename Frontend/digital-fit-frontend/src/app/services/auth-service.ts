@@ -44,16 +44,6 @@ export class AuthService {
     );
   }
 
-  yo(): Observable<string> {
-    return this.http.get(
-      `${this.apiUrl}/yo`,
-      {
-        withCredentials: true,
-        responseType: 'text'
-      }
-    );
-  }
-
   me(): Observable<any> {
     return this.http.get<any>(
       `${this.apiUrl}/me`,

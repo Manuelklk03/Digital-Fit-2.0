@@ -7,7 +7,7 @@ export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.yo().pipe(
+  return authService.me().pipe(
     map(() => true),
     catchError(() => {
       router.navigate(['/login']);

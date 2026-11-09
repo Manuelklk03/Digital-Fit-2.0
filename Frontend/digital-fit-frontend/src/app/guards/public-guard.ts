@@ -7,7 +7,7 @@ export const publicGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.yo().pipe(
+  return authService.me().pipe(
     map(() => {
       router.navigate(['/inicio']);
       return false;
