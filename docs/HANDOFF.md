@@ -82,8 +82,8 @@ Todos los endpoints paginados aceptan los siguientes parámetros opcionales:
 | `/api/mis-entrenamientos` | GET | `id,desc` | `nombre`, `nivel`, `categoria`, `duracionEnMinutos` | Entrenamientos propios del usuario autenticado |
 | `/api/entrenamientos-comunidad` | GET | `fechaPublicacion,desc` | `nombre`, `nivel`, `categoria`, `duracionEnMinutos` | Entrenamientos compartidos por la comunidad (`@EntityGraph` autor) |
 | `/api/entrenamientos/mi-historial` | GET | `fechaHora,desc` | `duracionMinutos`, `fecha` (ISO datetime) | Historial de entrenamientos completados (`@EntityGraph`) |
-| `/api/centros-privados` | GET | `nombre,asc` | `nombre`, `direccion`, `precioMaximo` | Centros deportivos base del catálogo |
-| `/api/mis-centros-privados` | GET | `id,desc` | `nombre`, `direccion`, `precioMaximo` | Centros deportivos propios del usuario |
+| `/api/centros-privados` | GET | `nombre,asc` | `nombre`, `direccion`, `precioMensual` | Centros deportivos base del catálogo |
+| `/api/mis-centros-privados` | GET | `id,desc` | `nombre`, `direccion`, `precioMensual` | Centros deportivos propios del usuario |
 | `/api/lugares-publicos` | GET | `nombre,asc` | `nombre`, `direccion`, `tipo` | Espacios públicos de entrenamiento (parques, calistenia) |
 | `/api/mis-lugares-publicos` | GET | `id,desc` | `nombre`, `direccion`, `tipo` | Lugares públicos propios del usuario |
 | `/api/valoraciones/publicas` | GET | `fecha,desc` | `categoria` (`TODOS`, `ENTRENAMIENTOS`, `CENTROS_PRIVADOS`, `LUGARES_PUBLICOS`) | Valoraciones públicas globales (`@EntityGraph` autor) |
