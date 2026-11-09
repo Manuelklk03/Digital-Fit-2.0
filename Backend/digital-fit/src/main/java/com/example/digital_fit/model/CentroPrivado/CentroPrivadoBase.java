@@ -35,7 +35,7 @@ public class CentroPrivadoBase {
 
     private Double precioMensual;
 
-    @Column(length = 1000)
+    @Column(length = 1500)
     private String descripcion;
 
     // Para Google Maps y OpenStreetMap:

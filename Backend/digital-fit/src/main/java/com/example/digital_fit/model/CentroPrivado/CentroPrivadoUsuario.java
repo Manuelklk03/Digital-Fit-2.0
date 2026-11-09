@@ -39,7 +39,7 @@ public class CentroPrivadoUsuario {
 
     private Double precioMensual;
 
-    @Column(length = 1000)
+    @Column(length = 1500)
     private String descripcion;
 
     private Double latitud;

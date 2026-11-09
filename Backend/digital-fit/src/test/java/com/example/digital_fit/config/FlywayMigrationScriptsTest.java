@@ -70,4 +70,17 @@ class FlywayMigrationScriptsTest {
         assertTrue(sql.contains("usuario1"), "Debe actualizar usuario1");
         assertTrue(sql.contains("$2a$10$"), "Debe contener hashes bcrypt validos");
     }
+
+    @Test
+    @DisplayName("V6__ampliar_descripciones_y_comentarios.sql amplía columnas a VARCHAR(1500)")
+    void testV6AmpliarDescripcionesYComentarios() throws Exception {
+        String sql = readMigrationScript("V6__ampliar_descripciones_y_comentarios.sql");
+        assertTrue(sql.contains("ALTER TABLE entrenamientos_base ALTER COLUMN descripcion TYPE VARCHAR(1500)"), "Debe ampliar entrenamientos_base");
+        assertTrue(sql.contains("ALTER TABLE entrenamientos_usuario ALTER COLUMN descripcion TYPE VARCHAR(1500)"), "Debe ampliar entrenamientos_usuario");
+        assertTrue(sql.contains("ALTER TABLE centros_privados_base ALTER COLUMN descripcion TYPE VARCHAR(1500)"), "Debe ampliar centros_privados_base");
+        assertTrue(sql.contains("ALTER TABLE centros_privados_usuario ALTER COLUMN descripcion TYPE VARCHAR(1500)"), "Debe ampliar centros_privados_usuario");
+        assertTrue(sql.contains("ALTER TABLE lugares_publicos_base ALTER COLUMN descripcion TYPE VARCHAR(1500)"), "Debe ampliar lugares_publicos_base");
+        assertTrue(sql.contains("ALTER TABLE lugares_publicos_usuario ALTER COLUMN descripcion TYPE VARCHAR(1500)"), "Debe ampliar lugares_publicos_usuario");
+        assertTrue(sql.contains("ALTER TABLE valoraciones ALTER COLUMN comentario TYPE VARCHAR(1500)"), "Debe ampliar valoraciones");
+    }
 }

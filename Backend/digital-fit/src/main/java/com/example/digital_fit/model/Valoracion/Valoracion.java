@@ -37,7 +37,7 @@ public class Valoracion {
     @Column(nullable = false)
     private Integer puntuacion;
 
-    @Column(length = 1000)
+    @Column(length = 1500)
     private String comentario;
 
     private LocalDateTime fecha;

@@ -34,7 +34,7 @@ public class EntrenamientoUsuario {
     @Column(nullable = false)
     private String nombre;
 
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 1500)
     private String descripcion;
 
     @Enumerated(EnumType.STRING)
