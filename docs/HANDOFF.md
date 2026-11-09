@@ -20,8 +20,8 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 | Parada | Estado | Espera a | Qué se necesita |
 |---|---|---|---|
 | G1 | LIBRE | Antigravity → Claude | Tarea 4.8 completada. Contrato de API paginada documentado abajo. Listo para que Claude adapte el frontend |
-| G2 | Pendiente | Claude → Antigravity | Antigravity no retira el backend de tickets hasta que Claude quite las pantallas de soporte |
-| G3 | Pendiente | Claude → Antigravity | Claude confirma que no queda ninguna llamada a `/api/soporte` en el frontend |
+| G2 | LIBRE | Claude → Antigravity | Pantallas, rutas y servicios de soporte retirados del frontend. Antigravity ya puede retirar el backend de tickets |
+| G3 | LIBRE | Claude → Antigravity | Confirmado: no queda ninguna llamada a `/api/soporte` ni a `/api/admin/soporte` en el frontend |
 | G4 | Pendiente | Manuel → Antigravity | Cuentas de Netlify, Render y Neon y secretos con `gh secret set`. Sin ellos no hay 2.3 ni 2.4 |
 | G5 | Pendiente | Claude → Antigravity | 6.2 (E2E) espera a que Claude cierre todo el frontend |
 | G6 | Pendiente | Claude → Antigravity | 6.5 (Prettier) espera a que Claude no tenga ramas abiertas |
@@ -34,6 +34,8 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 | Fecha | Parada | Estado | Nota |
 |---|---|---|---|
 | 2026-11-09 | G1 | LIBRE | Tarea 4.8 completada y fusionada (PR #62). Contrato de API paginada publicado para que Claude adapte el frontend |
+| 2026-11-09 | G1 | Resuelta | Frontend adaptado a la API paginada (PR #64). Límite: 100 elementos por listado hasta que cada pantalla pagine |
+| 2026-11-09 | G2 y G3 | LIBRE | Soporte retirado del frontend (rama `feat/frontend-retirar-soporte`). Antigravity puede retirar tickets en el backend |
 
 ## Contrato de la API paginada (para Claude — Adaptación de Frontend)
 
