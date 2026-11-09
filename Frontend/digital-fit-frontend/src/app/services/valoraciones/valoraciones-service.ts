@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { getContenido, PARAMS_PAGINA_COMPLETA } from '../../models/pagina-response';
+import { getContenido } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +16,9 @@ export class ValoracionesService {
   }
 
   getValoracionesPublicas(categoria?: string | null): Observable<any[]> {
-    let params: HttpParams = PARAMS_PAGINA_COMPLETA;
-
-    if (categoria && categoria !== 'TODOS') {
-      params = params.set('categoria', categoria);
-    }
-
-    return getContenido(this.http, `${this.apiUrl}/publicas`, params);
+    return getContenido(this.http, `${this.apiUrl}/publicas`, {
+      categoria: categoria === 'TODOS' ? undefined : categoria
+    });
   }
 
   getValoracionesPorContenido(tipoContenido: string, idContenido: number): Observable<any[]> {

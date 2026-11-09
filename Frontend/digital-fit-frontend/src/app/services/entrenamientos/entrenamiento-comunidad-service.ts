@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { getContenido, PARAMS_PAGINA_COMPLETA } from '../../models/pagina-response';
+import { getContenido } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -21,25 +21,12 @@ export class EntrenamientosComunidadService {
     duracionEnMinutos?: number,
     nombre?: string
   ): Observable<any[]> {
-    let params = PARAMS_PAGINA_COMPLETA;
-
-    if (categoria) {
-      params = params.set('categoria', categoria.toUpperCase().replaceAll(' ', '_'));
-    }
-
-    if (nivel) {
-      params = params.set('nivel', nivel.toUpperCase().replaceAll(' ', '_'));
-    }
-
-    if (duracionEnMinutos !== undefined) {
-      params = params.set('duracionEnMinutos', duracionEnMinutos.toString());
-    }
-
-    if (nombre) {
-      params = params.set('nombre', nombre);
-    }
-
-    return getContenido(this.http, this.apiUrl, params);
+    return getContenido(this.http, this.apiUrl, {
+      categoria: categoria?.toUpperCase().replaceAll(' ', '_'),
+      nivel: nivel?.toUpperCase().replaceAll(' ', '_'),
+      duracionEnMinutos,
+      nombre
+    });
   }
 
   getEntrenamientoComunidadById(id: number): Observable<any> {
