@@ -152,5 +152,8 @@ export const entrenamientosFr: DiccionarioEntrenamientos = {
     tipoUbicacion: 'Type de lieu',
     errorDetalle: 'Séance introuvable ou accès non autorisé.',
     tituloDetalle: 'Séance enregistrée',
+    buscarEtiqueta: "Rechercher dans l'historique",
+    buscarPlaceholder: 'Entraînement, lieu ou notes',
+    vacioBusqueda: 'Aucune séance ne correspond à la recherche.',
   },
 };

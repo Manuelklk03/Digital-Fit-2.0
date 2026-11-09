@@ -147,6 +147,8 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (privados) => {
         if (Array.isArray(privados)) {
           privados.forEach((c) => {
+            // Sin coordenadas no se puede situar en el mapa.
+            if (c.latitud == null || c.longitud == null) return;
             combinados.push({
               id: c.id,
               nombre: c.nombre,
@@ -155,8 +157,8 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
               direccion: c.direccion,
               latitud: c.latitud,
               longitud: c.longitud,
-              precioMensual: c.precioMensual,
-              horario: c.horario,
+              precioMensual: c.precioMensual ?? undefined,
+              horario: c.horario ?? undefined,
             });
           });
         }
@@ -173,6 +175,7 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (publicos) => {
         if (Array.isArray(publicos)) {
           publicos.forEach((p) => {
+            if (p.latitud == null || p.longitud == null) return;
             const cat = this.mapearTipoPublico(p.tipo);
             combinados.push({
               id: p.id,
@@ -182,7 +185,6 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
               direccion: p.direccion,
               latitud: p.latitud,
               longitud: p.longitud,
-              equipamiento: p.equipamiento,
             });
           });
         }

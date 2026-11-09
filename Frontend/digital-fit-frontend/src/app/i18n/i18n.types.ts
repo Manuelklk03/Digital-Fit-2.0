@@ -1,4 +1,5 @@
 import type { Categoria, Nivel, TipoUbicacionHistorial } from '../models/entrenamiento';
+import type { TipoLugar } from '../models/lugar';
 
 export type Idioma = 'es' | 'ca' | 'en' | 'fr';
 
@@ -116,6 +117,7 @@ export interface DiccionarioTraduccion {
     exitoRegistro: string;
   };
   entrenamientos: DiccionarioEntrenamientos;
+  lugares: DiccionarioLugares;
 }
 
 /** Textos del recorrido de entrenamientos (catálogo, mis entrenamientos, comunidad, historial y detalles). */
@@ -235,5 +237,83 @@ export interface DiccionarioEntrenamientos {
     tipoUbicacion: string;
     errorDetalle: string;
     tituloDetalle: string;
+    buscarEtiqueta: string;
+    buscarPlaceholder: string;
+    vacioBusqueda: string;
   };
+}
+
+/** Textos de una pantalla de centros o lugares (catálogo base o propios). */
+export interface SeccionLugares {
+  badge: string;
+  titulo: string;
+  subtitulo: string;
+  vacio: string;
+  formCrear: string;
+  formEditar: string;
+  anadirAMis: string;
+  irCatalogo: string;
+  detalle: string;
+}
+
+/** Textos del recorrido de lugares (centros privados, lugares públicos y selector de mapa). */
+export interface DiccionarioLugares {
+  tipos: Record<TipoLugar, string>;
+  campoNombre: string;
+  campoDireccion: string;
+  campoTelefono: string;
+  campoHorario: string;
+  campoPrecio: string;
+  campoTipo: string;
+  campoDescripcion: string;
+  campoUbicacion: string;
+  filtroPrecioMax: string;
+  nombrePlaceholder: string;
+  direccionPlaceholder: string;
+  precioPlaceholder: string;
+  porMes: string;
+  noDisponible: string;
+  sinPrecio: string;
+  sinDescripcion: string;
+  sinUbicacion: string;
+  errorNombre: string;
+  errorDireccion: string;
+  errorPrecio: string;
+  errorDescripcion: string;
+  errorUbicacion: string;
+  ayudaUbicacion: string;
+  autocompletando: string;
+  autocompletadoOk: string;
+  autocompletadoSinDatos: string;
+  autocompletadoError: string;
+  confirmarBorrado: string;
+  exitoAnadido: string;
+  errorAnadir: string;
+  exitoCreado: string;
+  exitoActualizado: string;
+  exitoBorrado: string;
+  errorGuardar: string;
+  errorBorrar: string;
+  errorDetalle: string;
+  volverListado: string;
+  vacioFiltro: string;
+  guardar: string;
+  mapa: {
+    region: string;
+    regionVista: string;
+    buscarEtiqueta: string;
+    buscarPlaceholder: string;
+    buscar: string;
+    buscando: string;
+    volverValencia: string;
+    irMarcador: string;
+    escribeDireccion: string;
+    fueraDeZona: string;
+    noEncontrado: string;
+    cerrarMensaje: string;
+  };
+  centrosBase: SeccionLugares;
+  lugaresBase: SeccionLugares;
+  misCentros: SeccionLugares;
+  misLugares: SeccionLugares;
 }

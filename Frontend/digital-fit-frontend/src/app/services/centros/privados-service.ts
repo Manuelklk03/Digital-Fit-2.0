@@ -1,34 +1,28 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { getContenido } from '../../models/pagina-response';
+import { getContenido, getPagina, PaginaResponse } from '../../models/pagina-response';
+import { aParametros } from '../../models/entrenamiento';
+import { CentroPrivado, FiltroSitio } from '../../models/lugar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrivadosService {
 
-  private http = inject(HttpClient);
-  private apiUrl = '/api/centros-privados';
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = '/api/centros-privados';
 
-  getCentrosPrivados(): Observable<any[]> {
-    return getContenido(this.http, this.apiUrl);
+  getCentrosPrivados(): Observable<CentroPrivado[]> {
+    return getContenido<CentroPrivado>(this.http, this.apiUrl);
   }
 
-  getCentrosPrivadosFiltrados(
-    nombre?: string,
-    direccion?: string,
-    precioMensual?: number
-  ): Observable<any[]> {
-    return getContenido(this.http, this.apiUrl, {
-      nombre,
-      direccion,
-      precioMensual
-    });
+  buscar(filtro: FiltroSitio | null, page = 0): Observable<PaginaResponse<CentroPrivado>> {
+    return getPagina<CentroPrivado>(this.http, this.apiUrl, aParametros(filtro), page);
   }
 
-  getCentroPrivadoById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+  getCentroPrivadoById(id: number): Observable<CentroPrivado> {
+    return this.http.get<CentroPrivado>(`${this.apiUrl}/${id}`, {
       withCredentials: true
     });
   }

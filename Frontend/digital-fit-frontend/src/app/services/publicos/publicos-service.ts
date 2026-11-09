@@ -1,34 +1,28 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { getContenido } from '../../models/pagina-response';
+import { getContenido, getPagina, PaginaResponse } from '../../models/pagina-response';
+import { aParametros } from '../../models/entrenamiento';
+import { FiltroSitio, LugarPublico } from '../../models/lugar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicosService {
 
-  private http = inject(HttpClient);
-  private apiUrl = '/api/lugares-publicos';
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = '/api/lugares-publicos';
 
-  getLugaresPublicos(): Observable<any[]> {
-    return getContenido(this.http, this.apiUrl);
+  getLugaresPublicos(): Observable<LugarPublico[]> {
+    return getContenido<LugarPublico>(this.http, this.apiUrl);
   }
 
-  getLugaresPublicosFiltrados(
-    nombre?: string,
-    direccion?: string,
-    tipo?: string
-  ): Observable<any[]> {
-    return getContenido(this.http, this.apiUrl, {
-      nombre,
-      direccion,
-      tipo: tipo?.toUpperCase().replaceAll(' ', '_')
-    });
+  buscar(filtro: FiltroSitio | null, page = 0): Observable<PaginaResponse<LugarPublico>> {
+    return getPagina<LugarPublico>(this.http, this.apiUrl, aParametros(filtro), page);
   }
 
-  getLugarPublicoById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+  getLugarPublicoById(id: number): Observable<LugarPublico> {
+    return this.http.get<LugarPublico>(`${this.apiUrl}/${id}`, {
       withCredentials: true
     });
   }
