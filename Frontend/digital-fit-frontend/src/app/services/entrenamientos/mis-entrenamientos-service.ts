@@ -1,7 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { getContenido } from '../../models/pagina-response';
+import { getContenido, getPagina, PaginaResponse } from '../../models/pagina-response';
+import {
+  aParametros,
+  EntrenamientoForm,
+  EntrenamientoUsuario,
+  FiltroEntrenamiento,
+} from '../../models/entrenamiento';
 
 @Injectable({
   providedIn: 'root'
@@ -11,49 +17,39 @@ export class MisEntrenamientosService {
   private http = inject(HttpClient);
   private apiUrl = '/api/mis-entrenamientos';
 
-  getMisEntrenamientos(): Observable<any[]> {
-    return getContenido(this.http, this.apiUrl);
+  getMisEntrenamientos(): Observable<EntrenamientoUsuario[]> {
+    return getContenido<EntrenamientoUsuario>(this.http, this.apiUrl);
   }
 
-  getMisEntrenamientosFiltrados(
-    categoria?: string,
-    nivel?: string,
-    duracionEnMinutos?: number,
-    nombre?: string
-  ): Observable<any[]> {
-    return getContenido(this.http, this.apiUrl, {
-      categoria: categoria?.toUpperCase().replaceAll(' ', '_'),
-      nivel: nivel?.toUpperCase().replaceAll(' ', '_'),
-      duracionEnMinutos,
-      nombre
-    });
+  buscar(filtro: FiltroEntrenamiento | null, page = 0): Observable<PaginaResponse<EntrenamientoUsuario>> {
+    return getPagina<EntrenamientoUsuario>(this.http, this.apiUrl, aParametros(filtro), page);
   }
 
-  getMiEntrenamientoById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+  getMiEntrenamientoById(id: number): Observable<EntrenamientoUsuario> {
+    return this.http.get<EntrenamientoUsuario>(`${this.apiUrl}/${id}`, {
       withCredentials: true
     });
   }
 
-  crearEntrenamiento(entrenamiento: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, entrenamiento, {
+  crearEntrenamiento(entrenamiento: EntrenamientoForm): Observable<EntrenamientoUsuario> {
+    return this.http.post<EntrenamientoUsuario>(this.apiUrl, entrenamiento, {
       withCredentials: true
     });
   }
 
-  anadirDesdeBase(idBase: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/desde-base/${idBase}`, {}, {
+  anadirDesdeBase(idBase: number): Observable<EntrenamientoUsuario> {
+    return this.http.post<EntrenamientoUsuario>(`${this.apiUrl}/desde-base/${idBase}`, {}, {
       withCredentials: true
     });
   }
 
-  anadirDesdeComunidad(idComunidad: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/desde-comunidad/${idComunidad}`, {}, {
+  anadirDesdeComunidad(idComunidad: number): Observable<EntrenamientoUsuario> {
+    return this.http.post<EntrenamientoUsuario>(`${this.apiUrl}/desde-comunidad/${idComunidad}`, {}, {
       withCredentials: true
     });
   }
 
-  borrarEntrenamiento(id: number): Observable<any> {
+  borrarEntrenamiento(id: number): Observable<unknown> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
       withCredentials: true
     });

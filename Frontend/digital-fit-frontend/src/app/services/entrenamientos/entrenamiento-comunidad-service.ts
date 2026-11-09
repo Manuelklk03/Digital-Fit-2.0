@@ -1,7 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { getContenido } from '../../models/pagina-response';
+import { getContenido, getPagina, PaginaResponse } from '../../models/pagina-response';
+import {
+  aParametros,
+  EntrenamientoComunidad,
+  EntrenamientoForm,
+  FiltroEntrenamiento,
+} from '../../models/entrenamiento';
 
 @Injectable({
   providedIn: 'root'
@@ -11,43 +17,33 @@ export class EntrenamientosComunidadService {
   private http = inject(HttpClient);
   private apiUrl = '/api/entrenamientos-comunidad';
 
-  getEntrenamientosComunidad(): Observable<any[]> {
-    return getContenido(this.http, this.apiUrl);
+  getEntrenamientosComunidad(): Observable<EntrenamientoComunidad[]> {
+    return getContenido<EntrenamientoComunidad>(this.http, this.apiUrl);
   }
 
-  getEntrenamientosComunidadFiltrados(
-    categoria?: string,
-    nivel?: string,
-    duracionEnMinutos?: number,
-    nombre?: string
-  ): Observable<any[]> {
-    return getContenido(this.http, this.apiUrl, {
-      categoria: categoria?.toUpperCase().replaceAll(' ', '_'),
-      nivel: nivel?.toUpperCase().replaceAll(' ', '_'),
-      duracionEnMinutos,
-      nombre
-    });
+  buscar(filtro: FiltroEntrenamiento | null, page = 0): Observable<PaginaResponse<EntrenamientoComunidad>> {
+    return getPagina<EntrenamientoComunidad>(this.http, this.apiUrl, aParametros(filtro), page);
   }
 
-  getEntrenamientoComunidadById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`, {
+  getEntrenamientoComunidadById(id: number): Observable<EntrenamientoComunidad> {
+    return this.http.get<EntrenamientoComunidad>(`${this.apiUrl}/${id}`, {
       withCredentials: true
     });
   }
 
-  crearEntrenamientoComunidad(entrenamiento: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, entrenamiento, {
+  crearEntrenamientoComunidad(entrenamiento: EntrenamientoForm): Observable<EntrenamientoComunidad> {
+    return this.http.post<EntrenamientoComunidad>(this.apiUrl, entrenamiento, {
       withCredentials: true
     });
   }
 
-  actualizarEntrenamientoComunidad(id: number, entrenamiento: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, entrenamiento, {
+  actualizarEntrenamientoComunidad(id: number, entrenamiento: EntrenamientoForm): Observable<EntrenamientoComunidad> {
+    return this.http.put<EntrenamientoComunidad>(`${this.apiUrl}/${id}`, entrenamiento, {
       withCredentials: true
     });
   }
 
-  borrarEntrenamientoComunidad(id: number): Observable<any> {
+  borrarEntrenamientoComunidad(id: number): Observable<unknown> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
       withCredentials: true
     });
