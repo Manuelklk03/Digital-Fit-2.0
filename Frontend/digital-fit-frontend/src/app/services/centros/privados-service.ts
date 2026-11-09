@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PaginaResponse, PARAMS_PAGINA_COMPLETA, soloContenido } from '../../models/pagina-response';
+import { getContenido, PARAMS_PAGINA_COMPLETA } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +12,7 @@ export class PrivadosService {
   private apiUrl = '/api/centros-privados';
 
   getCentrosPrivados(): Observable<any[]> {
-    return this.http.get<PaginaResponse<any>>(this.apiUrl, {
-      params: PARAMS_PAGINA_COMPLETA,
-      withCredentials: true
-    }).pipe(soloContenido());
+    return getContenido(this.http, this.apiUrl);
   }
 
   getCentrosPrivadosFiltrados(
@@ -37,10 +34,7 @@ export class PrivadosService {
       params = params.set('precioMensual', precioMensual.toString());
     }
 
-    return this.http.get<PaginaResponse<any>>(this.apiUrl, {
-      params,
-      withCredentials: true
-    }).pipe(soloContenido());
+    return getContenido(this.http, this.apiUrl, params);
   }
 
   getCentroPrivadoById(id: number): Observable<any> {

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PaginaResponse, PARAMS_PAGINA_COMPLETA, soloContenido } from '../../models/pagina-response';
+import { getContenido, PARAMS_PAGINA_COMPLETA } from '../../models/pagina-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +12,7 @@ export class ValoracionesService {
   private apiUrl = '/api/valoraciones';
 
   getMisValoraciones(): Observable<any[]> {
-    return this.http.get<PaginaResponse<any>>(`${this.apiUrl}/mis-valoraciones`, {
-      params: PARAMS_PAGINA_COMPLETA,
-      withCredentials: true
-    }).pipe(soloContenido());
+    return getContenido(this.http, `${this.apiUrl}/mis-valoraciones`);
   }
 
   getValoracionesPublicas(categoria?: string | null): Observable<any[]> {
@@ -25,17 +22,11 @@ export class ValoracionesService {
       params = params.set('categoria', categoria);
     }
 
-    return this.http.get<PaginaResponse<any>>(`${this.apiUrl}/publicas`, {
-      params,
-      withCredentials: true
-    }).pipe(soloContenido());
+    return getContenido(this.http, `${this.apiUrl}/publicas`, params);
   }
 
   getValoracionesPorContenido(tipoContenido: string, idContenido: number): Observable<any[]> {
-    return this.http.get<PaginaResponse<any>>(`${this.apiUrl}/${tipoContenido}/${idContenido}`, {
-      params: PARAMS_PAGINA_COMPLETA,
-      withCredentials: true
-    }).pipe(soloContenido());
+    return getContenido(this.http, `${this.apiUrl}/${tipoContenido}/${idContenido}`);
   }
 
   crearOActualizarValoracion(tipoContenido: string, idContenido: number, valoracion: any): Observable<any> {
