@@ -18,7 +18,7 @@
   to = "https://digital-fit-backend.onrender.com/api/:splat"
   status = 200
   force = true
-  headers = {X-Forwarded-Host = "digitalfit.netlify.app"}
+  headers = {X-Forwarded-Host = "digital-fit.netlify.app"}
 
 # Soporte para Angular Single Page Application (HTML5 pushState routing)
 [[redirects]]

@@ -153,7 +153,7 @@ La configuración de la aplicación está parametrizada para operar en tres ento
 
 | Variable / Parámetro | Desarrollo local (`dev`) | Staging (`staging`) | Producción (`prod`) |
 |---|---|---|---|
-| **Frontend** | `http://localhost:4200` (Angular CLI / nginx) | `https://staging--digitalfit.netlify.app` (Netlify) | `https://digitalfit.netlify.app` (Netlify / dominio propio) |
+| **Frontend** | `http://localhost:4200` (Angular CLI / nginx) | `https://staging--digital-fit.netlify.app` (Netlify) | `https://digital-fit.netlify.app` (Netlify / dominio propio) |
 | **Backend API** | `http://localhost:8080` (Spring Boot local / Compose) | `https://digital-fit-backend-staging.onrender.com` (Render Web Service) | `https://digital-fit-backend.onrender.com` (Render Web Service) |
 | **Base de datos** | PostgreSQL 17 local (`localhost:5433/digital_fit`) | Neon Serverless PostgreSQL (rama `staging`) | Neon Serverless PostgreSQL (rama `main`) |
 | `SPRING_PROFILES_ACTIVE` | `dev` | `staging` | `prod` |
@@ -162,7 +162,7 @@ La configuración de la aplicación está parametrizada para operar en tres ento
 | Nivel de logs | `DEBUG` (en consola y `logs/digitalfit.log`) | `INFO` (`logs/digitalfit-staging.log`) | `INFO` (`logs/digitalfit.log`) |
 | `server.error.include-stacktrace` | `always` | `never` | `never` |
 | `SESSION_COOKIE_SECURE` | `false` (permite cookies HTTP sobre `localhost`) | `true` (requiere HTTPS estricto) | `true` (requiere HTTPS estricto) |
-| `CORS_ALLOWED_ORIGINS` | `http://localhost:4200` | `https://staging--digitalfit.netlify.app` | `https://digitalfit.netlify.app` |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:4200` | `https://staging--digital-fit.netlify.app` | `https://digital-fit.netlify.app` |
 | **Proxy inverso `/api/*`** | `proxy.conf.json` / nginx Docker Compose | `netlify.toml` (`/api/*` → Render staging) | `netlify.toml` (`/api/*` → Render prod) |
 
 **Arquitectura de sesión y cookies (D2, D9):**
