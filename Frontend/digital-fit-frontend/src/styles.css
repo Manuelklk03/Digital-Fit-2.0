@@ -239,117 +239,6 @@ strong {
 }
 
 /* ========================================= */
-/* CABECERA */
-/* ========================================= */
-
-.cabecera {
-    position: sticky;
-    top: 0;
-    z-index: 3000;
-    background:
-        linear-gradient(135deg, rgba(60, 145, 230, 0.96), rgba(26, 79, 135, 0.94));
-    border-bottom: 1px solid rgba(255, 255, 255, 0.20);
-    box-shadow: 0 12px 30px rgba(26, 79, 135, 0.20);
-    animation: deslizarCabecera 0.6s ease;
-    backdrop-filter: blur(10px);
-}
-
-/* ========================================= */
-/* MENÚ DE NAVEGACIÓN */
-/* ========================================= */
-
-.menu-navegacion ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.menu-navegacion li {
-    display: inline-block;
-}
-
-.menu-navegacion a {
-    text-decoration: none;
-    font-weight: bold;
-    color: var(--color-blanco);
-    padding: 10px 16px;
-    border-radius: 999px;
-    transition: 0.25s ease;
-    position: relative;
-    background-color: transparent;
-}
-
-.menu-navegacion a:hover {
-    transform: translateY(-2px);
-    background-color: rgba(255, 255, 255, 0.16);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
-}
-
-.menu-navegacion a::after {
-    content: "";
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    bottom: 6px;
-    height: 2px;
-    transform: scaleX(0);
-    transform-origin: center;
-    background-color: rgba(255, 255, 255, 0.9);
-    transition: 0.25s ease;
-    border-radius: 999px;
-}
-
-.menu-navegacion a:hover::after {
-    transform: scaleX(1);
-}
-
-.enlace-activo {
-    background-color: rgba(255, 255, 255, 0.18);
-    color: var(--color-blanco) !important;
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
-}
-
-/* ========================================= */
-/* ESTADO DEL USUARIO */
-/* ========================================= */
-
-.estado-usuario {
-    font-weight: bold;
-    background: rgba(255, 255, 255, 0.14);
-    padding: 10px 16px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.24);
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    transition: 0.3s ease;
-    color: var(--color-blanco);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.10);
-    backdrop-filter: blur(8px);
-}
-
-.estado-usuario:hover {
-    transform: translateY(-2px);
-}
-
-.estado-usuario-iniciada {
-    background: rgba(31, 122, 55, 0.15);
-    border-color: rgba(31, 122, 55, 0.30);
-    color: #1e4d1e;
-}
-
-.icono-usuario-pequeno {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* ========================================= */
 /* FOOTER */
 /* ========================================= */
 
@@ -682,18 +571,6 @@ select {
     }
 }
 
-@keyframes deslizarCabecera {
-    from {
-        transform: translateY(-40px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
 @keyframes fadeUp {
     from {
         opacity: 0;
@@ -723,12 +600,6 @@ select {
 /* ========================================= */
 /* RESPONSIVE */
 /* ========================================= */
-
-@media (max-width: 900px) {
-    .cabecera {
-        padding: 16px 18px;
-    }
-}
 
 @media (max-width: 600px) {
     .bloque-mapa {

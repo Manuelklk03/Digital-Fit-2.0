@@ -15,7 +15,6 @@ export const diccionarioEs: DiccionarioTraduccion = {
     crearAdmin: 'Crear admin',
   },
   header: {
-    marcaSubtexto: 'Tu espacio deportivo digital',
     sesionNoIniciada: 'Sesión no iniciada',
     accedeParaContinuar: 'Accede para continuar',
     entrar: 'Entrar',

@@ -2,28 +2,21 @@
 
   <div class="cabecera-contenido">
     <a class="logo-enlace" routerLink="/inicio">
-      <img src="img/LOGOFINAL-removebg.png" alt="Logo Digital-FIT">
-      <div class="bloque-marca">
-        <span class="marca-mini">Digital-FIT</span>
-        <span class="marca-subtexto">{{ i18n.t().header.marcaSubtexto }}</span>
-      </div>
+      <img src="img/LOGOFINAL-removebg.png" alt="Digital-FIT">
     </a>
 
     <nav class="menu-navegacion" aria-label="Navegación principal">
       <ul>
+        <li><a routerLink="/inicio" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.inicio }}</a></li>
+        <li><a routerLink="/explorar" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.explorar }}</a></li>
+        <li><a routerLink="/entrenar" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.entrenar }}</a></li>
         @if (esAdmin()) {
-        <li><a routerLink="/inicio">{{ i18n.t().nav.inicio }}</a></li>
-        <li><a routerLink="/explorar">{{ i18n.t().nav.explorar }}</a></li>
-        <li><a routerLink="/entrenar">{{ i18n.t().nav.entrenar }}</a></li>
-        <li><a routerLink="/admin/crear-admin">{{ i18n.t().nav.crearAdmin }}</a></li>
+        <li><a routerLink="/admin/crear-admin" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.crearAdmin }}</a></li>
         } @else {
-        <li><a routerLink="/inicio">{{ i18n.t().nav.inicio }}</a></li>
-        <li><a routerLink="/explorar">{{ i18n.t().nav.explorar }}</a></li>
-        <li><a routerLink="/entrenar">{{ i18n.t().nav.entrenar }}</a></li>
-        <li><a routerLink="/mis-entrenamientos">{{ i18n.t().nav.misEntrenamientos }}</a></li>
-        <li><a routerLink="/mis-centros">{{ i18n.t().nav.misCentros }}</a></li>
-        <li><a routerLink="/mis-lugares">{{ i18n.t().nav.misLugares }}</a></li>
-        <li><a routerLink="/estadisticas">{{ i18n.t().nav.progreso }}</a></li>
+        <li><a routerLink="/mis-entrenamientos" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.misEntrenamientos }}</a></li>
+        <li><a routerLink="/mis-centros" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.misCentros }}</a></li>
+        <li><a routerLink="/mis-lugares" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.misLugares }}</a></li>
+        <li><a routerLink="/estadisticas" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.progreso }}</a></li>
         }
       </ul>
     </nav>
@@ -66,16 +59,12 @@
       <div class="estado-usuario">
         @if (usuarioActual) {
         <div class="estado-texto">
-          <span class="estado-linea-superior">{{ iconoUsuario() }} {{ usuarioActual.username }}</span>
+          <span class="estado-linea-superior">{{ usuarioActual.username }}</span>
           <span class="estado-linea-inferior">{{ usuarioActual.rol }}</span>
         </div>
-        <button class="boton-header" (click)="cerrarSesion()">{{ i18n.t().header.salir }}</button>
+        <button df-button variant="outline" size="sm" type="button" (click)="cerrarSesion()">{{ i18n.t().header.salir }}</button>
         } @else {
-        <div class="estado-texto">
-          <span class="estado-linea-superior">{{ i18n.t().header.sesionNoIniciada }}</span>
-          <span class="estado-linea-inferior">{{ i18n.t().header.accedeParaContinuar }}</span>
-        </div>
-        <a class="boton-header" routerLink="/login">{{ i18n.t().header.entrar }}</a>
+        <a df-button variant="primary" size="sm" routerLink="/login">{{ i18n.t().header.entrar }}</a>
         }
       </div>
     </div>
