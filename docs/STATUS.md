@@ -1,6 +1,12 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-09**.
+Última actualización: **2026-11-10**.
+
+> **2026-11-10 (Esqueletos de carga; rama `feat/frontend-skeletons`, en automático):**
+> - **Componente `df-skeleton`** en `components/ui/skeleton/`: bloque decorativo (`aria-hidden`) con brillo y sin animación con `prefers-reduced-motion`. Las listas de entrenamientos, valoraciones, detalles y estadísticas ya tenían esqueletos propios; no se tocaron.
+> - **Huecos cubiertos:** `/explorar` (esqueleto en la lista mientras llegan centros y lugares, con `aria-busy` y aviso accesible; el contador se oculta hasta tener datos) y la **carga inicial de la app** (esqueleto a ancho completo hasta que termina la primera navegación; los guards esperan a `/api/auth/me`, que tarda si Render está dormido).
+> - **Verificaciones:** `ng build` correcto, 54 suites y 229 tests en verde, 0 errores ESLint (4 avisos). Navegador (Chromium de Playwright, con `/api/auth/me` y los listados retenidos) a 1280 y 390 px: esqueletos visibles y sin scroll horizontal. Contra el backend de Render real: **sin comprobar**.
+> - **Hallazgo de despliegue (sin resolver):** `https://digitalfit.netlify.app` no sirve esta aplicación (`lang="en"`, sin `<app-root>`, `/entrenar` da 404 y `/api/*` también), así que el `netlify.toml` apunta a un sitio que no es el de Manuel o no se ha desplegado aquí. El backend de Render sí responde (`/actuator/health` UP, `/api/auth/me` 401). Falta la URL real del sitio de Netlify.
 
 > **2026-11-09 (Fase 2, Tarea 2.3 — Configuración de entornos dev, staging y prod; Parada G4 BLOQUEADO; rama `feat/configuracion-entornos-dev-staging-prod`):**
 > - **Perfil staging en Spring Boot:** Creado `application-staging.properties` con `spring.jpa.hibernate.ddl-auto=validate`, `show-sql=false`, registro en `logs/digitalfit-staging.log` y `server.error.include-stacktrace=never`. Ampliada suite `PerfilesPropertiesTest` para validar `dev`, `staging` y `prod`.
