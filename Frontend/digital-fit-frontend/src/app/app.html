@@ -1,1 +1,13 @@
+@if (primeraCarga()) {
+  <div class="carga-inicial" role="status">
+    <span class="sr-only">{{ i18n.t().comun.cargando }}</span>
+    <div df-skeleton alto="56px"></div>
+    <div df-skeleton alto="40px" class="carga-titulo"></div>
+    <div class="carga-rejilla">
+      @for (i of [1, 2, 3]; track i) {
+        <div df-skeleton alto="180px"></div>
+      }
+    </div>
+  </div>
+}
 <router-outlet></router-outlet>

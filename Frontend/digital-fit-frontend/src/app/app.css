@@ -1,0 +1,12 @@
+/* Mismo fondo y ancho que `.pagina` (tapa el fondo v1 del body) para que no haya salto al llegar la pantalla real. */
+.carga-inicial {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 32px max(16px, calc((100% - 1120px) / 2));
+  background-color: var(--df-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.carga-titulo { max-width: 360px; }
+.carga-rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
