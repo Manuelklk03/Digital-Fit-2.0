@@ -106,14 +106,24 @@
     <aside class="panel-resultados" aria-label="Lista de centros deportivos">
       <div class="resultados-cabecera">
         <h2 class="resultados-conteo">
-          {{ lugaresFiltrados().length }} lugares encontrados
+          @if (!cargando()) {
+            {{ lugaresFiltrados().length }} lugares encontrados
+          }
         </h2>
         @if (ubicacionUsuario()) {
           <span df-badge variant="accent" [dot]="true">Cerca de ti</span>
         }
       </div>
 
-      <div class="lista-tarjetas-envoltorio">
+      <div class="lista-tarjetas-envoltorio" [attr.aria-busy]="cargando()">
+        @if (cargando()) {
+          <div role="status">
+            <span class="sr-only">{{ i18n.t().comun.cargando }}</span>
+            @for (i of [1, 2, 3, 4]; track i) {
+              <div df-skeleton alto="148px" style="margin-bottom: 12px"></div>
+            }
+          </div>
+        }
         @for (lugar of lugaresFiltrados(); track lugar.id) {
           <article
             df-card

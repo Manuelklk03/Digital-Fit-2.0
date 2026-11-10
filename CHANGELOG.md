@@ -8,6 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Esqueletos de carga: componente reutilizable `df-skeleton`, usado en `/explorar` y en la carga inicial de la aplicación (que espera a la comprobación de sesión), con aviso accesible y sin animación si el usuario prefiere movimiento reducido.
 - Configuración y parametrización de entornos `dev`, `staging` y `prod` (tarea 2.3, D2, D9): perfil de Spring Boot `staging` (`application-staging.properties`) con `ddl-auto=validate`, logs en INFO y ocultación de trazas de error; parametrización de variables de entorno seguras (`SESSION_COOKIE_SECURE`, `CORS_ALLOWED_ORIGINS`, bases de datos) en `.env.example` y `docker-compose.yml`; archivo `netlify.toml` con proxy inverso transparente `/api/*` hacia Render y redirección SPA; suites de verificación `NetlifyConfigTest` y `PerfilesPropertiesTest`; y documentación de la matriz de entornos en `docs/deployment.md` registrando la parada G4 en `docs/HANDOFF.md`.
 
 - Migración Flyway `V6__ampliar_descripciones_y_comentarios.sql` que amplía a `VARCHAR(1500)` las columnas `descripcion` (entrenamientos base y de usuario, centros privados y lugares públicos base y de usuario) y `valoraciones.comentario` sin pérdida de datos, alineando el esquema relacional con las reglas de validación de los DTOs y verificada mediante `LongitudCamposDtoVsEsquemaTest` (parada G9).

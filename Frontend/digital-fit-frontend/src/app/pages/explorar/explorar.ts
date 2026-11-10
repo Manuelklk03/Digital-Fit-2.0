@@ -15,7 +15,8 @@ import { FormsModule } from '@angular/forms';
 import * as L from 'leaflet';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
-import { BadgeComponent, ButtonComponent, CardComponent, InputDirective } from '../../components/ui';
+import { BadgeComponent, ButtonComponent, CardComponent, InputDirective, SkeletonComponent } from '../../components/ui';
+import { I18nService } from '../../i18n/i18n.service';
 import { PrivadosService } from '../../services/centros/privados-service';
 import { PublicosService } from '../../services/publicos/publicos-service';
 
@@ -70,6 +71,7 @@ export interface LugarDeportivo {
     BadgeComponent,
     CardComponent,
     InputDirective,
+    SkeletonComponent,
   ],
   templateUrl: './explorar.html',
   styleUrl: './explorar.css',
@@ -78,6 +80,7 @@ export interface LugarDeportivo {
 export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('mapContainer') mapContainer!: ElementRef<HTMLDivElement>;
 
+  protected readonly i18n = inject(I18nService);
   private privadosService = inject(PrivadosService);
   private publicosService = inject(PublicosService);
   private http = inject(HttpClient);
