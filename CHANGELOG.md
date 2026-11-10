@@ -59,6 +59,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Cambiado
 
+- Cabecera rehecha con el sistema Neutral Sport / Industrial: superficie plana, enlace activo señalado con `aria-current`, botones del sistema, menú deslizable en móvil y selector de idioma accesible (Escape y cierre al pulsar fuera) sin banderas emoji. Retirados los estilos globales v1 de cabecera, menú y estado de usuario.
 - Retirada del sistema de tickets de soporte en el frontend (decisión de la tarea 3.1): pantallas, rutas, servicios, enlaces y textos en los 4 idiomas. El backend de tickets se retira aparte.
 
 - Imágenes Docker sin root (usuario `app` en el backend, `nginx-unprivileged` en el puerto 8080 en el frontend) y `npm ci --ignore-scripts`.
@@ -85,6 +86,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
+- El texto escrito en los campos del login y del registro era invisible (fondo blanco heredado de un selector v1 sobre texto claro).
+- Sin elevación global en `button:hover`, selección de texto legible sobre fondo oscuro y `prefers-reduced-motion` respetado en toda la aplicación.
 - Validación `@Valid` en `@RequestBody CrearValoracionDTO` en `ValoracionRestController.crearOActualizar`, devolviendo 400 ProblemDetail cuando el comentario supera los 1500 caracteres o la puntuación queda fuera del rango 1–5, cubierto en la suite `ValidacionRestControllersTest` (parada G9).
 - Exigencia de longitud mínima de 6 caracteres (`@Size(min = 6)`) en contraseñas de `CrearAdmin` y `UsuarioDTO` para evitar contraseñas débiles mediante petición directa, devolviendo 400 ProblemDetail y verificado en `ValidacionRestControllersTest` (parada G9).
 - `explorar.ts` mostraba los centros privados de la app como lugares públicos: el backend envía `LOCAL_PRIVADO`/`LOCAL_PUBLICO` y el frontend esperaba `PRIVADO`/`PUBLICO`.

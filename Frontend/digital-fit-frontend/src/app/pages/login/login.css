@@ -123,8 +123,8 @@
 }
 
 .descripcion-demo {
-  font-size: 11px;
-  color: var(--df-text-subtle);
+  font-size: 12px;
+  color: var(--df-text-muted);
   margin: 4px 0 10px;
   line-height: 1.4;
 }
@@ -167,7 +167,7 @@
   font-family: var(--font-mono, monospace);
   font-size: 12px;
   font-weight: 600;
-  color: var(--df-primary);
+  color: var(--df-text);
   margin-top: 2px;
 }
 

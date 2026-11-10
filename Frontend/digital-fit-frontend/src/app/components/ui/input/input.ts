@@ -23,8 +23,7 @@ export type InputSize = 'sm' | 'md' | 'lg';
       }
 
       :host::placeholder {
-        color: var(--df-text-subtle);
-        opacity: 0.8;
+        color: var(--df-text-muted);
       }
 
       :host(:focus) {

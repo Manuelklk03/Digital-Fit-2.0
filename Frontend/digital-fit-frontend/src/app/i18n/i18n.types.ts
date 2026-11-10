@@ -30,7 +30,6 @@ export interface DiccionarioTraduccion {
     crearAdmin: string;
   };
   header: {
-    marcaSubtexto: string;
     sesionNoIniciada: string;
     accedeParaContinuar: string;
     entrar: string;

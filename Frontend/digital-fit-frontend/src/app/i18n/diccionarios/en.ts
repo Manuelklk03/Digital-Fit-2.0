@@ -15,7 +15,6 @@ export const diccionarioEn: DiccionarioTraduccion = {
     crearAdmin: 'Create admin',
   },
   header: {
-    marcaSubtexto: 'Your digital fitness space',
     sesionNoIniciada: 'Not signed in',
     accedeParaContinuar: 'Sign in to continue',
     entrar: 'Sign in',
