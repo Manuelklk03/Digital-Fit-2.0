@@ -191,8 +191,8 @@ strong {
 }
 
 ::selection {
-    background-color: rgba(60, 145, 230, 0.22);
-    color: var(--color-negro);
+    background-color: rgba(59, 130, 246, 0.45);
+    color: var(--df-text);
 }
 
 /* ========================================= */
@@ -264,7 +264,6 @@ strong {
 /* BOTONES */
 /* ========================================= */
 
-button,
 .boton-guardar,
 .boton-detalle,
 .boton-anadir,
@@ -281,7 +280,6 @@ button,
         background-color 0.22s ease;
 }
 
-button:hover,
 .boton-guardar:hover,
 .boton-detalle:hover,
 .boton-anadir:hover,
@@ -295,7 +293,6 @@ button:hover,
     filter: brightness(1.03);
 }
 
-button:active,
 .boton-guardar:active,
 .boton-detalle:active,
 .boton-anadir:active,
@@ -631,5 +628,15 @@ select {
 
     .popup-overlay {
         padding-top: 90px;
+    }
+}
+
+/* Movimiento reducido: sin desplazamiento suave ni animaciones ni transiciones (AGENTS.md). */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

@@ -27,26 +27,24 @@
           type="button"
           class="boton-idioma"
           [attr.aria-expanded]="desplegableIdiomaAbierto"
-          aria-haspopup="listbox"
           [attr.aria-label]="i18n.t().header.cambiarIdioma"
           (click)="alternarDesplegableIdioma()"
         >
-          <span class="bandera-idioma">{{ i18n.infoIdiomaActual().bandera }}</span>
           <span class="codigo-idioma">{{ i18n.infoIdiomaActual().abreviatura }}</span>
           <span class="flecha-idioma" aria-hidden="true">▾</span>
         </button>
 
         @if (desplegableIdiomaAbierto) {
-        <ul class="menu-idiomas" role="listbox" [attr.aria-label]="i18n.t().header.cambiarIdioma">
+        <ul class="menu-idiomas" [attr.aria-label]="i18n.t().header.cambiarIdioma">
           @for (item of i18n.idiomas; track item.codigo) {
-          <li role="option" [attr.aria-selected]="item.codigo === i18n.idiomaActual()">
+          <li>
             <button
               type="button"
               class="opcion-idioma"
               [class.activo]="item.codigo === i18n.idiomaActual()"
+              [attr.aria-current]="item.codigo === i18n.idiomaActual() ? 'true' : null"
               (click)="seleccionarIdioma(item.codigo)"
             >
-              <span class="bandera-opcion">{{ item.bandera }}</span>
               <span class="nombre-opcion">{{ item.etiqueta }}</span>
               <span class="abreviatura-opcion">({{ item.abreviatura }})</span>
             </button>

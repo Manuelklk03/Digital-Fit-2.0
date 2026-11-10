@@ -57,4 +57,33 @@ describe('HeaderComponent', () => {
     expect(botonIdioma).toBeTruthy();
     expect(botonIdioma?.textContent).toContain('ES');
   });
+
+  it('con Escape cierra el menú de idiomas y devuelve el foco al botón', () => {
+    document.body.appendChild(fixture.nativeElement);
+    fixture.detectChanges();
+    const boton = fixture.nativeElement.querySelector('.boton-idioma') as HTMLButtonElement;
+    boton.click();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.menu-idiomas')).toBeTruthy();
+
+    fixture.nativeElement.querySelector('.opcion-idioma').dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.menu-idiomas')).toBeNull();
+    expect(document.activeElement).toBe(boton);
+    fixture.nativeElement.remove();
+  });
+
+  it('cierra el menú de idiomas al pulsar fuera, pero no al pulsar dentro', () => {
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('.boton-idioma').click();
+    fixture.detectChanges();
+    expect(component.desplegableIdiomaAbierto).toBe(true);
+
+    fixture.nativeElement.querySelector('.menu-idiomas').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    expect(component.desplegableIdiomaAbierto).toBe(true);
+
+    document.body.click();
+    expect(component.desplegableIdiomaAbierto).toBe(false);
+  });
 });
