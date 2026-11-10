@@ -2,6 +2,12 @@
 
 Última actualización: **2026-11-10**.
 
+> **2026-11-10 (Despliegue: diagnóstico de Netlify y Render; rama `fix/netlify-url-real`):**
+> - **URL real de Netlify:** `https://digital-fit.netlify.app` (Manuel). Corregida en `netlify.toml`, `.env.example` y `docs/deployment.md`; antes decían `digitalfit.netlify.app`, que es de otro sitio.
+> - **Sitio protegido (sin resolver, depende de Manuel):** `digital-fit.netlify.app` responde `401` con una página «Login Redirect» a `/`, `/entrenar` y `/api/*`, así que Netlify tiene activada la protección de acceso de los despliegues. No he podido comprobar si la aplicación está desplegada ahí ni si el proxy `/api/*` llega a Render. Hay que desactivarla en Netlify (Site configuration → Access & security).
+> - **`RENDER_DEPLOY_HOOK` inválido:** el CI de `main` falla en «Publicar imagen backend» (`curl: (6) Could not resolve host`) y cancela la imagen del frontend. Debe ser la URL completa de Render (`https://api.render.com/deploy/srv-…?key=…`).
+> - **Pendiente de confirmar:** que `https://digital-fit-backend.onrender.com` sea el servicio de Manuel (responde `/actuator/health` UP y 401 en `/api/auth/me`, coherente con esta API, pero no lo prueba).
+
 > **2026-11-10 (Login y cabecera; rama `feat/frontend-login-header`, en automático):**
 > - **Texto invisible en el login (corregido):** la regla global v1 `.grupo-campo input` de `styles.css` pintaba fondo blanco sobre el texto casi blanco del sistema nuevo (`rgb(240,246,252)` sobre `rgba(255,255,255,.94)`). Retirada junto con otros selectores v1 de input que ninguna plantilla usa. Comprobado en navegador: campo oscuro con texto claro en tema oscuro, claro y móvil.
 > - **Cabecera rehecha** con Neutral Sport / Industrial: superficie plana con tokens `--df-*` y borde (antes degradado azul v1), enlace activo con `aria-current`, `df-button` para Entrar y Salir, sin emoji de usuario ni banderas emoji, logo recortado a su franja central (el PNG es un lienzo cuadrado de 500 px), menú deslizable en tableta y móvil (cabecera de 127 px en móvil, antes 238). Retirados de `styles.css` los bloques globales v1 de cabecera, menú y estado de usuario, que pisaban el componente. Eliminada la clave i18n `marcaSubtexto`.
