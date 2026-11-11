@@ -127,6 +127,7 @@ export const diccionarioEs: DiccionarioTraduccion = {
     demoClickLlenar: 'Rellenar datos de prueba',
     errorCamposObligatorios: 'Debes completar todos los campos obligatorios.',
     errorCredenciales: 'Usuario o contraseña incorrectos.',
+    errorDemasiadosIntentos: 'Demasiados intentos fallidos. Espera un momento y vuelve a intentarlo.',
     errorSesion: 'Error al recuperar la información de sesión.',
     exitoLogin: 'Sesión iniciada correctamente. Redirigiendo...',
     registroBadge: 'NUEVA CUENTA • DIGITAL-FIT',
