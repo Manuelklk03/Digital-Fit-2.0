@@ -239,28 +239,6 @@ strong {
 }
 
 /* ========================================= */
-/* FOOTER */
-/* ========================================= */
-
-.pie-pagina {
-    text-align: center;
-    padding: 26px 18px;
-    background:
-        linear-gradient(135deg, rgba(26, 79, 135, 0.96), rgba(60, 145, 230, 0.94));
-    color: var(--color-blanco);
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: 0 -10px 30px rgba(26, 79, 135, 0.12);
-    animation: aparecerPagina 1s ease;
-}
-
-.pie-pagina small {
-    display: inline-block;
-    font-size: 14px;
-    letter-spacing: 0.3px;
-    opacity: 0.95;
-}
-
-/* ========================================= */
 /* BOTONES */
 /* ========================================= */
 
