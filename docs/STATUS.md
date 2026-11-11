@@ -2,6 +2,11 @@
 
 Última actualización: **2026-11-11**.
 
+> **2026-11-11 (G10 punto 1 — Manejo de 405 Method Not Allowed; rama `fix/backend-405-method-not-allowed`):**
+> - **Manejador de método no permitido (RFC 7807):** Añadido manejador `@ExceptionHandler(HttpRequestMethodNotSupportedException.class)` en `GlobalExceptionHandler` devolviendo `405 ProblemDetail` (`urn:problem-type:metodo-no-permitido`) y la cabecera `Allow` con los métodos HTTP admitidos, evitando que caiga en el manejador general 500.
+> - **Verificaciones:** Test unitario en `GlobalExceptionHandlerTest` y test WebMvc en `AdminRutasPermisosSecurityTest` validando respuesta 405 con cabecera `Allow` ante `GET /api/admin/entrenamientos-base` con rol `ADMIN`. 125 tests de backend en verde.
+
+
 > **2026-11-11 (Footer rehecho; rama `feat/frontend-footer`, en automático):**
 > - **Footer** con Neutral Sport / Industrial, igual que la cabecera: superficie plana con borde y tokens `--df-*` (antes degradado azul v1, textos fijos en español y un «®» sin sentido). Contenido real y verificable: logo, descripción, navegación (Inicio, Explorar, Entrenar), enlace al código en GitHub (el repositorio es público) y a la licencia de OpenStreetMap, y el año actual calculado. Textos en los 4 idiomas (`footer` en el diccionario tipado). Retirado de `styles.css` el bloque global v1 del pie.
 > - **Verificaciones:** `ng build` correcto, 54 suites y 235 tests en verde (+3: enlaces, año sin ®, cambio de idioma), 0 errores ESLint (4 avisos). Navegador (Chromium de Playwright) a 1280, 820 y 390 px: sin scroll horizontal, enlaces de 44 px en móvil, enlace en `#8b949e` sobre `#0d1117` (≈6,4:1, calculado). **Sin revisión de Codex todavía**: se hará con el siguiente bloque.
