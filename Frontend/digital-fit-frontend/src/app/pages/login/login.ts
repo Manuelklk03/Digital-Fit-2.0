@@ -5,6 +5,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -81,9 +82,11 @@ export class LoginComponent {
           },
         });
       },
-      error: () => {
+      error: (err: HttpErrorResponse) => {
         this.cargando = false;
-        this.mostrarAlerta(this.i18n.t().auth.errorCredenciales, 'error');
+        // 429: el backend limita los intentos fallidos; con ese error la clave puede ser correcta.
+        const a = this.i18n.t().auth;
+        this.mostrarAlerta(err.status === 429 ? a.errorDemasiadosIntentos : a.errorCredenciales, 'error');
         this.cdr.markForCheck();
       },
     });

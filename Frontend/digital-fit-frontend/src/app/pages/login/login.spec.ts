@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -71,5 +71,27 @@ describe('LoginComponent', () => {
 
     expect(component.alerta()?.tipo).toBe('error');
     expect(component.cargando).toBe(false);
+  });
+
+  it('con 429 avisa del límite de intentos en lugar de decir que la clave es incorrecta', () => {
+    vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new HttpErrorResponse({ status: 429 })));
+
+    component.username = 'usuario1';
+    component.password = 'Usuario123!';
+    component.iniciarSesion();
+
+    expect(component.alerta()?.texto).toContain('Demasiados intentos');
+    expect(component.alerta()?.texto).not.toContain('incorrectos');
+    expect(component.cargando).toBe(false);
+  });
+
+  it('con 401 sigue diciendo que usuario o contraseña son incorrectos', () => {
+    vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new HttpErrorResponse({ status: 401 })));
+
+    component.username = 'usuario1';
+    component.password = 'mala';
+    component.iniciarSesion();
+
+    expect(component.alerta()?.texto).toContain('incorrectos');
   });
 });
