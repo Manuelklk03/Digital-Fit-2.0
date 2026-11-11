@@ -11,6 +11,6 @@ Por defecto, Manuel escribe el código y Claude explica paso a paso, un archivo 
 
 ## Plugins en este proyecto
 
-`.claude/settings.json` desactiva aquí `caveman`, `superpowers` y `claude-mem` (recortan las explicaciones o imponen otro flujo) y pone `ponytail` en `lite`. Si un plugin o skill pide otra forma de trabajar (implementar por su cuenta, respuestas telegráficas, otro flujo de commits), manda `AGENTS.md` y el modo guiado. Qué skill usar en cada fase: [docs/ai-workflow.md](docs/ai-workflow.md).
+`.claude/settings.json` desactiva aquí `caveman`, `superpowers` y `claude-mem` (recortan las explicaciones o imponen otro flujo), `oh-my-claudecode`, `mempalace`, `cli-anything`, `lemo-opuscar`, `vercel`, `supabase` y `scroll-world` (no aplican a este stack o chocan con el modo guiado) y pone `ponytail` en `lite`. Si un plugin o skill pide otra forma de trabajar (implementar por su cuenta, respuestas telegráficas, otro flujo de commits), manda `AGENTS.md` y el modo guiado. Qué skill usar en cada fase: [docs/ai-workflow.md](docs/ai-workflow.md).
 
 En Claude web, adjunta los archivos referenciados: las importaciones `@` solo funcionan en Claude Code.

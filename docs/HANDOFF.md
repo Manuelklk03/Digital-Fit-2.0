@@ -22,7 +22,7 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 | G1 | Resuelta | Antigravity → Claude | Tarea 4.8 completada (PR #62) y adaptada por Claude en frontend (PR #64) |
 | G2 | Resuelta | Claude → Antigravity | Pantallas y servicios de soporte retirados en frontend (PR #65) y backend purgado con Flyway V4 (PR #66) |
 | G3 | Resuelta | Claude → Antigravity | Confirmado: cero referencias residuales a soporte o tickets en frontend y backend |
-| G4 | BLOQUEADO | Manuel → Antigravity | Tarea 2.3 completada. Se necesita que Manuel cree las cuentas de Netlify, Render y Neon y guarde los secretos con `gh secret set` para abordar 2.4 |
+| G4 | Resuelta | Manuel → Antigravity | Cuentas y secretos de Netlify, Render y Neon creados por Manuel; recorrido real de la 2.4 verificado por Claude el 2026-11-11 (ver registro) |
 | G5 | LIBRE | Claude → Antigravity | Fase 5 cerrada: Antigravity puede hacer 6.2 (E2E) y 6.1 (CI) |
 | G6 | LIBRE | Claude → Antigravity | Claude no tiene ramas abiertas tras fusionar `feat/recorrido-progreso`: Antigravity puede hacer 6.5 (Prettier) |
 | G7 | Pendiente | Manuel → Antigravity | 7.3 (tag `v2.0.0`) solo con orden expresa de Manuel |
@@ -43,9 +43,15 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 | 2026-11-09 | G8 | LIBRE | Recorrido 2 (entrenamientos) cerrado en `feat/recorrido-entrenamientos`. Al probarlo contra Docker aparecen 3 fallos de backend para Antigravity (ver «Fallos de backend para Antigravity») |
 | 2026-11-09 | G5, G6 y G9 | LIBRE | Claude cierra la fase 5 (recorridos 3, 4 y 5). Antigravity puede empezar E2E, CI y Prettier, y corregir los fallos de backend de G9 |
 | 2026-11-10 | G4 | BLOQUEADO | Sigue pendiente de Manuel, con tres hallazgos de Claude: (1) la URL real de Netlify es `https://digital-fit.netlify.app` (no `digitalfit`), ya corregida en `netlify.toml`, `.env.example` y `docs/deployment.md`; (2) ese sitio responde `401 Login Redirect` a todo, incluido `/api/*`: tiene activada la protección de acceso de Netlify y hay que desactivarla; (3) `RENDER_DEPLOY_HOOK` no es una URL válida (`curl: (6) Could not resolve host`) y rompe el paso «Publicar imagen backend». Antigravity: tras corregirlo Manuel, volver a comprobar `/api/auth/me` a través de Netlify y valorar que el deploy hook no cancele la imagen del frontend |
+| 2026-11-11 | G4 | Resuelta | Netlify público (`https://digital-fit.netlify.app`), proxy `/api/*` a Render, `RENDER_DEPLOY_HOOK` válido (CI en verde) y Neon con los datos de demo. Verificado en producción: login de `usuario1` y `admin1` (rol `ADMIN`), crear un recurso propio (201), cerrar sesión (`/me` da 401), volver a entrar, el recurso persiste y se borra (204); permisos: usuario 403 y anónimo 401 en `/api/admin/**`. **No probado:** el registro de un usuario nuevo (dejaría un usuario en la base de producción) |
 | 2026-11-09 | G8 | Resuelta | Antigravity resolvió los 3 fallos de backend (V5 hashes demo, 404 NoResourceFoundException, y parámetro q en historial). Claude ya puede añadir la búsqueda del historial en frontend |
 | 2026-11-09 | G9 | Resuelta | Antigravity resolvió los fallos de G9 (V6 amplía columnas a VARCHAR(1500), @Valid en valoraciones, contraseñas mínimo 6 caracteres en admin y registro, y parámetro opcional q en mis-valoraciones). Claude ya puede subir el límite de los formularios a 1500 e integrar la búsqueda textual en mis valoraciones cuando lo requiera |
 | 2026-11-09 | G4 | BLOQUEADO | Tarea 2.3 completada. Antigravity queda a la espera de que Manuel cree las 3 cuentas gratuitas (Netlify, Render, Neon) y configure los 4 secretos en GitHub Actions (ver detalle abajo) para abordar la tarea 2.4 |
+
+## Fallos de backend para Antigravity (G10, 2026-11-11) — Abiertos
+
+1. **405 como 500.** Un método HTTP no permitido (p. ej. `GET /api/admin/entrenamientos-base`, que solo tiene POST, PUT y DELETE) responde `500` en lugar de `405 Method Not Allowed`: `GlobalExceptionHandler` no tiene manejador para `HttpRequestMethodNotSupportedException` y cae en el genérico. Comprobado en producción con `admin1` (los tres `/api/admin/*-base` dan 500; con `usuario1` dan 403 y sin sesión 401, que es correcto). Añadir el manejador (ProblemDetail 405) y su test.
+2. **Arranque en frío y proxy de Netlify.** Con Render dormido (se duerme a los 15 min), la primera petición tarda más que el tiempo de espera del proxy de Netlify y responde `504`; un reintento a los segundos funciona (login en 5,6 s). Valorar un ping periódico (p. ej. un workflow programado de GitHub Actions a `/actuator/health` cada 10 min) o documentar el límite. Es de infraestructura: lo decide Manuel.
 
 ## Requisitos para desbloquear la Parada G4 (Manuel)
 
