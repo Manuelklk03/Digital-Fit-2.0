@@ -2,6 +2,12 @@
 
 Última actualización: **2026-11-11**.
 
+> **2026-11-11 (Cierre de 2.4 y selección de skills; rama `chore/skills-proyecto`):**
+> - **Tarea 2.4 verificada en producción** (`https://digital-fit.netlify.app`): login de `usuario1` y `admin1` (rol `ADMIN`), crear un recurso propio, cerrar sesión, volver a entrar, persistencia y borrado, y permisos (usuario 403, anónimo 401). Parada G4 **resuelta**. **No probado:** registro de usuario nuevo (dejaría datos en producción) y un staging separado (no existe).
+> - **Hallazgos (G10, para Antigravity):** método HTTP no permitido responde 500 en lugar de 405; el arranque en frío de Render supera el tiempo de espera del proxy de Netlify y da 504 en la primera petición (reintento correcto; valorar ping periódico).
+> - **Skills y plugins:** `.claude/settings.json` desactiva además `oh-my-claudecode`, `mempalace`, `cli-anything`, `lemo-opuscar`, `vercel`, `supabase` y `scroll-world`; motivos y skills por momento en `docs/ai-workflow.md`. Se aplica al abrir una sesión nueva.
+> - **Siguiente:** tarea 3.9 (SEO), pendiente y obligatoria; antes, plan de archivos y comprobaciones para tu aprobación.
+
 > **2026-11-11 (Revisión de Codex del bloque #73–#75; rama `fix/codex-esqueleto-aria`):**
 > - **Codex** (solo lectura, 3 hallazgos, todos verificados contra el código y reales): (1) el esqueleto de carga inicial se ocultaba en el primer `NavigationCancel`, pero los guards redirigen con `router.navigate()` y devuelven `false`, así que la pantalla quedaba en blanco hasta que llegaba el destino; corregido en `app.ts` con un test que reproduce el caso (en rojo antes del arreglo); (2) `netlify.toml` apunta siempre a Render de producción, así que un deploy preview usaría los datos reales: documentado en `docs/deployment.md` como límite conocido; (3) `aria-busy` en el contenedor del `role=status` de Explorar: retirado.
 > - **Verificaciones:** `ng build` correcto, 54 suites y 232 tests en verde, 0 errores ESLint (4 avisos). No comprobado en navegador ni con lector de pantalla.
