@@ -45,6 +45,11 @@ export interface DiccionarioTraduccion {
     datosMapa: string;
     creditoProyecto: string;
   };
+  seo: {
+    inicio: { titulo: string; descripcion: string };
+    login: { titulo: string; descripcion: string };
+    registro: { titulo: string; descripcion: string };
+  };
   inicio: {
     badge: string;
     heroTitulo: string;

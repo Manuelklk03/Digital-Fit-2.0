@@ -30,6 +30,20 @@ export const diccionarioEn: DiccionarioTraduccion = {
     datosMapa: 'Map data: OpenStreetMap',
     creditoProyecto: 'Portfolio project',
   },
+  seo: {
+    inicio: {
+      titulo: 'Digital-FIT · Workouts, places and training tracking',
+      descripcion: 'Log sets, weights and rest times, find gyms, calisthenics parks and pools on the map, and follow your progress.',
+    },
+    login: {
+      titulo: 'Sign in · Digital-FIT',
+      descripcion: 'Sign in to your Digital-FIT account to manage your workouts and explore sports centres.',
+    },
+    registro: {
+      titulo: 'Create account · Digital-FIT',
+      descripcion: 'Create your Digital-FIT account to save your workouts, your places and your history.',
+    },
+  },
   inicio: {
     badge: 'OPEN SOURCE PROJECT • VALENCIA & COMMUNITY',
     heroTitulo: 'Organize your workouts and discover where to train',
