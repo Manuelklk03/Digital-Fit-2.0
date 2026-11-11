@@ -22,6 +22,14 @@ export const diccionarioFr: DiccionarioTraduccion = {
     cambiarIdioma: 'Changer de langue',
     idiomaSeleccionado: 'Langue actuelle',
   },
+  footer: {
+    descripcion: 'Entraînements, lieux et suivi sportif au même endroit.',
+    navegacion: 'Navigation',
+    proyecto: 'Projet',
+    codigoFuente: 'Code source sur GitHub',
+    datosMapa: 'Données cartographiques : OpenStreetMap',
+    creditoProyecto: 'Projet de portfolio',
+  },
   inicio: {
     badge: 'PROJET OPEN SOURCE • VALENCE ET COMMUNAUTÉ',
     heroTitulo: 'Organisez vos entraînements et trouvez où vous entraîner',

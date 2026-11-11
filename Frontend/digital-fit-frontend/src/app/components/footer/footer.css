@@ -1,61 +1,56 @@
-.pie-pagina {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, rgba(26, 79, 135, 0.97), rgba(60, 145, 230, 0.95));
-    color: white;
-    border-top: 1px solid rgba(255,255,255,0.16);
-    box-shadow: 0 -10px 30px rgba(26, 79, 135, 0.10);
-}
-
-.pie-pagina::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.10), transparent 45%);
-    pointer-events: none;
+/* Pie — Neutral Sport / Industrial: superficie plana con borde, sin degradados ni sombras (como la cabecera). */
+.pie {
+  background-color: var(--df-bg);
+  border-top: 1px solid var(--df-border);
+  color: var(--df-text-muted);
+  font-family: var(--df-font-sans);
 }
 
 .pie-contenido {
-    position: relative;
-    z-index: 1;
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 24px 20px;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-    align-items: center;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) repeat(2, minmax(0, 1fr));
+  gap: 32px;
 }
 
-.pie-bloque {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.pie-marca { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+.pie-marca p { margin: 0; max-width: 34ch; font-size: 14px; line-height: 1.6; }
+
+/* El PNG es un lienzo cuadrado de 500 px con el rótulo en la franja central: se recorta a esa franja. */
+.pie-logo { display: inline-flex; border-radius: var(--df-radius-sm); }
+.pie-logo img { display: block; height: 34px; width: 136px; object-fit: cover; object-position: 0 50%; }
+
+.pie-columna ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.pie-titulo { margin: 0 0 10px; font-size: 13px; font-weight: 700; color: var(--df-text); }
+
+.pie a {
+  display: inline-block;
+  padding: 4px 0;
+  font-size: 14px;
+  color: var(--df-text-muted);
+  text-decoration: none;
+  border-radius: var(--df-radius-sm);
+  transition: color var(--df-transition-fast);
 }
 
-.pie-bloque strong {
-    font-size: 18px;
-    letter-spacing: 0.3px;
-}
+.pie a:hover { color: var(--df-text); text-decoration: underline; text-underline-offset: 3px; }
+.pie a:focus-visible { outline: 2px solid var(--df-border-focus); outline-offset: 2px; }
 
-.pie-bloque small {
-    font-size: 14px;
-    opacity: 0.94;
-    line-height: 1.6;
-}
-
-.pie-bloque-derecha {
-    text-align: right;
+.pie-base { border-top: 1px solid var(--df-border); }
+.pie-base small {
+  display: block;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  font-size: 13px;
+  color: var(--df-text-muted);
 }
 
 @media (max-width: 700px) {
-    .pie-contenido {
-        justify-content: center;
-        text-align: center;
-    }
-
-    .pie-bloque-derecha {
-        text-align: center;
-    }
+  .pie-contenido { grid-template-columns: 1fr 1fr; padding: 24px 16px; gap: 24px; }
+  .pie-marca { grid-column: 1 / -1; }
+  .pie-base small { padding: 16px; }
+  .pie a { min-height: 44px; display: inline-flex; align-items: center; }
 }

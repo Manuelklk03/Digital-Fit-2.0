@@ -22,6 +22,14 @@ export const diccionarioEs: DiccionarioTraduccion = {
     cambiarIdioma: 'Cambiar idioma',
     idiomaSeleccionado: 'Idioma actual',
   },
+  footer: {
+    descripcion: 'Entrenamientos, lugares y seguimiento deportivo en un solo sitio.',
+    navegacion: 'Navegación',
+    proyecto: 'Proyecto',
+    codigoFuente: 'Código en GitHub',
+    datosMapa: 'Datos de mapa: OpenStreetMap',
+    creditoProyecto: 'Proyecto de portfolio',
+  },
   inicio: {
     badge: 'PROYECTO OPEN SOURCE • VALENCIA & COMUNIDAD',
     heroTitulo: 'Organiza tus entrenamientos y encuentra dónde entrenar',
