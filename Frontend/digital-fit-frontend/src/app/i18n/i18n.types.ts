@@ -133,6 +133,7 @@ export interface DiccionarioTraduccion {
     errorCamposObligatorios: string;
     errorCredenciales: string;
     errorDemasiadosIntentos: string;
+    errorInesperado: string;
     errorSesion: string;
     exitoLogin: string;
     registroBadge: string;

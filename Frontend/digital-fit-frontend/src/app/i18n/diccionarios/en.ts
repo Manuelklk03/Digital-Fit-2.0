@@ -128,6 +128,7 @@ export const diccionarioEn: DiccionarioTraduccion = {
     errorCamposObligatorios: 'Please fill in all required fields.',
     errorCredenciales: 'Invalid username or password.',
     errorDemasiadosIntentos: 'Too many failed attempts. Wait a moment and try again.',
+    errorInesperado: "Couldn't sign in. Check your connection and try again.",
     errorSesion: 'Failed to retrieve active session.',
     exitoLogin: 'Signed in successfully. Redirecting...',
     registroBadge: 'NEW ACCOUNT • DIGITAL-FIT',

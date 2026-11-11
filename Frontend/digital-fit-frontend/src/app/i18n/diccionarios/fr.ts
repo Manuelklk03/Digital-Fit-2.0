@@ -128,6 +128,7 @@ export const diccionarioFr: DiccionarioTraduccion = {
     errorCamposObligatorios: 'Veuillez remplir tous les champs obligatoires.',
     errorCredenciales: "Nom d'utilisateur ou mot de passe incorrect.",
     errorDemasiadosIntentos: 'Trop de tentatives échouées. Patientez un instant et réessayez.',
+    errorInesperado: 'Connexion impossible. Vérifiez votre connexion et réessayez.',
     errorSesion: 'Erreur lors de la récupération de la session.',
     exitoLogin: 'Connexion réussie. Redirection en cours...',
     registroBadge: 'NOUVEAU COMPTE • DIGITAL-FIT',

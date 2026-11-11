@@ -85,6 +85,21 @@ describe('LoginComponent', () => {
     expect(component.cargando).toBe(false);
   });
 
+  it.each([
+    [0, 'sin conexión'],
+    [403, 'rechazo de CSRF'],
+    [500, 'error del servidor'],
+  ])('con %i (%s) no culpa a la contraseña', (status) => {
+    vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new HttpErrorResponse({ status })));
+
+    component.username = 'usuario1';
+    component.password = 'Usuario123!';
+    component.iniciarSesion();
+
+    expect(component.alerta()?.texto).toContain('No se pudo iniciar sesión');
+    expect(component.alerta()?.texto).not.toContain('incorrectos');
+  });
+
   it('con 401 sigue diciendo que usuario o contraseña son incorrectos', () => {
     vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new HttpErrorResponse({ status: 401 })));
 
