@@ -37,6 +37,14 @@ export interface DiccionarioTraduccion {
     cambiarIdioma: string;
     idiomaSeleccionado: string;
   };
+  footer: {
+    descripcion: string;
+    navegacion: string;
+    proyecto: string;
+    codigoFuente: string;
+    datosMapa: string;
+    creditoProyecto: string;
+  };
   inicio: {
     badge: string;
     heroTitulo: string;
