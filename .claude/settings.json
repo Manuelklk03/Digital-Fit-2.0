@@ -2,7 +2,14 @@
   "enabledPlugins": {
     "caveman@caveman": false,
     "superpowers@claude-plugins-official": false,
-    "claude-mem@thedotmack": false
+    "claude-mem@thedotmack": false,
+    "oh-my-claudecode@omc": false,
+    "mempalace@mempalace": false,
+    "cli-anything@cli-anything": false,
+    "lemo-opuscar@lemolab": false,
+    "vercel@claude-plugins-official": false,
+    "supabase@claude-plugins-official": false,
+    "scroll-world@scroll-world": false
   },
   "env": {
     "PONYTAIL_DEFAULT_MODE": "lite"
