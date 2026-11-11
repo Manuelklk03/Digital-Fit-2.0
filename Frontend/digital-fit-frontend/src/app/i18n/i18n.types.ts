@@ -50,6 +50,24 @@ export interface DiccionarioTraduccion {
     login: { titulo: string; descripcion: string };
     registro: { titulo: string; descripcion: string };
   };
+  migas: {
+    etiqueta: string;
+    inicio: string;
+    entrenamientos: string;
+    comunidad: string;
+    historial: string;
+    misEntrenamientos: string;
+    centros: string;
+    lugares: string;
+    misCentros: string;
+    misLugares: string;
+    progreso: string;
+    valoraciones: string;
+    crearAdmin: string;
+    detalle: string;
+    login: string;
+    registro: string;
+  };
   inicio: {
     badge: string;
     heroTitulo: string;
