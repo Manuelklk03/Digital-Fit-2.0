@@ -91,6 +91,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
+- Login: ante el límite de intentos fallidos (`429`) se avisa de «demasiados intentos» en lugar de decir que usuario o contraseña son incorrectos, en los 4 idiomas.
 - El esqueleto de la carga inicial ya no desaparece cuando un guard redirige al login: se mantiene hasta que termina la navegación al destino.
 - Explorar: el aviso de carga se anuncia al lector de pantalla (sin `aria-busy` en su contenedor).
 - El texto escrito en los campos del login y del registro era invisible (fondo blanco heredado de un selector v1 sobre texto claro).
