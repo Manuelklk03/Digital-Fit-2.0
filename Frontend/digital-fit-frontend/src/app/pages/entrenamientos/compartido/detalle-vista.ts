@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BadgeComponent, ButtonComponent, CardComponent } from '../../../components/ui';
+import { MigasComponent } from '../../../components/migas/migas';
 import { I18nService } from '../../../i18n/i18n.service';
 import { Entrenamiento } from '../../../models/entrenamiento';
 import { EstadoCarga } from './estado';
@@ -12,11 +13,12 @@ import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
  */
 @Component({
   selector: 'app-detalle-vista',
-  imports: [RouterLink, BadgeComponent, ButtonComponent, CardComponent],
+  imports: [RouterLink, BadgeComponent, ButtonComponent, CardComponent, MigasComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './pagina.css',
   template: `
     @let t = i18n.t().entrenamientos;
+    <app-migas />
     <a df-button variant="ghost" size="sm" class="volver" [routerLink]="volver()"><span aria-hidden="true">←</span> {{ t.volverListado }}</a>
     <ng-content select="app-alert" />
 

@@ -8,6 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- SEO: título, descripción, `robots`, URL canónica y Open Graph por página y por idioma; solo `/inicio`, `/login` y `/register` se indexan y el resto lleva `noindex`. `robots.txt`, `sitemap.xml` y datos estructurados `WebApplication` (JSON-LD).
+- Migas de pan visibles en listados y detalles, y `BreadcrumbList` en JSON-LD en las páginas públicas.
 - Manejador para `HttpRequestMethodNotSupportedException` en `GlobalExceptionHandler` que estandariza los métodos HTTP no soportados con respuesta `405 Method Not Allowed` (`ProblemDetail` RFC 7807 con tipo `urn:problem-type:metodo-no-permitido`) y cabecera `Allow` con los métodos soportados, resolviendo el punto 1 del bloqueo G10.
 
 - Esqueletos de carga: componente reutilizable `df-skeleton`, usado en `/explorar` y en la carga inicial de la aplicación (que espera a la comprobación de sesión), con aviso accesible y sin animación si el usuario prefiere movimiento reducido.
