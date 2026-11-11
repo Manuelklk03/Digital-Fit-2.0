@@ -6,6 +6,8 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
@@ -166,5 +168,19 @@ class AdminRutasPermisosSecurityTest {
         mockMvc.perform(delete("/api/admin/lugares-publicos-base/1")
                 .with(user("admin1").roles("ADMIN")))
                 .andExpect(status().isNoContent());
+    }
+
+    // --- 4. MÉTODO HTTP NO PERMITIDO CON ROL ADMIN (405 METHOD NOT ALLOWED) ---
+
+    @Test
+    @DisplayName("GET /api/admin/entrenamientos-base con rol ADMIN retorna 405 Method Not Allowed")
+    void testGetEntrenamientosBaseAdminRetorna405() throws Exception {
+        mockMvc.perform(get("/api/admin/entrenamientos-base")
+                .with(user("admin1").roles("ADMIN")))
+                .andExpect(status().isMethodNotAllowed())
+                .andExpect(header().exists("Allow"))
+                .andExpect(jsonPath("$.status").value(405))
+                .andExpect(jsonPath("$.title").value("Método no permitido"))
+                .andExpect(jsonPath("$.type").value("urn:problem-type:metodo-no-permitido"));
     }
 }

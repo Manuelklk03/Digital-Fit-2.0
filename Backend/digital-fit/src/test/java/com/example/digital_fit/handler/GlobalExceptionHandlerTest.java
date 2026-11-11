@@ -11,12 +11,15 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -134,6 +137,30 @@ class GlobalExceptionHandlerTest {
         Map<String, String> errores = (Map<String, String>) problem.getProperties().get("errores");
         assertNotNull(errores);
         assertEquals("El campo no puede estar vacío", errores.get("username"));
+    }
+
+    @Test
+    void testHandleMethodNotSupported() {
+        HttpRequestMethodNotSupportedException ex = new HttpRequestMethodNotSupportedException(
+                "GET", List.of("POST", "PUT", "DELETE"));
+        ResponseEntity<ProblemDetail> response = handler.handleMethodNotSupported(ex);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED, response.getStatusCode());
+
+        HttpHeaders headers = response.getHeaders();
+        assertNotNull(headers.getAllow());
+        assertTrue(headers.getAllow().contains(HttpMethod.POST));
+        assertTrue(headers.getAllow().contains(HttpMethod.PUT));
+        assertTrue(headers.getAllow().contains(HttpMethod.DELETE));
+
+        ProblemDetail problem = response.getBody();
+        assertNotNull(problem);
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value(), problem.getStatus());
+        assertEquals("Método no permitido", problem.getTitle());
+        assertTrue(problem.getDetail().contains("GET"));
+        assertEquals("urn:problem-type:metodo-no-permitido", problem.getType().toString());
+        assertNotNull(problem.getProperties().get("timestamp"));
     }
 
     @Test
