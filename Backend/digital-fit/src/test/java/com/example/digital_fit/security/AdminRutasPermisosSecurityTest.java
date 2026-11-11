@@ -2,6 +2,7 @@ package com.example.digital_fit.security;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -63,6 +64,7 @@ class AdminRutasPermisosSecurityTest {
     @DisplayName("POST /api/admin/crear-admin sin autenticación retorna 401 Unauthorized")
     void testCrearAdminAnonimoRetorna401() throws Exception {
         mockMvc.perform(post("/api/admin/crear-admin")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"nuevoAdmin\",\"email\":\"admin@test.com\",\"password\":\"Admin123!\"}"))
                 .andExpect(status().isUnauthorized());
@@ -72,6 +74,7 @@ class AdminRutasPermisosSecurityTest {
     @DisplayName("POST /api/admin/entrenamientos-base sin autenticación retorna 401 Unauthorized")
     void testEntrenamientosBaseAnonimoRetorna401() throws Exception {
         mockMvc.perform(post("/api/admin/entrenamientos-base")
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"nombre\":\"Fuerza\"}"))
                 .andExpect(status().isUnauthorized());
@@ -80,14 +83,16 @@ class AdminRutasPermisosSecurityTest {
     @Test
     @DisplayName("DELETE /api/admin/centros-privados-base/1 sin autenticación retorna 401 Unauthorized")
     void testCentrosPrivadosBaseAnonimoRetorna401() throws Exception {
-        mockMvc.perform(delete("/api/admin/centros-privados-base/1"))
+        mockMvc.perform(delete("/api/admin/centros-privados-base/1")
+                .with(csrf()))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @DisplayName("DELETE /api/admin/lugares-publicos-base/1 sin autenticación retorna 401 Unauthorized")
     void testLugaresPublicosBaseAnonimoRetorna401() throws Exception {
-        mockMvc.perform(delete("/api/admin/lugares-publicos-base/1"))
+        mockMvc.perform(delete("/api/admin/lugares-publicos-base/1")
+                .with(csrf()))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -98,6 +103,7 @@ class AdminRutasPermisosSecurityTest {
     void testCrearAdminRolUserRetorna403() throws Exception {
         mockMvc.perform(post("/api/admin/crear-admin")
                 .with(user("usuario1").roles("USER"))
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"nuevoAdmin\",\"email\":\"admin@test.com\",\"password\":\"Admin123!\"}"))
                 .andExpect(status().isForbidden());
@@ -108,6 +114,7 @@ class AdminRutasPermisosSecurityTest {
     void testEntrenamientosBaseRolUserRetorna403() throws Exception {
         mockMvc.perform(post("/api/admin/entrenamientos-base")
                 .with(user("usuario1").roles("USER"))
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"nombre\":\"Fuerza\"}"))
                 .andExpect(status().isForbidden());
@@ -117,7 +124,8 @@ class AdminRutasPermisosSecurityTest {
     @DisplayName("DELETE /api/admin/centros-privados-base/1 con rol USER retorna 403 Forbidden")
     void testCentrosPrivadosBaseRolUserRetorna403() throws Exception {
         mockMvc.perform(delete("/api/admin/centros-privados-base/1")
-                .with(user("usuario1").roles("USER")))
+                .with(user("usuario1").roles("USER"))
+                .with(csrf()))
                 .andExpect(status().isForbidden());
     }
 
@@ -125,7 +133,8 @@ class AdminRutasPermisosSecurityTest {
     @DisplayName("DELETE /api/admin/lugares-publicos-base/1 con rol USER retorna 403 Forbidden")
     void testLugaresPublicosBaseRolUserRetorna403() throws Exception {
         mockMvc.perform(delete("/api/admin/lugares-publicos-base/1")
-                .with(user("usuario1").roles("USER")))
+                .with(user("usuario1").roles("USER"))
+                .with(csrf()))
                 .andExpect(status().isForbidden());
     }
 
@@ -136,6 +145,7 @@ class AdminRutasPermisosSecurityTest {
     void testCrearAdminRolAdminPermitido() throws Exception {
         mockMvc.perform(post("/api/admin/crear-admin")
                 .with(user("admin1").roles("ADMIN"))
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"username\":\"nuevoAdmin\",\"email\":\"admin@test.com\",\"password\":\"Admin123!\"}"))
                 .andExpect(status().isCreated());
@@ -149,6 +159,7 @@ class AdminRutasPermisosSecurityTest {
 
         mockMvc.perform(post("/api/admin/entrenamientos-base")
                 .with(user("admin1").roles("ADMIN"))
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"nombre\":\"Fuerza\"}"))
                 .andExpect(status().isCreated());
@@ -158,7 +169,8 @@ class AdminRutasPermisosSecurityTest {
     @DisplayName("DELETE /api/admin/centros-privados-base/1 con rol ADMIN es procesado exitosamente (204 No Content)")
     void testCentrosPrivadosBaseRolAdminPermitido() throws Exception {
         mockMvc.perform(delete("/api/admin/centros-privados-base/1")
-                .with(user("admin1").roles("ADMIN")))
+                .with(user("admin1").roles("ADMIN"))
+                .with(csrf()))
                 .andExpect(status().isNoContent());
     }
 
@@ -166,7 +178,8 @@ class AdminRutasPermisosSecurityTest {
     @DisplayName("DELETE /api/admin/lugares-publicos-base/1 con rol ADMIN es procesado exitosamente (204 No Content)")
     void testLugaresPublicosBaseRolAdminPermitido() throws Exception {
         mockMvc.perform(delete("/api/admin/lugares-publicos-base/1")
-                .with(user("admin1").roles("ADMIN")))
+                .with(user("admin1").roles("ADMIN"))
+                .with(csrf()))
                 .andExpect(status().isNoContent());
     }
 
