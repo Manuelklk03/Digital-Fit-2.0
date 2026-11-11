@@ -8,6 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Revisión de seguridad integral del backend (tarea 7.0): activación de protección CSRF con cookie legible `XSRF-TOKEN` (`CookieCsrfTokenRepository.withHttpOnlyFalse()`), patrón SPA de Spring Security 6/7 (`SpaCsrfTokenRequestHandler` y `CsrfCookieFilter`) y endpoint `GET /api/auth/csrf`; sistema de limitación de tasa de intentos de login en memoria (`LoginRateLimiterService` y `LoginRateLimitingFilter`) con respuesta `429 Too Many Requests`, cabecera `Retry-After` y soporte de proxy inverso con `X-Forwarded-For`; cabeceras de seguridad (`X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, `X-Frame-Options: DENY`, HSTS); y cierre de Actuator en producción dejando únicamente `/actuator/health` sin detalles y sin trazas de error en respuestas.
+
 - Manejador para `HttpRequestMethodNotSupportedException` en `GlobalExceptionHandler` que estandariza los métodos HTTP no soportados con respuesta `405 Method Not Allowed` (`ProblemDetail` RFC 7807 con tipo `urn:problem-type:metodo-no-permitido`) y cabecera `Allow` con los métodos soportados, resolviendo el punto 1 del bloqueo G10.
 
 - Esqueletos de carga: componente reutilizable `df-skeleton`, usado en `/explorar` y en la carga inicial de la aplicación (que espera a la comprobación de sesión), con aviso accesible y sin animación si el usuario prefiere movimiento reducido.
