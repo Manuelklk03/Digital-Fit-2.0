@@ -127,6 +127,8 @@ export const diccionarioCa: DiccionarioTraduccion = {
     demoClickLlenar: 'Emplenar dades de prova',
     errorCamposObligatorios: 'Has de completar tots els camps obligatoris.',
     errorCredenciales: "Nom d'usuari o contrasenya incorrectes.",
+    errorDemasiadosIntentos: 'Massa intents fallits. Espera un moment i torna-ho a provar.',
+    errorInesperado: "No s'ha pogut iniciar la sessió. Comprova la connexió i torna-ho a provar.",
     errorSesion: 'Error en recuperar la informació de la sessió.',
     exitoLogin: 'Sessió iniciada correctament. Redirigint...',
     registroBadge: 'NOU COMPTE • DIGITAL-FIT',

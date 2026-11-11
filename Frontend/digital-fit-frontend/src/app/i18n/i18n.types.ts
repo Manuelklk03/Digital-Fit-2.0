@@ -132,6 +132,8 @@ export interface DiccionarioTraduccion {
     demoClickLlenar: string;
     errorCamposObligatorios: string;
     errorCredenciales: string;
+    errorDemasiadosIntentos: string;
+    errorInesperado: string;
     errorSesion: string;
     exitoLogin: string;
     registroBadge: string;

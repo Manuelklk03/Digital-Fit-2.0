@@ -5,6 +5,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
@@ -81,9 +82,13 @@ export class LoginComponent {
           },
         });
       },
-      error: () => {
+      error: (err: HttpErrorResponse) => {
         this.cargando = false;
-        this.mostrarAlerta(this.i18n.t().auth.errorCredenciales, 'error');
+        // Solo el 401 es una clave incorrecta. El 429 es el límite de intentos del backend (la clave puede ser correcta);
+        // el resto (sin conexión, 403 de CSRF, 5xx) no dice nada de las credenciales.
+        const a = this.i18n.t().auth;
+        const texto = err.status === 401 ? a.errorCredenciales : err.status === 429 ? a.errorDemasiadosIntentos : a.errorInesperado;
+        this.mostrarAlerta(texto, 'error');
         this.cdr.markForCheck();
       },
     });
