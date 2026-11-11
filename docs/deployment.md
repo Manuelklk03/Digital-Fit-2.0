@@ -169,6 +169,8 @@ La configuración de la aplicación está parametrizada para operar en tres ento
 El frontend en Netlify reenvía las llamadas `/api/*` mediante las reglas de redirección de `netlify.toml` hacia el servicio web de Render con código `200` (proxy inverso transparente). Esto permite que el navegador se comunique únicamente con el origen del frontend, recibiendo la cookie de sesión `JSESSIONID` (`HttpOnly`, `SameSite=Lax`, `Secure`) como cookie de primera parte (*first-party cookie*), evitando las restricciones modernas de navegadores contra cookies de terceros (*third-party cookies*).
 
 
+**Límite conocido (revisión de Codex, 2026-11-11):** `netlify.toml` reenvía `/api/*` siempre al backend de **producción** en Render (`digital-fit-backend.onrender.com`). Mientras no exista un backend de staging, los *deploy previews* y *branch deploys* de Netlify usarían los datos de producción: no los actives para este sitio. Un staging real exigiría un sitio de Netlify propio con su `netlify.toml` y su destino de proxy.
+
 ## 5. Verificación de un despliegue
 
 1. Backend: un endpoint de salud responde (por ejemplo `/actuator/health`, si se expone) y los logs no muestran errores de conexión.

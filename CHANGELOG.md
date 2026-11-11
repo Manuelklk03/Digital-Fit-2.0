@@ -86,6 +86,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
+- El esqueleto de la carga inicial ya no desaparece cuando un guard redirige al login: se mantiene hasta que termina la navegación al destino.
+- Explorar: el aviso de carga se anuncia al lector de pantalla (sin `aria-busy` en su contenedor).
 - El texto escrito en los campos del login y del registro era invisible (fondo blanco heredado de un selector v1 sobre texto claro).
 - Sin elevación global en `button:hover`, selección de texto legible sobre fondo oscuro y `prefers-reduced-motion` respetado en toda la aplicación.
 - Validación `@Valid` en `@RequestBody CrearValoracionDTO` en `ValoracionRestController.crearOActualizar`, devolviendo 400 ProblemDetail cuando el comentario supera los 1500 caracteres o la puntuación queda fuera del rango 1–5, cubierto en la suite `ValidacionRestControllersTest` (parada G9).

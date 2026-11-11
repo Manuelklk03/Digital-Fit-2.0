@@ -1,6 +1,11 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-10**.
+Última actualización: **2026-11-11**.
+
+> **2026-11-11 (Revisión de Codex del bloque #73–#75; rama `fix/codex-esqueleto-aria`):**
+> - **Codex** (solo lectura, 3 hallazgos, todos verificados contra el código y reales): (1) el esqueleto de carga inicial se ocultaba en el primer `NavigationCancel`, pero los guards redirigen con `router.navigate()` y devuelven `false`, así que la pantalla quedaba en blanco hasta que llegaba el destino; corregido en `app.ts` con un test que reproduce el caso (en rojo antes del arreglo); (2) `netlify.toml` apunta siempre a Render de producción, así que un deploy preview usaría los datos reales: documentado en `docs/deployment.md` como límite conocido; (3) `aria-busy` en el contenedor del `role=status` de Explorar: retirado.
+> - **Verificaciones:** `ng build` correcto, 54 suites y 232 tests en verde, 0 errores ESLint (4 avisos). No comprobado en navegador ni con lector de pantalla.
+> - **Fuera de alcance de la revisión:** Codex no informó de más hallazgos sobre `HostListener`, `take(1)`, `X-Forwarded-Host`, CORS ni cookies; no consta si los revisó sin hallar problemas o no los cubrió.
 
 > **2026-11-10 (Despliegue: diagnóstico de Netlify y Render; rama `fix/netlify-url-real`):**
 > - **URL real de Netlify:** `https://digital-fit.netlify.app` (Manuel). Corregida en `netlify.toml`, `.env.example` y `docs/deployment.md`; antes decían `digitalfit.netlify.app`, que es de otro sitio.
