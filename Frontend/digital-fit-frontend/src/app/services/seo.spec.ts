@@ -26,9 +26,10 @@ describe('SeoService', () => {
       providers: [
         provideRouter([
           { path: 'inicio', data: { seo: 'inicio' }, children: [] },
-          { path: 'login', data: { seo: 'login' }, children: [] },
-          { path: 'mis-centros', data: { tituloNav: 'misCentros' }, children: [] },
+          { path: 'login', data: { seo: 'login', migas: ['login'] }, children: [] },
+          { path: 'mis-centros', data: { tituloNav: 'misCentros', migas: ['misCentros'] }, children: [] },
           { path: 'sin-datos', children: [] },
+          { path: 'detalle/:id', data: { migas: ['misCentros', 'detalle'] }, children: [] },
         ]),
       ],
     });
@@ -43,6 +44,7 @@ describe('SeoService', () => {
   afterEach(() => {
     // El documento se comparte entre tests: se limpia lo que añade el servicio.
     doc.head.querySelector('link[rel="canonical"]')?.remove();
+    doc.getElementById('ld-migas')?.remove();
     doc.head.querySelectorAll('meta[name="description"], meta[name="robots"], meta[name="twitter:card"], meta[property^="og:"]').forEach((m) => m.remove());
   });
 
@@ -66,6 +68,13 @@ describe('SeoService', () => {
     expect(doc.head.querySelector('link[rel="canonical"]')).toBeNull();
   });
 
+  it('sin título propio usa el camino de las migas, del último nivel al primero', async () => {
+    await irA('/detalle/5');
+
+    expect(titulo.getTitle()).toBe('Detalle · Mis centros · Digital-FIT');
+    expect(contenido('name="robots"')).toBe('noindex, nofollow');
+  });
+
   it('una ruta sin datos es privada y usa solo la marca como título', async () => {
     await irA('/sin-datos');
 
@@ -83,6 +92,25 @@ describe('SeoService', () => {
     expect(titulo.getTitle()).toBe(i18n.t().seo.login.titulo);
     expect(titulo.getTitle()).not.toBe(enEspanol);
     expect(contenido('name="description"')).toBe(i18n.t().seo.login.descripcion);
+  });
+
+  it('una página pública con migas publica BreadcrumbList en JSON-LD con URLs absolutas', async () => {
+    await irA('/login');
+
+    const ld = JSON.parse(doc.getElementById('ld-migas')?.textContent ?? '{}');
+    expect(ld['@type']).toBe('BreadcrumbList');
+    expect(ld.itemListElement.map((i: { position: number; name: string }) => [i.position, i.name])).toEqual([[1, 'Inicio'], [2, 'Iniciar sesión']]);
+    expect(ld.itemListElement[0].item).toBe(`${doc.location.origin}/inicio`);
+    expect(ld.itemListElement[1].item).toContain('/login');
+  });
+
+  it('las páginas privadas y las que no tienen migas no publican JSON-LD de migas', async () => {
+    await irA('/login');
+    await irA('/mis-centros');
+    expect(doc.getElementById('ld-migas')).toBeNull();
+
+    await irA('/inicio');
+    expect(doc.getElementById('ld-migas')).toBeNull();
   });
 
   it('no marca como noindex antes de terminar la primera navegación', () => {

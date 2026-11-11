@@ -5,6 +5,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { I18nService } from '../i18n/i18n.service';
+import { MigasService } from './migas';
 import { DiccionarioTraduccion } from '../i18n/i18n.types';
 
 /** Datos que una ruta declara en `data` para el SEO. Sin `seo`, la ruta es privada y no se indexa. */
@@ -28,6 +29,7 @@ export class SeoService {
   private readonly meta = inject(Meta);
   private readonly doc = inject(DOCUMENT);
   private readonly i18n = inject(I18nService);
+  private readonly migas = inject(MigasService);
   /** `null` hasta que termina la primera navegación: así una página pública no queda marcada `noindex` al arrancar. */
   private readonly datos = signal<DatosSeo | null>(null);
 
@@ -60,7 +62,9 @@ export class SeoService {
   private aplicar(datos: DatosSeo, t: DiccionarioTraduccion): void {
     const publica = datos.seo !== undefined;
     const pagina = datos.seo ? t.seo[datos.seo] : null;
-    const titulo = pagina?.titulo ?? (datos.tituloNav ? `${t.nav[datos.tituloNav]} · ${MARCA}` : MARCA);
+    // Sin título propio, se usa el camino de las migas sin «Inicio», del último nivel al primero: «Detalle · Mis centros».
+    const delCamino = this.migas.migas().slice(1).map((m) => m.texto).reverse().join(' · ');
+    const titulo = pagina?.titulo ?? (datos.tituloNav ? `${t.nav[datos.tituloNav]} · ${MARCA}` : delCamino ? `${delCamino} · ${MARCA}` : MARCA);
     const descripcion = pagina?.descripcion ?? t.seo.inicio.descripcion;
     const url = `${this.doc.location.origin}${this.router.url.split(/[?#]/)[0]}`;
 
@@ -74,6 +78,7 @@ export class SeoService {
     this.meta.updateTag({ property: 'og:url', content: url });
     this.meta.updateTag({ name: 'twitter:card', content: 'summary' });
     this.canonica(publica ? url : null);
+    this.jsonLdMigas(publica ? url : null);
   }
 
   /** Mantiene un único `<link rel="canonical">` en las páginas indexables y lo quita en las privadas. */
@@ -89,5 +94,33 @@ export class SeoService {
       this.doc.head.appendChild(enlace);
     }
     enlace.href = url;
+  }
+
+  /**
+   * `BreadcrumbList` en JSON-LD solo en páginas públicas con al menos dos niveles (Inicio y la página);
+   * en las privadas no tiene sentido porque no se indexan.
+   */
+  private jsonLdMigas(urlActual: string | null): void {
+    const id = 'ld-migas';
+    this.doc.getElementById(id)?.remove();
+    const migas = this.migas.migas();
+    if (urlActual === null || migas.length < 2) {
+      return;
+    }
+    const origen = this.doc.location.origin;
+    const script = this.doc.createElement('script');
+    script.id = id;
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: migas.map((m, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: m.texto,
+        item: m.ruta ? `${origen}${m.ruta}` : urlActual,
+      })),
+    });
+    this.doc.head.appendChild(script);
   }
 }
