@@ -2,6 +2,10 @@
 
 Última actualización: **2026-11-11**.
 
+> **2026-11-11 (Footer rehecho; rama `feat/frontend-footer`, en automático):**
+> - **Footer** con Neutral Sport / Industrial, igual que la cabecera: superficie plana con borde y tokens `--df-*` (antes degradado azul v1, textos fijos en español y un «®» sin sentido). Contenido real y verificable: logo, descripción, navegación (Inicio, Explorar, Entrenar), enlace al código en GitHub (el repositorio es público) y a la licencia de OpenStreetMap, y el año actual calculado. Textos en los 4 idiomas (`footer` en el diccionario tipado). Retirado de `styles.css` el bloque global v1 del pie.
+> - **Verificaciones:** `ng build` correcto, 54 suites y 235 tests en verde (+3: enlaces, año sin ®, cambio de idioma), 0 errores ESLint (4 avisos). Navegador (Chromium de Playwright) a 1280, 820 y 390 px: sin scroll horizontal, enlaces de 44 px en móvil, enlace en `#8b949e` sobre `#0d1117` (≈6,4:1, calculado). **Sin revisión de Codex todavía**: se hará con el siguiente bloque.
+
 > **2026-11-11 (Cierre de 2.4 y selección de skills; rama `chore/skills-proyecto`):**
 > - **Tarea 2.4 verificada en producción** (`https://digital-fit.netlify.app`): login de `usuario1` y `admin1` (rol `ADMIN`), crear un recurso propio, cerrar sesión, volver a entrar, persistencia y borrado, y permisos (usuario 403, anónimo 401). Parada G4 **resuelta**. **No probado:** registro de usuario nuevo (dejaría datos en producción) y un staging separado (no existe).
 > - **Hallazgos (G10, para Antigravity):** método HTTP no permitido responde 500 en lugar de 405; el arranque en frío de Render supera el tiempo de espera del proxy de Netlify y da 504 en la primera petición (reintento correcto; valorar ping periódico).

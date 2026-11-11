@@ -59,6 +59,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Cambiado
 
+- Footer rehecho con el sistema Neutral Sport / Industrial: navegación, enlace al código y a la licencia de OpenStreetMap, año actual y textos en los 4 idiomas. Retirados el símbolo «®» y los estilos globales v1 del pie.
 - Cabecera rehecha con el sistema Neutral Sport / Industrial: superficie plana, enlace activo señalado con `aria-current`, botones del sistema, menú deslizable en móvil y selector de idioma accesible (Escape y cierre al pulsar fuera) sin banderas emoji. Retirados los estilos globales v1 de cabecera, menú y estado de usuario.
 - Retirada del sistema de tickets de soporte en el frontend (decisión de la tarea 3.1): pantallas, rutas, servicios, enlaces y textos en los 4 idiomas. El backend de tickets se retira aparte.
 
