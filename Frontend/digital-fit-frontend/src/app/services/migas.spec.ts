@@ -27,6 +27,9 @@ describe('Migas de pan', () => {
     i18n = TestBed.inject(I18nService);
   });
 
+  // El idioma se guarda en localStorage: sin limpiarlo, otros specs del mismo proceso arrancarían en inglés.
+  afterEach(() => localStorage.clear());
+
   it('el servicio antepone Inicio, enlaza los niveles con ruta y deja la página actual sin enlace', async () => {
     const servicio = TestBed.inject(MigasService);
     await router.navigateByUrl('/mis-centros/5');

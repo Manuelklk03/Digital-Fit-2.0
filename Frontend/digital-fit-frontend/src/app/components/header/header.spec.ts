@@ -25,6 +25,9 @@ describe('HeaderComponent', () => {
     await fixture.whenStable();
   });
 
+  // El idioma se guarda en localStorage: sin limpiarlo, otros specs del mismo proceso arrancarían en inglés.
+  afterEach(() => localStorage.clear());
+
   it('debe crearse correctamente', () => {
     expect(component).toBeTruthy();
   });

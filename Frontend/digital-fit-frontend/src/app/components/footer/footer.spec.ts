@@ -22,6 +22,9 @@ describe('Footer', () => {
     fixture.detectChanges();
   });
 
+  // El idioma se guarda en localStorage: sin limpiarlo, otros specs del mismo proceso arrancarían en inglés.
+  afterEach(() => localStorage.clear());
+
   const texto = () => (fixture.nativeElement as HTMLElement).textContent ?? '';
 
   it('should create', () => {

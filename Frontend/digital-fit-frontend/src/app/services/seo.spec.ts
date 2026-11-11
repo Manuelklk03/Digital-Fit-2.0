@@ -42,7 +42,8 @@ describe('SeoService', () => {
   });
 
   afterEach(() => {
-    // El documento se comparte entre tests: se limpia lo que añade el servicio.
+    // El documento y localStorage (donde se guarda el idioma) se comparten entre tests: se limpia lo que se ha tocado.
+    localStorage.clear();
     doc.head.querySelector('link[rel="canonical"]')?.remove();
     doc.getElementById('ld-migas')?.remove();
     doc.head.querySelectorAll('meta[name="description"], meta[name="robots"], meta[name="twitter:card"], meta[property^="og:"]').forEach((m) => m.remove());
