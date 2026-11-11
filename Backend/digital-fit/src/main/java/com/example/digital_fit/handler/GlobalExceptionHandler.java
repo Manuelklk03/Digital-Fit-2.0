@@ -4,12 +4,17 @@ import java.net.URI;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -108,6 +113,24 @@ public class GlobalExceptionHandler {
         problem.setProperty("errores", erroresPorCampo);
 
         return problem;
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ProblemDetail> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.METHOD_NOT_ALLOWED,
+                ex.getMessage() != null ? ex.getMessage() : "Método HTTP no permitido"
+        );
+        problem.setTitle("Método no permitido");
+        problem.setType(URI.create("urn:problem-type:metodo-no-permitido"));
+        problem.setProperty("timestamp", Instant.now());
+
+        HttpHeaders headers = new HttpHeaders();
+        Set<HttpMethod> supportedMethods = ex.getSupportedHttpMethods();
+        if (supportedMethods != null && !supportedMethods.isEmpty()) {
+            headers.setAllow(supportedMethods);
+        }
+        return new ResponseEntity<>(problem, headers, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler(Exception.class)
