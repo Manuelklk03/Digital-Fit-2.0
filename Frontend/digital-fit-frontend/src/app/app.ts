@@ -3,6 +3,7 @@ import { NavigationCancel, NavigationCancellationCode, NavigationEnd, Navigation
 import { filter, take } from 'rxjs';
 import { SkeletonComponent } from './components/ui';
 import { I18nService } from './i18n/i18n.service';
+import { SeoService } from './services/seo';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class App {
   protected readonly primeraCarga = signal(true);
 
   constructor() {
+    inject(SeoService); // empieza a aplicar título, descripción y robots por ruta
     inject(Router).events
       .pipe(
         filter((e) => e instanceof NavigationEnd || e instanceof NavigationError || (e instanceof NavigationCancel && !seguiraOtraNavegacion(e))),
