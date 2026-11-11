@@ -24,6 +24,7 @@ Activos globalmente (`~/.claude/settings.json`): frontend-stack (con frontend-de
 Configuración del proyecto (`.claude/settings.json`), igual que ValveDex:
 
 - **Desactivados aquí**: `caveman` (respuestas telegráficas que recortan las explicaciones), `superpowers` (impone su propio flujo de planes y ramas) y `claude-mem` (memoria fuera del repositorio; la continuidad vive en `docs/STATUS.md`).
+- **Desactivados también (2026-11-11)**: `oh-my-claudecode` y `mempalace` (flujos y memoria propios que chocan con el modo guiado y con `STATUS.md`), `cli-anything` y `lemo-opuscar` (sin uso en este proyecto), `vercel` y `supabase` (el stack es Netlify, Render y Neon) y `scroll-world` (Three.js y scroll cinematográfico descartados en D15). Cada plugin desactivado deja de cargar su lista de skills en la sesión.
 - **`ponytail` en `lite`** (`PONYTAIL_DEFAULT_MODE=lite`): construye lo pedido y menciona en una línea la alternativa más simple, sin recortar explicaciones.
 
 Los cambios de `.claude/settings.json` se aplican al abrir una sesión nueva de Claude Code.
@@ -38,8 +39,12 @@ Los cambios de `.claude/settings.json` se aplican al abrir una sesión nueva de 
 | Revisión de UI | agente `frontend-stack:ui-reviewer` |
 | Cambios mínimos | `ponytail` (lite), `andrej-karpathy-skills` |
 | Configuración de Claude Code | `claude-code-setup` |
+| SEO (tarea 3.9) | `claude-seo` (`seo-technical`, `seo-schema`, `seo-sitemap`, `seo-audit`) |
+| Rendimiento y accesibilidad medidos (6.3) | `chrome-devtools-mcp` (Lighthouse, `a11y-debugging`, `debug-optimize-lcp`) |
+| Revisión de seguridad (7.0) | `security-audit`, solo con visto bueno de Manuel |
+| Revisión por bloque | `codex` (plantilla de abajo) y, para UI, `frontend-stack:ui-reviewer` |
 
-No se activan todos los plugins por sistema: cada skill se carga cuando su tarea lo pide.
+No se activan todos los plugins por sistema: cada skill se carga cuando su tarea lo pide. `taste` queda disponible pero no lidera: la dirección visual (Neutral Sport / Industrial) ya está decidida y no se apilan estilos.
 
 ## Modo de trabajo
 
@@ -81,7 +86,7 @@ Aplicación en este repositorio:
 
 - Empezar por `AGENTS.md`, `docs/STATUS.md` y `git status`/`git diff`; leer solo los archivos de la tarea y sus llamadores.
 - No volcar en el contexto `package-lock.json`, `data.sql` completo, `logs/`, `dist/`, `node_modules/` ni salidas largas de build: filtrar con `tail`/`grep` y conservar el texto exacto de los errores.
-- A Codex, el diff y la plantilla, no la conversación entera.
+- A Codex, el diff y la plantilla, no la conversación entera. Codex ya tiene `token-efficient-workflow` en `~/.codex/AGENTS.md` (línea 117) y sus skills en `~/.agents/skills` (`antislop`, `tdd`, `diagnosing-bugs`, `playwright`); en cada encargo se le pide además no volcar archivos enteros y marcar lo que no pudo verificar.
 - Reutilizar lo ya comprobado (está en STATUS) salvo que hayan cambiado archivos o dependencias.
 - El ahorro nunca justifica saltarse comprobaciones ni recortar las explicaciones que Manuel necesita.
 
