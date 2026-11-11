@@ -1,5 +1,6 @@
 package com.example.digital_fit.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,13 +13,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import com.example.digital_fit.config.security.CsrfCookieFilter;
+import com.example.digital_fit.config.security.LoginRateLimiterService;
+import com.example.digital_fit.config.security.LoginRateLimitingFilter;
 import com.example.digital_fit.config.security.SpaCsrfTokenRequestHandler;
+
+import tools.jackson.databind.ObjectMapper;
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +34,12 @@ public class SecurityConfig {
     @Value("${SESSION_COOKIE_SECURE:false}")
     private boolean sessionCookieSecure;
 
+    @Autowired(required = false)
+    private LoginRateLimiterService rateLimiterService;
+
+    @Autowired(required = false)
+    private ObjectMapper objectMapper;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -36,6 +48,10 @@ public class SecurityConfig {
         tokenRepository.setCookieCustomizer(customizer -> customizer
                 .secure(sessionCookieSecure)
                 .sameSite("Lax"));
+
+        if (rateLimiterService != null && objectMapper != null) {
+            http.addFilterBefore(new LoginRateLimitingFilter(rateLimiterService, objectMapper), UsernamePasswordAuthenticationFilter.class);
+        }
 
         http
                 .cors(cors -> {
@@ -73,9 +89,18 @@ public class SecurityConfig {
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .successHandler((request, response, authentication) -> {
+                            if (rateLimiterService != null) {
+                                String ip = rateLimiterService.resolveClientIp(request);
+                                rateLimiterService.recordSuccess(ip, authentication.getName());
+                            }
                             response.setStatus(HttpStatus.OK.value());
                         })
                         .failureHandler((request, response, exception) -> {
+                            if (rateLimiterService != null) {
+                                String ip = rateLimiterService.resolveClientIp(request);
+                                String username = request.getParameter("username");
+                                rateLimiterService.recordFailure(ip, username);
+                            }
                             response.sendError(HttpStatus.UNAUTHORIZED.value(), "Credenciales incorrectas");
                         })
                         .permitAll())
