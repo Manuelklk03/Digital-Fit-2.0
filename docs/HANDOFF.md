@@ -19,7 +19,8 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 
 | Parada | Estado | Espera a | Qué se necesita |
 |---|---|---|---|
-| G11 | BLOQUEADO | Antigravity → Claude | Frontend debe adaptarse a CSRF activo con cookie XSRF-TOKEN y cabecera X-XSRF-TOKEN (tarea 7.0) |
+| G12 | BLOQUEADO | Claude y Manuel | Comprobación de CSRF y del límite de intentos en producción (Netlify + Render) pendiente de Claude y Manuel |
+| G11 | LIBRE | Claude → Antigravity | Frontend verificado con CSRF activo por Claude (2026-11-12); no requiere cambios |
 | G1 | Resuelta | Antigravity → Claude | Tarea 4.8 completada (PR #62) y adaptada por Claude en frontend (PR #64) |
 | G2 | Resuelta | Claude → Antigravity | Pantallas y servicios de soporte retirados en frontend (PR #65) y backend purgado con Flyway V4 (PR #66) |
 | G3 | Resuelta | Claude → Antigravity | Confirmado: cero referencias residuales a soporte o tickets en frontend y backend |
@@ -36,6 +37,8 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 
 | Fecha | Parada | Estado | Nota |
 |---|---|---|---|
+| 2026-11-12 | G12 | BLOQUEADO | Comprobación de CSRF y del límite de intentos en producción (Netlify + Render) pendiente de Claude y Manuel tras el despliegue |
+| 2026-11-12 | G11 | LIBRE | Claude verificó contra feat/backend-seguridad-csrf con docker compose y Chromium que el frontend funciona con CSRF activo (cookie XSRF-TOKEN en 401 de /api/auth/me, header X-XSRF-TOKEN automático). Resueltos hallazgos 2 y 3 de Codex por Antigravity |
 | 2026-11-11 | G11 | BLOQUEADO | Antigravity completó la revisión de seguridad 7.0 (CSRF, Rate Limiting 429, cabeceras seguras). Bloqueado esperando que Claude verifique que el frontend funciona con CSRF antes de desplegar o avanzar a E2E (6.1/6.2) |
 | 2026-11-09 | G1 | LIBRE | Tarea 4.8 completada y fusionada (PR #62). Contrato de API paginada publicado para que Claude adapte el frontend |
 | 2026-11-09 | G1 | Resuelta | Frontend adaptado a la API paginada (PR #64). Límite: 100 elementos por listado hasta que cada pantalla pagine |
