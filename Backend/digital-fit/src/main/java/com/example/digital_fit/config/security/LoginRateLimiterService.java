@@ -59,6 +59,7 @@ public class LoginRateLimiterService {
     private final Map<String, AttemptTracker> attemptsByIp = new ConcurrentHashMap<>();
     private final Map<String, AttemptTracker> attemptsByUser = new ConcurrentHashMap<>();
 
+    @org.springframework.beans.factory.annotation.Autowired
     public LoginRateLimiterService(
             @Value("${security.rate-limit.login.max-attempts-user:5}") int maxAttemptsUser,
             @Value("${security.rate-limit.login.max-attempts-ip:20}") int maxAttemptsIp,
