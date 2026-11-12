@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
+import { MigasComponent } from '../../components/migas/migas';
 import { Footer } from '../../components/footer/footer';
 import { AlertComponent, BadgeComponent, ButtonComponent, CardComponent } from '../../components/ui';
 import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selector';
@@ -14,7 +15,7 @@ import { ConfigDetalle } from './config';
 /** Detalle de un centro o lugar: ficha, mapa de solo lectura y acciones según permisos. */
 @Component({
   selector: 'app-detalle-sitio',
-  imports: [RouterLink, HeaderComponent, Footer, AlertComponent, BadgeComponent, ButtonComponent, CardComponent, MapaSelectorComponent],
+  imports: [RouterLink, HeaderComponent, Footer, AlertComponent, BadgeComponent, ButtonComponent, CardComponent, MapaSelectorComponent, MigasComponent],
   styleUrl: '../entrenamientos/compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -24,6 +25,7 @@ import { ConfigDetalle } from './config';
     <app-header />
 
     <main class="pagina" id="contenido-principal">
+      <app-migas />
       <a df-button variant="ghost" size="sm" class="volver" [routerLink]="c.rutaListado"><span aria-hidden="true">←</span> {{ t.volverListado }}</a>
 
       @if (aviso.actual(); as a) {

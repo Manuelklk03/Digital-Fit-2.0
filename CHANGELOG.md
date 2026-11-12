@@ -9,7 +9,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 ### Añadido
 
 - Revisión de seguridad integral del backend (tarea 7.0): activación de protección CSRF con cookie legible `XSRF-TOKEN` (`CookieCsrfTokenRepository.withHttpOnlyFalse()`), patrón SPA de Spring Security 6/7 (`SpaCsrfTokenRequestHandler` y `CsrfCookieFilter`) y endpoint `GET /api/auth/csrf`; sistema de limitación de tasa de intentos de login en memoria (`LoginRateLimiterService` y `LoginRateLimitingFilter`) con respuesta `429 Too Many Requests`, cabecera `Retry-After` y soporte de proxy inverso con `X-Forwarded-For`; cabeceras de seguridad (`X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, `X-Frame-Options: DENY`, HSTS); y cierre de Actuator en producción dejando únicamente `/actuator/health` sin detalles y sin trazas de error en respuestas.
-
+- SEO: título, descripción, `robots`, URL canónica y Open Graph por página y por idioma; solo `/inicio`, `/login` y `/register` se indexan y el resto lleva `noindex`. `robots.txt`, `sitemap.xml` y datos estructurados `WebApplication` (JSON-LD).
+- Migas de pan visibles en listados y detalles, y `BreadcrumbList` en JSON-LD en las páginas públicas.
 - Manejador para `HttpRequestMethodNotSupportedException` en `GlobalExceptionHandler` que estandariza los métodos HTTP no soportados con respuesta `405 Method Not Allowed` (`ProblemDetail` RFC 7807 con tipo `urn:problem-type:metodo-no-permitido`) y cabecera `Allow` con los métodos soportados, resolviendo el punto 1 del bloqueo G10.
 
 - Esqueletos de carga: componente reutilizable `df-skeleton`, usado en `/explorar` y en la carga inicial de la aplicación (que espera a la comprobación de sesión), con aviso accesible y sin animación si el usuario prefiere movimiento reducido.
@@ -91,6 +92,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
+- Login: ante el límite de intentos fallidos (`429`) se avisa de «demasiados intentos», y ante un fallo de conexión, un rechazo de CSRF (`403`) o un error del servidor se avisa de que no se pudo iniciar sesión, en lugar de decir que usuario o contraseña son incorrectos. Solo el `401` culpa a la clave. Textos en los 4 idiomas.
 - El esqueleto de la carga inicial ya no desaparece cuando un guard redirige al login: se mantiene hasta que termina la navegación al destino.
 - Explorar: el aviso de carga se anuncia al lector de pantalla (sin `aria-busy` en su contenedor).
 - El texto escrito en los campos del login y del registro era invisible (fondo blanco heredado de un selector v1 sobre texto claro).

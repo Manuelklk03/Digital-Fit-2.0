@@ -25,3 +25,55 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Páginas privadas: no se indexan aunque el rastreador no ejecute JavaScript (la etiqueta robots solo la pone Angular).
+# Las públicas (/inicio, /login, /register) no llevan esta cabecera. Comprobar tras un cambio con: curl -sI <url>/mis-centros | grep -i x-robots
+[[headers]]
+  for = "/entrenar"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/explorar"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/estadisticas"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/valoraciones"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/privados*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/publicos*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/entrenamientos*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/historial-entrenamientos*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/mis-*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

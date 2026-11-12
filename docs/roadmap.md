@@ -67,7 +67,7 @@ Dependencias: 2.2 documentada; no requiere que 2.3 ni 2.4 estén ejecutadas.
 | 3.6 [P] | Página **Explorar** al estilo de Google Maps (D10): buscar dirección con «usar mi ubicación», y ver a la vez gimnasios, centros deportivos, piscinas y zonas de calistenia cercanos en mapa y lista ordenada por distancia; filtros por tipo y radio; «buscar en esta zona» al mover el mapa; ficha detallada de lugar | **Hecha (2026-11-05)** |
 | 3.7 [P] | Backend de búsqueda (D10): endpoint por zona que consulta Overpass por etiquetas de OSM (`leisure=fitness_centre`, `sports_centre`, `fitness_station`, `swimming_pool`…), con caché y límite de peticiones; geocodificación por el backend (fin de las llamadas a Nominatim desde el navegador, P11); identificador OSM en los lugares guardados | **Hecha (2026-11-05)** |
 | 3.8 [P] | i18n español (por defecto) + valenciano, inglés y francés (D11), con selector accesible y sincronización lang | **Hecha (2026-11-06)** |
-| 3.9 [P] | SEO: páginas públicas pregeneradas (`@angular/ssr` en modo estático), `title` y `description` por página, `sitemap.xml`, `robots.txt`, JSON-LD (`ExerciseGym`) y `noindex` en las páginas privadas |
+| 3.9 [P] | **Parcial (2026-11-11): metadatos por página, `noindex`, `robots.txt`, `sitemap.xml`, JSON-LD (`WebApplication`, `BreadcrumbList`) y migas hechos; pendiente el prerender estático con `@angular/ssr` y la auditoría.** SEO: páginas públicas pregeneradas (`@angular/ssr` en modo estático), `title` y `description` por página, `sitemap.xml`, `robots.txt`, JSON-LD (`ExerciseGym`) y `noindex` en las páginas privadas |
 
 Aceptación: pantalla representativa aprobada, revisada en móvil, escritorio, teclado, contraste y movimiento reducido; antislop sin hallazgos graves.
 
