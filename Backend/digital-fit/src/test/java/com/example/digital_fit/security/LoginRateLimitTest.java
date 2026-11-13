@@ -1,13 +1,22 @@
 package com.example.digital_fit.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
+import jakarta.servlet.FilterChain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.example.digital_fit.config.security.LoginRateLimiterService;
+import com.example.digital_fit.config.security.LoginRateLimitingFilter;
+
+import tools.jackson.databind.ObjectMapper;
 
 @DisplayName("Pruebas unitarias de LoginRateLimiterService (Rate Limiting de inicio de sesión)")
 class LoginRateLimitTest {
@@ -152,5 +161,63 @@ class LoginRateLimitTest {
         assertThat(LoginRateLimiterService.isValidIp("192.168.1")).isFalse();
         assertThat(LoginRateLimiterService.isValidIp("")).isFalse();
         assertThat(LoginRateLimiterService.isValidIp(null)).isFalse();
+    }
+
+    @Test
+    @DisplayName("LoginRateLimitingFilter permite peticiones que no son POST login")
+    void testFilterPasaPeticionesNoLogin() throws Exception {
+        LoginRateLimitingFilter filter = new LoginRateLimitingFilter(rateLimiterService, new ObjectMapper());
+        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/api/auth/login");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        FilterChain chain = mock(FilterChain.class);
+
+        filter.doFilter(request, response, chain);
+        verify(chain).doFilter(request, response);
+    }
+
+    @Test
+    @DisplayName("LoginRateLimitingFilter permite POST login cuando no está bloqueado")
+    void testFilterPasaLoginNoBloqueado() throws Exception {
+        LoginRateLimitingFilter filter = new LoginRateLimitingFilter(rateLimiterService, new ObjectMapper());
+        MockHttpServletRequest request = new MockHttpServletRequest("POST", "/api/auth/login");
+        request.setRemoteAddr("10.0.0.1");
+        request.setParameter("username", "usuarioValido");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        FilterChain chain = mock(FilterChain.class);
+
+        filter.doFilter(request, response, chain);
+        verify(chain).doFilter(request, response);
+    }
+
+    @Test
+    @DisplayName("LoginRateLimitingFilter devuelve 429 cuando el usuario o IP está bloqueado")
+    void testFilterDevuelve429CuandoBloqueado() throws Exception {
+        LoginRateLimitingFilter filter = new LoginRateLimitingFilter(rateLimiterService, new ObjectMapper());
+        for (int i = 0; i < 5; i++) {
+            rateLimiterService.recordFailure("10.0.0.1", "usuarioBloqueado");
+        }
+
+        MockHttpServletRequest request = new MockHttpServletRequest("POST", "/api/auth/login");
+        request.setRemoteAddr("10.0.0.1");
+        request.setParameter("username", "usuarioBloqueado");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        FilterChain chain = mock(FilterChain.class);
+
+        filter.doFilter(request, response, chain);
+        verify(chain, never()).doFilter(request, response);
+        assertThat(response.getStatus()).isEqualTo(429);
+        assertThat(response.getHeader("Retry-After")).isNotNull();
+        assertThat(response.getContentAsString()).contains("urn:problem-type:demasiadas-peticiones");
+    }
+
+    @Test
+    @DisplayName("resetAll reinicia contadores de IP y usuarios")
+    void testResetAll() {
+        for (int i = 0; i < 5; i++) {
+            rateLimiterService.recordFailure("10.0.0.1", "usuario1");
+        }
+        assertThat(rateLimiterService.isBlocked("10.0.0.1", "usuario1")).isTrue();
+        rateLimiterService.resetAll();
+        assertThat(rateLimiterService.isBlocked("10.0.0.1", "usuario1")).isFalse();
     }
 }

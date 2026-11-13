@@ -49,8 +49,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Service
 public class LoginRateLimiterService {
 
-    private static final Pattern IPV4_PATTERN = Pattern.compile(
-            "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+    private static final Pattern IPV4_PATTERN = Pattern.compile("^(\\d{1,3}\\.){3}\\d{1,3}$");
 
     private final int maxAttemptsUser;
     private final int maxAttemptsIp;
@@ -88,6 +87,13 @@ public class LoginRateLimiterService {
             trimmed = trimmed.substring(1, trimmed.length() - 1);
         }
         if (IPV4_PATTERN.matcher(trimmed).matches()) {
+            String[] parts = trimmed.split("\\.");
+            for (String part : parts) {
+                int octet = Integer.parseInt(part);
+                if (octet < 0 || octet > 255) {
+                    return false;
+                }
+            }
             return true;
         }
         if (trimmed.contains(":") && trimmed.matches("^[0-9a-fA-F:]+$")) {
@@ -129,7 +135,10 @@ public class LoginRateLimiterService {
             }
         }
         String remoteAddr = request.getRemoteAddr();
-        return isValidIp(remoteAddr) ? remoteAddr : (remoteAddr != null ? remoteAddr : "unknown-ip");
+        if (isValidIp(remoteAddr)) {
+            return remoteAddr;
+        }
+        return remoteAddr != null ? remoteAddr : "unknown-ip";
     }
 
     /**
@@ -137,13 +146,8 @@ public class LoginRateLimiterService {
      */
     public boolean isBlocked(String ip, String username) {
         Instant now = Instant.now();
-        if (isKeyBlocked(attemptsByIp, ip, now)) {
-            return true;
-        }
-        if (StringUtils.hasText(username) && isKeyBlocked(attemptsByUser, username.toLowerCase().trim(), now)) {
-            return true;
-        }
-        return false;
+        return isKeyBlocked(attemptsByIp, ip, now)
+                || (StringUtils.hasText(username) && isKeyBlocked(attemptsByUser, username.toLowerCase().trim(), now));
     }
 
     /**

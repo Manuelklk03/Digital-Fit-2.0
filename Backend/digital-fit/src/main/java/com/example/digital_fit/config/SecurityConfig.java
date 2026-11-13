@@ -34,14 +34,11 @@ public class SecurityConfig {
     @Value("${SESSION_COOKIE_SECURE:false}")
     private boolean sessionCookieSecure;
 
-    @Autowired(required = false)
-    private LoginRateLimiterService rateLimiterService;
-
-    @Autowired(required = false)
-    private ObjectMapper objectMapper;
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(
+            HttpSecurity http,
+            @Autowired(required = false) LoginRateLimiterService rateLimiterService,
+            @Autowired(required = false) ObjectMapper objectMapper) throws Exception {
 
         CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
         tokenRepository.setCookiePath("/");
@@ -58,8 +55,7 @@ public class SecurityConfig {
                 })
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(tokenRepository)
-                        .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
-                        .ignoringRequestMatchers("/actuator/health", "/actuator/health/**"))
+                        .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .headers(headers -> headers
                         .contentTypeOptions(Customizer.withDefaults())
