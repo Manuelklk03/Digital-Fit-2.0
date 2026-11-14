@@ -109,7 +109,7 @@ jobs:
         run: npm run build
 
   lint:
-    name: Frontend (lint)
+    name: Frontend (lint y formato)
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -126,6 +126,9 @@ jobs:
 
       - name: Instalar dependencias
         run: npm ci
+
+      - name: Comprobar formato con Prettier
+        run: npm run format:check
 
       # Falla con errores; los avisos (deuda de la v1) se muestran pero no bloquean.
       - name: ESLint

@@ -112,7 +112,7 @@ Dependencias: fases 4 y 5.
 | 6.2 [P] | Pruebas E2E de los recorridos principales (Playwright en suite aislada `e2e/`) | **Hecha (2026-11-14)** |
 | 6.3 [P] | Revisión de seguridad y de rendimiento (Lighthouse, tamaño del bundle) |
 | 6.4 [P] | Revisión completa con Codex y corrección de hallazgos |
-| 6.5 [+] | Formato como check (Prettier); ESLint ya está desde 1B.2 |
+| 6.5 [+] | Formato como check (Prettier); ESLint ya está desde 1B.2 | **Hecha (2026-11-14)** |
 
 ## Fase 7 — Publicación y versión estable 2.0
 
