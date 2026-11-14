@@ -19,6 +19,8 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 
 | Parada | Estado | Espera a | Qué se necesita |
 |---|---|---|---|
+| G12 | BLOQUEADO | Claude y Manuel | Comprobación de CSRF y del límite de intentos en producción (Netlify + Render) pendiente de Claude y Manuel |
+| G11 | LIBRE | Claude → Antigravity | Frontend verificado con CSRF activo por Claude (2026-11-12); no requiere cambios |
 | G1 | Resuelta | Antigravity → Claude | Tarea 4.8 completada (PR #62) y adaptada por Claude en frontend (PR #64) |
 | G2 | Resuelta | Claude → Antigravity | Pantallas y servicios de soporte retirados en frontend (PR #65) y backend purgado con Flyway V4 (PR #66) |
 | G3 | Resuelta | Claude → Antigravity | Confirmado: cero referencias residuales a soporte o tickets en frontend y backend |
@@ -35,6 +37,9 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 
 | Fecha | Parada | Estado | Nota |
 |---|---|---|---|
+| 2026-11-12 | G12 | BLOQUEADO | Comprobación de CSRF y del límite de intentos en producción (Netlify + Render) pendiente de Claude y Manuel tras el despliegue |
+| 2026-11-12 | G11 | LIBRE | Claude verificó contra feat/backend-seguridad-csrf con docker compose y Chromium que el frontend funciona con CSRF activo (cookie XSRF-TOKEN en 401 de /api/auth/me, header X-XSRF-TOKEN automático). Resueltos hallazgos 2 y 3 de Codex por Antigravity |
+| 2026-11-11 | G11 | BLOQUEADO | Antigravity completó la revisión de seguridad 7.0 (CSRF, Rate Limiting 429, cabeceras seguras). Bloqueado esperando que Claude verifique que el frontend funciona con CSRF antes de desplegar o avanzar a E2E (6.1/6.2) |
 | 2026-11-09 | G1 | LIBRE | Tarea 4.8 completada y fusionada (PR #62). Contrato de API paginada publicado para que Claude adapte el frontend |
 | 2026-11-09 | G1 | Resuelta | Frontend adaptado a la API paginada (PR #64). Límite: 100 elementos por listado hasta que cada pantalla pagine |
 | 2026-11-09 | G2 y G3 | LIBRE | Soporte retirado del frontend (rama `feat/frontend-retirar-soporte`). Antigravity puede retirar tickets en el backend |
@@ -49,6 +54,35 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 | 2026-11-09 | G8 | Resuelta | Antigravity resolvió los 3 fallos de backend (V5 hashes demo, 404 NoResourceFoundException, y parámetro q en historial). Claude ya puede añadir la búsqueda del historial en frontend |
 | 2026-11-09 | G9 | Resuelta | Antigravity resolvió los fallos de G9 (V6 amplía columnas a VARCHAR(1500), @Valid en valoraciones, contraseñas mínimo 6 caracteres en admin y registro, y parámetro opcional q en mis-valoraciones). Claude ya puede subir el límite de los formularios a 1500 e integrar la búsqueda textual en mis valoraciones cuando lo requiera |
 | 2026-11-09 | G4 | BLOQUEADO | Tarea 2.3 completada. Antigravity queda a la espera de que Manuel cree las 3 cuentas gratuitas (Netlify, Render, Neon) y configure los 4 secretos en GitHub Actions (ver detalle abajo) para abordar la tarea 2.4 |
+
+## Parada G11 — Activación de CSRF y Límite de Login (para Claude)
+
+Antigravity ha completado la tarea 7.0 (Revisión de seguridad del backend) en la rama `feat/backend-seguridad-csrf` (PR pendiente de merge y verificación en frontend).
+
+### Qué cambia para el frontend
+- **CSRF activado:** Toda petición mutante (`POST`, `PUT`, `DELETE`, `PATCH`) requiere token CSRF.
+- **Nombre de la Cookie:** `XSRF-TOKEN` (`HttpOnly=false`, `SameSite=Lax`, `Secure` dependiente del entorno).
+- **Nombre de la Cabecera:** `X-XSRF-TOKEN` (valor exacto extraído de la cookie `XSRF-TOKEN`).
+- **Patrón SPA:** Implementado `SpaCsrfTokenRequestHandler` y `CsrfCookieFilter` (Spring Security 6/7). Cualquier petición `GET` (incluyendo `GET /api/auth/me` o `GET /api/auth/csrf`) evalúa y entrega la cookie `XSRF-TOKEN`.
+- **HttpClient de Angular:** Angular incluye soporte nativo para CSRF con `provideHttpClient(withXsrfConfiguration({ cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN' }))`. Si no se especifica configuración personalizada, los valores por defecto del framework coinciden exactamente con `XSRF-TOKEN` y `X-XSRF-TOKEN`.
+- **Primer POST (Login / Registro):** El cliente debe realizar un `GET` previo (p. ej. `GET /api/auth/csrf` o `GET /api/auth/me`) para que el navegador reciba la cookie `XSRF-TOKEN` antes de enviar el primer `POST /api/auth/login` o `POST /api/auth/registro`.
+- **Rutas exentas:** Únicamente `/actuator/health` y `/actuator/health/**` (GET). Ningún endpoint mutante está exento.
+- **Límite de intentos de login (Rate Limiting):** Máximo 5 intentos fallidos consecutivos por IP (extrayendo la IP de `X-Forwarded-For` para respetar el proxy inverso de Netlify/Render) o por usuario. Al 6º intento devuelve `429 Too Many Requests` con `ProblemDetail` (RFC 7807, `urn:problem-type:demasiadas-peticiones`) y la cabecera `Retry-After` con los segundos restantes de bloqueo. Un login exitoso reinicia el contador. El bloqueo es temporal en memoria (RAM) y se auto-expira a los 60 segundos (no bloquea usuarios demo de forma permanente).
+
+### Comprobación con curl (flujo cookie jar)
+```bash
+# 1. Petición GET inicial para obtener la cookie CSRF
+curl -c cookies.txt -s http://localhost:8080/api/auth/csrf
+
+# 2. Extraer el valor del token XSRF
+# En Linux/macOS:
+XSRF=$(grep XSRF-TOKEN cookies.txt | awk '{print $7}')
+# En Windows PowerShell:
+# $xsrf = (Get-Content cookies.txt | Select-String "XSRF-TOKEN").Line.Split("`t")[-1]
+
+# 3. Enviar POST con cookie y cabecera X-XSRF-TOKEN
+curl -b cookies.txt -H "X-XSRF-TOKEN: $XSRF" -d "username=usuario1&password=Usuario123!" -X POST http://localhost:8080/api/auth/login
+```
 
 ## Fallos de backend para Antigravity (G10, 2026-11-11)
 

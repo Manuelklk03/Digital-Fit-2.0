@@ -120,7 +120,7 @@ Dependencias: fase 6.
 
 | ID | Tarea |
 |---|---|
-| 7.0 [P] | Revisión de seguridad antes de publicar (pedida por Manuel, 2026-11-09). La autenticación usa **sesión de servidor con cookie `JSESSIONID`** (`HttpOnly`, `SameSite=Lax`, `Secure` por entorno desde 4.1), no JWT. Decidir: a) mantener la sesión y **activar CSRF** (hoy `csrf.disable()` en `SecurityConfig`) con `CookieCsrfTokenRepository` y el interceptor XSRF de Angular, o b) migrar a JWT de acceso corto + refresh token rotatorio en cookie `HttpOnly` (cambio de stack: plan, motivos y aprobación). Revisar también la cookie entre dominios Netlify ↔ Render (`SameSite=None; Secure` o proxy del frontend), cabeceras de seguridad (CSP, HSTS) y límite de intentos de login |
+| 7.0 [P] | Revisión de seguridad antes de publicar (pedida por Manuel, 2026-11-09). La autenticación usa **sesión de servidor con cookie `JSESSIONID`** (`HttpOnly`, `SameSite=Lax`, `Secure` por entorno desde 4.1), no JWT. Activado CSRF con `CookieCsrfTokenRepository.withHttpOnlyFalse()` y patrón SPA de Spring Security 6/7, límite de login en memoria con respuesta 429 y cabecera Retry-After, cabeceras seguras (X-Content-Type-Options, Referrer-Policy, Permissions-Policy, HSTS) y Actuator cerrado salvo health sin detalles | **Hecha (2026-11-11)** |
 | 7.1 [P] | Despliegue final con la configuración de la fase 2 y verificación en producción |
 | 7.2 [P] | README de portfolio con URL, capturas reales y credenciales de demostración |
 | 7.3 [P] | CHANGELOG `[2.0.0]`, tag `v2.0.0` y GitHub Release (con indicación de Manuel) |

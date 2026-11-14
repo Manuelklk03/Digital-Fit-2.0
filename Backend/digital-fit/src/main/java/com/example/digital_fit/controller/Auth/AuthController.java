@@ -30,6 +30,11 @@ public class AuthController {
                 .body("Usuario registrado exitosamente");
     }
 
+    @GetMapping("/csrf")
+    public ResponseEntity<Void> csrf() {
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/me")
     public ResponseEntity<UsuarioSesionDTO> me(Authentication authentication) {
 

@@ -1,5 +1,6 @@
 package com.example.digital_fit.controller;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -53,6 +54,7 @@ class ValidacionRestControllersTest {
 
         mockMvc.perform(post("/api/valoraciones/ENTRENAMIENTO_BASE/1")
                         .with(user("usuario1").roles("USER"))
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bodyJson))
                 .andExpect(status().isBadRequest())
@@ -74,6 +76,7 @@ class ValidacionRestControllersTest {
 
         mockMvc.perform(post("/api/valoraciones/ENTRENAMIENTO_BASE/1")
                         .with(user("usuario1").roles("USER"))
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bodyJson))
                 .andExpect(status().isBadRequest())
@@ -94,6 +97,7 @@ class ValidacionRestControllersTest {
 
         mockMvc.perform(post("/api/valoraciones/ENTRENAMIENTO_BASE/1")
                         .with(user("usuario1").roles("USER"))
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bodyJson))
                 .andExpect(status().isBadRequest())
@@ -115,6 +119,7 @@ class ValidacionRestControllersTest {
 
         mockMvc.perform(post("/api/admin/crear-admin")
                         .with(user("admin1").roles("ADMIN"))
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bodyJson))
                 .andExpect(status().isBadRequest())
@@ -135,6 +140,7 @@ class ValidacionRestControllersTest {
                 """;
 
         mockMvc.perform(post("/api/auth/registro")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bodyJson))
                 .andExpect(status().isBadRequest())
