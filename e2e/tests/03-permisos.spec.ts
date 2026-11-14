@@ -11,15 +11,15 @@ test.describe('Control de Acceso y Permisos por Rol', () => {
     await page.goto('/mis-entrenamientos');
     await expect(page).toHaveURL(/.*\/login/, { timeout: 10000 });
 
-    // 3. En la cabecera no existen enlaces administrativos ni privados
-    await expect(page.getByRole('link', { name: 'Entrar' })).toBeVisible();
+    // 3. En la cabecera no existen enlaces administrativos ni sesión iniciada
+    await expect(page.getByRole('banner').getByRole('link', { name: 'Entrar' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Crear admin' })).not.toBeVisible();
-    await expect(page.getByRole('link', { name: 'Mis entrenamientos' })).not.toBeVisible();
+    await expect(page.getByRole('banner').getByRole('button', { name: 'Salir' })).not.toBeVisible();
   });
 
   test('usuario estándar no ve enlace administrativo y recibe 403 en endpoints de rol ADMIN', async ({ page }) => {
     // 1. Iniciar sesión con rol USER
-    await loginViaUI(page, 'usuario1', 'password123');
+    await loginViaUI(page, 'usuario1', 'Usuario123!');
 
     // 2. La navegación principal no muestra la opción de 'Crear admin'
     await expect(page.getByRole('link', { name: 'Crear admin' })).not.toBeVisible();

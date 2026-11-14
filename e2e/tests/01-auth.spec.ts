@@ -30,11 +30,11 @@ test.describe('Flujo de Autenticación', () => {
     await page.getByRole('button', { name: 'Iniciar sesión' }).click();
 
     // 6. Verificar que la sesión se inicia correctamente (cabecera muestra el usuario y botón Salir)
-    await expect(page.getByRole('button', { name: 'Salir' })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('banner').getByRole('button', { name: 'Salir' })).toBeVisible({ timeout: 10000 });
     await expect(page.locator('.estado-linea-superior')).toContainText(testUser);
 
     // 7. Cerrar sesión
     await logoutViaUI(page);
-    await expect(page.getByRole('link', { name: 'Entrar' })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('banner').getByRole('link', { name: 'Entrar' })).toBeVisible({ timeout: 10000 });
   });
 });

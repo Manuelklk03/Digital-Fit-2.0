@@ -4,7 +4,7 @@ import { loginViaUI } from './helpers/auth.js';
 test.describe('Catálogo y Mis Entrenamientos', () => {
   test('navegar por el catálogo base, añadir rutina a mis entrenamientos y eliminarla', async ({ page }) => {
     // 1. Iniciar sesión con el usuario de demostración
-    await loginViaUI(page, 'usuario1', 'password123');
+    await loginViaUI(page, 'usuario1', 'Usuario123!');
 
     // 2. Navegar al catálogo de entrenamientos base
     await page.goto('/entrenamientos');
