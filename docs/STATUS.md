@@ -1,6 +1,15 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-11**.
+Última actualización: **2026-11-14**.
+
+> **2026-11-14 (Fase 6, Tareas 6.2 y 6.1 — Pruebas E2E con Playwright y job en CI; rama `feat/e2e-playwright-ci`):**
+> - **Suite E2E aislada (`e2e/`):** Configurado proyecto independiente con `@playwright/test`, `playwright.config.ts`, `tsconfig.json` y dependencias propias sin tocar `Frontend/digital-fit-frontend`. Ejecución secuencial (`workers: 1`) para evitar colisiones en base de datos o contadores de rate limit entre pruebas.
+> - **Flujos cubiertos con selectores accesibles:**
+>   1. `01-auth.spec.ts`: Registro de usuario único con timestamp, redirección automática, login y logout.
+>   2. `02-catalogo-entrenamientos.spec.ts`: Exploración del catálogo base, adición de rutina a «Mis entrenamientos» y eliminación manejando el diálogo nativo `confirm()`.
+>   3. `03-permisos.spec.ts`: Verificación de permisos y visibilidad; usuario anónimo recibe 401 en `/api/admin/**` y es redirigido a login; usuario estándar no ve enlaces administrativos y recibe 403 en endpoints protegidos.
+>   4. `04-rate-limit.spec.ts`: Seis inicios de sesión fallidos consecutivos con usuario aislado activan respuesta HTTP 429 con cabecera `Retry-After` y visualización del aviso «Demasiados intentos fallidos» en la interfaz.
+> - **Integración continua (`.github/workflows/ci.yml`):** Añadido job `e2e` que levanta el entorno con `docker compose up -d --wait`, instala Chromium con dependencias de sistema, ejecuta la suite contra `http://localhost:4200` y preserva artefactos si falla, condicionando el despliegue a su superación.
 
 > **2026-11-12 (Fase 7, Tarea 7.0 — Revisión de seguridad del backend; Parada G11 LIBRE; Parada G12 BLOQUEADO; rama `feat/backend-seguridad-csrf`):**
 > - **Protección CSRF activa con patrón SPA:** Habilitado CSRF en `SecurityConfig` utilizando `CookieCsrfTokenRepository.withHttpOnlyFalse()` y el patrón SPA de Spring Security 6/7 con `SpaCsrfTokenRequestHandler` (resuelve tokens directos en cabecera `X-XSRF-TOKEN`) y `CsrfCookieFilter` (fuerza la evaluación y emisión de la cookie `XSRF-TOKEN` en cualquier petición `GET`, incluyendo `/api/auth/me`). Añadido endpoint de conveniencia `GET /api/auth/csrf` (204 No Content).

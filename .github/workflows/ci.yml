@@ -198,12 +198,58 @@ jobs:
         if: always()
         run: docker compose down -v
 
+  e2e:
+    name: E2E (Playwright)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: e2e/package-lock.json
+
+      - name: Instalar dependencias E2E
+        run: npm ci
+        working-directory: e2e
+
+      - name: Instalar navegadores de Playwright
+        run: npx playwright install --with-deps chromium
+        working-directory: e2e
+
+      # --wait espera a que postgres, backend y frontend superen sus healthchecks
+      - name: Levantar la aplicación con Docker Compose
+        run: docker compose up -d --build --wait --wait-timeout 180
+
+      - name: Ejecutar pruebas E2E
+        run: npm test
+        working-directory: e2e
+        env:
+          E2E_BASE_URL: http://localhost:4200
+
+      - name: Logs de los contenedores si falla
+        if: failure()
+        run: docker compose logs --no-color --tail 100
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: e2e/playwright-report/
+          retention-days: 7
+
+      - name: Parar la aplicación
+        if: always()
+        run: docker compose down -v
+
   publish:
     name: Publicar imagen ${{ matrix.imagen }}
     runs-on: ubuntu-latest
     # Solo en push (merge a main o tag v*) y con todas las comprobaciones en verde.
     if: github.event_name == 'push'
-    needs: [backend, frontend, lint, docker]
+    needs: [backend, frontend, lint, docker, e2e]
     strategy:
       matrix:
         include:
