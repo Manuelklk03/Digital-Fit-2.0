@@ -10,6 +10,8 @@ import jakarta.servlet.FilterChain;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
@@ -91,50 +93,21 @@ class LoginRateLimitTest {
         assertThat(rateLimiterService.isBlocked("172.16.0.1", "victimaAtaque")).isTrue();
     }
 
-    @Test
-    @DisplayName("Resolución de IP respeta proxy inverso con varias IPs tomando la penúltima (cadena Netlify -> Render)")
-    void testResolucionIpConXForwardedForVariasIps() {
+    @ParameterizedTest(name = "X-Forwarded-For={0}, remoteAddr={1} -> ipEsperada={2}")
+    @CsvSource({
+            "'1.2.3.4, 203.0.113.195, 70.41.3.18', 10.0.0.1, 203.0.113.195",
+            "'198.51.100.42', 10.0.0.1, 198.51.100.42",
+            "'bad<script>, fake_ip, 203.0.113.50, 198.51.100.2', 10.0.0.1, 203.0.113.50",
+            "'malicious-domain.com, <inject>', 192.168.1.100, 192.168.1.100"
+    })
+    @DisplayName("Resolución de IP en diversas cadenas de proxy y cabeceras falsificadas")
+    void testResolucionIpCasos(String xForwardedFor, String remoteAddr, String ipEsperada) {
         MockHttpServletRequest request = new MockHttpServletRequest();
-        // Cadena: [IP spoofed o salto previo, IP vista por Netlify, IP de Netlify añadida por Render]
-        request.addHeader("X-Forwarded-For", "1.2.3.4, 203.0.113.195, 70.41.3.18");
-        request.setRemoteAddr("10.0.0.1");
+        request.addHeader("X-Forwarded-For", xForwardedFor);
+        request.setRemoteAddr(remoteAddr);
 
         String ip = rateLimiterService.resolveClientIp(request);
-        assertThat(ip).isEqualTo("203.0.113.195");
-    }
-
-    @Test
-    @DisplayName("Resolución de IP con una sola IP válida en X-Forwarded-For toma esa IP")
-    void testResolucionIpConUnaSolaIp() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("X-Forwarded-For", "198.51.100.42");
-        request.setRemoteAddr("10.0.0.1");
-
-        String ip = rateLimiterService.resolveClientIp(request);
-        assertThat(ip).isEqualTo("198.51.100.42");
-    }
-
-    @Test
-    @DisplayName("Resolución de IP con cabecera falsificada descarta entradas no numéricas o maliciosas")
-    void testResolucionIpConCabeceraFalsificadaDescartaValoresInvalidos() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("X-Forwarded-For", "bad<script>, fake_ip, 203.0.113.50, 198.51.100.2");
-        request.setRemoteAddr("10.0.0.1");
-
-        // Solo 203.0.113.50 y 198.51.100.2 son válidas -> toma la penúltima (203.0.113.50)
-        String ip = rateLimiterService.resolveClientIp(request);
-        assertThat(ip).isEqualTo("203.0.113.50");
-    }
-
-    @Test
-    @DisplayName("Resolución de IP con cabecera completamente inválida recurre a getRemoteAddr")
-    void testResolucionIpCabeceraInvalidaRecurreAGetRemoteAddr() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("X-Forwarded-For", "malicious-domain.com, <inject>");
-        request.setRemoteAddr("192.168.1.100");
-
-        String ip = rateLimiterService.resolveClientIp(request);
-        assertThat(ip).isEqualTo("192.168.1.100");
+        assertThat(ip).isEqualTo(ipEsperada);
     }
 
     @Test

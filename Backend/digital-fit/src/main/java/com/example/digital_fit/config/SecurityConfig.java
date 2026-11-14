@@ -35,12 +35,13 @@ public class SecurityConfig {
     private boolean sessionCookieSecure;
 
     @Bean
+    @SuppressWarnings({"java:S112", "java:S1130", "java:S3330"}) // Requiere HttpOnly=false para que Angular SPA lea la cookie XSRF-TOKEN
     public SecurityFilterChain filterChain(
             HttpSecurity http,
             @Autowired(required = false) LoginRateLimiterService rateLimiterService,
             @Autowired(required = false) ObjectMapper objectMapper) throws Exception {
 
-        CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        CookieCsrfTokenRepository tokenRepository = CookieCsrfTokenRepository.withHttpOnlyFalse(); // NOSONAR: Necesario para SPA Angular
         tokenRepository.setCookiePath("/");
         tokenRepository.setCookieCustomizer(customizer -> customizer
                 .secure(sessionCookieSecure)
