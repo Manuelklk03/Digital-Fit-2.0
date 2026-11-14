@@ -50,8 +50,10 @@ export const lugaresEs: DiccionarioLugares = {
   ayudaUbicacion: 'Busca una dirección o haz clic en el mapa para marcar la ubicación.',
   autocompletando: 'Buscando datos de esa ubicación…',
   autocompletadoOk: 'Datos rellenados desde OpenStreetMap. Escribe el nombre y revisa el resto.',
-  autocompletadoSinDatos: 'No hay datos de esa ubicación en OpenStreetMap. Completa los campos a mano.',
-  autocompletadoError: 'No se pudieron consultar los datos de la ubicación. Completa los campos a mano.',
+  autocompletadoSinDatos:
+    'No hay datos de esa ubicación en OpenStreetMap. Completa los campos a mano.',
+  autocompletadoError:
+    'No se pudieron consultar los datos de la ubicación. Completa los campos a mano.',
   confirmarBorrado: '¿Seguro que quieres borrarlo? Esta acción no se puede deshacer.',
   exitoAnadido: 'Añadido a tu lista.',
   errorAnadir: 'No se pudo añadir.',
@@ -81,7 +83,8 @@ export const lugaresEs: DiccionarioLugares = {
   centrosBase: {
     badge: 'Centros privados',
     titulo: 'Catálogo de centros',
-    subtitulo: 'Gimnasios y centros deportivos de la Comunidad Valenciana. Añade los que uses a tu lista.',
+    subtitulo:
+      'Gimnasios y centros deportivos de la Comunidad Valenciana. Añade los que uses a tu lista.',
     vacio: 'Todavía no hay centros en el catálogo.',
     formCrear: 'Nuevo centro',
     formEditar: 'Editar centro',

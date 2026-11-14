@@ -33,15 +33,18 @@ export const diccionarioEs: DiccionarioTraduccion = {
   seo: {
     inicio: {
       titulo: 'Digital-FIT · Entrenamientos, lugares y seguimiento deportivo',
-      descripcion: 'Registra series, pesos y descansos, encuentra gimnasios, parques de calistenia y piscinas en el mapa y sigue tu progreso.',
+      descripcion:
+        'Registra series, pesos y descansos, encuentra gimnasios, parques de calistenia y piscinas en el mapa y sigue tu progreso.',
     },
     login: {
       titulo: 'Iniciar sesión · Digital-FIT',
-      descripcion: 'Accede a tu cuenta de Digital-FIT para gestionar tus entrenamientos y explorar centros deportivos.',
+      descripcion:
+        'Accede a tu cuenta de Digital-FIT para gestionar tus entrenamientos y explorar centros deportivos.',
     },
     registro: {
       titulo: 'Crear cuenta · Digital-FIT',
-      descripcion: 'Crea tu cuenta en Digital-FIT para guardar tus entrenamientos, tus lugares y tu historial.',
+      descripcion:
+        'Crea tu cuenta en Digital-FIT para guardar tus entrenamientos, tus lugares y tu historial.',
     },
   },
   migas: {
@@ -87,20 +90,25 @@ export const diccionarioEs: DiccionarioTraduccion = {
     distanciaHaversine: 'distancia geodésica real',
     ctaVerMapa: 'Abrir mapa interactivo',
     seccionComunidadTitulo: 'Ecosistema de entrenamiento',
-    seccionComunidadDesc: 'Tres herramientas diseñadas para el entrenamiento individual y colectivo',
+    seccionComunidadDesc:
+      'Tres herramientas diseñadas para el entrenamiento individual y colectivo',
     ctaUnirse: 'Crear cuenta gratuita',
     instalacionGimnasio: 'Gimnasio',
     instalacionCalistenia: 'Calistenia',
     instalacionPiscina: 'Piscina',
     instalacionPolideportivo: 'Polideportivo',
     tarjeta1Titulo: 'Asistente en vivo',
-    tarjeta1Desc: 'Control táctil de descansos regresivos y registro de repeticiones sin salir de la pantalla.',
+    tarjeta1Desc:
+      'Control táctil de descansos regresivos y registro de repeticiones sin salir de la pantalla.',
     tarjeta2Titulo: 'Mapa deportivo',
-    tarjeta2Desc: 'Integración con OpenStreetMap vía Overpass API y cálculo de proximidad por fórmula Haversine.',
+    tarjeta2Desc:
+      'Integración con OpenStreetMap vía Overpass API y cálculo de proximidad por fórmula Haversine.',
     tarjeta3Titulo: 'Catálogo y Comunidad',
-    tarjeta3Desc: 'Entrenamientos base categorizados, creación de rutinas propias y reseñas de la comunidad.',
+    tarjeta3Desc:
+      'Entrenamientos base categorizados, creación de rutinas propias y reseñas de la comunidad.',
     ctaFinalTitulo: 'Todo lo que necesitas para tu sesión, sin fricción',
-    ctaFinalDesc: 'Prueba el asistente de inmediato o busca instalaciones deportivas cercanas sin necesidad de registro.',
+    ctaFinalDesc:
+      'Prueba el asistente de inmediato o busca instalaciones deportivas cercanas sin necesidad de registro.',
   },
   comun: {
     cargando: 'Cargando...',
@@ -127,13 +135,15 @@ export const diccionarioEs: DiccionarioTraduccion = {
     demoClickLlenar: 'Rellenar datos de prueba',
     errorCamposObligatorios: 'Debes completar todos los campos obligatorios.',
     errorCredenciales: 'Usuario o contraseña incorrectos.',
-    errorDemasiadosIntentos: 'Demasiados intentos fallidos. Espera un momento y vuelve a intentarlo.',
+    errorDemasiadosIntentos:
+      'Demasiados intentos fallidos. Espera un momento y vuelve a intentarlo.',
     errorInesperado: 'No se pudo iniciar sesión. Comprueba la conexión e inténtalo de nuevo.',
     errorSesion: 'Error al recuperar la información de sesión.',
     exitoLogin: 'Sesión iniciada correctamente. Redirigiendo...',
     registroBadge: 'NUEVA CUENTA • DIGITAL-FIT',
     registroTitulo: 'Crear cuenta',
-    registroSubtitulo: 'Únete a la plataforma para registrar progresos y descubrir spots deportivos.',
+    registroSubtitulo:
+      'Únete a la plataforma para registrar progresos y descubrir spots deportivos.',
     emailLabel: 'Correo electrónico',
     emailPlaceholder: 'tu-correo@ejemplo.com',
     botonRegistrar: 'Registrarse',
@@ -148,7 +158,8 @@ export const diccionarioEs: DiccionarioTraduccion = {
   admin: {
     badge: 'Administración',
     titulo: 'Crear administrador',
-    subtitulo: 'Da de alta otra cuenta con rol ADMIN. Podrá gestionar los catálogos de entrenamientos, centros y lugares.',
+    subtitulo:
+      'Da de alta otra cuenta con rol ADMIN. Podrá gestionar los catálogos de entrenamientos, centros y lugares.',
     formTitulo: 'Nueva cuenta de administrador',
     crear: 'Crear administrador',
     creando: 'Creando…',

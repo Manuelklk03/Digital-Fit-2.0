@@ -50,7 +50,8 @@ export const lugaresFr: DiccionarioLugares = {
   ayudaUbicacion: "Cherchez une adresse ou cliquez sur la carte pour indiquer l'emplacement.",
   autocompletando: 'Recherche des données de cet emplacement…',
   autocompletadoOk: 'Données remplies depuis OpenStreetMap. Saisissez le nom et vérifiez le reste.',
-  autocompletadoSinDatos: "OpenStreetMap n'a pas de données pour cet emplacement. Remplissez les champs vous-même.",
+  autocompletadoSinDatos:
+    "OpenStreetMap n'a pas de données pour cet emplacement. Remplissez les champs vous-même.",
   autocompletadoError: "Impossible de consulter l'emplacement. Remplissez les champs vous-même.",
   confirmarBorrado: 'Le supprimer ? Cette action est irréversible.',
   exitoAnadido: 'Ajouté à votre liste.',
@@ -74,14 +75,15 @@ export const lugaresFr: DiccionarioLugares = {
     volverValencia: 'Centrer sur Valence',
     irMarcador: 'Aller au marqueur',
     escribeDireccion: 'Saisissez une adresse, une rue, un quartier ou un nom de lieu.',
-    fueraDeZona: "Choisissez un emplacement dans la Communauté valencienne.",
+    fueraDeZona: 'Choisissez un emplacement dans la Communauté valencienne.',
     noEncontrado: 'Emplacement introuvable. Essayez une adresse plus précise.',
     cerrarMensaje: 'Fermer le message',
   },
   centrosBase: {
     badge: 'Centres privés',
     titulo: 'Catalogue des centres',
-    subtitulo: 'Salles de sport et centres sportifs de la Communauté valencienne. Ajoutez ceux que vous fréquentez.',
+    subtitulo:
+      'Salles de sport et centres sportifs de la Communauté valencienne. Ajoutez ceux que vous fréquentez.',
     vacio: "Il n'y a pas encore de centres dans le catalogue.",
     formCrear: 'Nouveau centre',
     formEditar: 'Modifier le centre',

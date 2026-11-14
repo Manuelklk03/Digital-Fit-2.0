@@ -3,7 +3,7 @@
   <div class="pie-contenido">
     <div class="pie-marca">
       <a class="pie-logo" routerLink="/inicio">
-        <img src="img/LOGOFINAL-removebg.png" alt="Digital-FIT">
+        <img src="img/LOGOFINAL-removebg.png" alt="Digital-FIT" />
       </a>
       <p>{{ t.descripcion }}</p>
     </div>
@@ -11,17 +11,27 @@
     <nav class="pie-columna" [attr.aria-label]="t.navegacion">
       <h2 class="pie-titulo">{{ t.navegacion }}</h2>
       <ul>
-        <li><a routerLink="/inicio">{{ i18n.t().nav.inicio }}</a></li>
-        <li><a routerLink="/explorar">{{ i18n.t().nav.explorar }}</a></li>
-        <li><a routerLink="/entrenar">{{ i18n.t().nav.entrenar }}</a></li>
+        <li>
+          <a routerLink="/inicio">{{ i18n.t().nav.inicio }}</a>
+        </li>
+        <li>
+          <a routerLink="/explorar">{{ i18n.t().nav.explorar }}</a>
+        </li>
+        <li>
+          <a routerLink="/entrenar">{{ i18n.t().nav.entrenar }}</a>
+        </li>
       </ul>
     </nav>
 
     <div class="pie-columna">
       <h2 class="pie-titulo">{{ t.proyecto }}</h2>
       <ul>
-        <li><a [href]="urlCodigo" rel="noopener noreferrer">{{ t.codigoFuente }}</a></li>
-        <li><a [href]="urlLicenciaMapa" rel="noopener noreferrer">{{ t.datosMapa }}</a></li>
+        <li>
+          <a [href]="urlCodigo" rel="noopener noreferrer">{{ t.codigoFuente }}</a>
+        </li>
+        <li>
+          <a [href]="urlLicenciaMapa" rel="noopener noreferrer">{{ t.datosMapa }}</a>
+        </li>
       </ul>
     </div>
   </div>

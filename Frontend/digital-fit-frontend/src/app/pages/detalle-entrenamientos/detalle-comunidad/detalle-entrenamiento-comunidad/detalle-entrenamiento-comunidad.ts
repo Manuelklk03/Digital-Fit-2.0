@@ -1,10 +1,21 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from '../../../../components/header/header';
 import { Footer } from '../../../../components/footer/footer';
 import { AlertComponent, BadgeComponent, ButtonComponent } from '../../../../components/ui';
 import { I18nService } from '../../../../i18n/i18n.service';
-import { EntrenamientoComunidad, fechaLegible, UsuarioSesion } from '../../../../models/entrenamiento';
+import {
+  EntrenamientoComunidad,
+  fechaLegible,
+  UsuarioSesion,
+} from '../../../../models/entrenamiento';
 import { AuthService } from '../../../../services/auth-service';
 import { EntrenamientosComunidadService } from '../../../../services/entrenamientos/entrenamiento-comunidad-service';
 import { MisEntrenamientosService } from '../../../../services/entrenamientos/mis-entrenamientos-service';
@@ -13,7 +24,14 @@ import { DetalleVistaComponent } from '../../../entrenamientos/compartido/detall
 
 @Component({
   selector: 'app-detalle-entrenamiento-comunidad',
-  imports: [HeaderComponent, Footer, AlertComponent, BadgeComponent, ButtonComponent, DetalleVistaComponent],
+  imports: [
+    HeaderComponent,
+    Footer,
+    AlertComponent,
+    BadgeComponent,
+    ButtonComponent,
+    DetalleVistaComponent,
+  ],
   templateUrl: './detalle-entrenamiento-comunidad.html',
   styleUrl: '../../../entrenamientos/compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,7 +45,9 @@ export class DetalleEntrenamientoComunidadComponent implements OnInit {
   private readonly authService = inject(AuthService);
 
   readonly detalle = new Detalle<EntrenamientoComunidad>(() =>
-    this.comunidadService.getEntrenamientoComunidadById(Number(this.route.snapshot.paramMap.get('id'))),
+    this.comunidadService.getEntrenamientoComunidadById(
+      Number(this.route.snapshot.paramMap.get('id')),
+    ),
   );
   readonly usuario = signal<UsuarioSesion | null>(null);
   readonly esMio = computed(() => {
@@ -40,7 +60,10 @@ export class DetalleEntrenamientoComunidadComponent implements OnInit {
     return e
       ? [
           { etiqueta: t.autor, valor: e.usuario },
-          { etiqueta: t.publicado, valor: fechaLegible(e.fechaPublicacion, this.i18n.idiomaActual()) },
+          {
+            etiqueta: t.publicado,
+            valor: fechaLegible(e.fechaPublicacion, this.i18n.idiomaActual()),
+          },
         ]
       : [];
   });

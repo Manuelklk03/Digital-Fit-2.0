@@ -12,6 +12,6 @@ export const publicGuard: CanActivateFn = () => {
       router.navigate(['/inicio']);
       return false;
     }),
-    catchError(() => of(true))
+    catchError(() => of(true)),
   );
 };

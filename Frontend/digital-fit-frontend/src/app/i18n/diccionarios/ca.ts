@@ -33,15 +33,18 @@ export const diccionarioCa: DiccionarioTraduccion = {
   seo: {
     inicio: {
       titulo: 'Digital-FIT · Entrenaments, llocs i seguiment esportiu',
-      descripcion: 'Registra sèries, pesos i descansos, troba gimnasos, parcs de calistènia i piscines al mapa i segueix el teu progrés.',
+      descripcion:
+        'Registra sèries, pesos i descansos, troba gimnasos, parcs de calistènia i piscines al mapa i segueix el teu progrés.',
     },
     login: {
       titulo: 'Iniciar sessió · Digital-FIT',
-      descripcion: 'Accedeix al teu compte de Digital-FIT per gestionar els teus entrenaments i explorar centres esportius.',
+      descripcion:
+        'Accedeix al teu compte de Digital-FIT per gestionar els teus entrenaments i explorar centres esportius.',
     },
     registro: {
       titulo: 'Crear compte · Digital-FIT',
-      descripcion: 'Crea el teu compte a Digital-FIT per guardar els teus entrenaments, els teus llocs i el teu historial.',
+      descripcion:
+        'Crea el teu compte a Digital-FIT per guardar els teus entrenaments, els teus llocs i el teu historial.',
     },
   },
   migas: {
@@ -94,13 +97,17 @@ export const diccionarioCa: DiccionarioTraduccion = {
     instalacionPiscina: 'Piscina',
     instalacionPolideportivo: 'Poliesportiu',
     tarjeta1Titulo: 'Assistent en viu',
-    tarjeta1Desc: 'Control tàctil de descansos regressius i registre de repeticions sense eixir de la pantalla.',
+    tarjeta1Desc:
+      'Control tàctil de descansos regressius i registre de repeticions sense eixir de la pantalla.',
     tarjeta2Titulo: 'Mapa esportiu',
-    tarjeta2Desc: 'Integració amb OpenStreetMap via Overpass API i càlcul de proximitat per fórmula Haversine.',
+    tarjeta2Desc:
+      'Integració amb OpenStreetMap via Overpass API i càlcul de proximitat per fórmula Haversine.',
     tarjeta3Titulo: 'Catàleg i Comunitat',
-    tarjeta3Desc: 'Entrenaments base categoritzats, creació de rutines pròpies i valoracions de la comunitat.',
+    tarjeta3Desc:
+      'Entrenaments base categoritzats, creació de rutines pròpies i valoracions de la comunitat.',
     ctaFinalTitulo: 'Tot el que necessites per a la teua sessió, sense fricció',
-    ctaFinalDesc: 'Prova l’assistent immediatament o cerca instal·lacions esportives properes sense necessitat de registre.',
+    ctaFinalDesc:
+      'Prova l’assistent immediatament o cerca instal·lacions esportives properes sense necessitat de registre.',
   },
   comun: {
     cargando: 'Carregant...',
@@ -112,7 +119,8 @@ export const diccionarioCa: DiccionarioTraduccion = {
   auth: {
     loginBadge: 'ACCÉS • DIGITAL-FIT',
     loginTitulo: 'Iniciar sessió',
-    loginSubtitulo: 'Accedeix al teu compte per gestionar els teus entrenaments i explorar centres.',
+    loginSubtitulo:
+      'Accedeix al teu compte per gestionar els teus entrenaments i explorar centres.',
     usuarioLabel: "Nom d'usuari",
     usuarioPlaceholder: "Introdueix el teu nom d'usuari",
     contrasenaLabel: 'Contrasenya',
@@ -133,7 +141,8 @@ export const diccionarioCa: DiccionarioTraduccion = {
     exitoLogin: 'Sessió iniciada correctament. Redirigint...',
     registroBadge: 'NOU COMPTE • DIGITAL-FIT',
     registroTitulo: 'Crear compte',
-    registroSubtitulo: 'Uneix-te a la plataforma per registrar progressos i descobrir spots esportius.',
+    registroSubtitulo:
+      'Uneix-te a la plataforma per registrar progressos i descobrir spots esportius.',
     emailLabel: 'Correu electrònic',
     emailPlaceholder: 'el-teu-correu@exemple.com',
     botonRegistrar: 'Registrar-se',
@@ -148,7 +157,8 @@ export const diccionarioCa: DiccionarioTraduccion = {
   admin: {
     badge: 'Administració',
     titulo: 'Crear administrador',
-    subtitulo: 'Dona d’alta un altre compte amb rol ADMIN. Podrà gestionar els catàlegs d’entrenaments, centres i llocs.',
+    subtitulo:
+      'Dona d’alta un altre compte amb rol ADMIN. Podrà gestionar els catàlegs d’entrenaments, centres i llocs.',
     formTitulo: "Nou compte d'administrador",
     crear: 'Crear administrador',
     creando: 'Creant…',

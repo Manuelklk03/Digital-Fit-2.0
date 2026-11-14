@@ -8,6 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Comprobación de formato de código con Prettier en CI (tarea 6.5): scripts `format` y `format:check` en `Frontend/digital-fit-frontend`, exclusión de directorios de herramientas y artefactos compilados mediante `.prettierignore`, formateo integral del frontend según `.prettierrc` y verificación automática en el flujo de CI.
+
 - Suite de pruebas End-to-End (E2E) con Playwright en carpeta aislada `e2e/` (tareas 6.2 y 6.1): flujos completos de registro con identificador único, login y logout; navegación y adición de rutinas desde el catálogo base a «Mis entrenamientos» con borrado y gestión del diálogo nativo `confirm()`; control de acceso y permisos (usuario normal sin enlace administrativo y 403 en `/api/admin/**`, usuario anónimo con 401); y verificación de limitación de tasa de intentos (6 intentos fallidos devuelven HTTP 429 con mensaje «Demasiados intentos fallidos»).
 - Job de pruebas E2E en GitHub Actions (`.github/workflows/ci.yml`) que orquesta `docker compose up -d --wait`, ejecuta la suite de Playwright contra el entorno de contenedores y publica trazas y reportes si falla.
 

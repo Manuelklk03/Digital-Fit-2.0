@@ -1,14 +1,31 @@
 /** Tipos del dominio de entrenamientos, copiados de los DTO del backend (`dto/Entrenamientos`). */
 
 export const CATEGORIAS = [
-  'FUERZA_TREN_SUPERIOR', 'FUERZA_TREN_INFERIOR', 'FUERZA_CORE', 'FUERZA_TOTAL',
-  'CARDIO_SUAVE', 'CARDIO_INTENSO', 'HIIT', 'RESISTENCIA',
-  'CALISTENIA_BASICA', 'CALISTENIA_AVANZADA', 'CALISTENIA_FULL_BODY',
-  'ENTRENAMIENTO_FUNCIONAL', 'CIRCUITO_FUNCIONAL',
-  'MOVILIDAD', 'FLEXIBILIDAD', 'ESTIRAMIENTOS',
-  'RUNNING', 'TRAIL_RUNNING', 'CICLISMO',
-  'BOXEO', 'ARTES_MARCIALES', 'CROSSFIT',
-  'EQUILIBRIO', 'COORDINACION', 'RECUPERACION',
+  'FUERZA_TREN_SUPERIOR',
+  'FUERZA_TREN_INFERIOR',
+  'FUERZA_CORE',
+  'FUERZA_TOTAL',
+  'CARDIO_SUAVE',
+  'CARDIO_INTENSO',
+  'HIIT',
+  'RESISTENCIA',
+  'CALISTENIA_BASICA',
+  'CALISTENIA_AVANZADA',
+  'CALISTENIA_FULL_BODY',
+  'ENTRENAMIENTO_FUNCIONAL',
+  'CIRCUITO_FUNCIONAL',
+  'MOVILIDAD',
+  'FLEXIBILIDAD',
+  'ESTIRAMIENTOS',
+  'RUNNING',
+  'TRAIL_RUNNING',
+  'CICLISMO',
+  'BOXEO',
+  'ARTES_MARCIALES',
+  'CROSSFIT',
+  'EQUILIBRIO',
+  'COORDINACION',
+  'RECUPERACION',
 ] as const;
 export type Categoria = (typeof CATEGORIAS)[number];
 
@@ -95,7 +112,9 @@ export function fechaLegible(fecha: string | null | undefined, idioma: string): 
 }
 
 /** Filtro de pantalla a parámetros de consulta (vacío si no hay valor). */
-export function aParametros(filtro: { campo: string; valor: string } | null): Record<string, string> {
+export function aParametros(
+  filtro: { campo: string; valor: string } | null,
+): Record<string, string> {
   const valor = filtro?.valor.trim();
   return filtro && valor ? { [filtro.campo]: valor } : {};
 }

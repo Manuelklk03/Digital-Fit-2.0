@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, Injector, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Injector,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { HeaderComponent } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
 import { AlertComponent, BadgeComponent, ButtonComponent } from '../../../components/ui';

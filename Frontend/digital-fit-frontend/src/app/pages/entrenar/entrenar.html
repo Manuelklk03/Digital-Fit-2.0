@@ -48,7 +48,9 @@
     <header class="ejercicio-cabecera">
       <div>
         <span class="etiqueta-musculo">{{ ejercicioActual().grupoMuscular }}</span>
-        <h2 id="ejercicio-activo-titulo" class="ejercicio-titulo">{{ ejercicioActual().nombre }}</h2>
+        <h2 id="ejercicio-activo-titulo" class="ejercicio-titulo">
+          {{ ejercicioActual().nombre }}
+        </h2>
       </div>
       <span class="indicador-series">
         {{ ejercicioActual().series.length }} series planificadas
@@ -85,14 +87,18 @@
                       class="btn-ajuste"
                       (click)="modificarPeso(s.numero, -2.5)"
                       aria-label="Restar 2.5 kg"
-                    >-</button>
+                    >
+                      -
+                    </button>
                     <span class="valor-tactil">{{ s.pesoKg }}</span>
                     <button
                       type="button"
                       class="btn-ajuste"
                       (click)="modificarPeso(s.numero, 2.5)"
                       aria-label="Sumar 2.5 kg"
-                    >+</button>
+                    >
+                      +
+                    </button>
                   </div>
                 }
               </td>
@@ -108,14 +114,18 @@
                       class="btn-ajuste"
                       (click)="modificarRepeticiones(s.numero, -1)"
                       aria-label="Restar 1 repetición"
-                    >-</button>
+                    >
+                      -
+                    </button>
                     <span class="valor-tactil">{{ s.repeticiones }}</span>
                     <button
                       type="button"
                       class="btn-ajuste"
                       (click)="modificarRepeticiones(s.numero, 1)"
                       aria-label="Sumar 1 repetición"
-                    >+</button>
+                    >
+                      +
+                    </button>
                   </div>
                 }
               </td>
@@ -123,13 +133,13 @@
               <!-- Acción: Botón completar o Check -->
               <td class="celda-accion">
                 @if (s.completada) {
-                  <span df-badge variant="accent" aria-label="Serie completada">
-                    ✓ Lista
-                  </span>
+                  <span df-badge variant="accent" aria-label="Serie completada"> ✓ Lista </span>
                 } @else {
                   <button
                     type="button"
-                    df-button variant="primary" size="sm"
+                    df-button
+                    variant="primary"
+                    size="sm"
                     (click)="completarSerie(s.numero)"
                   >
                     Completar
@@ -168,11 +178,7 @@
         >
           +15s
         </button>
-        <button
-          type="button"
-          df-button variant="outline" size="sm"
-          (click)="detenerDescanso()"
-        >
+        <button type="button" df-button variant="outline" size="sm" (click)="detenerDescanso()">
           Omitir descanso
         </button>
       </div>
@@ -181,4 +187,3 @@
 </main>
 
 <app-footer></app-footer>
-

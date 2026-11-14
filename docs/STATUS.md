@@ -2,6 +2,11 @@
 
 Última actualización: **2026-11-14**.
 
+> **2026-11-14 (Fase 6, Tarea 6.5 — Formato como check con Prettier; rama `feat/ci-prettier-check`):**
+> - **Prettier estandarizado:** Añadidos scripts `format` y `format:check` en `Frontend/digital-fit-frontend/package.json`. Creado `.prettierignore` para excluir dependencias, compilados (`dist/`) y estados temporales. Formateada la base de código del frontend (TypeScript, HTML, CSS, JSON) conforme a las reglas de `.prettierrc`.
+> - **Integración en CI (`.github/workflows/ci.yml`):** Añadido paso `npm run format:check` en el job de `lint`, asegurando la verificación automática del estilo de código en pull requests.
+> - **Verificaciones:** `npm run format:check` en verde («All matched files use Prettier code style!»), suite de tests del frontend en verde (56 suites, 253 tests) y `npm run build` completado sin errores.
+
 > **2026-11-14 (Fase 6, Tareas 6.2 y 6.1 — Pruebas E2E con Playwright y job en CI; rama `feat/e2e-playwright-ci`):**
 > - **Suite E2E aislada (`e2e/`):** Configurado proyecto independiente con `@playwright/test`, `playwright.config.ts`, `tsconfig.json` y dependencias propias sin tocar `Frontend/digital-fit-frontend`. Ejecución secuencial (`workers: 1`) para evitar colisiones en base de datos o contadores de rate limit entre pruebas.
 > - **Flujos cubiertos con selectores accesibles:**

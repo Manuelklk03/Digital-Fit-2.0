@@ -1,4 +1,12 @@
-import { Component, inject, ChangeDetectionStrategy, DestroyRef, ElementRef, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  ChangeDetectionStrategy,
+  DestroyRef,
+  ElementRef,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UsuarioSesion } from '../../models/entrenamiento';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -61,7 +69,11 @@ export class HeaderComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   cerrarAlPulsarFuera(evento: Event): void {
-    if (!this.elemento.nativeElement.querySelector('.selector-idioma')?.contains(evento.target as Node)) {
+    if (
+      !this.elemento.nativeElement
+        .querySelector('.selector-idioma')
+        ?.contains(evento.target as Node)
+    ) {
       this.cerrarDesplegableIdioma();
     }
   }

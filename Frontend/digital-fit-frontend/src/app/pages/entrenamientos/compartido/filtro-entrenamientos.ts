@@ -2,7 +2,12 @@ import { ChangeDetectionStrategy, Component, inject, output, signal } from '@ang
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent, InputDirective } from '../../../components/ui';
 import { I18nService } from '../../../i18n/i18n.service';
-import { CampoFiltro, CATEGORIAS, FiltroEntrenamiento, NIVELES } from '../../../models/entrenamiento';
+import {
+  CampoFiltro,
+  CATEGORIAS,
+  FiltroEntrenamiento,
+  NIVELES,
+} from '../../../models/entrenamiento';
 
 /** Barra de filtro con un único campo activo, igual que el backend (categoría, nivel, duración o nombre). */
 @Component({
@@ -14,7 +19,14 @@ import { CampoFiltro, CATEGORIAS, FiltroEntrenamiento, NIVELES } from '../../../
     <form class="filtro" role="search" (ngSubmit)="aplicar()">
       <div class="campo">
         <label for="filtro-campo">{{ t.filtrarPor }}</label>
-        <select df-input size="sm" id="filtro-campo" name="campo" [ngModel]="campo()" (ngModelChange)="cambiarCampo($event)">
+        <select
+          df-input
+          size="sm"
+          id="filtro-campo"
+          name="campo"
+          [ngModel]="campo()"
+          (ngModelChange)="cambiarCampo($event)"
+        >
           <option value="nombre">{{ t.campoNombre }}</option>
           <option value="categoria">{{ t.campoCategoria }}</option>
           <option value="nivel">{{ t.campoNivel }}</option>
@@ -42,29 +54,68 @@ import { CampoFiltro, CATEGORIAS, FiltroEntrenamiento, NIVELES } from '../../../
             </select>
           }
           @case ('duracionEnMinutos') {
-            <input df-input size="sm" id="filtro-valor" name="valor" type="number" min="1" inputmode="numeric"
-              [(ngModel)]="valor" [placeholder]="t.minutos" />
+            <input
+              df-input
+              size="sm"
+              id="filtro-valor"
+              name="valor"
+              type="number"
+              min="1"
+              inputmode="numeric"
+              [(ngModel)]="valor"
+              [placeholder]="t.minutos"
+            />
           }
           @default {
-            <input df-input size="sm" id="filtro-valor" name="valor" type="search"
-              [(ngModel)]="valor" [placeholder]="t.nombrePlaceholder" />
+            <input
+              df-input
+              size="sm"
+              id="filtro-valor"
+              name="valor"
+              type="search"
+              [(ngModel)]="valor"
+              [placeholder]="t.nombrePlaceholder"
+            />
           }
         }
       </div>
 
       <div class="acciones">
         <button df-button variant="primary" size="sm" type="submit">{{ t.botonBuscar }}</button>
-        <button df-button variant="ghost" size="sm" type="button" (click)="limpiar()">{{ t.botonLimpiar }}</button>
+        <button df-button variant="ghost" size="sm" type="button" (click)="limpiar()">
+          {{ t.botonLimpiar }}
+        </button>
       </div>
     </form>
   `,
-  styles: [`
-    .filtro { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
-    .campo { display: flex; flex-direction: column; gap: 6px; min-width: 160px; }
-    .campo-valor { flex: 1 1 200px; }
-    label { font-size: 12px; font-weight: 600; color: var(--df-text-muted); }
-    .acciones { display: flex; gap: 8px; }
-  `],
+  styles: [
+    `
+      .filtro {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 12px;
+      }
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 160px;
+      }
+      .campo-valor {
+        flex: 1 1 200px;
+      }
+      label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--df-text-muted);
+      }
+      .acciones {
+        display: flex;
+        gap: 8px;
+      }
+    `,
+  ],
 })
 export class FiltroEntrenamientosComponent {
   readonly i18n = inject(I18nService);

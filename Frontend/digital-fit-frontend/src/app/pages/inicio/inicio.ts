@@ -91,7 +91,9 @@ export class InicioComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Condición D15: Respeto estricto a prefers-reduced-motion
-    const prefiereMovimientoReducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefiereMovimientoReducido = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
     if (prefiereMovimientoReducido) {
       return;
     }

@@ -1,37 +1,144 @@
-.formulario { display: flex; flex-direction: column; gap: 20px; }
-.titulo-form, .titulo-listado { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
-.rejilla-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-.campo { display: flex; flex-direction: column; gap: 6px; }
-.campo-completo { grid-column: 1 / -1; }
-.campo label { font-size: 13px; font-weight: 600; color: var(--df-text-muted); }
-.error { margin: 0; font-size: 12px; color: var(--df-danger); }
-.aviso-opciones { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; color: var(--df-danger); font-size: 14px; }
-.aviso-opciones p { margin: 0; }
-.cargando-form { margin: 0; color: var(--df-text-muted); }
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.titulo-form,
+.titulo-listado {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.rejilla-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.campo-completo {
+  grid-column: 1 / -1;
+}
+.campo label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--df-text-muted);
+}
+.error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--df-danger);
+}
+.aviso-opciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  color: var(--df-danger);
+  font-size: 14px;
+}
+.aviso-opciones p {
+  margin: 0;
+}
+.cargando-form {
+  margin: 0;
+  color: var(--df-text-muted);
+}
 
-.listado-cabecera { flex-direction: row; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; }
-.busqueda { display: flex; flex-direction: column; gap: 6px; flex: 1 1 320px; }
-.busqueda label { font-size: 12px; font-weight: 600; color: var(--df-text-muted); }
-.busqueda-fila { display: flex; flex-wrap: wrap; gap: 8px; }
-.busqueda-fila input { flex: 1 1 200px; min-width: 0; }
-
+.listado-cabecera {
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.busqueda {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 320px;
+}
+.busqueda label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--df-text-muted);
+}
+.busqueda-fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.busqueda-fila input {
+  flex: 1 1 200px;
+  min-width: 0;
+}
 
 .registro {
-  display: grid; grid-template-columns: 150px 1fr auto; align-items: center; gap: 16px;
-  padding: 16px 20px; background: var(--df-surface); border: 1px solid var(--df-border); border-radius: 14px;
+  display: grid;
+  grid-template-columns: 150px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: 14px;
 }
-.registro:focus-within { border-color: var(--df-surface-active); }
-.registro-fecha { font-size: 13px; color: var(--df-text-muted); }
-.registro-cuerpo { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.registro h3 { margin: 0; font-size: 16px; font-weight: 700; }
-.registro h3 a { color: var(--df-text); text-decoration: none; border-radius: 4px; }
-.registro h3 a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.registro h3 a:focus-visible { outline: 2px solid var(--df-border-focus); outline-offset: 2px; }
-.registro-sub { margin: 0; font-size: 13px; color: var(--df-text-muted); overflow-wrap: anywhere; }
-.registro-lado { display: flex; align-items: center; gap: 12px; }
-.duracion { font-size: 15px; font-weight: 700; }
+.registro:focus-within {
+  border-color: var(--df-surface-active);
+}
+.registro-fecha {
+  font-size: 13px;
+  color: var(--df-text-muted);
+}
+.registro-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.registro h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+.registro h3 a {
+  color: var(--df-text);
+  text-decoration: none;
+  border-radius: 4px;
+}
+.registro h3 a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.registro h3 a:focus-visible {
+  outline: 2px solid var(--df-border-focus);
+  outline-offset: 2px;
+}
+.registro-sub {
+  margin: 0;
+  font-size: 13px;
+  color: var(--df-text-muted);
+  overflow-wrap: anywhere;
+}
+.registro-lado {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.duracion {
+  font-size: 15px;
+  font-weight: 700;
+}
 
 @media (max-width: 640px) {
-  .registro { grid-template-columns: 1fr; gap: 10px; }
-  .registro-lado { justify-content: space-between; }
+  .registro {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .registro-lado {
+    justify-content: space-between;
+  }
 }

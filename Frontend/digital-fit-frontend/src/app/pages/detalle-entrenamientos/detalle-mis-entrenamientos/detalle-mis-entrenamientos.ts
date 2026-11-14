@@ -12,7 +12,14 @@ import { DetalleVistaComponent } from '../../entrenamientos/compartido/detalle-v
 
 @Component({
   selector: 'app-detalle-mi-entrenamiento',
-  imports: [RouterLink, HeaderComponent, Footer, AlertComponent, ButtonComponent, DetalleVistaComponent],
+  imports: [
+    RouterLink,
+    HeaderComponent,
+    Footer,
+    AlertComponent,
+    ButtonComponent,
+    DetalleVistaComponent,
+  ],
   templateUrl: './detalle-mis-entrenamientos.html',
   styleUrl: '../../entrenamientos/compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,7 +32,9 @@ export class DetalleMiEntrenamientoComponent implements OnInit {
   private readonly historialService = inject(HistorialEntrenamientosService);
 
   readonly detalle = new Detalle<EntrenamientoUsuario>(() =>
-    this.misEntrenamientosService.getMiEntrenamientoById(Number(this.route.snapshot.paramMap.get('id'))),
+    this.misEntrenamientosService.getMiEntrenamientoById(
+      Number(this.route.snapshot.paramMap.get('id')),
+    ),
   );
   readonly guardandoHistorial = signal(false);
   readonly borrando = signal(false);

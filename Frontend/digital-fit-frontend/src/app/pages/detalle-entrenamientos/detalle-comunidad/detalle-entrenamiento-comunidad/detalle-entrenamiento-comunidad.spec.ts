@@ -7,8 +7,14 @@ import { vi } from 'vitest';
 import { DetalleEntrenamientoComunidadComponent } from './detalle-entrenamiento-comunidad';
 
 const E = {
-  id: 9, nombre: 'Trail', descripcion: 'Monte', categoria: 'TRAIL_RUNNING', nivel: 'EXPERTO',
-  duracionEnMinutos: 90, usuario: 'ana', fechaPublicacion: '2026-11-01 10:00:00',
+  id: 9,
+  nombre: 'Trail',
+  descripcion: 'Monte',
+  categoria: 'TRAIL_RUNNING',
+  nivel: 'EXPERTO',
+  duracionEnMinutos: 90,
+  usuario: 'ana',
+  fechaPublicacion: '2026-11-01 10:00:00',
 };
 
 describe('DetalleEntrenamientoComunidadComponent', () => {
@@ -22,7 +28,10 @@ describe('DetalleEntrenamientoComunidadComponent', () => {
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({ id: '9' }) } } },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { paramMap: convertToParamMap({ id: '9' }) } },
+        },
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(DetalleEntrenamientoComunidadComponent);

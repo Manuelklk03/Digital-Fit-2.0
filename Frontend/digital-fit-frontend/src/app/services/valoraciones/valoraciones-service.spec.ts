@@ -11,7 +11,9 @@ describe('ValoracionesService', () => {
   let http: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
     service = TestBed.inject(ValoracionesService);
     http = TestBed.inject(HttpTestingController);
   });
@@ -28,14 +30,20 @@ describe('ValoracionesService', () => {
 
   it('filtra las públicas por categoría y la omite si no hay', () => {
     service.getPaginaPublicas('CENTROS_PRIVADOS').subscribe();
-    expect(http.expectOne((r) => r.url === '/api/valoraciones/publicas').request.params.get('categoria')).toBe('CENTROS_PRIVADOS');
+    expect(
+      http.expectOne((r) => r.url === '/api/valoraciones/publicas').request.params.get('categoria'),
+    ).toBe('CENTROS_PRIVADOS');
 
     service.getPaginaPublicas(null).subscribe();
-    expect(http.expectOne((r) => r.url === '/api/valoraciones/publicas').request.params.has('categoria')).toBe(false);
+    expect(
+      http.expectOne((r) => r.url === '/api/valoraciones/publicas').request.params.has('categoria'),
+    ).toBe(false);
   });
 
   it('crea o actualiza y borra por tipo y contenido', () => {
-    service.crearOActualizarValoracion('LUGAR_PUBLICO_BASE', 3, { puntuacion: 4, comentario: null }).subscribe();
+    service
+      .crearOActualizarValoracion('LUGAR_PUBLICO_BASE', 3, { puntuacion: 4, comentario: null })
+      .subscribe();
     const post = http.expectOne('/api/valoraciones/LUGAR_PUBLICO_BASE/3');
     expect(post.request.method).toBe('POST');
     expect(post.request.body).toEqual({ puntuacion: 4, comentario: null });

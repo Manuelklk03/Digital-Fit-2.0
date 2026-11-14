@@ -8,15 +8,36 @@ import { vi } from 'vitest';
 import { FormularioSitioComponent } from './formulario-sitio';
 import { FiltroSitiosComponent } from './filtro-sitios';
 import { TarjetaSitioComponent } from './tarjeta-sitio';
-import { Autocompletado, CentroPrivado, coordenadasLegibles, esLugarPublico, LugarPublico, SitioForm } from '../../models/lugar';
+import {
+  Autocompletado,
+  CentroPrivado,
+  coordenadasLegibles,
+  esLugarPublico,
+  LugarPublico,
+  SitioForm,
+} from '../../models/lugar';
 
 const CENTRO: CentroPrivado = {
-  id: 1, nombre: 'Gym', direccion: 'Calle 1', telefono: '600', horario: '7-23', descripcion: 'Sala',
-  latitud: 39.47, longitud: -0.376, precioMensual: 30,
+  id: 1,
+  nombre: 'Gym',
+  direccion: 'Calle 1',
+  telefono: '600',
+  horario: '7-23',
+  descripcion: 'Sala',
+  latitud: 39.47,
+  longitud: -0.376,
+  precioMensual: 30,
 };
 const LUGAR: LugarPublico = {
-  id: 2, nombre: 'Parque', direccion: 'Turia', telefono: null, horario: null, descripcion: null,
-  latitud: 39.48, longitud: -0.37, tipo: 'ZONA_BARRAS',
+  id: 2,
+  nombre: 'Parque',
+  direccion: 'Turia',
+  telefono: null,
+  horario: null,
+  descripcion: null,
+  latitud: 39.48,
+  longitud: -0.37,
+  tipo: 'ZONA_BARRAS',
 };
 const PROVIDERS = [provideRouter([]), provideHttpClient(), provideHttpClientTesting()];
 
@@ -66,11 +87,22 @@ describe('FormularioSitioComponent', () => {
   it('emite el cuerpo de un centro con la ubicación marcada', () => {
     crear('centro');
     component.marcar({ latitud: 39.4, longitud: -0.3 });
-    component.modelo = { ...component.modelo, nombre: ' Gym ', direccion: 'Calle 2', precioMensual: 25 };
+    component.modelo = {
+      ...component.modelo,
+      nombre: ' Gym ',
+      direccion: 'Calle 2',
+      precioMensual: 25,
+    };
     component.enviar();
     expect(emitido).toEqual({
-      nombre: 'Gym', direccion: 'Calle 2', telefono: null, horario: null, descripcion: null,
-      latitud: 39.4, longitud: -0.3, precioMensual: 25,
+      nombre: 'Gym',
+      direccion: 'Calle 2',
+      telefono: null,
+      horario: null,
+      descripcion: null,
+      latitud: 39.4,
+      longitud: -0.3,
+      precioMensual: 25,
     });
   });
 
@@ -79,8 +111,14 @@ describe('FormularioSitioComponent', () => {
     expect(component.coordenadas()).toBe('39.48000, -0.37000');
     component.enviar();
     expect(emitido).toEqual({
-      nombre: 'Parque', direccion: 'Turia', telefono: null, horario: null, descripcion: null,
-      latitud: 39.48, longitud: -0.37, tipo: 'ZONA_BARRAS',
+      nombre: 'Parque',
+      direccion: 'Turia',
+      telefono: null,
+      horario: null,
+      descripcion: null,
+      latitud: 39.48,
+      longitud: -0.37,
+      tipo: 'ZONA_BARRAS',
     });
   });
 
@@ -99,8 +137,14 @@ describe('FormularioSitioComponent', () => {
     expect(autocompletar).toHaveBeenCalledWith(39.4, -0.3);
 
     respuesta.next({
-      direccion: 'Av. del Puerto', telefono: null, horario: null, descripcion: 'Pistas',
-      tipo: 'PISTA_PADEL', latitud: 39.4, longitud: -0.3, datosEncontrados: true,
+      direccion: 'Av. del Puerto',
+      telefono: null,
+      horario: null,
+      descripcion: 'Pistas',
+      tipo: 'PISTA_PADEL',
+      latitud: 39.4,
+      longitud: -0.3,
+      datosEncontrados: true,
     });
     expect(component.modelo.direccion).toBe('Av. del Puerto');
     expect(component.modelo.horario).toBe('24 h');
@@ -112,22 +156,49 @@ describe('FormularioSitioComponent', () => {
     vi.useFakeTimers();
     crear('lugar');
     const respuestas: Autocompletado[] = [
-      { direccion: 'Calle A', telefono: '', horario: '  ', descripcion: 'Pistas', tipo: 'PISTA_TENIS', latitud: 1, longitud: 1, datosEncontrados: true },
-      { direccion: 'Calle B', telefono: '', horario: '', descripcion: 'Otra', tipo: 'PISTA_PADEL', latitud: 1, longitud: 1, datosEncontrados: true },
+      {
+        direccion: 'Calle A',
+        telefono: '',
+        horario: '  ',
+        descripcion: 'Pistas',
+        tipo: 'PISTA_TENIS',
+        latitud: 1,
+        longitud: 1,
+        datosEncontrados: true,
+      },
+      {
+        direccion: 'Calle B',
+        telefono: '',
+        horario: '',
+        descripcion: 'Otra',
+        tipo: 'PISTA_PADEL',
+        latitud: 1,
+        longitud: 1,
+        datosEncontrados: true,
+      },
     ];
     fixture.componentRef.setInput('autocompletar', () => of(respuestas.shift() as Autocompletado));
     component.modelo.telefono = '600';
 
     component.marcar({ latitud: 39.4, longitud: -0.3 });
     vi.advanceTimersByTime(800);
-    expect(component.modelo).toMatchObject({ direccion: 'Calle A', telefono: '600', horario: '', tipo: 'PISTA_TENIS' });
+    expect(component.modelo).toMatchObject({
+      direccion: 'Calle A',
+      telefono: '600',
+      horario: '',
+      tipo: 'PISTA_TENIS',
+    });
 
     // Al mover el marcador se sustituye lo autocompletado, pero no lo que el usuario cambió mientras tanto.
     component.marcar({ latitud: 39.41, longitud: -0.3 });
     component.modelo.descripcion = 'Escrita a mano';
     component.modelo.tipo = 'ZONA_BARRAS';
     vi.advanceTimersByTime(800);
-    expect(component.modelo).toMatchObject({ direccion: 'Calle B', descripcion: 'Escrita a mano', tipo: 'ZONA_BARRAS' });
+    expect(component.modelo).toMatchObject({
+      direccion: 'Calle B',
+      descripcion: 'Escrita a mano',
+      tipo: 'ZONA_BARRAS',
+    });
   });
 
   it('con la ubicación marcada, el foco va al primer campo con error y no al buscador del mapa', async () => {
@@ -142,7 +213,9 @@ describe('FormularioSitioComponent', () => {
   it('indica cuando no hay datos o la consulta falla', () => {
     vi.useFakeTimers();
     crear('centro');
-    fixture.componentRef.setInput('autocompletar', () => of({ datosEncontrados: false } as Autocompletado));
+    fixture.componentRef.setInput('autocompletar', () =>
+      of({ datosEncontrados: false } as Autocompletado),
+    );
     component.marcar({ latitud: 39.4, longitud: -0.3 });
     vi.advanceTimersByTime(800);
     expect(component.estadoAutocompletado()).toBe('sinDatos');
@@ -161,7 +234,10 @@ describe('FiltroSitiosComponent', () => {
     const fixture = TestBed.createComponent(FiltroSitiosComponent);
     fixture.componentRef.setInput('clase', 'lugar');
     fixture.detectChanges();
-    const opciones = () => [...fixture.nativeElement.querySelectorAll('#filtro-campo option')].map((o: HTMLOptionElement) => o.value);
+    const opciones = () =>
+      [...fixture.nativeElement.querySelectorAll('#filtro-campo option')].map(
+        (o: HTMLOptionElement) => o.value,
+      );
     expect(opciones()).toEqual(['nombre', 'direccion', 'tipo']);
 
     const emitidos: unknown[] = [];
@@ -180,7 +256,10 @@ describe('FiltroSitiosComponent', () => {
 
 describe('TarjetaSitioComponent', () => {
   function pintar(sitio: CentroPrivado | LugarPublico): string {
-    TestBed.configureTestingModule({ imports: [TarjetaSitioComponent], providers: [provideRouter([])] });
+    TestBed.configureTestingModule({
+      imports: [TarjetaSitioComponent],
+      providers: [provideRouter([])],
+    });
     const fixture = TestBed.createComponent(TarjetaSitioComponent);
     fixture.componentRef.setInput('sitio', sitio);
     fixture.componentRef.setInput('ruta', ['/x', sitio.id]);

@@ -83,7 +83,8 @@ export const entrenamientosEs: DiccionarioEntrenamientos = {
   catalogo: {
     badge: 'CATÁLOGO BASE',
     titulo: 'Entrenamientos base',
-    subtitulo: 'Rutinas de referencia de Digital-Fit. Fíltralas y añade a tu lista las que quieras seguir.',
+    subtitulo:
+      'Rutinas de referencia de Digital-Fit. Fíltralas y añade a tu lista las que quieras seguir.',
     vacio: 'Todavía no hay entrenamientos base.',
     formCrear: 'Nuevo entrenamiento base',
     formEditar: 'Editar entrenamiento base',
@@ -103,7 +104,8 @@ export const entrenamientosEs: DiccionarioEntrenamientos = {
   comunidad: {
     badge: 'COMUNIDAD',
     titulo: 'Entrenamientos de la comunidad',
-    subtitulo: 'Rutinas publicadas por los usuarios. Publica las tuyas o copia las de otros a tu lista.',
+    subtitulo:
+      'Rutinas publicadas por los usuarios. Publica las tuyas o copia las de otros a tu lista.',
     vacio: 'Nadie ha publicado entrenamientos todavía.',
     formCrear: 'Publicar entrenamiento',
     formEditar: 'Editar publicación',

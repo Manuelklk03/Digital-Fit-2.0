@@ -78,8 +78,11 @@ const VACIO: Modelo = {
             <span class="coordenadas num">{{ coordenadas() ?? t.sinUbicacion }}</span>
           </div>
           <p class="ayuda" aria-live="polite">{{ textoAyuda() }}</p>
-          <app-mapa-selector [latitud]="ubicacion()?.latitud ?? null" [longitud]="ubicacion()?.longitud ?? null"
-            (ubicacionSeleccionada)="marcar($event)" />
+          <app-mapa-selector
+            [latitud]="ubicacion()?.latitud ?? null"
+            [longitud]="ubicacion()?.longitud ?? null"
+            (ubicacionSeleccionada)="marcar($event)"
+          />
           @if (errores().includes('ubicacion')) {
             <p class="error" role="alert">{{ t.errorUbicacion }}</p>
           }
@@ -88,9 +91,17 @@ const VACIO: Modelo = {
         <div class="rejilla">
           <div class="campo">
             <label for="sitio-nombre">{{ t.campoNombre }}</label>
-            <input df-input id="sitio-nombre" name="nombre" required autocomplete="off" [(ngModel)]="modelo.nombre"
-              [error]="errores().includes('nombre')" [attr.aria-invalid]="errores().includes('nombre')"
-              [attr.aria-describedby]="errores().includes('nombre') ? 'sitio-e-nombre' : null" />
+            <input
+              df-input
+              id="sitio-nombre"
+              name="nombre"
+              required
+              autocomplete="off"
+              [(ngModel)]="modelo.nombre"
+              [error]="errores().includes('nombre')"
+              [attr.aria-invalid]="errores().includes('nombre')"
+              [attr.aria-describedby]="errores().includes('nombre') ? 'sitio-e-nombre' : null"
+            />
             @if (errores().includes('nombre')) {
               <p class="error" id="sitio-e-nombre">{{ t.errorNombre }}</p>
             }
@@ -98,10 +109,17 @@ const VACIO: Modelo = {
 
           <div class="campo">
             <label for="sitio-direccion">{{ t.campoDireccion }}</label>
-            <input df-input id="sitio-direccion" name="direccion" required autocomplete="off"
-              [(ngModel)]="modelo.direccion" [error]="errores().includes('direccion')"
+            <input
+              df-input
+              id="sitio-direccion"
+              name="direccion"
+              required
+              autocomplete="off"
+              [(ngModel)]="modelo.direccion"
+              [error]="errores().includes('direccion')"
               [attr.aria-invalid]="errores().includes('direccion')"
-              [attr.aria-describedby]="errores().includes('direccion') ? 'sitio-e-direccion' : null" />
+              [attr.aria-describedby]="errores().includes('direccion') ? 'sitio-e-direccion' : null"
+            />
             @if (errores().includes('direccion')) {
               <p class="error" id="sitio-e-direccion">{{ t.errorDireccion }}</p>
             }
@@ -110,10 +128,22 @@ const VACIO: Modelo = {
           @if (clase() === 'centro') {
             <div class="campo">
               <label for="sitio-precio">{{ t.campoPrecio }}</label>
-              <input df-input id="sitio-precio" name="precioMensual" type="number" min="0" step="any" inputmode="decimal"
-                [(ngModel)]="modelo.precioMensual" [placeholder]="t.precioPlaceholder"
-                [error]="errores().includes('precioMensual')" [attr.aria-invalid]="errores().includes('precioMensual')"
-                [attr.aria-describedby]="errores().includes('precioMensual') ? 'sitio-e-precio' : null" />
+              <input
+                df-input
+                id="sitio-precio"
+                name="precioMensual"
+                type="number"
+                min="0"
+                step="any"
+                inputmode="decimal"
+                [(ngModel)]="modelo.precioMensual"
+                [placeholder]="t.precioPlaceholder"
+                [error]="errores().includes('precioMensual')"
+                [attr.aria-invalid]="errores().includes('precioMensual')"
+                [attr.aria-describedby]="
+                  errores().includes('precioMensual') ? 'sitio-e-precio' : null
+                "
+              />
               @if (errores().includes('precioMensual')) {
                 <p class="error" id="sitio-e-precio">{{ t.errorPrecio }}</p>
               }
@@ -131,20 +161,42 @@ const VACIO: Modelo = {
 
           <div class="campo">
             <label for="sitio-telefono">{{ t.campoTelefono }}</label>
-            <input df-input id="sitio-telefono" name="telefono" type="tel" autocomplete="off" [(ngModel)]="modelo.telefono" />
+            <input
+              df-input
+              id="sitio-telefono"
+              name="telefono"
+              type="tel"
+              autocomplete="off"
+              [(ngModel)]="modelo.telefono"
+            />
           </div>
 
           <div class="campo">
             <label for="sitio-horario">{{ t.campoHorario }}</label>
-            <input df-input id="sitio-horario" name="horario" autocomplete="off" [(ngModel)]="modelo.horario" />
+            <input
+              df-input
+              id="sitio-horario"
+              name="horario"
+              autocomplete="off"
+              [(ngModel)]="modelo.horario"
+            />
           </div>
 
           <div class="campo campo-completo">
             <label for="sitio-descripcion">{{ t.campoDescripcion }}</label>
-            <textarea df-input id="sitio-descripcion" name="descripcion" rows="3" maxlength="1000"
-              [(ngModel)]="modelo.descripcion" [error]="errores().includes('descripcion')"
+            <textarea
+              df-input
+              id="sitio-descripcion"
+              name="descripcion"
+              rows="3"
+              maxlength="1000"
+              [(ngModel)]="modelo.descripcion"
+              [error]="errores().includes('descripcion')"
               [attr.aria-invalid]="errores().includes('descripcion')"
-              [attr.aria-describedby]="errores().includes('descripcion') ? 'sitio-e-descripcion' : null"></textarea>
+              [attr.aria-describedby]="
+                errores().includes('descripcion') ? 'sitio-e-descripcion' : null
+              "
+            ></textarea>
             @if (errores().includes('descripcion')) {
               <p class="error" id="sitio-e-descripcion">{{ t.errorDescripcion }}</p>
             }
@@ -152,32 +204,102 @@ const VACIO: Modelo = {
         </div>
 
         <div class="acciones">
-          <button df-button variant="primary" type="submit" [loading]="guardando()" [disabled]="guardando()">
+          <button
+            df-button
+            variant="primary"
+            type="submit"
+            [loading]="guardando()"
+            [disabled]="guardando()"
+          >
             {{ guardando() ? te.guardando : textoEnviar() }}
           </button>
-          <button df-button variant="ghost" type="button" [disabled]="guardando()" (click)="cancelar.emit()">
+          <button
+            df-button
+            variant="ghost"
+            type="button"
+            [disabled]="guardando()"
+            (click)="cancelar.emit()"
+          >
             {{ inicial() ? te.cancelarEdicion : te.cerrarFormulario }}
           </button>
         </div>
       </form>
     </app-card>
   `,
-  styles: [`
-    .formulario { display: flex; flex-direction: column; gap: 20px; }
-    .titulo { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
-    .ubicacion-sitio { display: flex; flex-direction: column; gap: 8px; }
-    .cabecera-mapa { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
-    .cabecera-mapa h3 { margin: 0; font-size: 13px; font-weight: 600; color: var(--df-text-muted); }
-    .coordenadas { font-size: 13px; color: var(--df-text-muted); }
-    .num { font-family: var(--df-font-mono); font-variant-numeric: tabular-nums; }
-    .ayuda { margin: 0; font-size: 13px; color: var(--df-text-muted); }
-    .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-    .campo { display: flex; flex-direction: column; gap: 6px; }
-    .campo-completo { grid-column: 1 / -1; }
-    label { font-size: 13px; font-weight: 600; color: var(--df-text-muted); }
-    .error { margin: 0; font-size: 12px; color: var(--df-danger); }
-    .acciones { display: flex; flex-wrap: wrap; gap: 8px; }
-  `],
+  styles: [
+    `
+      .formulario {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .titulo {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .ubicacion-sitio {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .cabecera-mapa {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+      }
+      .cabecera-mapa h3 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--df-text-muted);
+      }
+      .coordenadas {
+        font-size: 13px;
+        color: var(--df-text-muted);
+      }
+      .num {
+        font-family: var(--df-font-mono);
+        font-variant-numeric: tabular-nums;
+      }
+      .ayuda {
+        margin: 0;
+        font-size: 13px;
+        color: var(--df-text-muted);
+      }
+      .rejilla {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .campo-completo {
+        grid-column: 1 / -1;
+      }
+      label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--df-text-muted);
+      }
+      .error {
+        margin: 0;
+        font-size: 12px;
+        color: var(--df-danger);
+      }
+      .acciones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+    `,
+  ],
 })
 export class FormularioSitioComponent {
   readonly i18n = inject(I18nService);
@@ -190,7 +312,9 @@ export class FormularioSitioComponent {
   /** Sitio a editar; `null` para crear. */
   readonly inicial = input<Sitio | null>(null);
   readonly guardando = input(false);
-  readonly autocompletar = input<((latitud: number, longitud: number) => Observable<Autocompletado>) | null>(null);
+  readonly autocompletar = input<
+    ((latitud: number, longitud: number) => Observable<Autocompletado>) | null
+  >(null);
   readonly guardar = output<SitioForm>();
   readonly cancelar = output<void>();
 
@@ -221,11 +345,17 @@ export class FormularioSitioComponent {
             tipo: esLugarPublico(s) ? s.tipo : VACIO.tipo,
           }
         : { ...VACIO };
-      this.ubicacion.set(s?.latitud != null && s.longitud != null ? { latitud: s.latitud, longitud: s.longitud } : null);
+      this.ubicacion.set(
+        s?.latitud != null && s.longitud != null
+          ? { latitud: s.latitud, longitud: s.longitud }
+          : null,
+      );
       this.errores.set([]);
     });
 
-    const sub = this.marcas.pipe(debounceTime(ESPERA_AUTOCOMPLETAR_MS)).subscribe((c) => this.consultar(c));
+    const sub = this.marcas
+      .pipe(debounceTime(ESPERA_AUTOCOMPLETAR_MS))
+      .subscribe((c) => this.consultar(c));
     inject(DestroyRef).onDestroy(() => {
       sub.unsubscribe();
       this.consulta?.unsubscribe();
@@ -292,7 +422,10 @@ export class FormularioSitioComponent {
   private aplicarAutocompletado(d: Autocompletado): void {
     const m: Modelo = { ...this.modelo };
     const nuevos: Partial<Record<CampoAutocompletable, string | number>> = {};
-    const rellenar = <K extends CampoAutocompletable>(campo: K, valor: Modelo[K] | null | undefined) => {
+    const rellenar = <K extends CampoAutocompletable>(
+      campo: K,
+      valor: Modelo[K] | null | undefined,
+    ) => {
       const vacio = valor == null || (typeof valor === 'string' && valor.trim() === '');
       const actual = m[campo];
       const libre = actual === null || actual === '' || actual === this.autocompletados[campo];
@@ -330,7 +463,8 @@ export class FormularioSitioComponent {
     if (!u) errores.push('ubicacion');
     if (!comunes.nombre) errores.push('nombre');
     if (!comunes.direccion) errores.push('direccion');
-    if (this.clase() === 'centro' && precio !== null && (Number.isNaN(precio) || precio < 0)) errores.push('precioMensual');
+    if (this.clase() === 'centro' && precio !== null && (Number.isNaN(precio) || precio < 0))
+      errores.push('precioMensual');
     if ((comunes.descripcion?.length ?? 0) > 1000) errores.push('descripcion');
     this.errores.set(errores);
     if (errores.length > 0 || !u) {

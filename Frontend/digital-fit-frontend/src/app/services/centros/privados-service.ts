@@ -6,10 +6,9 @@ import { aParametros } from '../../models/entrenamiento';
 import { CentroPrivado, FiltroSitio } from '../../models/lugar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PrivadosService {
-
   private readonly http = inject(HttpClient);
   private readonly apiUrl = '/api/centros-privados';
 
@@ -23,7 +22,7 @@ export class PrivadosService {
 
   getCentroPrivadoById(id: number): Observable<CentroPrivado> {
     return this.http.get<CentroPrivado>(`${this.apiUrl}/${id}`, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 }

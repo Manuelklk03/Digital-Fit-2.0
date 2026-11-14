@@ -8,7 +8,7 @@ export const userGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   return authService.me().pipe(
-    map(usuario => {
+    map((usuario) => {
       if (usuario?.rol === 'USER') {
         return true;
       }
@@ -19,6 +19,6 @@ export const userGuard: CanActivateFn = () => {
     catchError(() => {
       router.navigate(['/login']);
       return of(false);
-    })
+    }),
   );
 };

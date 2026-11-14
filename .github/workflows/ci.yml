@@ -127,6 +127,9 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
+      - name: Comprobar formato con Prettier
+        run: npm run format:check
+
       # Falla con errores; los avisos (deuda de la v1) se muestran pero no bloquean.
       - name: ESLint
         run: npm run lint

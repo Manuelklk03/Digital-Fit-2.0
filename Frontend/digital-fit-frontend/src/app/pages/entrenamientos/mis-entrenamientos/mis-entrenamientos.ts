@@ -1,10 +1,21 @@
-import { ChangeDetectionStrategy, Component, inject, Injector, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Injector,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
 import { AlertComponent, ButtonComponent } from '../../../components/ui';
 import { I18nService } from '../../../i18n/i18n.service';
-import { EntrenamientoForm, EntrenamientoUsuario, FiltroEntrenamiento } from '../../../models/entrenamiento';
+import {
+  EntrenamientoForm,
+  EntrenamientoUsuario,
+  FiltroEntrenamiento,
+} from '../../../models/entrenamiento';
 import { MisEntrenamientosService } from '../../../services/entrenamientos/mis-entrenamientos-service';
 import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../compartido/estado';
 import { EncabezadoPaginaComponent } from '../compartido/encabezado-pagina';

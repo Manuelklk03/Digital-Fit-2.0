@@ -49,7 +49,9 @@ export class MigasService {
     }
     const t = this.i18n.t().migas;
     const camino: Miga[] = [{ texto: t.inicio, ruta: RUTAS.inicio }];
-    claves.forEach((clave, i) => camino.push({ texto: t[clave], ruta: i < claves.length - 1 ? RUTAS[clave] : undefined }));
+    claves.forEach((clave, i) =>
+      camino.push({ texto: t[clave], ruta: i < claves.length - 1 ? RUTAS[clave] : undefined }),
+    );
     return camino;
   });
 

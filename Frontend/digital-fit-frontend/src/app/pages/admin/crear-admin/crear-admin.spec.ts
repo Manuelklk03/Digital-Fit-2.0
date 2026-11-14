@@ -35,7 +35,11 @@ describe('CrearAdminComponent', () => {
     component.password = 'Secreto1';
     component.crear();
     const req = http.expectOne('/api/admin/crear-admin');
-    expect(req.request.body).toEqual({ username: 'admin2', email: 'admin2@digitalfit.es', password: 'Secreto1' });
+    expect(req.request.body).toEqual({
+      username: 'admin2',
+      email: 'admin2@digitalfit.es',
+      password: 'Secreto1',
+    });
     req.flush('Admin creado');
     expect(component.aviso.actual()?.tipo).toBe('exito');
     expect(component.username).toBe('');
@@ -46,7 +50,12 @@ describe('CrearAdminComponent', () => {
     component.email = 'admin1@digitalfit.es';
     component.password = 'Secreto1';
     component.crear();
-    http.expectOne('/api/admin/crear-admin').flush(JSON.stringify({ detail: 'El usuario ya existe' }), { status: 409, statusText: 'Conflict' });
+    http
+      .expectOne('/api/admin/crear-admin')
+      .flush(JSON.stringify({ detail: 'El usuario ya existe' }), {
+        status: 409,
+        statusText: 'Conflict',
+      });
     expect(component.aviso.actual()).toEqual({ texto: 'El usuario ya existe', tipo: 'error' });
   });
 });

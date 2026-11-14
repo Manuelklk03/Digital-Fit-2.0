@@ -4,14 +4,7 @@ import { InputDirective, InputSize } from './input';
 
 @Component({
   imports: [InputDirective],
-  template: `
-    <input
-      df-input
-      [size]="size()"
-      [error]="error()"
-      placeholder="Introduce texto"
-    />
-  `,
+  template: ` <input df-input [size]="size()" [error]="error()" placeholder="Introduce texto" /> `,
 })
 class TestHostComponent {
   readonly size = signal<InputSize>('md');

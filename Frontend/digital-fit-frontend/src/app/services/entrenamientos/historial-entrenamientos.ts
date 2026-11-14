@@ -10,10 +10,9 @@ import {
 } from '../../models/entrenamiento';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HistorialEntrenamientosService {
-
   private readonly http = inject(HttpClient);
   private readonly apiUrl = '/api/entrenamientos/mi-historial';
 
@@ -31,17 +30,19 @@ export class HistorialEntrenamientosService {
 
   getHistorialById(id: number): Observable<HistorialEntrenamiento> {
     return this.http.get<HistorialEntrenamiento>(`${this.apiUrl}/${id}`, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 
   crearRegistro(registro: CrearHistorial): Observable<HistorialEntrenamiento> {
     return this.http.post<HistorialEntrenamiento>(this.apiUrl, registro, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 
-  crearRegistroDesdeMiEntrenamiento(entrenamiento: EntrenamientoUsuario): Observable<HistorialEntrenamiento> {
+  crearRegistroDesdeMiEntrenamiento(
+    entrenamiento: EntrenamientoUsuario,
+  ): Observable<HistorialEntrenamiento> {
     return this.crearRegistro({
       entrenamientoBaseId: null,
       entrenamientoUsuarioId: entrenamiento.id,
@@ -51,13 +52,13 @@ export class HistorialEntrenamientosService {
       centroPrivadoUsuarioId: null,
       fecha: fechaParaBackend(),
       duracionEnMinutos: entrenamiento.duracionEnMinutos,
-      notas: 'Entrenamiento realizado desde el detalle de "Mis entrenamientos".'
+      notas: 'Entrenamiento realizado desde el detalle de "Mis entrenamientos".',
     });
   }
 
   borrarRegistro(id: number): Observable<unknown> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 }

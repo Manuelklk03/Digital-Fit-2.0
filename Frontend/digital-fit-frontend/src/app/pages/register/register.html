@@ -2,7 +2,6 @@
 
 <main class="zona-registro" id="contenido-principal">
   <div class="registro-wrapper">
-
     @if (alerta(); as a) {
       <app-alert [tipo]="a.tipo" (cerrar)="cerrarAlerta()">
         {{ a.texto }}
@@ -17,7 +16,12 @@
 
         <div class="emblema-deportivo" aria-hidden="true">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="emblema-icono">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+            />
           </svg>
         </div>
 
@@ -98,7 +102,6 @@
         </p>
       </footer>
     </app-card>
-
   </div>
 </main>
 

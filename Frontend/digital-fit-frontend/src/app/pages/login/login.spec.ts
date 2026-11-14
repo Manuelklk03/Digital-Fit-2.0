@@ -52,7 +52,9 @@ describe('LoginComponent', () => {
 
   it('debe gestionar el inicio de sesión exitoso', () => {
     vi.spyOn(authService, 'login').mockReturnValue(of('ok'));
-    vi.spyOn(authService, 'me').mockReturnValue(of({ username: 'usuario1', email: 'u@u.es', rol: 'USER' }));
+    vi.spyOn(authService, 'me').mockReturnValue(
+      of({ username: 'usuario1', email: 'u@u.es', rol: 'USER' }),
+    );
 
     component.username = 'usuario1';
     component.password = 'Usuario123!';
@@ -63,7 +65,9 @@ describe('LoginComponent', () => {
   });
 
   it('debe mostrar error de credenciales si login falla', () => {
-    vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new Error('Credenciales inválidas')));
+    vi.spyOn(authService, 'login').mockReturnValue(
+      throwError(() => new Error('Credenciales inválidas')),
+    );
 
     component.username = 'usuario1';
     component.password = 'incorrecta';
@@ -74,7 +78,9 @@ describe('LoginComponent', () => {
   });
 
   it('con 429 avisa del límite de intentos en lugar de decir que la clave es incorrecta', () => {
-    vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new HttpErrorResponse({ status: 429 })));
+    vi.spyOn(authService, 'login').mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: 429 })),
+    );
 
     component.username = 'usuario1';
     component.password = 'Usuario123!';
@@ -90,7 +96,9 @@ describe('LoginComponent', () => {
     [403, 'rechazo de CSRF'],
     [500, 'error del servidor'],
   ])('con %i (%s) no culpa a la contraseña', (status) => {
-    vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new HttpErrorResponse({ status })));
+    vi.spyOn(authService, 'login').mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status })),
+    );
 
     component.username = 'usuario1';
     component.password = 'Usuario123!';
@@ -101,7 +109,9 @@ describe('LoginComponent', () => {
   });
 
   it('con 401 sigue diciendo que usuario o contraseña son incorrectos', () => {
-    vi.spyOn(authService, 'login').mockReturnValue(throwError(() => new HttpErrorResponse({ status: 401 })));
+    vi.spyOn(authService, 'login').mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: 401 })),
+    );
 
     component.username = 'usuario1';
     component.password = 'mala';

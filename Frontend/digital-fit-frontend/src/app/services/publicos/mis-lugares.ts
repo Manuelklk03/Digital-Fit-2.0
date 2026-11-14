@@ -6,10 +6,9 @@ import { aParametros } from '../../models/entrenamiento';
 import { Autocompletado, FiltroSitio, LugarForm, LugarPublico } from '../../models/lugar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MisLugaresService {
-
   private readonly http = inject(HttpClient);
   private readonly apiUrl = '/api/mis-lugares-publicos';
 
@@ -23,7 +22,7 @@ export class MisLugaresService {
 
   getMiLugarById(id: number): Observable<LugarPublico> {
     return this.http.get<LugarPublico>(`${this.apiUrl}/${id}`, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 
@@ -34,25 +33,29 @@ export class MisLugaresService {
 
     return this.http.get<Autocompletado>(`${this.apiUrl}/autocompletar`, {
       params,
-      withCredentials: true
+      withCredentials: true,
     });
   }
 
   crearLugarDesdeMaps(lugar: LugarForm): Observable<LugarPublico> {
     return this.http.post<LugarPublico>(this.apiUrl, lugar, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 
   anadirLugarDesdeBase(idBase: number): Observable<LugarPublico> {
-    return this.http.post<LugarPublico>(`${this.apiUrl}/base/${idBase}`, {}, {
-      withCredentials: true
-    });
+    return this.http.post<LugarPublico>(
+      `${this.apiUrl}/base/${idBase}`,
+      {},
+      {
+        withCredentials: true,
+      },
+    );
   }
 
   borrarLugar(id: number): Observable<unknown> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 }

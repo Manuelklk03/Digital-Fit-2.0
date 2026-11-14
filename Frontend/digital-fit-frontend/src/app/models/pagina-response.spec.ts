@@ -8,7 +8,9 @@ describe('getContenido', () => {
   let controller: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
     http = TestBed.inject(HttpClient);
     controller = TestBed.inject(HttpTestingController);
   });
@@ -28,7 +30,13 @@ describe('getContenido', () => {
   });
 
   it('envía los filtros con valor, incluido el 0, y omite los vacíos', () => {
-    getContenido(http, '/api/x', { nombre: 'a', precio: 0, vacio: '', nulo: null, sin: undefined }).subscribe();
+    getContenido(http, '/api/x', {
+      nombre: 'a',
+      precio: 0,
+      vacio: '',
+      nulo: null,
+      sin: undefined,
+    }).subscribe();
 
     const req = controller.expectOne((r) => r.url === '/api/x');
     expect(req.request.params.get('nombre')).toBe('a');
@@ -42,7 +50,9 @@ describe('getContenido', () => {
 
 describe('getPagina', () => {
   it('envía página y tamaño indicados', () => {
-    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
     const controller = TestBed.inject(HttpTestingController);
     getPagina(TestBed.inject(HttpClient), '/api/x', { nombre: 'a' }, 3, 12).subscribe();
 

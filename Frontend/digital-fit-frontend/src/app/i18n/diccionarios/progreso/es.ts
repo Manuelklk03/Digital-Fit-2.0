@@ -28,7 +28,8 @@ export const progresoEs: DiccionarioProgreso = {
     masRealizado: 'Entrenamiento más repetido',
     minutosAbrev: 'min',
     sinDatos: 'Aún sin datos',
-    vacio: 'Todavía no has registrado ninguna sesión. Las estadísticas aparecerán cuando añadas la primera al historial.',
+    vacio:
+      'Todavía no has registrado ninguna sesión. Las estadísticas aparecerán cuando añadas la primera al historial.',
     irHistorial: 'Ir al historial',
     irValoraciones: 'Ver valoraciones',
     errorCarga: 'No se pudieron cargar las estadísticas.',

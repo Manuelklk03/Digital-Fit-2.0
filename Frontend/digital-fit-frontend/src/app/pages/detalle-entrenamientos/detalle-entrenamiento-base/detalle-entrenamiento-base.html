@@ -2,16 +2,39 @@
 <app-header />
 
 <main class="pagina" id="contenido-principal">
-  <app-detalle-vista volver="/entrenamientos" [badge]="t.catalogo.badge" [estado]="detalle.estado()"
-    [entrenamiento]="detalle.item()" (reintentar)="detalle.cargar()">
+  <app-detalle-vista
+    volver="/entrenamientos"
+    [badge]="t.catalogo.badge"
+    [estado]="detalle.estado()"
+    [entrenamiento]="detalle.item()"
+    (reintentar)="detalle.cargar()"
+  >
     @if (aviso.actual(); as a) {
       <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
     }
     @if (detalle.item(); as e) {
       @if (esAdmin()) {
-        <button df-button variant="danger" type="button" [loading]="ocupado()" [disabled]="ocupado()" (click)="borrar(e)">{{ t.borrar }}</button>
+        <button
+          df-button
+          variant="danger"
+          type="button"
+          [loading]="ocupado()"
+          [disabled]="ocupado()"
+          (click)="borrar(e)"
+        >
+          {{ t.borrar }}
+        </button>
       } @else {
-        <button df-button variant="primary" type="button" [loading]="ocupado()" [disabled]="ocupado()" (click)="anadir(e)">{{ t.anadirAMis }}</button>
+        <button
+          df-button
+          variant="primary"
+          type="button"
+          [loading]="ocupado()"
+          [disabled]="ocupado()"
+          (click)="anadir(e)"
+        >
+          {{ t.anadirAMis }}
+        </button>
       }
     }
   </app-detalle-vista>

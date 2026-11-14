@@ -5,14 +5,7 @@ import { BadgeComponent, BadgeStyle, BadgeVariant } from './badge';
 @Component({
   imports: [BadgeComponent],
   template: `
-    <span
-      df-badge
-      [variant]="variant()"
-      [badgeStyle]="badgeStyle()"
-      [dot]="dot()"
-    >
-      Activo
-    </span>
+    <span df-badge [variant]="variant()" [badgeStyle]="badgeStyle()" [dot]="dot()"> Activo </span>
   `,
 })
 class TestHostComponent {

@@ -10,10 +10,9 @@ import {
 } from '../../models/entrenamiento';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EntrenamientosComunidadService {
-
   private http = inject(HttpClient);
   private apiUrl = '/api/entrenamientos-comunidad';
 
@@ -21,31 +20,39 @@ export class EntrenamientosComunidadService {
     return getContenido<EntrenamientoComunidad>(this.http, this.apiUrl);
   }
 
-  buscar(filtro: FiltroEntrenamiento | null, page = 0): Observable<PaginaResponse<EntrenamientoComunidad>> {
+  buscar(
+    filtro: FiltroEntrenamiento | null,
+    page = 0,
+  ): Observable<PaginaResponse<EntrenamientoComunidad>> {
     return getPagina<EntrenamientoComunidad>(this.http, this.apiUrl, aParametros(filtro), page);
   }
 
   getEntrenamientoComunidadById(id: number): Observable<EntrenamientoComunidad> {
     return this.http.get<EntrenamientoComunidad>(`${this.apiUrl}/${id}`, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 
-  crearEntrenamientoComunidad(entrenamiento: EntrenamientoForm): Observable<EntrenamientoComunidad> {
+  crearEntrenamientoComunidad(
+    entrenamiento: EntrenamientoForm,
+  ): Observable<EntrenamientoComunidad> {
     return this.http.post<EntrenamientoComunidad>(this.apiUrl, entrenamiento, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 
-  actualizarEntrenamientoComunidad(id: number, entrenamiento: EntrenamientoForm): Observable<EntrenamientoComunidad> {
+  actualizarEntrenamientoComunidad(
+    id: number,
+    entrenamiento: EntrenamientoForm,
+  ): Observable<EntrenamientoComunidad> {
     return this.http.put<EntrenamientoComunidad>(`${this.apiUrl}/${id}`, entrenamiento, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 
   borrarEntrenamientoComunidad(id: number): Observable<unknown> {
     return this.http.delete(`${this.apiUrl}/${id}`, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 }

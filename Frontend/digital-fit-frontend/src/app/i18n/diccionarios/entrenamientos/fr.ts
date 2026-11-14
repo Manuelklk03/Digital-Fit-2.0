@@ -78,12 +78,13 @@ export const entrenamientosFr: DiccionarioEntrenamientos = {
   errorGuardar: "Impossible d'enregistrer l'entraînement.",
   errorBorrar: "Impossible de supprimer l'entraînement.",
   volverListado: 'Retour à la liste',
-  errorDetalle: "Entraînement introuvable ou accès non autorisé.",
+  errorDetalle: 'Entraînement introuvable ou accès non autorisé.',
   sinDescripcion: 'Sans description',
   catalogo: {
     badge: 'CATALOGUE DE BASE',
     titulo: 'Entraînements de base',
-    subtitulo: 'Les routines de référence de Digital-Fit. Filtrez-les et ajoutez à votre liste celles que vous voulez suivre.',
+    subtitulo:
+      'Les routines de référence de Digital-Fit. Filtrez-les et ajoutez à votre liste celles que vous voulez suivre.',
     vacio: "Il n'y a pas encore d'entraînements de base.",
     formCrear: 'Nouvel entraînement de base',
     formEditar: "Modifier l'entraînement de base",
@@ -91,7 +92,8 @@ export const entrenamientosFr: DiccionarioEntrenamientos = {
   mis: {
     badge: 'ESPACE PERSONNEL',
     titulo: 'Mes entraînements',
-    subtitulo: 'Les routines que vous créez et celles que vous copiez du catalogue ou de la communauté.',
+    subtitulo:
+      'Les routines que vous créez et celles que vous copiez du catalogue ou de la communauté.',
     vacio: "Vous n'avez pas encore d'entraînements. Créez-en un ou ajoutez-le depuis le catalogue.",
     irCatalogo: 'Aller au catalogue',
     formCrear: 'Nouvel entraînement personnalisé',
@@ -103,7 +105,8 @@ export const entrenamientosFr: DiccionarioEntrenamientos = {
   comunidad: {
     badge: 'COMMUNAUTÉ',
     titulo: 'Entraînements de la communauté',
-    subtitulo: 'Routines publiées par les utilisateurs. Publiez les vôtres ou copiez celles des autres dans votre liste.',
+    subtitulo:
+      'Routines publiées par les utilisateurs. Publiez les vôtres ou copiez celles des autres dans votre liste.',
     vacio: "Personne n'a encore publié d'entraînements.",
     formCrear: 'Publier un entraînement',
     formEditar: 'Modifier la publication',
@@ -115,7 +118,8 @@ export const entrenamientosFr: DiccionarioEntrenamientos = {
   historial: {
     badge: 'SUIVI',
     titulo: 'Historique des entraînements',
-    subtitulo: 'Enregistrez chaque séance réalisée. Affichées de la plus récente à la plus ancienne.',
+    subtitulo:
+      'Enregistrez chaque séance réalisée. Affichées de la plus récente à la plus ancienne.',
     vacio: "Vous n'avez encore enregistré aucune séance.",
     formCrear: 'Enregistrer une séance',
     campoEntrenamiento: 'Entraînement',

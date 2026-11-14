@@ -50,7 +50,8 @@ export const lugaresEn: DiccionarioLugares = {
   ayudaUbicacion: 'Search for an address or click the map to mark the location.',
   autocompletando: 'Looking up data for that location…',
   autocompletadoOk: 'Details filled in from OpenStreetMap. Enter the name and check the rest.',
-  autocompletadoSinDatos: 'OpenStreetMap has no data for that location. Fill in the fields yourself.',
+  autocompletadoSinDatos:
+    'OpenStreetMap has no data for that location. Fill in the fields yourself.',
   autocompletadoError: 'Could not look up the location. Fill in the fields yourself.',
   confirmarBorrado: 'Delete it? This cannot be undone.',
   exitoAnadido: 'Added to your list.',
@@ -81,7 +82,8 @@ export const lugaresEn: DiccionarioLugares = {
   centrosBase: {
     badge: 'Private centres',
     titulo: 'Centre catalogue',
-    subtitulo: 'Gyms and sports centres in the Valencian Community. Add the ones you use to your list.',
+    subtitulo:
+      'Gyms and sports centres in the Valencian Community. Add the ones you use to your list.',
     vacio: 'There are no centres in the catalogue yet.',
     formCrear: 'New centre',
     formEditar: 'Edit centre',
@@ -114,7 +116,8 @@ export const lugaresEn: DiccionarioLugares = {
   misLugares: {
     badge: 'My places',
     titulo: 'My places',
-    subtitulo: 'Your courts, parks and routes. Add them from the catalogue or mark them on the map.',
+    subtitulo:
+      'Your courts, parks and routes. Add them from the catalogue or mark them on the map.',
     vacio: 'You have no saved places yet.',
     formCrear: 'Add place from the map',
     formEditar: 'Edit place',

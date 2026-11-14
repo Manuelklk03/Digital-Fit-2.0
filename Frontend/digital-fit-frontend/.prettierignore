@@ -1,0 +1,19 @@
+# Compiled & tools
+/dist
+/tmp
+/out-tsc
+/bazel-out
+/.angular
+/.omc
+/.impeccable
+/.vscode
+
+# Dependencies
+/node_modules
+package-lock.json
+
+# Coverage
+/coverage
+
+# Assets & Static
+public/

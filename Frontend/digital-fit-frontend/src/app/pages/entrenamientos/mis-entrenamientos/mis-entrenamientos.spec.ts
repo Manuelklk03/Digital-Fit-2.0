@@ -7,13 +7,27 @@ import { vi } from 'vitest';
 import { MisEntrenamientosComponent } from './mis-entrenamientos';
 import { EntrenamientoUsuario } from '../../../models/entrenamiento';
 
-const E: EntrenamientoUsuario = { id: 3, nombre: 'Core', descripcion: 'd', categoria: 'FUERZA_CORE', nivel: 'INTERMEDIO', duracionEnMinutos: 15 };
-const pagina = (content: unknown[]) => ({ content, page: 0, size: 12, totalElements: content.length, totalPages: 1 });
+const E: EntrenamientoUsuario = {
+  id: 3,
+  nombre: 'Core',
+  descripcion: 'd',
+  categoria: 'FUERZA_CORE',
+  nivel: 'INTERMEDIO',
+  duracionEnMinutos: 15,
+};
+const pagina = (content: unknown[]) => ({
+  content,
+  page: 0,
+  size: 12,
+  totalElements: content.length,
+  totalPages: 1,
+});
 
 describe('MisEntrenamientosComponent', () => {
   let fixture: ComponentFixture<MisEntrenamientosComponent>;
   let http: HttpTestingController;
-  const listado = () => http.expectOne((r) => r.method === 'GET' && r.url === '/api/mis-entrenamientos');
+  const listado = () =>
+    http.expectOne((r) => r.method === 'GET' && r.url === '/api/mis-entrenamientos');
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -35,7 +49,13 @@ describe('MisEntrenamientosComponent', () => {
     listado().flush(pagina([]));
     const c = fixture.componentInstance;
     c.formAbierto.set(true);
-    c.crear({ nombre: 'Nuevo', descripcion: 'd', categoria: 'HIIT', nivel: 'AVANZADO', duracionEnMinutos: 20 });
+    c.crear({
+      nombre: 'Nuevo',
+      descripcion: 'd',
+      categoria: 'HIIT',
+      nivel: 'AVANZADO',
+      duracionEnMinutos: 20,
+    });
 
     http.expectOne((r) => r.method === 'POST').flush(E);
     listado().flush(pagina([E]));
@@ -52,7 +72,9 @@ describe('MisEntrenamientosComponent', () => {
     const c = fixture.componentInstance;
 
     c.borrar(E);
-    http.expectOne('/api/mis-entrenamientos/3').flush({ detail: 'No permitido' }, { status: 403, statusText: 'Forbidden' });
+    http
+      .expectOne('/api/mis-entrenamientos/3')
+      .flush({ detail: 'No permitido' }, { status: 403, statusText: 'Forbidden' });
 
     expect(c.aviso.actual()).toEqual({ texto: 'No permitido', tipo: 'error' });
     expect(c.ocupado()).toBeNull();

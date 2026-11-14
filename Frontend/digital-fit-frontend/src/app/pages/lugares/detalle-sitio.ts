@@ -1,9 +1,22 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { MigasComponent } from '../../components/migas/migas';
 import { Footer } from '../../components/footer/footer';
-import { AlertComponent, BadgeComponent, ButtonComponent, CardComponent } from '../../components/ui';
+import {
+  AlertComponent,
+  BadgeComponent,
+  ButtonComponent,
+  CardComponent,
+} from '../../components/ui';
 import { MapaSelectorComponent } from '../../components/mapa-selector/mapa-selector';
 import { I18nService } from '../../i18n/i18n.service';
 import { UsuarioSesion } from '../../models/entrenamiento';
@@ -15,7 +28,17 @@ import { ConfigDetalle } from './config';
 /** Detalle de un centro o lugar: ficha, mapa de solo lectura y acciones según permisos. */
 @Component({
   selector: 'app-detalle-sitio',
-  imports: [RouterLink, HeaderComponent, Footer, AlertComponent, BadgeComponent, ButtonComponent, CardComponent, MapaSelectorComponent, MigasComponent],
+  imports: [
+    RouterLink,
+    HeaderComponent,
+    Footer,
+    AlertComponent,
+    BadgeComponent,
+    ButtonComponent,
+    CardComponent,
+    MapaSelectorComponent,
+    MigasComponent,
+  ],
   styleUrl: '../entrenamientos/compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -26,7 +49,9 @@ import { ConfigDetalle } from './config';
 
     <main class="pagina" id="contenido-principal">
       <app-migas />
-      <a df-button variant="ghost" size="sm" class="volver" [routerLink]="c.rutaListado"><span aria-hidden="true">←</span> {{ t.volverListado }}</a>
+      <a df-button variant="ghost" size="sm" class="volver" [routerLink]="c.rutaListado"
+        ><span aria-hidden="true">←</span> {{ t.volverListado }}</a
+      >
 
       @if (aviso.actual(); as a) {
         <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
@@ -42,7 +67,9 @@ import { ConfigDetalle } from './config';
         @case ('error') {
           <div class="estado estado-error" role="alert">
             <p>{{ t.errorDetalle }}</p>
-            <button df-button variant="outline" size="sm" type="button" (click)="detalle.cargar()">{{ te.reintentar }}</button>
+            <button df-button variant="outline" size="sm" type="button" (click)="detalle.cargar()">
+              {{ te.reintentar }}
+            </button>
           </div>
         }
         @default {
@@ -57,29 +84,69 @@ import { ConfigDetalle } from './config';
                 </div>
                 <h1 class="cabecera-detalle">{{ s.nombre }}</h1>
                 <dl class="datos">
-                  <div class="dato"><dt>{{ t.campoDireccion }}</dt><dd>{{ s.direccion }}</dd></div>
+                  <div class="dato">
+                    <dt>{{ t.campoDireccion }}</dt>
+                    <dd>{{ s.direccion }}</dd>
+                  </div>
                   @if (!esLugar(s)) {
-                    <div class="dato"><dt>{{ t.campoPrecio }}</dt>
-                      <dd class="num">{{ s.precioMensual != null ? s.precioMensual + ' ' + t.porMes : t.sinPrecio }}</dd></div>
+                    <div class="dato">
+                      <dt>{{ t.campoPrecio }}</dt>
+                      <dd class="num">
+                        {{
+                          s.precioMensual != null ? s.precioMensual + ' ' + t.porMes : t.sinPrecio
+                        }}
+                      </dd>
+                    </div>
                   }
-                  <div class="dato"><dt>{{ t.campoHorario }}</dt><dd>{{ s.horario || t.noDisponible }}</dd></div>
-                  <div class="dato"><dt>{{ t.campoTelefono }}</dt><dd>{{ s.telefono || t.noDisponible }}</dd></div>
-                  <div class="dato"><dt>{{ t.campoUbicacion }}</dt><dd class="num">{{ coordenadas() ?? t.sinUbicacion }}</dd></div>
+                  <div class="dato">
+                    <dt>{{ t.campoHorario }}</dt>
+                    <dd>{{ s.horario || t.noDisponible }}</dd>
+                  </div>
+                  <div class="dato">
+                    <dt>{{ t.campoTelefono }}</dt>
+                    <dd>{{ s.telefono || t.noDisponible }}</dd>
+                  </div>
+                  <div class="dato">
+                    <dt>{{ t.campoUbicacion }}</dt>
+                    <dd class="num">{{ coordenadas() ?? t.sinUbicacion }}</dd>
+                  </div>
                 </dl>
                 <section>
                   <h2 class="subtitulo">{{ t.campoDescripcion }}</h2>
                   <p class="texto-largo">{{ s.descripcion || t.sinDescripcion }}</p>
                 </section>
                 @if (s.latitud != null && s.longitud != null) {
-                  <app-mapa-selector [latitud]="s.latitud" [longitud]="s.longitud" [soloVista]="true" />
+                  <app-mapa-selector
+                    [latitud]="s.latitud"
+                    [longitud]="s.longitud"
+                    [soloVista]="true"
+                  />
                 }
                 <div class="acciones">
                   @if (!sesionResuelta()) {
                     <!-- Catálogo: sin acciones hasta saber si es ADMIN. -->
                   } @else if (puedeGestionar()) {
-                    <button df-button variant="danger" type="button" [loading]="ocupado()" [disabled]="ocupado()" (click)="borrar(s)">{{ te.borrar }}</button>
+                    <button
+                      df-button
+                      variant="danger"
+                      type="button"
+                      [loading]="ocupado()"
+                      [disabled]="ocupado()"
+                      (click)="borrar(s)"
+                    >
+                      {{ te.borrar }}
+                    </button>
                   } @else if (c.anadirAMis) {
-                    <button df-button variant="primary" type="button" [loading]="ocupado()" [disabled]="ocupado()" (click)="anadir(s)">{{ t[c.seccion].anadirAMis }}</button>
+                    <button
+                      df-button
+                      variant="primary"
+                      type="button"
+                      [loading]="ocupado()"
+                      [disabled]="ocupado()"
+                      (click)="anadir(s)"
+                    >
+                      {{ t[c.seccion].anadirAMis }}
+                    </button>
                   }
                 </div>
               </article>
@@ -100,12 +167,16 @@ export class DetalleSitioComponent implements OnInit {
 
   readonly config = input.required<ConfigDetalle>();
 
-  readonly detalle = new Detalle<Sitio>(() => this.config().cargar(Number(this.route.snapshot.paramMap.get('id'))));
+  readonly detalle = new Detalle<Sitio>(() =>
+    this.config().cargar(Number(this.route.snapshot.paramMap.get('id'))),
+  );
   readonly aviso = new Aviso();
   /** undefined mientras se consulta la sesión (solo en el catálogo). */
   readonly usuario = signal<UsuarioSesion | null | undefined>(undefined);
   readonly sesionResuelta = computed(() => !this.config().catalogo || this.usuario() !== undefined);
-  readonly puedeGestionar = computed(() => !this.config().catalogo || this.usuario()?.rol === 'ADMIN');
+  readonly puedeGestionar = computed(
+    () => !this.config().catalogo || this.usuario()?.rol === 'ADMIN',
+  );
   readonly ocupado = signal(false);
   readonly coordenadas = computed(() => {
     const s = this.detalle.item();

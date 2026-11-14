@@ -4,7 +4,10 @@ import { PaginaResponse } from '../../models/pagina-response';
 import { Autocompletado, ClaseSitio, FiltroSitio, Sitio, SitioForm } from '../../models/lugar';
 
 /** Clave de los textos de cada pantalla en `i18n.t().lugares`. */
-export type SeccionSitios = keyof Pick<DiccionarioLugares, 'centrosBase' | 'lugaresBase' | 'misCentros' | 'misLugares'>;
+export type SeccionSitios = keyof Pick<
+  DiccionarioLugares,
+  'centrosBase' | 'lugaresBase' | 'misCentros' | 'misLugares'
+>;
 
 interface ConfigComun {
   clase: ClaseSitio;

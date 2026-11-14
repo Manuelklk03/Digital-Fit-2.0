@@ -31,7 +31,7 @@ export class I18nService {
 
   /** Metadatos del idioma activo */
   readonly infoIdiomaActual = computed<InfoIdioma>(
-    () => this.idiomas.find((i) => i.codigo === this.idiomaSignal()) ?? this.idiomas[0]
+    () => this.idiomas.find((i) => i.codigo === this.idiomaSignal()) ?? this.idiomas[0],
   );
 
   constructor() {

@@ -56,7 +56,10 @@ describe('Migas de pan', () => {
 
     const nav = fixture.nativeElement.querySelector('nav.migas') as HTMLElement;
     expect(nav.getAttribute('aria-label')).toBe(i18n.t().migas.etiqueta);
-    expect(Array.from(nav.querySelectorAll('a')).map((a) => a.getAttribute('href'))).toEqual(['/inicio', '/mis-centros']);
+    expect(Array.from(nav.querySelectorAll('a')).map((a) => a.getAttribute('href'))).toEqual([
+      '/inicio',
+      '/mis-centros',
+    ]);
     expect(nav.querySelector('[aria-current="page"]')?.textContent).toContain('Detalle');
   });
 

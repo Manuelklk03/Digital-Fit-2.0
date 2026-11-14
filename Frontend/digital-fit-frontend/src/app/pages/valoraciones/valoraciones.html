@@ -6,7 +6,9 @@
 <main class="pagina" id="contenido-principal">
   <app-encabezado-pagina [badge]="v.badge" [titulo]="v.titulo" [subtitulo]="v.subtitulo">
     @if (enEdicion() === undefined) {
-      <button id="boton-nuevo" df-button variant="primary" type="button" (click)="abrirNueva()">{{ v.nueva }}</button>
+      <button id="boton-nuevo" df-button variant="primary" type="button" (click)="abrirNueva()">
+        {{ v.nueva }}
+      </button>
     }
   </app-encabezado-pagina>
 
@@ -18,18 +20,28 @@
     @let editando = enEdicion();
     <app-card>
       <form class="formulario" (ngSubmit)="guardar()" novalidate aria-labelledby="val-titulo">
-        <h2 id="val-titulo" class="titulo-form" tabindex="-1">{{ editando ? v.formEditar : v.formCrear }}</h2>
+        <h2 id="val-titulo" class="titulo-form" tabindex="-1">
+          {{ editando ? v.formEditar : v.formCrear }}
+        </h2>
 
         @if (editando) {
           <p class="editando">
-            <span df-badge badgeStyle="outline">{{ t.tiposValoracion[editando.tipoDeValoracion] }}</span>
+            <span df-badge badgeStyle="outline">{{
+              t.tiposValoracion[editando.tipoDeValoracion]
+            }}</span>
             <strong>{{ editando.contenidoNombre || v.sinNombre }}</strong>
           </p>
         } @else {
           <div class="rejilla-form">
             <div class="campo">
               <label for="val-categoria">{{ v.campoCategoria }}</label>
-              <select df-input id="val-categoria" name="categoria" [ngModel]="categoria" (ngModelChange)="cambiarCategoria($event)">
+              <select
+                df-input
+                id="val-categoria"
+                name="categoria"
+                [ngModel]="categoria"
+                (ngModelChange)="cambiarCategoria($event)"
+              >
                 @for (c of categorias; track c) {
                   <option [value]="c">{{ t.categorias[c] }}</option>
                 }
@@ -39,9 +51,17 @@
             <div class="campo">
               <label for="val-contenido">{{ v.campoContenido }}</label>
               @if (grupos(); as gs) {
-                <select df-input id="val-contenido" name="contenido" [(ngModel)]="seleccion"
-                  [error]="errores().includes('contenido')" [attr.aria-invalid]="errores().includes('contenido')"
-                  [attr.aria-describedby]="errores().includes('contenido') ? 'val-e-contenido' : null">
+                <select
+                  df-input
+                  id="val-contenido"
+                  name="contenido"
+                  [(ngModel)]="seleccion"
+                  [error]="errores().includes('contenido')"
+                  [attr.aria-invalid]="errores().includes('contenido')"
+                  [attr.aria-describedby]="
+                    errores().includes('contenido') ? 'val-e-contenido' : null
+                  "
+                >
                   <option value="">{{ v.seleccionaContenido }}</option>
                   @for (g of gs; track g.tipo) {
                     @if (g.opciones.length > 0) {
@@ -64,7 +84,15 @@
           @if (errorOpciones()) {
             <div class="aviso-opciones" role="alert">
               <p>{{ v.errorOpciones }}</p>
-              <button df-button variant="outline" size="sm" type="button" (click)="cargarOpciones()">{{ te.reintentar }}</button>
+              <button
+                df-button
+                variant="outline"
+                size="sm"
+                type="button"
+                (click)="cargarOpciones()"
+              >
+                {{ te.reintentar }}
+              </button>
             </div>
           }
         }
@@ -73,32 +101,61 @@
           <legend>{{ v.campoPuntuacion }}</legend>
           <div class="estrellas">
             @for (n of estrellas; track n) {
-              <input class="sr-only" type="radio" name="puntuacion" [id]="'val-estrella-' + n" [value]="n" [(ngModel)]="puntuacion" />
+              <input
+                class="sr-only"
+                type="radio"
+                name="puntuacion"
+                [id]="'val-estrella-' + n"
+                [value]="n"
+                [(ngModel)]="puntuacion"
+              />
               <label [for]="'val-estrella-' + n" class="estrella" [class.activa]="n <= puntuacion">
                 <span aria-hidden="true">★</span>
                 <span class="sr-only">{{ n }} {{ v.deCinco }}, {{ v.puntuaciones[n - 1] }}</span>
               </label>
             }
-            <span class="texto-puntuacion" aria-hidden="true">{{ v.puntuaciones[puntuacion - 1] }}</span>
+            <span class="texto-puntuacion" aria-hidden="true">{{
+              v.puntuaciones[puntuacion - 1]
+            }}</span>
           </div>
         </fieldset>
 
         <div class="campo">
           <label for="val-comentario">{{ v.campoComentario }}</label>
-          <textarea df-input id="val-comentario" name="comentario" rows="3" maxlength="1000" [(ngModel)]="comentario"
-            [placeholder]="v.comentarioPlaceholder" [error]="errores().includes('comentario')"
+          <textarea
+            df-input
+            id="val-comentario"
+            name="comentario"
+            rows="3"
+            maxlength="1000"
+            [(ngModel)]="comentario"
+            [placeholder]="v.comentarioPlaceholder"
+            [error]="errores().includes('comentario')"
             [attr.aria-invalid]="errores().includes('comentario')"
-            [attr.aria-describedby]="errores().includes('comentario') ? 'val-e-comentario' : null"></textarea>
+            [attr.aria-describedby]="errores().includes('comentario') ? 'val-e-comentario' : null"
+          ></textarea>
           @if (errores().includes('comentario')) {
             <p class="error" id="val-e-comentario">{{ v.errorComentario }}</p>
           }
         </div>
 
         <div class="acciones">
-          <button df-button variant="primary" type="submit" [loading]="guardando()" [disabled]="guardando()">
+          <button
+            df-button
+            variant="primary"
+            type="submit"
+            [loading]="guardando()"
+            [disabled]="guardando()"
+          >
             {{ guardando() ? te.guardando : v.guardar }}
           </button>
-          <button df-button variant="ghost" type="button" [disabled]="guardando()" (click)="cerrarFormulario()">
+          <button
+            df-button
+            variant="ghost"
+            type="button"
+            [disabled]="guardando()"
+            (click)="cerrarFormulario()"
+          >
             {{ editando ? te.cancelarEdicion : te.cerrarFormulario }}
           </button>
         </div>
@@ -116,7 +173,10 @@
           }
         </span>
         <span class="valor-estrellas">
-          <span aria-hidden="true">{{ '★★★★★'.slice(0, r.puntuacion) }}<span class="apagadas">{{ '★★★★★'.slice(r.puntuacion) }}</span></span>
+          <span aria-hidden="true"
+            >{{ '★★★★★'.slice(0, r.puntuacion)
+            }}<span class="apagadas">{{ '★★★★★'.slice(r.puntuacion) }}</span></span
+          >
           <span class="sr-only">{{ r.puntuacion }} {{ v.deCinco }}</span>
         </span>
       </div>
@@ -132,9 +192,27 @@
       </p>
       @if (propia) {
         <div class="acciones">
-          <button df-button variant="outline" size="sm" type="button" [disabled]="guardando()" (click)="editar(r)">{{ te.editar }}</button>
-          <button df-button variant="danger" size="sm" type="button" [loading]="ocupado() === r.id"
-            [disabled]="ocupado() === r.id || enEdicion()?.id === r.id" (click)="borrar(r)">{{ te.borrar }}</button>
+          <button
+            df-button
+            variant="outline"
+            size="sm"
+            type="button"
+            [disabled]="guardando()"
+            (click)="editar(r)"
+          >
+            {{ te.editar }}
+          </button>
+          <button
+            df-button
+            variant="danger"
+            size="sm"
+            type="button"
+            [loading]="ocupado() === r.id"
+            [disabled]="ocupado() === r.id || enEdicion()?.id === r.id"
+            (click)="borrar(r)"
+          >
+            {{ te.borrar }}
+          </button>
         </div>
       }
     </article>
@@ -155,9 +233,23 @@
     <div class="cabecera-seccion">
       <h2 id="titulo-comunidad" class="titulo-seccion">{{ v.comunidad }}</h2>
       <div class="segmentos" role="group" [attr.aria-label]="v.filtrarCategoria">
-        <button type="button" class="segmento" [attr.aria-pressed]="filtroComunidad() === null" (click)="filtrarComunidad(null)">{{ v.todas }}</button>
+        <button
+          type="button"
+          class="segmento"
+          [attr.aria-pressed]="filtroComunidad() === null"
+          (click)="filtrarComunidad(null)"
+        >
+          {{ v.todas }}
+        </button>
         @for (c of categorias; track c) {
-          <button type="button" class="segmento" [attr.aria-pressed]="filtroComunidad() === c" (click)="filtrarComunidad(c)">{{ t.categorias[c] }}</button>
+          <button
+            type="button"
+            class="segmento"
+            [attr.aria-pressed]="filtroComunidad() === c"
+            (click)="filtrarComunidad(c)"
+          >
+            {{ t.categorias[c] }}
+          </button>
         }
       </div>
     </div>

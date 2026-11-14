@@ -28,7 +28,8 @@ export const progresoCa: DiccionarioProgreso = {
     masRealizado: 'Entrenament més repetit',
     minutosAbrev: 'min',
     sinDatos: 'Encara sense dades',
-    vacio: "Encara no has registrat cap sessió. Les estadístiques apareixeran quan afegisques la primera a l'historial.",
+    vacio:
+      "Encara no has registrat cap sessió. Les estadístiques apareixeran quan afegisques la primera a l'historial.",
     irHistorial: "Anar a l'historial",
     irValoraciones: 'Veure valoracions',
     errorCarga: "No s'han pogut carregar les estadístiques.",

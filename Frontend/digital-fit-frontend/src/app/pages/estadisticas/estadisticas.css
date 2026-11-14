@@ -1,19 +1,65 @@
-.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin: 0; }
-.esqueleto-kpi { height: 116px; }
-.esqueleto-kpi.kpi-texto { height: 80px; }
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 0;
+}
+.esqueleto-kpi {
+  height: 116px;
+}
+.esqueleto-kpi.kpi-texto {
+  height: 80px;
+}
 
 .kpi {
-  display: flex; flex-direction: column; gap: 10px; padding: 20px;
-  background: var(--df-surface); border: 1px solid var(--df-border); border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background: var(--df-surface);
+  border: 1px solid var(--df-border);
+  border-radius: 16px;
 }
-.kpi dt { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--df-text-muted); }
-.kpi dd { margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; color: var(--df-text); }
-.kpi-principal { border-color: var(--df-primary); }
-.unidad { font-size: 15px; font-weight: 600; color: var(--df-text-muted); }
-.kpi-texto { grid-column: 1 / -1; }
+.kpi dt {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--df-text-muted);
+}
+.kpi dd {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--df-text);
+}
+.kpi-principal {
+  border-color: var(--df-primary);
+}
+.unidad {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--df-text-muted);
+}
+.kpi-texto {
+  grid-column: 1 / -1;
+}
 @media (max-width: 480px) {
-  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .kpi { padding: 16px; }
-  .kpi dd { font-size: 24px; }
+  .kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .kpi {
+    padding: 16px;
+  }
+  .kpi dd {
+    font-size: 24px;
+  }
 }
-.kpi-texto dd { font-size: 20px; font-weight: 700; overflow-wrap: anywhere; }
+.kpi-texto dd {
+  font-size: 20px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}

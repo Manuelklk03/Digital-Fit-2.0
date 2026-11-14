@@ -87,7 +87,12 @@ export class LoginComponent {
         // Solo el 401 es una clave incorrecta. El 429 es el límite de intentos del backend (la clave puede ser correcta);
         // el resto (sin conexión, 403 de CSRF, 5xx) no dice nada de las credenciales.
         const a = this.i18n.t().auth;
-        const texto = err.status === 401 ? a.errorCredenciales : err.status === 429 ? a.errorDemasiadosIntentos : a.errorInesperado;
+        const texto =
+          err.status === 401
+            ? a.errorCredenciales
+            : err.status === 429
+              ? a.errorDemasiadosIntentos
+              : a.errorInesperado;
         this.mostrarAlerta(texto, 'error');
         this.cdr.markForCheck();
       },

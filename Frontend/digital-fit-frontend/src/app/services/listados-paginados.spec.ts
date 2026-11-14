@@ -24,9 +24,21 @@ interface Caso {
 // Los listados auxiliares (selects) piden size=100 y devuelven solo `content`.
 const CASOS: Caso[] = [
   { servicio: EntrenamientosService, url: '/api/entrenamientos', lista: 'getEntrenamientos' },
-  { servicio: MisEntrenamientosService, url: '/api/mis-entrenamientos', lista: 'getMisEntrenamientos' },
-  { servicio: EntrenamientosComunidadService, url: '/api/entrenamientos-comunidad', lista: 'getEntrenamientosComunidad' },
-  { servicio: HistorialEntrenamientosService, url: '/api/entrenamientos/mi-historial', lista: 'getHistorial' },
+  {
+    servicio: MisEntrenamientosService,
+    url: '/api/mis-entrenamientos',
+    lista: 'getMisEntrenamientos',
+  },
+  {
+    servicio: EntrenamientosComunidadService,
+    url: '/api/entrenamientos-comunidad',
+    lista: 'getEntrenamientosComunidad',
+  },
+  {
+    servicio: HistorialEntrenamientosService,
+    url: '/api/entrenamientos/mi-historial',
+    lista: 'getHistorial',
+  },
   { servicio: PrivadosService, url: '/api/centros-privados', lista: 'getCentrosPrivados' },
   { servicio: MisCentrosService, url: '/api/mis-centros-privados', lista: 'getMisCentros' },
   { servicio: PublicosService, url: '/api/lugares-publicos', lista: 'getLugaresPublicos' },
@@ -37,7 +49,9 @@ describe('Servicios con listados paginados', () => {
   let http: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [provideHttpClient(), provideHttpClientTesting()] });
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
     http = TestBed.inject(HttpTestingController);
   });
 

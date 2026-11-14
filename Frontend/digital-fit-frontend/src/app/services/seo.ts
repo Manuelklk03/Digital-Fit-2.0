@@ -63,14 +63,28 @@ export class SeoService {
     const publica = datos.seo !== undefined;
     const pagina = datos.seo ? t.seo[datos.seo] : null;
     // Sin título propio, se usa el camino de las migas sin «Inicio», del último nivel al primero: «Detalle · Mis centros».
-    const delCamino = this.migas.migas().slice(1).map((m) => m.texto).reverse().join(' · ');
-    const titulo = pagina?.titulo ?? (datos.tituloNav ? `${t.nav[datos.tituloNav]} · ${MARCA}` : delCamino ? `${delCamino} · ${MARCA}` : MARCA);
+    const delCamino = this.migas
+      .migas()
+      .slice(1)
+      .map((m) => m.texto)
+      .reverse()
+      .join(' · ');
+    const titulo =
+      pagina?.titulo ??
+      (datos.tituloNav
+        ? `${t.nav[datos.tituloNav]} · ${MARCA}`
+        : delCamino
+          ? `${delCamino} · ${MARCA}`
+          : MARCA);
     const descripcion = pagina?.descripcion ?? t.seo.inicio.descripcion;
     const url = `${this.doc.location.origin}${this.router.url.split(/[?#]/)[0]}`;
 
     this.titulo.setTitle(titulo);
     this.meta.updateTag({ name: 'description', content: descripcion });
-    this.meta.updateTag({ name: 'robots', content: publica ? 'index, follow' : 'noindex, nofollow' });
+    this.meta.updateTag({
+      name: 'robots',
+      content: publica ? 'index, follow' : 'noindex, nofollow',
+    });
     this.meta.updateTag({ property: 'og:type', content: 'website' });
     this.meta.updateTag({ property: 'og:site_name', content: MARCA });
     this.meta.updateTag({ property: 'og:title', content: titulo });

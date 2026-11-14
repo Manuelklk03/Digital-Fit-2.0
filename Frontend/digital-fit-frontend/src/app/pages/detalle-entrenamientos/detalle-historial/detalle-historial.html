@@ -3,7 +3,9 @@
 <app-header />
 
 <main class="pagina" id="contenido-principal">
-  <a df-button variant="ghost" size="sm" class="volver" routerLink="/historial-entrenamientos"><span aria-hidden="true">←</span> {{ t.volverListado }}</a>
+  <a df-button variant="ghost" size="sm" class="volver" routerLink="/historial-entrenamientos"
+    ><span aria-hidden="true">←</span> {{ t.volverListado }}</a
+  >
 
   @switch (estado()) {
     @case ('cargando') {
@@ -15,7 +17,9 @@
     @case ('error') {
       <div class="estado estado-error" role="alert">
         <p>{{ h.errorDetalle }}</p>
-        <button df-button variant="outline" size="sm" type="button" (click)="cargar()">{{ t.reintentar }}</button>
+        <button df-button variant="outline" size="sm" type="button" (click)="cargar()">
+          {{ t.reintentar }}
+        </button>
       </div>
     }
     @default {
@@ -31,8 +35,14 @@
             </div>
             <h1 class="cabecera-detalle">{{ r.entrenamiento }}</h1>
             <dl class="datos">
-              <div class="dato"><dt>{{ h.campoFecha }}</dt><dd>{{ fecha() }}</dd></div>
-              <div class="dato"><dt>{{ t.campoDuracion }}</dt><dd class="num">{{ r.duracionEnMinutos }} {{ t.minutos }}</dd></div>
+              <div class="dato">
+                <dt>{{ h.campoFecha }}</dt>
+                <dd>{{ fecha() }}</dd>
+              </div>
+              <div class="dato">
+                <dt>{{ t.campoDuracion }}</dt>
+                <dd class="num">{{ r.duracionEnMinutos }} {{ t.minutos }}</dd>
+              </div>
               <div class="dato">
                 <dt>{{ h.campoUbicacion }}</dt>
                 <dd>{{ r.ubicacion || h.sinUbicacion }}</dd>

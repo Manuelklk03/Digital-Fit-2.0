@@ -15,15 +15,46 @@
   gap: 32px;
 }
 
-.pie-marca { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
-.pie-marca p { margin: 0; max-width: 34ch; font-size: 14px; line-height: 1.6; }
+.pie-marca {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+.pie-marca p {
+  margin: 0;
+  max-width: 34ch;
+  font-size: 14px;
+  line-height: 1.6;
+}
 
 /* El PNG es un lienzo cuadrado de 500 px con el rótulo en la franja central: se recorta a esa franja. */
-.pie-logo { display: inline-flex; border-radius: var(--df-radius-sm); }
-.pie-logo img { display: block; height: 34px; width: 136px; object-fit: cover; object-position: 0 50%; }
+.pie-logo {
+  display: inline-flex;
+  border-radius: var(--df-radius-sm);
+}
+.pie-logo img {
+  display: block;
+  height: 34px;
+  width: 136px;
+  object-fit: cover;
+  object-position: 0 50%;
+}
 
-.pie-columna ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-.pie-titulo { margin: 0 0 10px; font-size: 13px; font-weight: 700; color: var(--df-text); }
+.pie-columna ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pie-titulo {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--df-text);
+}
 
 .pie a {
   display: inline-block;
@@ -35,10 +66,19 @@
   transition: color var(--df-transition-fast);
 }
 
-.pie a:hover { color: var(--df-text); text-decoration: underline; text-underline-offset: 3px; }
-.pie a:focus-visible { outline: 2px solid var(--df-border-focus); outline-offset: 2px; }
+.pie a:hover {
+  color: var(--df-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pie a:focus-visible {
+  outline: 2px solid var(--df-border-focus);
+  outline-offset: 2px;
+}
 
-.pie-base { border-top: 1px solid var(--df-border); }
+.pie-base {
+  border-top: 1px solid var(--df-border);
+}
 .pie-base small {
   display: block;
   max-width: 1320px;
@@ -49,8 +89,20 @@
 }
 
 @media (max-width: 700px) {
-  .pie-contenido { grid-template-columns: 1fr 1fr; padding: 24px 16px; gap: 24px; }
-  .pie-marca { grid-column: 1 / -1; }
-  .pie-base small { padding: 16px; }
-  .pie a { min-height: 44px; display: inline-flex; align-items: center; }
+  .pie-contenido {
+    grid-template-columns: 1fr 1fr;
+    padding: 24px 16px;
+    gap: 24px;
+  }
+  .pie-marca {
+    grid-column: 1 / -1;
+  }
+  .pie-base small {
+    padding: 16px;
+  }
+  .pie a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
 }

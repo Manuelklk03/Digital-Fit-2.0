@@ -1,5 +1,12 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
-import { NavigationCancel, NavigationCancellationCode, NavigationEnd, NavigationError, Router, RouterOutlet } from '@angular/router';
+import {
+  NavigationCancel,
+  NavigationCancellationCode,
+  NavigationEnd,
+  NavigationError,
+  Router,
+  RouterOutlet,
+} from '@angular/router';
 import { filter, take } from 'rxjs';
 import { SkeletonComponent } from './components/ui';
 import { I18nService } from './i18n/i18n.service';
@@ -20,9 +27,14 @@ export class App {
 
   constructor() {
     inject(SeoService); // empieza a aplicar título, descripción y robots por ruta
-    inject(Router).events
-      .pipe(
-        filter((e) => e instanceof NavigationEnd || e instanceof NavigationError || (e instanceof NavigationCancel && !seguiraOtraNavegacion(e))),
+    inject(Router)
+      .events.pipe(
+        filter(
+          (e) =>
+            e instanceof NavigationEnd ||
+            e instanceof NavigationError ||
+            (e instanceof NavigationCancel && !seguiraOtraNavegacion(e)),
+        ),
         take(1),
       )
       .subscribe(() => this.primeraCarga.set(false));

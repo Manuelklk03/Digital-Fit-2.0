@@ -32,7 +32,9 @@ describe('Footer', () => {
   });
 
   it('enlaza a las pantallas principales, al código y a la licencia del mapa', () => {
-    const hrefs = Array.from<HTMLAnchorElement>(fixture.nativeElement.querySelectorAll('a')).map((a) => a.getAttribute('href'));
+    const hrefs = Array.from<HTMLAnchorElement>(fixture.nativeElement.querySelectorAll('a')).map(
+      (a) => a.getAttribute('href'),
+    );
 
     expect(hrefs).toEqual(expect.arrayContaining(['/inicio', '/explorar', '/entrenar']));
     expect(hrefs).toContain('https://github.com/Manuelklk03/Digital-Fit-2.0');
