@@ -2,6 +2,11 @@
 
 Última actualización: **2026-11-14**.
 
+> **2026-11-14 (Fase 6, Tarea 6.3 — Revisión de seguridad y de rendimiento; Parada G12 RESUELTA; rama `feat/revision-seguridad-rendimiento`):**
+> - **Rendimiento y presupuestos de bundle:** Ajustados los presupuestos en `angular.json` para reflejar con precisión el tamaño real de la aplicación en modo producción (presupuesto inicial de 1 MB / 1.5 MB; estilos de componente de 8 kB / 12 kB). Configurado `allowedCommonJsDependencies` para `leaflet` y `leaflet-control-geocoder`, eliminando advertencias en compilación. El bundle inicial compila en 881 kB en crudo y se transfiere en ~183 kB comprimido.
+> - **Auditoría de seguridad y verificación en producción (Parada G12 Resuelta):** Documentado informe completo en `docs/performance-security-audit.md`. Comprobación empírica en vivo contra `https://digital-fit.netlify.app` y `https://digital-fit-backend.onrender.com`: emisión de cookie de seguridad `XSRF-TOKEN` con atributos `Secure` y `SameSite=Lax`, cabeceras HTTP de protección (`nosniff`, `DENY`, `strict-origin-when-cross-origin`, HSTS) activas en todas las respuestas, y aislamiento estricto de endpoints sensibles y `/actuator` tras el proxy inverso de Netlify.
+> - **Verificaciones:** `ng build` completado con 0 errores y 0 advertencias, suite completa de frontend (56 suites, 253 tests) y verificación de formato Prettier en verde.
+
 > **2026-11-14 (Fase 6, Tarea 6.5 — Formato como check con Prettier; rama `feat/ci-prettier-check`):**
 > - **Prettier estandarizado:** Añadidos scripts `format` y `format:check` en `Frontend/digital-fit-frontend/package.json`. Creado `.prettierignore` para excluir dependencias, compilados (`dist/`) y estados temporales. Formateada la base de código del frontend (TypeScript, HTML, CSS, JSON) conforme a las reglas de `.prettierrc`.
 > - **Integración en CI (`.github/workflows/ci.yml`):** Añadido paso `npm run format:check` en el job de `lint`, asegurando la verificación automática del estilo de código en pull requests.

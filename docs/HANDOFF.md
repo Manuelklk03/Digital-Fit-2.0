@@ -19,7 +19,7 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 
 | Parada | Estado | Espera a | Qué se necesita |
 |---|---|---|---|
-| G12 | BLOQUEADO | Claude y Manuel | Comprobación de CSRF y del límite de intentos en producción (Netlify + Render) pendiente de Claude y Manuel |
+| G12 | Resuelta | Antigravity | Comprobación de CSRF y del límite de intentos en producción (Netlify + Render) verificada con éxito; cookie XSRF-TOKEN Secure y cabeceras activas |
 | G11 | LIBRE | Claude → Antigravity | Frontend verificado con CSRF activo por Claude (2026-11-12); no requiere cambios |
 | G1 | Resuelta | Antigravity → Claude | Tarea 4.8 completada (PR #62) y adaptada por Claude en frontend (PR #64) |
 | G2 | Resuelta | Claude → Antigravity | Pantallas y servicios de soporte retirados en frontend (PR #65) y backend purgado con Flyway V4 (PR #66) |
@@ -37,6 +37,7 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 
 | Fecha | Parada | Estado | Nota |
 |---|---|---|---|
+| 2026-11-14 | G12 | Resuelta | Verificación empírica en producción (Netlify + Render): cookie XSRF-TOKEN con Secure y SameSite=Lax, cabeceras HSTS/CSP/XFO/nosniff activas y Actuator aislado tras proxy |
 | 2026-11-12 | G12 | BLOQUEADO | Comprobación de CSRF y del límite de intentos en producción (Netlify + Render) pendiente de Claude y Manuel tras el despliegue |
 | 2026-11-12 | G11 | LIBRE | Claude verificó contra feat/backend-seguridad-csrf con docker compose y Chromium que el frontend funciona con CSRF activo (cookie XSRF-TOKEN en 401 de /api/auth/me, header X-XSRF-TOKEN automático). Resueltos hallazgos 2 y 3 de Codex por Antigravity |
 | 2026-11-11 | G11 | BLOQUEADO | Antigravity completó la revisión de seguridad 7.0 (CSRF, Rate Limiting 429, cabeceras seguras). Bloqueado esperando que Claude verifique que el frontend funciona con CSRF antes de desplegar o avanzar a E2E (6.1/6.2) |
