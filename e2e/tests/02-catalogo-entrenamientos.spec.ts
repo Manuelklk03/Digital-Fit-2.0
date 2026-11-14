@@ -8,7 +8,7 @@ test.describe('Catálogo y Mis Entrenamientos', () => {
 
     // 2. Navegar al catálogo de entrenamientos base
     await page.goto('/entrenamientos');
-    await expect(page.getByRole('heading', { name: 'Entrenamientos base' })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('heading', { name: 'Entrenamientos base', level: 1 })).toBeVisible({ timeout: 10000 });
 
     // 3. Verificar que existen tarjetas de entrenamiento en el catálogo
     const primerBotonAnadir = page.getByRole('button', { name: 'Añadir a mis entrenamientos' }).first();
@@ -21,7 +21,7 @@ test.describe('Catálogo y Mis Entrenamientos', () => {
     // 5. Navegar a Mis Entrenamientos a través del enlace de navegación
     await page.getByRole('link', { name: 'Mis entrenamientos' }).click();
     await expect(page).toHaveURL(/.*\/mis-entrenamientos/, { timeout: 10000 });
-    await expect(page.getByRole('heading', { name: 'Mis entrenamientos' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Mis entrenamientos', level: 1 })).toBeVisible();
 
     // 6. Verificar que aparece al menos un botón de borrar en mis entrenamientos
     const primerBotonBorrar = page.getByRole('button', { name: 'Borrar' }).first();
