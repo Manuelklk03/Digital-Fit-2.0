@@ -46,7 +46,15 @@ describe('MapaSelector', () => {
 
     const req = httpTesting.expectOne(geocodificar);
     expect(req.request.params.get('q')).toContain('Calle Colon, Valencia');
-    req.flush([{ nombre: 'Calle Colón', direccionCompleta: '', latitud: 39.4699, longitud: -0.3763, tipo: 'road' }]);
+    req.flush([
+      {
+        nombre: 'Calle Colón',
+        direccionCompleta: '',
+        latitud: 39.4699,
+        longitud: -0.3763,
+        tipo: 'road',
+      },
+    ]);
 
     expect(component.buscando()).toBe(false);
     expect(emitSpy).toHaveBeenCalledWith({ latitud: 39.4699, longitud: -0.3763 });
@@ -56,7 +64,11 @@ describe('MapaSelector', () => {
     component.textoBusqueda = 'Madrid';
     component.buscarDireccion();
     for (let i = 0; i < 5; i++) {
-      httpTesting.expectOne(geocodificar).flush([{ nombre: 'Madrid', direccionCompleta: '', latitud: 40.41, longitud: -3.7, tipo: 'city' }]);
+      httpTesting
+        .expectOne(geocodificar)
+        .flush([
+          { nombre: 'Madrid', direccionCompleta: '', latitud: 40.41, longitud: -3.7, tipo: 'city' },
+        ]);
       vi.advanceTimersByTime(1200);
     }
     expect(component.buscando()).toBe(false);

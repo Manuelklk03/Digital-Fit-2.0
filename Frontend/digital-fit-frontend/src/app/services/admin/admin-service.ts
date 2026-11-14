@@ -10,22 +10,17 @@ export interface CrearAdmin {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminService {
-
   private readonly http = inject(HttpClient);
   private readonly apiUrl = '/api/admin';
 
   /** El backend responde con un texto plano de confirmación. */
   crearAdmin(admin: CrearAdmin): Observable<string> {
-    return this.http.post(
-      `${this.apiUrl}/crear-admin`,
-      admin,
-      {
-        withCredentials: true,
-        responseType: 'text'
-      }
-    );
+    return this.http.post(`${this.apiUrl}/crear-admin`, admin, {
+      withCredentials: true,
+      responseType: 'text',
+    });
   }
 }

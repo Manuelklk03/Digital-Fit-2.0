@@ -2,9 +2,21 @@
 <app-header />
 
 <main class="pagina" id="contenido-principal">
-  <app-encabezado-pagina [badge]="t.mis.badge" [titulo]="t.mis.titulo" [subtitulo]="t.mis.subtitulo">
+  <app-encabezado-pagina
+    [badge]="t.mis.badge"
+    [titulo]="t.mis.titulo"
+    [subtitulo]="t.mis.subtitulo"
+  >
     @if (!formAbierto()) {
-      <button id="boton-nuevo" df-button variant="primary" type="button" (click)="formAbierto.set(true)">{{ t.nuevo }}</button>
+      <button
+        id="boton-nuevo"
+        df-button
+        variant="primary"
+        type="button"
+        (click)="formAbierto.set(true)"
+      >
+        {{ t.nuevo }}
+      </button>
     }
   </app-encabezado-pagina>
 
@@ -19,7 +31,8 @@
       [textoEnviar]="t.crear"
       [guardando]="guardando()"
       (guardar)="crear($event)"
-      (cancelar)="cerrarFormulario()" />
+      (cancelar)="cerrarFormulario()"
+    />
   }
 
   <section class="listado" aria-labelledby="titulo-listado">
@@ -33,15 +46,30 @@
       </p>
     </div>
 
-    <app-estado-listado [listado]="listado" [vacio]="hayFiltro() ? t.vacioFiltro : t.mis.vacio" [esqueletos]="[1, 2, 3]">
+    <app-estado-listado
+      [listado]="listado"
+      [vacio]="hayFiltro() ? t.vacioFiltro : t.mis.vacio"
+      [esqueletos]="[1, 2, 3]"
+    >
       @if (!hayFiltro()) {
-        <a vacio df-button variant="outline" size="sm" routerLink="/entrenamientos">{{ t.mis.irCatalogo }}</a>
+        <a vacio df-button variant="outline" size="sm" routerLink="/entrenamientos">{{
+          t.mis.irCatalogo
+        }}</a>
       }
       <div class="rejilla" [attr.aria-busy]="listado.recargando()">
         @for (e of listado.items(); track e.id) {
           <app-tarjeta-entrenamiento [entrenamiento]="e" [ruta]="['/mis-entrenamientos', e.id]">
-            <button df-button variant="danger" size="sm" type="button"
-              [loading]="ocupado() === e.id" [disabled]="ocupado() === e.id" (click)="borrar(e)">{{ t.borrar }}</button>
+            <button
+              df-button
+              variant="danger"
+              size="sm"
+              type="button"
+              [loading]="ocupado() === e.id"
+              [disabled]="ocupado() === e.id"
+              (click)="borrar(e)"
+            >
+              {{ t.borrar }}
+            </button>
           </app-tarjeta-entrenamiento>
         }
       </div>

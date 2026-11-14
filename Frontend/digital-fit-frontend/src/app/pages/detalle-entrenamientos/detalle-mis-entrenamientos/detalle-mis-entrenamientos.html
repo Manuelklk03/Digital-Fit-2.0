@@ -2,19 +2,42 @@
 <app-header />
 
 <main class="pagina" id="contenido-principal">
-  <app-detalle-vista volver="/mis-entrenamientos" [badge]="t.mis.badge" [estado]="detalle.estado()"
-    [entrenamiento]="detalle.item()" (reintentar)="detalle.cargar()">
+  <app-detalle-vista
+    volver="/mis-entrenamientos"
+    [badge]="t.mis.badge"
+    [estado]="detalle.estado()"
+    [entrenamiento]="detalle.item()"
+    (reintentar)="detalle.cargar()"
+  >
     @if (aviso.actual(); as a) {
       <app-alert [tipo]="a.tipo" (cerrar)="aviso.cerrar()">{{ a.texto }}</app-alert>
     }
     @if (detalle.item(); as e) {
-      <button df-button variant="primary" type="button" [loading]="guardandoHistorial()"
-        [disabled]="guardandoHistorial()" (click)="marcarComoRealizado(e)">{{ t.mis.marcarRealizado }}</button>
+      <button
+        df-button
+        variant="primary"
+        type="button"
+        [loading]="guardandoHistorial()"
+        [disabled]="guardandoHistorial()"
+        (click)="marcarComoRealizado(e)"
+      >
+        {{ t.mis.marcarRealizado }}
+      </button>
       @if (realizado()) {
-        <a df-button variant="outline" routerLink="/historial-entrenamientos">{{ t.mis.verHistorial }}</a>
+        <a df-button variant="outline" routerLink="/historial-entrenamientos">{{
+          t.mis.verHistorial
+        }}</a>
       }
-      <button df-button variant="danger" type="button" [loading]="borrando()" [disabled]="borrando()"
-        (click)="borrar(e)">{{ t.borrar }}</button>
+      <button
+        df-button
+        variant="danger"
+        type="button"
+        [loading]="borrando()"
+        [disabled]="borrando()"
+        (click)="borrar(e)"
+      >
+        {{ t.borrar }}
+      </button>
     }
   </app-detalle-vista>
 </main>

@@ -2,9 +2,21 @@
 <app-header />
 
 <main class="pagina" id="contenido-principal">
-  <app-encabezado-pagina [badge]="t.comunidad.badge" [titulo]="t.comunidad.titulo" [subtitulo]="t.comunidad.subtitulo">
+  <app-encabezado-pagina
+    [badge]="t.comunidad.badge"
+    [titulo]="t.comunidad.titulo"
+    [subtitulo]="t.comunidad.subtitulo"
+  >
     @if (enEdicion() === undefined) {
-      <button id="boton-nuevo" df-button variant="primary" type="button" (click)="enEdicion.set(null)">{{ t.comunidad.formCrear }}</button>
+      <button
+        id="boton-nuevo"
+        df-button
+        variant="primary"
+        type="button"
+        (click)="enEdicion.set(null)"
+      >
+        {{ t.comunidad.formCrear }}
+      </button>
     }
   </app-encabezado-pagina>
 
@@ -20,7 +32,8 @@
       [inicial]="enEdicion() ?? null"
       [guardando]="guardando()"
       (guardar)="guardar($event)"
-      (cancelar)="cerrarFormulario()" />
+      (cancelar)="cerrarFormulario()"
+    />
   }
 
   <section class="listado" aria-labelledby="titulo-listado">
@@ -34,24 +47,59 @@
       </p>
     </div>
 
-    <app-estado-listado [listado]="listado" [vacio]="hayFiltro() ? t.vacioFiltro : t.comunidad.vacio">
+    <app-estado-listado
+      [listado]="listado"
+      [vacio]="hayFiltro() ? t.vacioFiltro : t.comunidad.vacio"
+    >
       <div class="rejilla" [attr.aria-busy]="listado.recargando()">
         @for (e of listado.items(); track e.id) {
-          <app-tarjeta-entrenamiento [entrenamiento]="e" [ruta]="['/entrenamientos-comunidad', e.id]">
+          <app-tarjeta-entrenamiento
+            [entrenamiento]="e"
+            [ruta]="['/entrenamientos-comunidad', e.id]"
+          >
             @if (esMio(e)) {
               <span chip df-badge variant="accent">{{ t.comunidad.tuyo }}</span>
             }
             <dl meta class="meta">
-              <dt>{{ t.comunidad.autor }}</dt><dd>{{ e.usuario }}</dd>
-              <dt>{{ t.comunidad.publicado }}</dt><dd>{{ fecha(e) }}</dd>
+              <dt>{{ t.comunidad.autor }}</dt>
+              <dd>{{ e.usuario }}</dd>
+              <dt>{{ t.comunidad.publicado }}</dt>
+              <dd>{{ fecha(e) }}</dd>
             </dl>
             @if (esMio(e)) {
-              <button df-button variant="outline" size="sm" type="button" [disabled]="guardando()" (click)="enEdicion.set(e)">{{ t.editar }}</button>
-              <button df-button variant="danger" size="sm" type="button"
-                [loading]="ocupado() === e.id" [disabled]="ocupado() === e.id" (click)="borrar(e)">{{ t.borrar }}</button>
+              <button
+                df-button
+                variant="outline"
+                size="sm"
+                type="button"
+                [disabled]="guardando()"
+                (click)="enEdicion.set(e)"
+              >
+                {{ t.editar }}
+              </button>
+              <button
+                df-button
+                variant="danger"
+                size="sm"
+                type="button"
+                [loading]="ocupado() === e.id"
+                [disabled]="ocupado() === e.id"
+                (click)="borrar(e)"
+              >
+                {{ t.borrar }}
+              </button>
             } @else {
-              <button df-button variant="secondary" size="sm" type="button"
-                [loading]="ocupado() === e.id" [disabled]="ocupado() === e.id" (click)="anadir(e)">{{ t.anadirAMis }}</button>
+              <button
+                df-button
+                variant="secondary"
+                size="sm"
+                type="button"
+                [loading]="ocupado() === e.id"
+                [disabled]="ocupado() === e.id"
+                (click)="anadir(e)"
+              >
+                {{ t.anadirAMis }}
+              </button>
             }
           </app-tarjeta-entrenamiento>
         }

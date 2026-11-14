@@ -83,16 +83,17 @@ export const entrenamientosCa: DiccionarioEntrenamientos = {
   catalogo: {
     badge: 'CATÀLEG BASE',
     titulo: 'Entrenaments base',
-    subtitulo: 'Rutines de referència de Digital-Fit. Filtra-les i afig a la teua llista les que vulgues seguir.',
+    subtitulo:
+      'Rutines de referència de Digital-Fit. Filtra-les i afig a la teua llista les que vulgues seguir.',
     vacio: 'Encara no hi ha entrenaments base.',
     formCrear: 'Entrenament base nou',
-    formEditar: 'Edita l\'entrenament base',
+    formEditar: "Edita l'entrenament base",
   },
   mis: {
     badge: 'ZONA PERSONAL',
     titulo: 'Els meus entrenaments',
     subtitulo: 'Les rutines que crees i les que copies del catàleg o de la comunitat.',
-    vacio: 'Encara no tens entrenaments. Crea\'n un o afig-lo des del catàleg.',
+    vacio: "Encara no tens entrenaments. Crea'n un o afig-lo des del catàleg.",
     irCatalogo: 'Ves al catàleg',
     formCrear: 'Entrenament personalitzat nou',
     marcarRealizado: 'Marca com a fet ara',
@@ -103,7 +104,8 @@ export const entrenamientosCa: DiccionarioEntrenamientos = {
   comunidad: {
     badge: 'COMUNITAT',
     titulo: 'Entrenaments de la comunitat',
-    subtitulo: "Rutines publicades pels usuaris. Publica les teues o copia les d'altres a la teua llista.",
+    subtitulo:
+      "Rutines publicades pels usuaris. Publica les teues o copia les d'altres a la teua llista.",
     vacio: 'Encara ningú ha publicat entrenaments.',
     formCrear: 'Publica un entrenament',
     formEditar: 'Edita la publicació',

@@ -5,7 +5,15 @@
 <main class="pagina" id="contenido-principal">
   <app-encabezado-pagina [badge]="h.badge" [titulo]="h.titulo" [subtitulo]="h.subtitulo">
     @if (!formAbierto()) {
-      <button id="boton-nuevo" df-button variant="primary" type="button" (click)="abrirFormulario()">{{ h.formCrear }}</button>
+      <button
+        id="boton-nuevo"
+        df-button
+        variant="primary"
+        type="button"
+        (click)="abrirFormulario()"
+      >
+        {{ h.formCrear }}
+      </button>
     }
   </app-encabezado-pagina>
 
@@ -15,31 +23,56 @@
 
   @if (formAbierto()) {
     <app-card>
-      <form class="formulario" (ngSubmit)="crearRegistro()" novalidate aria-labelledby="titulo-registro">
+      <form
+        class="formulario"
+        (ngSubmit)="crearRegistro()"
+        novalidate
+        aria-labelledby="titulo-registro"
+      >
         <h2 id="titulo-registro" class="titulo-form" tabindex="-1">{{ h.formCrear }}</h2>
 
         @if (opciones(); as o) {
           @if (errorOpciones()) {
             <div class="aviso-opciones" role="alert">
               <p>{{ t.errorCarga }}</p>
-              <button df-button variant="outline" size="sm" type="button" (click)="cargarOpciones()">{{ t.reintentar }}</button>
+              <button
+                df-button
+                variant="outline"
+                size="sm"
+                type="button"
+                (click)="cargarOpciones()"
+              >
+                {{ t.reintentar }}
+              </button>
             </div>
           }
           <div class="rejilla-form">
             <div class="campo">
               <label for="reg-entrenamiento">{{ h.campoEntrenamiento }}</label>
-              <select df-input id="reg-entrenamiento" name="entrenamiento" [(ngModel)]="entrenamientoSeleccionado"
-                [error]="errores().includes('entrenamiento')" [attr.aria-invalid]="errores().includes('entrenamiento')"
-                [attr.aria-describedby]="errores().includes('entrenamiento') ? 'reg-e-entrenamiento' : null">
+              <select
+                df-input
+                id="reg-entrenamiento"
+                name="entrenamiento"
+                [(ngModel)]="entrenamientoSeleccionado"
+                [error]="errores().includes('entrenamiento')"
+                [attr.aria-invalid]="errores().includes('entrenamiento')"
+                [attr.aria-describedby]="
+                  errores().includes('entrenamiento') ? 'reg-e-entrenamiento' : null
+                "
+              >
                 <option value="">{{ h.seleccionaEntrenamiento }}</option>
                 <optgroup [label]="h.grupoBase">
                   @for (e of o.base; track e.id) {
-                    <option [value]="'BASE-' + e.id">{{ e.nombre }} · {{ e.duracionEnMinutos }} {{ t.minutos }}</option>
+                    <option [value]="'BASE-' + e.id">
+                      {{ e.nombre }} · {{ e.duracionEnMinutos }} {{ t.minutos }}
+                    </option>
                   }
                 </optgroup>
                 <optgroup [label]="h.grupoMios">
                   @for (e of o.mios; track e.id) {
-                    <option [value]="'MIS-' + e.id">{{ e.nombre }} · {{ e.duracionEnMinutos }} {{ t.minutos }}</option>
+                    <option [value]="'MIS-' + e.id">
+                      {{ e.nombre }} · {{ e.duracionEnMinutos }} {{ t.minutos }}
+                    </option>
                   }
                 </optgroup>
               </select>
@@ -50,7 +83,12 @@
 
             <div class="campo">
               <label for="reg-ubicacion">{{ h.campoUbicacion }}</label>
-              <select df-input id="reg-ubicacion" name="ubicacion" [(ngModel)]="ubicacionSeleccionada">
+              <select
+                df-input
+                id="reg-ubicacion"
+                name="ubicacion"
+                [(ngModel)]="ubicacionSeleccionada"
+              >
                 <option value="">{{ h.sinUbicacion }}</option>
                 <optgroup [label]="h.grupoLugaresBase">
                   @for (l of o.lugaresBase; track l.id) {
@@ -77,9 +115,17 @@
 
             <div class="campo">
               <label for="reg-fecha">{{ h.campoFecha }}</label>
-              <input df-input id="reg-fecha" name="fecha" type="datetime-local" required [(ngModel)]="fecha"
-                [error]="errores().includes('fecha')" [attr.aria-invalid]="errores().includes('fecha')"
-                [attr.aria-describedby]="errores().includes('fecha') ? 'reg-e-fecha' : null" />
+              <input
+                df-input
+                id="reg-fecha"
+                name="fecha"
+                type="datetime-local"
+                required
+                [(ngModel)]="fecha"
+                [error]="errores().includes('fecha')"
+                [attr.aria-invalid]="errores().includes('fecha')"
+                [attr.aria-describedby]="errores().includes('fecha') ? 'reg-e-fecha' : null"
+              />
               @if (errores().includes('fecha')) {
                 <p class="error" id="reg-e-fecha">{{ h.errorFecha }}</p>
               }
@@ -87,10 +133,19 @@
 
             <div class="campo">
               <label for="reg-duracion">{{ t.campoDuracion }}</label>
-              <input df-input id="reg-duracion" name="duracion" type="number" min="1" inputmode="numeric" required
-                [(ngModel)]="duracionEnMinutos" [error]="errores().includes('duracion')"
+              <input
+                df-input
+                id="reg-duracion"
+                name="duracion"
+                type="number"
+                min="1"
+                inputmode="numeric"
+                required
+                [(ngModel)]="duracionEnMinutos"
+                [error]="errores().includes('duracion')"
                 [attr.aria-invalid]="errores().includes('duracion')"
-                [attr.aria-describedby]="errores().includes('duracion') ? 'reg-e-duracion' : null" />
+                [attr.aria-describedby]="errores().includes('duracion') ? 'reg-e-duracion' : null"
+              />
               @if (errores().includes('duracion')) {
                 <p class="error" id="reg-e-duracion">{{ t.errorDuracion }}</p>
               }
@@ -98,16 +153,31 @@
 
             <div class="campo campo-completo">
               <label for="reg-notas">{{ h.campoNotas }}</label>
-              <textarea df-input id="reg-notas" name="notas" rows="3" maxlength="1500" [(ngModel)]="notas"
-                [placeholder]="h.notasPlaceholder"></textarea>
+              <textarea
+                df-input
+                id="reg-notas"
+                name="notas"
+                rows="3"
+                maxlength="1500"
+                [(ngModel)]="notas"
+                [placeholder]="h.notasPlaceholder"
+              ></textarea>
             </div>
           </div>
 
           <div class="acciones">
-            <button df-button variant="primary" type="submit" [loading]="guardando()" [disabled]="guardando()">
+            <button
+              df-button
+              variant="primary"
+              type="submit"
+              [loading]="guardando()"
+              [disabled]="guardando()"
+            >
               {{ guardando() ? t.guardando : h.guardarRegistro }}
             </button>
-            <button df-button variant="ghost" type="button" (click)="cerrarFormulario()">{{ t.cerrarFormulario }}</button>
+            <button df-button variant="ghost" type="button" (click)="cerrarFormulario()">
+              {{ t.cerrarFormulario }}
+            </button>
           </div>
         } @else {
           <p class="cargando-form" role="status">{{ i18n.t().comun.cargando }}</p>
@@ -122,10 +192,20 @@
       <form class="busqueda" role="search" (ngSubmit)="buscar()">
         <label for="historial-busqueda">{{ h.buscarEtiqueta }}</label>
         <div class="busqueda-fila">
-          <input df-input size="sm" id="historial-busqueda" name="busqueda" type="search" autocomplete="off"
-            [(ngModel)]="busqueda" [placeholder]="h.buscarPlaceholder" />
+          <input
+            df-input
+            size="sm"
+            id="historial-busqueda"
+            name="busqueda"
+            type="search"
+            autocomplete="off"
+            [(ngModel)]="busqueda"
+            [placeholder]="h.buscarPlaceholder"
+          />
           <button df-button variant="primary" size="sm" type="submit">{{ t.botonBuscar }}</button>
-          <button df-button variant="ghost" size="sm" type="button" (click)="limpiarBusqueda()">{{ t.botonLimpiar }}</button>
+          <button df-button variant="ghost" size="sm" type="button" (click)="limpiarBusqueda()">
+            {{ t.botonLimpiar }}
+          </button>
         </div>
       </form>
       <p class="total" aria-live="polite">
@@ -135,12 +215,19 @@
       </p>
     </div>
 
-    <app-estado-listado [listado]="listado" [vacio]="hayBusqueda() ? h.vacioBusqueda : h.vacio" [fila]="true" [esqueletos]="[1, 2, 3]">
+    <app-estado-listado
+      [listado]="listado"
+      [vacio]="hayBusqueda() ? h.vacioBusqueda : h.vacio"
+      [fila]="true"
+      [esqueletos]="[1, 2, 3]"
+    >
       <ol class="lista" [attr.aria-busy]="listado.recargando()">
         @for (r of listado.items(); track r.id) {
           <li class="registro">
             <div class="registro-fecha">
-              <time class="num" [attr.datetime]="r.fecha.replace(' ', 'T')">{{ fechaRegistro(r) }}</time>
+              <time class="num" [attr.datetime]="r.fecha.replace(' ', 'T')">{{
+                fechaRegistro(r)
+              }}</time>
             </div>
             <div class="registro-cuerpo">
               <div class="chips">
@@ -149,13 +236,24 @@
                   <span df-badge>{{ h.tiposUbicacion[r.tipoUbicacion] }}</span>
                 }
               </div>
-              <h3><a [routerLink]="['/historial-entrenamientos', r.id]">{{ r.entrenamiento }}</a></h3>
+              <h3>
+                <a [routerLink]="['/historial-entrenamientos', r.id]">{{ r.entrenamiento }}</a>
+              </h3>
               <p class="registro-sub">{{ r.ubicacion || h.sinUbicacion }}</p>
             </div>
             <div class="registro-lado">
               <span class="duracion num">{{ r.duracionEnMinutos }} {{ t.minutos }}</span>
-              <button df-button variant="danger" size="sm" type="button"
-                [loading]="ocupado() === r.id" [disabled]="ocupado() === r.id" (click)="borrarRegistro(r)">{{ t.borrar }}</button>
+              <button
+                df-button
+                variant="danger"
+                size="sm"
+                type="button"
+                [loading]="ocupado() === r.id"
+                [disabled]="ocupado() === r.id"
+                (click)="borrarRegistro(r)"
+              >
+                {{ t.borrar }}
+              </button>
             </div>
           </li>
         }

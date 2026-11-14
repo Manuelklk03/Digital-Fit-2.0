@@ -11,7 +11,11 @@ describe('publicGuard', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideRouter([{ path: 'inicio', children: [] }]), provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideRouter([{ path: 'inicio', children: [] }]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ],
     });
     http = TestBed.inject(HttpTestingController);
   });

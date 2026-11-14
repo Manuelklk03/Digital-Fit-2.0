@@ -4,16 +4,15 @@ import { Observable } from 'rxjs';
 import { EstadisticaUsuario } from '../../models/progreso';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EstadisticasService {
-
   private readonly http = inject(HttpClient);
   private readonly apiUrl = '/api/estadisticas';
 
   getEstadisticas(): Observable<EstadisticaUsuario> {
     return this.http.get<EstadisticaUsuario>(this.apiUrl, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 }

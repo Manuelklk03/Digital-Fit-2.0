@@ -29,7 +29,9 @@ import { PaginadorComponent } from './paginador';
       @case ('error') {
         <div class="estado estado-error" role="alert">
           <p>{{ t.errorCarga }}</p>
-          <button df-button variant="outline" size="sm" type="button" (click)="l.recargar()">{{ t.reintentar }}</button>
+          <button df-button variant="outline" size="sm" type="button" (click)="l.recargar()">
+            {{ t.reintentar }}
+          </button>
         </div>
       }
       @default {
@@ -40,7 +42,11 @@ import { PaginadorComponent } from './paginador';
           </div>
         } @else {
           <ng-content />
-          <app-paginador [pagina]="l.pagina()!.page" [totalPaginas]="l.pagina()!.totalPages" (cambiar)="l.cargar($event)" />
+          <app-paginador
+            [pagina]="l.pagina()!.page"
+            [totalPaginas]="l.pagina()!.totalPages"
+            (cambiar)="l.cargar($event)"
+          />
         }
       }
     }

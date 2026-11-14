@@ -1,9 +1,22 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Injector, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  Injector,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { AlertComponent, ButtonComponent } from '../../components/ui';
 import { I18nService } from '../../i18n/i18n.service';
-import { EntrenamientoBase, EntrenamientoForm, FiltroEntrenamiento, UsuarioSesion } from '../../models/entrenamiento';
+import {
+  EntrenamientoBase,
+  EntrenamientoForm,
+  FiltroEntrenamiento,
+  UsuarioSesion,
+} from '../../models/entrenamiento';
 import { EntrenamientosService } from '../../services/entrenamientos/entrenamientos-service';
 import { MisEntrenamientosService } from '../../services/entrenamientos/mis-entrenamientos-service';
 import { AdminEntrenamientosBaseService } from '../../services/admin/admin-entrenamiento-base';

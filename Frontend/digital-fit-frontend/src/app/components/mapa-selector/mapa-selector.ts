@@ -119,7 +119,9 @@ export class MapaSelectorComponent implements AfterViewInit, OnDestroy {
       noWrap: true,
     }).addTo(map);
 
-    map.on('dragend zoomend', () => map.panInsideBounds(LIMITES_COMUNIDAD_VALENCIANA, { animate: false }));
+    map.on('dragend zoomend', () =>
+      map.panInsideBounds(LIMITES_COMUNIDAD_VALENCIANA, { animate: false }),
+    );
 
     if (tieneUbicacion) {
       this.colocarMarker(centro[0], centro[1]);
@@ -179,7 +181,8 @@ export class MapaSelectorComponent implements AfterViewInit, OnDestroy {
       this.mensaje.set(this.i18n.t().lugares.mapa.noEncontrado);
       return;
     }
-    const siguiente = () => this.esperar(PAUSA_CONSULTA_MS, () => this.buscarConFallback(consultas, indice + 1));
+    const siguiente = () =>
+      this.esperar(PAUSA_CONSULTA_MS, () => this.buscarConFallback(consultas, indice + 1));
     const params = new HttpParams().set('q', consultas[indice]);
     this.busqueda = this.http
       .get<ResultadoGeocodificacion[]>('/api/explorar/geocodificar', { params })
@@ -229,7 +232,10 @@ export class MapaSelectorComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  private coordenadasValidas(latitud: number | null | undefined, longitud: number | null | undefined): boolean {
+  private coordenadasValidas(
+    latitud: number | null | undefined,
+    longitud: number | null | undefined,
+  ): boolean {
     if (latitud == null || longitud == null) {
       return false;
     }

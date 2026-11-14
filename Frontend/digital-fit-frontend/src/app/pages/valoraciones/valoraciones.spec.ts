@@ -7,11 +7,30 @@ import { vi } from 'vitest';
 import { ValoracionesComponent } from './valoraciones';
 import { Valoracion } from '../../models/progreso';
 
-const pagina = <T>(items: T[]) => ({ content: items, page: 0, size: 12, totalElements: items.length, totalPages: 1 });
-const lista = <T>(items: T[]) => ({ content: items, page: 0, size: 100, totalElements: items.length, totalPages: 1 });
+const pagina = <T>(items: T[]) => ({
+  content: items,
+  page: 0,
+  size: 12,
+  totalElements: items.length,
+  totalPages: 1,
+});
+const lista = <T>(items: T[]) => ({
+  content: items,
+  page: 0,
+  size: 100,
+  totalElements: items.length,
+  totalPages: 1,
+});
 const MIA: Valoracion = {
-  id: 7, puntuacion: 4, comentario: 'Buen gimnasio', fecha: '2026-11-09 10:00:00', tipoDeValoracion: 'CENTRO_PRIVADO_BASE',
-  contenidoId: 3, contenidoNombre: 'AltaFit', usuarioId: 1, username: 'usuario1',
+  id: 7,
+  puntuacion: 4,
+  comentario: 'Buen gimnasio',
+  fecha: '2026-11-09 10:00:00',
+  tipoDeValoracion: 'CENTRO_PRIVADO_BASE',
+  contenidoId: 3,
+  contenidoNombre: 'AltaFit',
+  usuarioId: 1,
+  username: 'usuario1',
 };
 const AJENA: Valoracion = { ...MIA, id: 8, username: 'otra', comentario: null };
 
@@ -32,7 +51,9 @@ describe('ValoracionesComponent', () => {
     component = fixture.componentInstance;
     http = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
-    http.match('/api/auth/me').forEach((r) => r.flush({ username: 'usuario1', email: 'u@u.es', rol: 'USER' }));
+    http
+      .match('/api/auth/me')
+      .forEach((r) => r.flush({ username: 'usuario1', email: 'u@u.es', rol: 'USER' }));
     mias().flush(pagina([MIA]));
     publicas().flush(pagina([MIA, AJENA]));
     fixture.detectChanges();
@@ -51,8 +72,25 @@ describe('ValoracionesComponent', () => {
 
   it('carga solo las listas de la categoría elegida y valida antes de enviar', () => {
     component.abrirNueva();
-    for (const url of ['/api/entrenamientos', '/api/mis-entrenamientos', '/api/entrenamientos/mi-historial', '/api/entrenamientos-comunidad']) {
-      http.expectOne((r) => r.url === url).flush(lista([{ id: 1, nombre: 'Core', entrenamiento: 'Core', fecha: '2026-11-09 10:00:00', usuario: 'ana' }]));
+    for (const url of [
+      '/api/entrenamientos',
+      '/api/mis-entrenamientos',
+      '/api/entrenamientos/mi-historial',
+      '/api/entrenamientos-comunidad',
+    ]) {
+      http
+        .expectOne((r) => r.url === url)
+        .flush(
+          lista([
+            {
+              id: 1,
+              nombre: 'Core',
+              entrenamiento: 'Core',
+              fecha: '2026-11-09 10:00:00',
+              usuario: 'ana',
+            },
+          ]),
+        );
     }
     expect(component.grupos()?.length).toBe(4);
 
@@ -60,8 +98,12 @@ describe('ValoracionesComponent', () => {
     expect(component.errores()).toEqual(['contenido']);
 
     component.cambiarCategoria('LUGARES_PUBLICOS');
-    http.expectOne((r) => r.url === '/api/lugares-publicos').flush(lista([{ id: 5, nombre: 'Turia' }]));
-    http.expectOne((r) => r.url === '/api/mis-lugares-publicos').flush(null, { status: 500, statusText: 'Error' });
+    http
+      .expectOne((r) => r.url === '/api/lugares-publicos')
+      .flush(lista([{ id: 5, nombre: 'Turia' }]));
+    http
+      .expectOne((r) => r.url === '/api/mis-lugares-publicos')
+      .flush(null, { status: 500, statusText: 'Error' });
     expect(component.errorOpciones()).toBe(true);
 
     component.seleccion = 'LUGAR_PUBLICO_BASE|5';

@@ -14,7 +14,6 @@ export interface RegistroUsuario {
   providedIn: 'root',
 })
 export class AuthService {
-
   private http = inject(HttpClient);
   private apiUrl = '/api/auth';
 
@@ -27,52 +26,41 @@ export class AuthService {
     body.set('password', password);
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
     });
 
-    return this.http.post(
-      `${this.apiUrl}/login`,
-      body.toString(),
-      {
-        headers,
-        withCredentials: true,
-        responseType: 'text'
-      }
-    );
+    return this.http.post(`${this.apiUrl}/login`, body.toString(), {
+      headers,
+      withCredentials: true,
+      responseType: 'text',
+    });
   }
 
   registrar(usuario: RegistroUsuario): Observable<string> {
-    return this.http.post(
-      `${this.apiUrl}/registro`,
-      usuario,
-      {
-        withCredentials: true,
-        responseType: 'text'
-      }
-    );
+    return this.http.post(`${this.apiUrl}/registro`, usuario, {
+      withCredentials: true,
+      responseType: 'text',
+    });
   }
 
   me(): Observable<UsuarioSesion> {
-    return this.http.get<UsuarioSesion>(
-      `${this.apiUrl}/me`,
-      {
-        withCredentials: true
-      }
-    ).pipe(
-      tap(usuario => this.usuarioSubject.next(usuario))
-    );
+    return this.http
+      .get<UsuarioSesion>(`${this.apiUrl}/me`, {
+        withCredentials: true,
+      })
+      .pipe(tap((usuario) => this.usuarioSubject.next(usuario)));
   }
 
   logout(): Observable<string> {
-    return this.http.post(
-      `${this.apiUrl}/logout`,
-      {},
-      {
-        withCredentials: true,
-        responseType: 'text'
-      }
-    ).pipe(
-      tap(() => this.usuarioSubject.next(null))
-    );
+    return this.http
+      .post(
+        `${this.apiUrl}/logout`,
+        {},
+        {
+          withCredentials: true,
+          responseType: 'text',
+        },
+      )
+      .pipe(tap(() => this.usuarioSubject.next(null)));
   }
 }

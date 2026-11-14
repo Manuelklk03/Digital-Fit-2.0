@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, Injector, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  Injector,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { forkJoin, Observable, of, catchError } from 'rxjs';
@@ -134,10 +142,12 @@ export class HistorialEntrenamientosComponent implements OnInit {
     this.opciones.set(null);
     let fallo = false;
     const vacio = <T>(o: Observable<T[]>) =>
-      o.pipe(catchError(() => {
-        fallo = true;
-        return of([] as T[]);
-      }));
+      o.pipe(
+        catchError(() => {
+          fallo = true;
+          return of([] as T[]);
+        }),
+      );
     forkJoin({
       base: vacio(this.entrenamientosService.getEntrenamientos()),
       mios: vacio(this.misEntrenamientosService.getMisEntrenamientos()),

@@ -40,7 +40,9 @@ describe('HistorialEntrenamientosComponent', () => {
     expect(req.request.params.get('page')).toBe('0');
     req.flush(VACIA);
     fixture.detectChanges();
-    expect(fixture.nativeElement.textContent).toContain('Ningún registro coincide con la búsqueda.');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Ningún registro coincide con la búsqueda.',
+    );
 
     component.limpiarBusqueda();
     const limpia = http.expectOne((r) => r.url === '/api/entrenamientos/mi-historial');
@@ -81,8 +83,19 @@ describe('HistorialEntrenamientosComponent', () => {
   });
 
   it('borra un registro tras confirmar y recarga la página', () => {
-    const r = { id: 5, entrenamiento: 'Core', tipoEntrenamiento: 'MI_ENTRENAMIENTO', ubicacion: null, tipoUbicacion: null, fecha: '2026-11-09 10:00:00', duracionEnMinutos: 20, notas: null };
-    http.expectOne((q) => q.url === '/api/entrenamientos/mi-historial').flush({ ...VACIA, content: [r], totalElements: 1, totalPages: 1 });
+    const r = {
+      id: 5,
+      entrenamiento: 'Core',
+      tipoEntrenamiento: 'MI_ENTRENAMIENTO',
+      ubicacion: null,
+      tipoUbicacion: null,
+      fecha: '2026-11-09 10:00:00',
+      duracionEnMinutos: 20,
+      notas: null,
+    };
+    http
+      .expectOne((q) => q.url === '/api/entrenamientos/mi-historial')
+      .flush({ ...VACIA, content: [r], totalElements: 1, totalPages: 1 });
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelectorAll('li.registro').length).toBe(1);
     vi.spyOn(window, 'confirm').mockReturnValue(true);
@@ -97,7 +110,14 @@ describe('HistorialEntrenamientosComponent', () => {
   it('carga las opciones al abrir el formulario y permite reintentar si alguna falla', () => {
     http.expectOne((r) => r.url === '/api/entrenamientos/mi-historial').flush(VACIA);
     component.abrirFormulario();
-    const urls = ['/api/entrenamientos', '/api/mis-entrenamientos', '/api/lugares-publicos', '/api/mis-lugares-publicos', '/api/centros-privados', '/api/mis-centros-privados'];
+    const urls = [
+      '/api/entrenamientos',
+      '/api/mis-entrenamientos',
+      '/api/lugares-publicos',
+      '/api/mis-lugares-publicos',
+      '/api/centros-privados',
+      '/api/mis-centros-privados',
+    ];
     for (const url of urls) {
       const req = http.expectOne((r) => r.url === url);
       if (url === '/api/mis-entrenamientos') {

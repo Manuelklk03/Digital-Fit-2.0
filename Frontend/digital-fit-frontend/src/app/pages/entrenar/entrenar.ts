@@ -189,9 +189,7 @@ export class EntrenarComponent implements OnInit, OnDestroy {
       const idx = this.indiceEjercicio();
       const actual = ejercicios[idx];
       const seriesActualizadas = actual.series.map((s) =>
-        s.numero === serieNumero
-          ? { ...s, repeticiones: Math.max(1, s.repeticiones + delta) }
-          : s,
+        s.numero === serieNumero ? { ...s, repeticiones: Math.max(1, s.repeticiones + delta) } : s,
       );
       ejercicios[idx] = { ...actual, series: seriesActualizadas };
       return [...ejercicios];

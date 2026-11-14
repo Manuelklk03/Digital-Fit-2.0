@@ -33,15 +33,18 @@ export const diccionarioEn: DiccionarioTraduccion = {
   seo: {
     inicio: {
       titulo: 'Digital-FIT · Workouts, places and training tracking',
-      descripcion: 'Log sets, weights and rest times, find gyms, calisthenics parks and pools on the map, and follow your progress.',
+      descripcion:
+        'Log sets, weights and rest times, find gyms, calisthenics parks and pools on the map, and follow your progress.',
     },
     login: {
       titulo: 'Sign in · Digital-FIT',
-      descripcion: 'Sign in to your Digital-FIT account to manage your workouts and explore sports centres.',
+      descripcion:
+        'Sign in to your Digital-FIT account to manage your workouts and explore sports centres.',
     },
     registro: {
       titulo: 'Create account · Digital-FIT',
-      descripcion: 'Create your Digital-FIT account to save your workouts, your places and your history.',
+      descripcion:
+        'Create your Digital-FIT account to save your workouts, your places and your history.',
     },
   },
   migas: {
@@ -87,7 +90,8 @@ export const diccionarioEn: DiccionarioTraduccion = {
     distanciaHaversine: 'real geodesic distance',
     ctaVerMapa: 'Open interactive map',
     seccionComunidadTitulo: 'Training Ecosystem',
-    seccionComunidadDesc: 'Three focused tools built for individual and community athletic training',
+    seccionComunidadDesc:
+      'Three focused tools built for individual and community athletic training',
     ctaUnirse: 'Create free account',
     instalacionGimnasio: 'Fitness Gym',
     instalacionCalistenia: 'Calisthenics',
@@ -96,11 +100,13 @@ export const diccionarioEn: DiccionarioTraduccion = {
     tarjeta1Titulo: 'Live Assistant',
     tarjeta1Desc: 'Tactile countdown timers and rep tracking without navigating away.',
     tarjeta2Titulo: 'Sports Map',
-    tarjeta2Desc: 'OpenStreetMap integration via Overpass API and proximity sorted by Haversine formula.',
+    tarjeta2Desc:
+      'OpenStreetMap integration via Overpass API and proximity sorted by Haversine formula.',
     tarjeta3Titulo: 'Catalog & Community',
     tarjeta3Desc: 'Categorized base workouts, personal routine creation, and community ratings.',
     ctaFinalTitulo: 'Everything you need for your session, without friction',
-    ctaFinalDesc: 'Test the assistant right away or search nearby sports spots without creating an account.',
+    ctaFinalDesc:
+      'Test the assistant right away or search nearby sports spots without creating an account.',
   },
   comun: {
     cargando: 'Loading...',
@@ -133,7 +139,8 @@ export const diccionarioEn: DiccionarioTraduccion = {
     exitoLogin: 'Signed in successfully. Redirecting...',
     registroBadge: 'NEW ACCOUNT • DIGITAL-FIT',
     registroTitulo: 'Create account',
-    registroSubtitulo: 'Join the platform to track workout progress and discover sports facilities.',
+    registroSubtitulo:
+      'Join the platform to track workout progress and discover sports facilities.',
     emailLabel: 'Email address',
     emailPlaceholder: 'your-email@example.com',
     botonRegistrar: 'Register',
@@ -148,7 +155,8 @@ export const diccionarioEn: DiccionarioTraduccion = {
   admin: {
     badge: 'Administration',
     titulo: 'Create administrator',
-    subtitulo: 'Register another account with the ADMIN role. It will be able to manage the workout, centre and place catalogues.',
+    subtitulo:
+      'Register another account with the ADMIN role. It will be able to manage the workout, centre and place catalogues.',
     formTitulo: 'New administrator account',
     crear: 'Create administrator',
     creando: 'Creating…',

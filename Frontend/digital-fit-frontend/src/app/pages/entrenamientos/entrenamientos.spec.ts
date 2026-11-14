@@ -6,7 +6,14 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { vi } from 'vitest';
 import { EntrenamientosComponent } from './entrenamientos';
 
-const BASE = { id: 1, nombre: 'Full body', descripcion: 'd', categoria: 'FUERZA_TOTAL', nivel: 'PRINCIPIANTE', duracionEnMinutos: 40 };
+const BASE = {
+  id: 1,
+  nombre: 'Full body',
+  descripcion: 'd',
+  categoria: 'FUERZA_TOTAL',
+  nivel: 'PRINCIPIANTE',
+  duracionEnMinutos: 40,
+};
 
 describe('EntrenamientosComponent', () => {
   let fixture: ComponentFixture<EntrenamientosComponent>;
@@ -61,7 +68,9 @@ describe('EntrenamientosComponent', () => {
     req.flush({ content: [], page: 0, size: 12, totalElements: 0, totalPages: 0 });
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.textContent).toContain('Ningún entrenamiento coincide con el filtro.');
+    expect(fixture.nativeElement.textContent).toContain(
+      'Ningún entrenamiento coincide con el filtro.',
+    );
   });
 
   it('muestra editar y borrar solo al administrador', () => {
@@ -79,17 +88,27 @@ describe('EntrenamientosComponent', () => {
     sesion('ADMIN');
     listado().flush({ content: [BASE], page: 0, size: 12, totalElements: 1, totalPages: 1 });
     const c = fixture.componentInstance;
-    const datos = { nombre: 'N', descripcion: 'd', categoria: 'HIIT' as const, nivel: 'EXPERTO' as const, duracionEnMinutos: 10 };
+    const datos = {
+      nombre: 'N',
+      descripcion: 'd',
+      categoria: 'HIIT' as const,
+      nivel: 'EXPERTO' as const,
+      duracionEnMinutos: 10,
+    };
 
     c.enEdicion.set(null);
     c.guardar(datos);
-    http.expectOne((r) => r.method === 'POST' && r.url === '/api/admin/entrenamientos-base').flush(BASE);
+    http
+      .expectOne((r) => r.method === 'POST' && r.url === '/api/admin/entrenamientos-base')
+      .flush(BASE);
     listado().flush({ content: [BASE], page: 0, size: 12, totalElements: 1, totalPages: 1 });
     expect(c.enEdicion()).toBeUndefined();
 
     c.enEdicion.set(BASE as never);
     c.guardar(datos);
-    http.expectOne((r) => r.method === 'PUT' && r.url === '/api/admin/entrenamientos-base/1').flush({ detail: 'Duplicado' }, { status: 409, statusText: 'Conflict' });
+    http
+      .expectOne((r) => r.method === 'PUT' && r.url === '/api/admin/entrenamientos-base/1')
+      .flush({ detail: 'Duplicado' }, { status: 409, statusText: 'Conflict' });
     expect(c.aviso.actual()).toEqual({ texto: 'Duplicado', tipo: 'error' });
   });
 

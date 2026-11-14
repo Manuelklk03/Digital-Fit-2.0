@@ -27,7 +27,11 @@ describe('SeoService', () => {
         provideRouter([
           { path: 'inicio', data: { seo: 'inicio' }, children: [] },
           { path: 'login', data: { seo: 'login', migas: ['login'] }, children: [] },
-          { path: 'mis-centros', data: { tituloNav: 'misCentros', migas: ['misCentros'] }, children: [] },
+          {
+            path: 'mis-centros',
+            data: { tituloNav: 'misCentros', migas: ['misCentros'] },
+            children: [],
+          },
           { path: 'sin-datos', children: [] },
           { path: 'detalle/:id', data: { migas: ['misCentros', 'detalle'] }, children: [] },
         ]),
@@ -46,7 +50,11 @@ describe('SeoService', () => {
     localStorage.clear();
     doc.head.querySelector('link[rel="canonical"]')?.remove();
     doc.getElementById('ld-migas')?.remove();
-    doc.head.querySelectorAll('meta[name="description"], meta[name="robots"], meta[name="twitter:card"], meta[property^="og:"]').forEach((m) => m.remove());
+    doc.head
+      .querySelectorAll(
+        'meta[name="description"], meta[name="robots"], meta[name="twitter:card"], meta[property^="og:"]',
+      )
+      .forEach((m) => m.remove());
   });
 
   it('una página pública se indexa, con su título, descripción y canónica', async () => {
@@ -57,7 +65,9 @@ describe('SeoService', () => {
     expect(contenido('name="robots"')).toBe('index, follow');
     expect(contenido('property="og:title"')).toBe(i18n.t().seo.inicio.titulo);
     expect(doc.head.querySelectorAll('link[rel="canonical"]').length).toBe(1);
-    expect(doc.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href).toContain('/inicio');
+    expect(doc.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href).toContain(
+      '/inicio',
+    );
   });
 
   it('una página privada no se indexa, tiene título propio y no lleva canónica', async () => {
@@ -100,7 +110,12 @@ describe('SeoService', () => {
 
     const ld = JSON.parse(doc.getElementById('ld-migas')?.textContent ?? '{}');
     expect(ld['@type']).toBe('BreadcrumbList');
-    expect(ld.itemListElement.map((i: { position: number; name: string }) => [i.position, i.name])).toEqual([[1, 'Inicio'], [2, 'Iniciar sesión']]);
+    expect(
+      ld.itemListElement.map((i: { position: number; name: string }) => [i.position, i.name]),
+    ).toEqual([
+      [1, 'Inicio'],
+      [2, 'Iniciar sesión'],
+    ]);
     expect(ld.itemListElement[0].item).toBe(`${doc.location.origin}/inicio`);
     expect(ld.itemListElement[1].item).toContain('/login');
   });

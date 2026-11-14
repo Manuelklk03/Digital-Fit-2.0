@@ -3,13 +3,41 @@
   @if (!soloVista()) {
     <div class="barra" role="search">
       <label class="sr-only" for="mapa-busqueda">{{ m.buscarEtiqueta }}</label>
-      <input df-input size="sm" id="mapa-busqueda" type="search" name="textoBusqueda" autocomplete="off"
-        [(ngModel)]="textoBusqueda" [placeholder]="m.buscarPlaceholder"
-        (keydown.enter)="$event.preventDefault(); buscarDireccion()" />
-      <button df-button variant="primary" size="sm" type="button" [loading]="buscando()" [disabled]="buscando()"
-        (click)="buscarDireccion()">{{ buscando() ? m.buscando : m.buscar }}</button>
-      <button df-button variant="ghost" size="sm" type="button" (click)="volverAValencia()">{{ m.volverValencia }}</button>
-      <button df-button variant="ghost" size="sm" type="button" [disabled]="!hayMarcador()" (click)="volverAMarcador()">{{ m.irMarcador }}</button>
+      <input
+        df-input
+        size="sm"
+        id="mapa-busqueda"
+        type="search"
+        name="textoBusqueda"
+        autocomplete="off"
+        [(ngModel)]="textoBusqueda"
+        [placeholder]="m.buscarPlaceholder"
+        (keydown.enter)="$event.preventDefault(); buscarDireccion()"
+      />
+      <button
+        df-button
+        variant="primary"
+        size="sm"
+        type="button"
+        [loading]="buscando()"
+        [disabled]="buscando()"
+        (click)="buscarDireccion()"
+      >
+        {{ buscando() ? m.buscando : m.buscar }}
+      </button>
+      <button df-button variant="ghost" size="sm" type="button" (click)="volverAValencia()">
+        {{ m.volverValencia }}
+      </button>
+      <button
+        df-button
+        variant="ghost"
+        size="sm"
+        type="button"
+        [disabled]="!hayMarcador()"
+        (click)="volverAMarcador()"
+      >
+        {{ m.irMarcador }}
+      </button>
     </div>
   }
 
@@ -18,10 +46,25 @@
     @if (mensaje(); as texto) {
       <div class="mensaje">
         <span>{{ texto }}</span>
-        <button df-button variant="ghost" size="sm" type="button" [attr.aria-label]="m.cerrarMensaje" (click)="mensaje.set(null)">×</button>
+        <button
+          df-button
+          variant="ghost"
+          size="sm"
+          type="button"
+          [attr.aria-label]="m.cerrarMensaje"
+          (click)="mensaje.set(null)"
+        >
+          ×
+        </button>
       </div>
     }
   </div>
 
-  <div #mapContainer class="lienzo" [class.lienzo-vista]="soloVista()" role="region" [attr.aria-label]="soloVista() ? m.regionVista : m.region"></div>
+  <div
+    #mapContainer
+    class="lienzo"
+    [class.lienzo-vista]="soloVista()"
+    role="region"
+    [attr.aria-label]="soloVista() ? m.regionVista : m.region"
+  ></div>
 </div>

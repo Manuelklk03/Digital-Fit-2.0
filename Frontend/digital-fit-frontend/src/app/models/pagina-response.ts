@@ -40,8 +40,14 @@ export function getPagina<T>(
  * GET de un listado paginado que devuelve solo el array `content`, para listas auxiliares (selects).
  * shortcut: devuelve como mucho 100 elementos; paginar o buscar en servidor si un select necesita más.
  */
-export function getContenido<T = unknown>(http: HttpClient, url: string, filtros: Filtros = {}): Observable<T[]> {
-  return getPagina<T>(http, url, filtros, 0, TAMANO_MAXIMO_PAGINA).pipe(map((pagina) => pagina.content));
+export function getContenido<T = unknown>(
+  http: HttpClient,
+  url: string,
+  filtros: Filtros = {},
+): Observable<T[]> {
+  return getPagina<T>(http, url, filtros, 0, TAMANO_MAXIMO_PAGINA).pipe(
+    map((pagina) => pagina.content),
+  );
 }
 
 /** Mensaje de un error HTTP: `detail` de ProblemDetail (RFC 7807), texto plano o el mensaje por defecto. */

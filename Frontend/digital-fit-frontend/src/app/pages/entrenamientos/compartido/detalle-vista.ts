@@ -19,7 +19,9 @@ import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
   template: `
     @let t = i18n.t().entrenamientos;
     <app-migas />
-    <a df-button variant="ghost" size="sm" class="volver" [routerLink]="volver()"><span aria-hidden="true">←</span> {{ t.volverListado }}</a>
+    <a df-button variant="ghost" size="sm" class="volver" [routerLink]="volver()"
+      ><span aria-hidden="true">←</span> {{ t.volverListado }}</a
+    >
     <ng-content select="app-alert" />
 
     @switch (estado()) {
@@ -32,7 +34,9 @@ import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
       @case ('error') {
         <div class="estado estado-error" role="alert">
           <p>{{ t.errorDetalle }}</p>
-          <button df-button variant="outline" size="sm" type="button" (click)="reintentar.emit()">{{ t.reintentar }}</button>
+          <button df-button variant="outline" size="sm" type="button" (click)="reintentar.emit()">
+            {{ t.reintentar }}
+          </button>
         </div>
       }
       @default {
@@ -47,9 +51,15 @@ import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
               </div>
               <h1 class="cabecera-detalle">{{ e.nombre }}</h1>
               <dl class="datos">
-                <div class="dato"><dt>{{ t.campoDuracion }}</dt><dd class="num">{{ e.duracionEnMinutos }} {{ t.minutos }}</dd></div>
+                <div class="dato">
+                  <dt>{{ t.campoDuracion }}</dt>
+                  <dd class="num">{{ e.duracionEnMinutos }} {{ t.minutos }}</dd>
+                </div>
                 @for (d of datosExtra(); track d.etiqueta) {
-                  <div class="dato"><dt>{{ d.etiqueta }}</dt><dd>{{ d.valor }}</dd></div>
+                  <div class="dato">
+                    <dt>{{ d.etiqueta }}</dt>
+                    <dd>{{ d.valor }}</dd>
+                  </div>
                 }
               </dl>
               <section>

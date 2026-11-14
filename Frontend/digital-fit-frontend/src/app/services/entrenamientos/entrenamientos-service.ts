@@ -5,10 +5,9 @@ import { getContenido, getPagina, PaginaResponse } from '../../models/pagina-res
 import { aParametros, EntrenamientoBase, FiltroEntrenamiento } from '../../models/entrenamiento';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EntrenamientosService {
-
   private http = inject(HttpClient);
   private apiUrl = '/api/entrenamientos';
 
@@ -16,13 +15,16 @@ export class EntrenamientosService {
     return getContenido<EntrenamientoBase>(this.http, this.apiUrl);
   }
 
-  buscar(filtro: FiltroEntrenamiento | null, page = 0): Observable<PaginaResponse<EntrenamientoBase>> {
+  buscar(
+    filtro: FiltroEntrenamiento | null,
+    page = 0,
+  ): Observable<PaginaResponse<EntrenamientoBase>> {
     return getPagina<EntrenamientoBase>(this.http, this.apiUrl, aParametros(filtro), page);
   }
 
   getEntrenamientoById(id: number): Observable<EntrenamientoBase> {
     return this.http.get<EntrenamientoBase>(`${this.apiUrl}/${id}`, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 }

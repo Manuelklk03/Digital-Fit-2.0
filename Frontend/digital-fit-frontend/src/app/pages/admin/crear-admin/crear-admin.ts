@@ -1,8 +1,20 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, Injector, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  Injector,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../../components/header/header';
 import { Footer } from '../../../components/footer/footer';
-import { AlertComponent, ButtonComponent, CardComponent, InputDirective } from '../../../components/ui';
+import {
+  AlertComponent,
+  ButtonComponent,
+  CardComponent,
+  InputDirective,
+} from '../../../components/ui';
 import { I18nService } from '../../../i18n/i18n.service';
 import { AdminService } from '../../../services/admin/admin-service';
 import { Aviso, ejecutarAccion, enfocarTrasRender } from '../../entrenamientos/compartido/estado';
@@ -14,7 +26,16 @@ type Campo = 'username' | 'email' | 'password';
 /** Alta de otra cuenta ADMIN. La ruta ya la protege `adminGuard` y el backend exige rol ADMIN en `/api/admin/**`. */
 @Component({
   selector: 'app-crear-admin',
-  imports: [FormsModule, HeaderComponent, Footer, AlertComponent, ButtonComponent, CardComponent, InputDirective, EncabezadoPaginaComponent],
+  imports: [
+    FormsModule,
+    HeaderComponent,
+    Footer,
+    AlertComponent,
+    ButtonComponent,
+    CardComponent,
+    InputDirective,
+    EncabezadoPaginaComponent,
+  ],
   styleUrls: ['../../entrenamientos/compartido/pagina.css', './crear-admin.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -35,9 +56,17 @@ type Campo = 'username' | 'email' | 'password';
 
           <div class="campo">
             <label for="admin-username">{{ a.usuarioLabel }}</label>
-            <input df-input id="admin-username" name="username" autocomplete="off" required [(ngModel)]="username"
-              [error]="errores().includes('username')" [attr.aria-invalid]="errores().includes('username')"
-              [attr.aria-describedby]="errores().includes('username') ? 'admin-e-username' : null" />
+            <input
+              df-input
+              id="admin-username"
+              name="username"
+              autocomplete="off"
+              required
+              [(ngModel)]="username"
+              [error]="errores().includes('username')"
+              [attr.aria-invalid]="errores().includes('username')"
+              [attr.aria-describedby]="errores().includes('username') ? 'admin-e-username' : null"
+            />
             @if (errores().includes('username')) {
               <p class="error" id="admin-e-username">{{ t.errorUsuario }}</p>
             }
@@ -45,10 +74,19 @@ type Campo = 'username' | 'email' | 'password';
 
           <div class="campo">
             <label for="admin-email">{{ a.emailLabel }}</label>
-            <input df-input id="admin-email" name="email" type="email" autocomplete="off" required [(ngModel)]="email"
-              [placeholder]="t.emailPlaceholder" [error]="errores().includes('email')"
+            <input
+              df-input
+              id="admin-email"
+              name="email"
+              type="email"
+              autocomplete="off"
+              required
+              [(ngModel)]="email"
+              [placeholder]="t.emailPlaceholder"
+              [error]="errores().includes('email')"
               [attr.aria-invalid]="errores().includes('email')"
-              [attr.aria-describedby]="errores().includes('email') ? 'admin-e-email' : null" />
+              [attr.aria-describedby]="errores().includes('email') ? 'admin-e-email' : null"
+            />
             @if (errores().includes('email')) {
               <p class="error" id="admin-e-email">{{ a.errorEmailInvalido }}</p>
             }
@@ -56,17 +94,35 @@ type Campo = 'username' | 'email' | 'password';
 
           <div class="campo">
             <label for="admin-password">{{ a.contrasenaLabel }}</label>
-            <input df-input id="admin-password" name="password" type="password" autocomplete="new-password" required
-              [(ngModel)]="password" [error]="errores().includes('password')"
+            <input
+              df-input
+              id="admin-password"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              required
+              [(ngModel)]="password"
+              [error]="errores().includes('password')"
               [attr.aria-invalid]="errores().includes('password')"
-              [attr.aria-describedby]="errores().includes('password') ? 'admin-h-password admin-e-password' : 'admin-h-password'" />
+              [attr.aria-describedby]="
+                errores().includes('password')
+                  ? 'admin-h-password admin-e-password'
+                  : 'admin-h-password'
+              "
+            />
             <p class="ayuda" id="admin-h-password">{{ t.ayudaContrasena }}</p>
             @if (errores().includes('password')) {
               <p class="error" id="admin-e-password">{{ a.errorContrasenaCorta }}</p>
             }
           </div>
 
-          <button df-button variant="primary" type="submit" [loading]="guardando()" [disabled]="guardando()">
+          <button
+            df-button
+            variant="primary"
+            type="submit"
+            [loading]="guardando()"
+            [disabled]="guardando()"
+          >
             {{ guardando() ? t.creando : t.crear }}
           </button>
         </form>
@@ -91,7 +147,11 @@ export class CrearAdminComponent {
   password = '';
 
   crear(): void {
-    const datos = { username: this.username.trim(), email: this.email.trim(), password: this.password };
+    const datos = {
+      username: this.username.trim(),
+      email: this.email.trim(),
+      password: this.password,
+    };
     const errores: Campo[] = [];
     if (!datos.username) errores.push('username');
     if (!EMAIL_REGEX.test(datos.email)) errores.push('email');

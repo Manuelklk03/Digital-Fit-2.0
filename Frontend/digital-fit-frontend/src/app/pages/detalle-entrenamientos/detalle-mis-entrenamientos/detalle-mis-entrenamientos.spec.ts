@@ -16,7 +16,10 @@ describe('DetalleMiEntrenamientoComponent', () => {
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({ id: '5' }) } } },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { paramMap: convertToParamMap({ id: '5' }) } },
+        },
       ],
     }).compileComponents();
 
@@ -26,20 +29,29 @@ describe('DetalleMiEntrenamientoComponent', () => {
   });
 
   it('muestra el error si el entrenamiento no existe', () => {
-    http.expectOne('/api/mis-entrenamientos/5').flush(null, { status: 404, statusText: 'Not Found' });
+    http
+      .expectOne('/api/mis-entrenamientos/5')
+      .flush(null, { status: 404, statusText: 'Not Found' });
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.estado-error')).toBeTruthy();
   });
 
   it('marca como realizado creando un registro de historial', () => {
     http.expectOne('/api/mis-entrenamientos/5').flush({
-      id: 5, nombre: 'Core', descripcion: 'd', categoria: 'FUERZA_CORE', nivel: 'INTERMEDIO', duracionEnMinutos: 15,
+      id: 5,
+      nombre: 'Core',
+      descripcion: 'd',
+      categoria: 'FUERZA_CORE',
+      nivel: 'INTERMEDIO',
+      duracionEnMinutos: 15,
     });
     fixture.detectChanges();
 
     fixture.nativeElement.querySelector('.acciones button').click();
     const req = http.expectOne('/api/entrenamientos/mi-historial');
-    expect(req.request.body).toEqual(expect.objectContaining({ entrenamientoUsuarioId: 5, duracionEnMinutos: 15 }));
+    expect(req.request.body).toEqual(
+      expect.objectContaining({ entrenamientoUsuarioId: 5, duracionEnMinutos: 15 }),
+    );
     req.flush({});
     fixture.detectChanges();
 

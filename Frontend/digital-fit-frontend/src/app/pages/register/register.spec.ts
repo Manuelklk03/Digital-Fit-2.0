@@ -60,7 +60,9 @@ describe('RegisterComponent', () => {
   });
 
   it('debe mostrar alerta de error cuando el servicio de autenticación falla', () => {
-    vi.spyOn(authService, 'registrar').mockReturnValue(throwError(() => new Error('Error al registrar')));
+    vi.spyOn(authService, 'registrar').mockReturnValue(
+      throwError(() => new Error('Error al registrar')),
+    );
 
     component.username = 'nuevoAtleta';
     component.email = 'atleta@digitalfit.com';

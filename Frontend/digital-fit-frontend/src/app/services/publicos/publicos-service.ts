@@ -6,10 +6,9 @@ import { aParametros } from '../../models/entrenamiento';
 import { FiltroSitio, LugarPublico } from '../../models/lugar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PublicosService {
-
   private readonly http = inject(HttpClient);
   private readonly apiUrl = '/api/lugares-publicos';
 
@@ -23,7 +22,7 @@ export class PublicosService {
 
   getLugarPublicoById(id: number): Observable<LugarPublico> {
     return this.http.get<LugarPublico>(`${this.apiUrl}/${id}`, {
-      withCredentials: true
+      withCredentials: true,
     });
   }
 }

@@ -55,10 +55,16 @@ export interface LugarPublico extends SitioComun {
 export type Sitio = CentroPrivado | LugarPublico;
 
 /** Cuerpo de `CrearCentroPrivadoDTO`. */
-export type CentroForm = Omit<CentroPrivado, 'id' | 'osmId' | 'latitud' | 'longitud'> & { latitud: number; longitud: number };
+export type CentroForm = Omit<CentroPrivado, 'id' | 'osmId' | 'latitud' | 'longitud'> & {
+  latitud: number;
+  longitud: number;
+};
 
 /** Cuerpo de `CrearLugarPublicoDTO`. */
-export type LugarForm = Omit<LugarPublico, 'id' | 'osmId' | 'latitud' | 'longitud'> & { latitud: number; longitud: number };
+export type LugarForm = Omit<LugarPublico, 'id' | 'osmId' | 'latitud' | 'longitud'> & {
+  latitud: number;
+  longitud: number;
+};
 
 export type SitioForm = CentroForm | LugarForm;
 
@@ -105,6 +111,11 @@ export function esLugarPublico(sitio: Sitio): sitio is LugarPublico {
 }
 
 /** Coordenadas legibles con 5 decimales (~1 m), o `null` si faltan. */
-export function coordenadasLegibles(latitud: number | null, longitud: number | null): string | null {
-  return latitud == null || longitud == null ? null : `${latitud.toFixed(5)}, ${longitud.toFixed(5)}`;
+export function coordenadasLegibles(
+  latitud: number | null,
+  longitud: number | null,
+): string | null {
+  return latitud == null || longitud == null
+    ? null
+    : `${latitud.toFixed(5)}, ${longitud.toFixed(5)}`;
 }

@@ -28,7 +28,8 @@ export const progresoFr: DiccionarioProgreso = {
     masRealizado: 'Entraînement le plus répété',
     minutosAbrev: 'min',
     sinDatos: 'Pas encore de données',
-    vacio: "Vous n'avez encore enregistré aucune séance. Les statistiques apparaîtront après la première.",
+    vacio:
+      "Vous n'avez encore enregistré aucune séance. Les statistiques apparaîtront après la première.",
     irHistorial: "Aller à l'historique",
     irValoraciones: 'Voir les avis',
     errorCarga: 'Impossible de charger les statistiques.',

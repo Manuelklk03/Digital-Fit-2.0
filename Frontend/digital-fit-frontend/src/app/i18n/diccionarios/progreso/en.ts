@@ -28,7 +28,8 @@ export const progresoEn: DiccionarioProgreso = {
     masRealizado: 'Most repeated workout',
     minutosAbrev: 'min',
     sinDatos: 'No data yet',
-    vacio: 'You have not logged any session yet. Statistics appear once you add the first one to your history.',
+    vacio:
+      'You have not logged any session yet. Statistics appear once you add the first one to your history.',
     irHistorial: 'Go to history',
     irValoraciones: 'See ratings',
     errorCarga: 'Could not load statistics.',

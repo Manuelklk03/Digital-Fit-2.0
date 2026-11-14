@@ -69,7 +69,9 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.menu-idiomas')).toBeTruthy();
 
-    fixture.nativeElement.querySelector('.opcion-idioma').dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    fixture.nativeElement
+      .querySelector('.opcion-idioma')
+      .dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
     fixture.detectChanges();
 
     expect(fixture.nativeElement.querySelector('.menu-idiomas')).toBeNull();
@@ -83,7 +85,9 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
     expect(component.desplegableIdiomaAbierto).toBe(true);
 
-    fixture.nativeElement.querySelector('.menu-idiomas').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    fixture.nativeElement
+      .querySelector('.menu-idiomas')
+      .dispatchEvent(new MouseEvent('click', { bubbles: true }));
     expect(component.desplegableIdiomaAbierto).toBe(true);
 
     document.body.click();

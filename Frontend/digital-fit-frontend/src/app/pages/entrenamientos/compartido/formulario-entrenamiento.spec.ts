@@ -30,18 +30,30 @@ describe('FormularioEntrenamientoComponent', () => {
   it('emite los datos recortados cuando son válidos', () => {
     const c = crear().componentInstance;
     const emitido = vi.spyOn(c.guardar, 'emit');
-    Object.assign(c.modelo, { nombre: '  Pierna ', descripcion: ' Sentadillas ', duracionEnMinutos: '45' });
+    Object.assign(c.modelo, {
+      nombre: '  Pierna ',
+      descripcion: ' Sentadillas ',
+      duracionEnMinutos: '45',
+    });
 
     c.enviar();
 
     expect(emitido).toHaveBeenCalledWith(
-      expect.objectContaining({ nombre: 'Pierna', descripcion: 'Sentadillas', duracionEnMinutos: 45 }),
+      expect.objectContaining({
+        nombre: 'Pierna',
+        descripcion: 'Sentadillas',
+        duracionEnMinutos: 45,
+      }),
     );
   });
 
   it('precarga los datos al editar', () => {
     const inicial: EntrenamientoForm = {
-      nombre: 'HIIT 20', descripcion: 'd', categoria: 'HIIT', nivel: 'AVANZADO', duracionEnMinutos: 20,
+      nombre: 'HIIT 20',
+      descripcion: 'd',
+      categoria: 'HIIT',
+      nivel: 'AVANZADO',
+      duracionEnMinutos: 20,
     };
     expect(crear(inicial).componentInstance.modelo).toEqual(inicial);
   });

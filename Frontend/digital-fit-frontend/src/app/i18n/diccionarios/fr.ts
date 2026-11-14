@@ -33,19 +33,22 @@ export const diccionarioFr: DiccionarioTraduccion = {
   seo: {
     inicio: {
       titulo: 'Digital-FIT · Entraînements, lieux et suivi sportif',
-      descripcion: 'Enregistrez séries, charges et repos, trouvez salles, parcs de callisthénie et piscines sur la carte, et suivez vos progrès.',
+      descripcion:
+        'Enregistrez séries, charges et repos, trouvez salles, parcs de callisthénie et piscines sur la carte, et suivez vos progrès.',
     },
     login: {
       titulo: 'Se connecter · Digital-FIT',
-      descripcion: 'Connectez-vous à votre compte Digital-FIT pour gérer vos entraînements et explorer les centres sportifs.',
+      descripcion:
+        'Connectez-vous à votre compte Digital-FIT pour gérer vos entraînements et explorer les centres sportifs.',
     },
     registro: {
       titulo: 'Créer un compte · Digital-FIT',
-      descripcion: 'Créez votre compte Digital-FIT pour enregistrer vos entraînements, vos lieux et votre historique.',
+      descripcion:
+        'Créez votre compte Digital-FIT pour enregistrer vos entraînements, vos lieux et votre historique.',
     },
   },
   migas: {
-    etiqueta: 'Fil d\'Ariane',
+    etiqueta: "Fil d'Ariane",
     inicio: 'Accueil',
     entrenamientos: 'Entraînements',
     comunidad: 'Communauté',
@@ -94,13 +97,17 @@ export const diccionarioFr: DiccionarioTraduccion = {
     instalacionPiscina: 'Piscine',
     instalacionPolideportivo: 'Centre Omnisports',
     tarjeta1Titulo: 'Assistant en direct',
-    tarjeta1Desc: 'Contrôle tactile du décompte de repos et suivi des répétitions sans quitter l’écran.',
+    tarjeta1Desc:
+      'Contrôle tactile du décompte de repos et suivi des répétitions sans quitter l’écran.',
     tarjeta2Titulo: 'Carte sportive',
-    tarjeta2Desc: 'Intégration OpenStreetMap via Overpass API et calcul de proximité par la formule de Haversine.',
+    tarjeta2Desc:
+      'Intégration OpenStreetMap via Overpass API et calcul de proximité par la formule de Haversine.',
     tarjeta3Titulo: 'Catalogue et Communauté',
-    tarjeta3Desc: 'Routines de base catégorisées, création de séances personnelles et avis de la communauté.',
+    tarjeta3Desc:
+      'Routines de base catégorisées, création de séances personnelles et avis de la communauté.',
     ctaFinalTitulo: 'Tout ce dont vous avez besoin pour votre séance, sans friction',
-    ctaFinalDesc: 'Testez l’assistant immédiatement ou explorez les installations proches sans obligation d’inscription.',
+    ctaFinalDesc:
+      'Testez l’assistant immédiatement ou explorez les installations proches sans obligation d’inscription.',
   },
   comun: {
     cargando: 'Chargement...',
@@ -133,7 +140,8 @@ export const diccionarioFr: DiccionarioTraduccion = {
     exitoLogin: 'Connexion réussie. Redirection en cours...',
     registroBadge: 'NOUVEAU COMPTE • DIGITAL-FIT',
     registroTitulo: 'Créer un compte',
-    registroSubtitulo: 'Rejoignez la plateforme pour suivre vos progrès et explorer les installations.',
+    registroSubtitulo:
+      'Rejoignez la plateforme pour suivre vos progrès et explorer les installations.',
     emailLabel: 'Adresse e-mail',
     emailPlaceholder: 'votre-email@exemple.com',
     botonRegistrar: "S'inscrire",
@@ -148,7 +156,8 @@ export const diccionarioFr: DiccionarioTraduccion = {
   admin: {
     badge: 'Administration',
     titulo: 'Créer un administrateur',
-    subtitulo: 'Créez un autre compte avec le rôle ADMIN. Il pourra gérer les catalogues d’entraînements, de centres et de lieux.',
+    subtitulo:
+      'Créez un autre compte avec le rôle ADMIN. Il pourra gérer les catalogues d’entraînements, de centres et de lieux.',
     formTitulo: 'Nouveau compte administrateur',
     crear: 'Créer un administrateur',
     creando: 'Création…',

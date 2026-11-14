@@ -15,7 +15,14 @@ import { CampoFiltroSitio, ClaseSitio, FiltroSitio, TIPOS_LUGAR } from '../../mo
     <form class="filtro" role="search" (ngSubmit)="aplicar()">
       <div class="campo">
         <label for="filtro-campo">{{ te.filtrarPor }}</label>
-        <select df-input size="sm" id="filtro-campo" name="campo" [ngModel]="campo()" (ngModelChange)="cambiarCampo($event)">
+        <select
+          df-input
+          size="sm"
+          id="filtro-campo"
+          name="campo"
+          [ngModel]="campo()"
+          (ngModelChange)="cambiarCampo($event)"
+        >
           <option value="nombre">{{ t.campoNombre }}</option>
           <option value="direccion">{{ t.campoDireccion }}</option>
           @if (clase() === 'centro') {
@@ -38,29 +45,69 @@ import { CampoFiltroSitio, ClaseSitio, FiltroSitio, TIPOS_LUGAR } from '../../mo
             </select>
           }
           @case ('precioMensual') {
-            <input df-input size="sm" id="filtro-valor" name="valor" type="number" min="0" step="any" inputmode="decimal"
-              [(ngModel)]="valor" [placeholder]="t.precioPlaceholder" />
+            <input
+              df-input
+              size="sm"
+              id="filtro-valor"
+              name="valor"
+              type="number"
+              min="0"
+              step="any"
+              inputmode="decimal"
+              [(ngModel)]="valor"
+              [placeholder]="t.precioPlaceholder"
+            />
           }
           @default {
-            <input df-input size="sm" id="filtro-valor" name="valor" type="search" [(ngModel)]="valor"
-              [placeholder]="campo() === 'direccion' ? t.direccionPlaceholder : t.nombrePlaceholder" />
+            <input
+              df-input
+              size="sm"
+              id="filtro-valor"
+              name="valor"
+              type="search"
+              [(ngModel)]="valor"
+              [placeholder]="campo() === 'direccion' ? t.direccionPlaceholder : t.nombrePlaceholder"
+            />
           }
         }
       </div>
 
       <div class="acciones">
         <button df-button variant="primary" size="sm" type="submit">{{ te.botonBuscar }}</button>
-        <button df-button variant="ghost" size="sm" type="button" (click)="limpiar()">{{ te.botonLimpiar }}</button>
+        <button df-button variant="ghost" size="sm" type="button" (click)="limpiar()">
+          {{ te.botonLimpiar }}
+        </button>
       </div>
     </form>
   `,
-  styles: [`
-    .filtro { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
-    .campo { display: flex; flex-direction: column; gap: 6px; min-width: 160px; }
-    .campo-valor { flex: 1 1 200px; }
-    label { font-size: 12px; font-weight: 600; color: var(--df-text-muted); }
-    .acciones { display: flex; gap: 8px; }
-  `],
+  styles: [
+    `
+      .filtro {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 12px;
+      }
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 160px;
+      }
+      .campo-valor {
+        flex: 1 1 200px;
+      }
+      label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--df-text-muted);
+      }
+      .acciones {
+        display: flex;
+        gap: 8px;
+      }
+    `,
+  ],
 })
 export class FiltroSitiosComponent {
   readonly i18n = inject(I18nService);

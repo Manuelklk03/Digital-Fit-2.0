@@ -1,10 +1,25 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, inject, Injector, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  ElementRef,
+  inject,
+  Injector,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { catchError, forkJoin, map, Observable, of, Subscription } from 'rxjs';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
-import { AlertComponent, BadgeComponent, ButtonComponent, CardComponent, InputDirective } from '../../components/ui';
+import {
+  AlertComponent,
+  BadgeComponent,
+  ButtonComponent,
+  CardComponent,
+  InputDirective,
+} from '../../components/ui';
 import { I18nService } from '../../i18n/i18n.service';
 import { fechaLegible, UsuarioSesion } from '../../models/entrenamiento';
 import { AuthService } from '../../services/auth-service';
@@ -24,7 +39,12 @@ import { PrivadosService } from '../../services/centros/privados-service';
 import { MisCentrosService } from '../../services/centros/mis-centros-service';
 import { PublicosService } from '../../services/publicos/publicos-service';
 import { MisLugaresService } from '../../services/publicos/mis-lugares';
-import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../entrenamientos/compartido/estado';
+import {
+  Aviso,
+  ejecutarAccion,
+  enfocarTrasRender,
+  ListadoPaginado,
+} from '../entrenamientos/compartido/estado';
 import { EncabezadoPaginaComponent } from '../entrenamientos/compartido/encabezado-pagina';
 import { EstadoListadoComponent } from '../entrenamientos/compartido/estado-listado';
 
@@ -79,7 +99,9 @@ export class ValoracionesComponent implements OnInit {
   readonly categorias = CATEGORIAS_VALORACION;
   readonly estrellas = [1, 2, 3, 4, 5];
 
-  readonly mias = new ListadoPaginado<Valoracion>((page) => this.valoracionesService.getPaginaMisValoraciones(page));
+  readonly mias = new ListadoPaginado<Valoracion>((page) =>
+    this.valoracionesService.getPaginaMisValoraciones(page),
+  );
   readonly filtroComunidad = signal<CategoriaValoracion | null>(null);
   readonly comunidad = new ListadoPaginado<Valoracion>((page) =>
     this.valoracionesService.getPaginaPublicas(this.filtroComunidad(), page),
@@ -106,7 +128,10 @@ export class ValoracionesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.me().subscribe({ next: (u: UsuarioSesion) => this.usuario.set(u), error: () => this.usuario.set(null) });
+    this.authService.me().subscribe({
+      next: (u: UsuarioSesion) => this.usuario.set(u),
+      error: () => this.usuario.set(null),
+    });
     this.mias.cargar();
     this.comunidad.cargar();
   }
@@ -145,7 +170,12 @@ export class ValoracionesComponent implements OnInit {
     this.opcionesSub?.unsubscribe();
     this.grupos.set(null);
     let fallo = false;
-    const lista = <T>(tipo: TipoValoracion, fuente: Observable<T[]>, texto: (x: T) => string, id: (x: T) => number) =>
+    const lista = <T>(
+      tipo: TipoValoracion,
+      fuente: Observable<T[]>,
+      texto: (x: T) => string,
+      id: (x: T) => number,
+    ) =>
       fuente.pipe(
         map((xs) => ({ tipo, opciones: xs.map((x) => ({ tipo, id: id(x), texto: texto(x) })) })),
         catchError(() => {
@@ -158,12 +188,30 @@ export class ValoracionesComponent implements OnInit {
     const porNombre = (x: { nombre: string }) => x.nombre;
     const fuentes: Record<CategoriaValoracion, Observable<GrupoOpciones>[]> = {
       ENTRENAMIENTOS: [
-        lista('ENTRENAMIENTO_BASE', this.entrenamientosService.getEntrenamientos(), porNombre, porId),
-        lista('ENTRENAMIENTO_USUARIO', this.misEntrenamientosService.getMisEntrenamientos(), porNombre, porId),
-        lista('HISTORIAL_ENTRENAMIENTO', this.historialService.getHistorial(),
-          (h) => `${h.entrenamiento} · ${fechaLegible(h.fecha, idioma)}`, porId),
-        lista('ENTRENAMIENTO_COMUNIDAD', this.comunidadService.getEntrenamientosComunidad(),
-          (c) => `${c.nombre} · ${c.usuario}`, porId),
+        lista(
+          'ENTRENAMIENTO_BASE',
+          this.entrenamientosService.getEntrenamientos(),
+          porNombre,
+          porId,
+        ),
+        lista(
+          'ENTRENAMIENTO_USUARIO',
+          this.misEntrenamientosService.getMisEntrenamientos(),
+          porNombre,
+          porId,
+        ),
+        lista(
+          'HISTORIAL_ENTRENAMIENTO',
+          this.historialService.getHistorial(),
+          (h) => `${h.entrenamiento} · ${fechaLegible(h.fecha, idioma)}`,
+          porId,
+        ),
+        lista(
+          'ENTRENAMIENTO_COMUNIDAD',
+          this.comunidadService.getEntrenamientosComunidad(),
+          (c) => `${c.nombre} · ${c.usuario}`,
+          porId,
+        ),
       ],
       CENTROS_PRIVADOS: [
         lista('CENTRO_PRIVADO_BASE', this.privadosService.getCentrosPrivados(), porNombre, porId),

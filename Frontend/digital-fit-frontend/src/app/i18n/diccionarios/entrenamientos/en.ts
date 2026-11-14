@@ -83,7 +83,8 @@ export const entrenamientosEn: DiccionarioEntrenamientos = {
   catalogo: {
     badge: 'BASE CATALOG',
     titulo: 'Base workouts',
-    subtitulo: 'Digital-Fit reference routines. Filter them and add the ones you want to follow to your list.',
+    subtitulo:
+      'Digital-Fit reference routines. Filter them and add the ones you want to follow to your list.',
     vacio: 'There are no base workouts yet.',
     formCrear: 'New base workout',
     formEditar: 'Edit base workout',

@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, inject, Injector, input, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  Injector,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
@@ -7,7 +16,12 @@ import { I18nService } from '../../i18n/i18n.service';
 import { UsuarioSesion } from '../../models/entrenamiento';
 import { FiltroSitio, Sitio, SitioForm } from '../../models/lugar';
 import { AuthService } from '../../services/auth-service';
-import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../entrenamientos/compartido/estado';
+import {
+  Aviso,
+  ejecutarAccion,
+  enfocarTrasRender,
+  ListadoPaginado,
+} from '../entrenamientos/compartido/estado';
 import { EncabezadoPaginaComponent } from '../entrenamientos/compartido/encabezado-pagina';
 import { EstadoListadoComponent } from '../entrenamientos/compartido/estado-listado';
 import { ConfigListado } from './config';
@@ -42,7 +56,15 @@ import { TarjetaSitioComponent } from './tarjeta-sitio';
     <main class="pagina" id="contenido-principal">
       <app-encabezado-pagina [badge]="s.badge" [titulo]="s.titulo" [subtitulo]="s.subtitulo">
         @if (sesionResuelta() && puedeGestionar() && enEdicion() === undefined) {
-          <button id="boton-nuevo" df-button variant="primary" type="button" (click)="enEdicion.set(null)">{{ s.formCrear }}</button>
+          <button
+            id="boton-nuevo"
+            df-button
+            variant="primary"
+            type="button"
+            (click)="enEdicion.set(null)"
+          >
+            {{ s.formCrear }}
+          </button>
         }
       </app-encabezado-pagina>
 
@@ -59,7 +81,8 @@ import { TarjetaSitioComponent } from './tarjeta-sitio';
           [guardando]="guardando()"
           [autocompletar]="c.autocompletar ?? null"
           (guardar)="guardar($event)"
-          (cancelar)="cerrarFormulario()" />
+          (cancelar)="cerrarFormulario()"
+        />
       }
 
       <section class="listado" aria-labelledby="titulo-listado">
@@ -75,7 +98,9 @@ import { TarjetaSitioComponent } from './tarjeta-sitio';
 
         <app-estado-listado [listado]="listado" [vacio]="hayFiltro() ? t.vacioFiltro : s.vacio">
           @if (c.rutaCatalogo && !hayFiltro()) {
-            <a vacio df-button variant="outline" size="sm" [routerLink]="c.rutaCatalogo">{{ s.irCatalogo }}</a>
+            <a vacio df-button variant="outline" size="sm" [routerLink]="c.rutaCatalogo">{{
+              s.irCatalogo
+            }}</a>
           }
           <div class="rejilla" [attr.aria-busy]="listado.recargando()">
             @for (sitio of listado.items(); track sitio.id) {
@@ -84,13 +109,40 @@ import { TarjetaSitioComponent } from './tarjeta-sitio';
                   <!-- Catálogo: sin acciones hasta saber si es ADMIN, para no mostrar un botón que luego cambia. -->
                 } @else if (puedeGestionar()) {
                   @if (c.actualizar) {
-                    <button df-button variant="outline" size="sm" type="button" [disabled]="guardando()" (click)="enEdicion.set(sitio)">{{ te.editar }}</button>
+                    <button
+                      df-button
+                      variant="outline"
+                      size="sm"
+                      type="button"
+                      [disabled]="guardando()"
+                      (click)="enEdicion.set(sitio)"
+                    >
+                      {{ te.editar }}
+                    </button>
                   }
-                  <button df-button variant="danger" size="sm" type="button"
-                    [loading]="ocupado() === sitio.id" [disabled]="ocupado() === sitio.id || enEdicion()?.id === sitio.id" (click)="borrar(sitio)">{{ te.borrar }}</button>
+                  <button
+                    df-button
+                    variant="danger"
+                    size="sm"
+                    type="button"
+                    [loading]="ocupado() === sitio.id"
+                    [disabled]="ocupado() === sitio.id || enEdicion()?.id === sitio.id"
+                    (click)="borrar(sitio)"
+                  >
+                    {{ te.borrar }}
+                  </button>
                 } @else if (c.anadirAMis) {
-                  <button df-button variant="secondary" size="sm" type="button"
-                    [loading]="ocupado() === sitio.id" [disabled]="ocupado() === sitio.id" (click)="anadir(sitio)">{{ s.anadirAMis }}</button>
+                  <button
+                    df-button
+                    variant="secondary"
+                    size="sm"
+                    type="button"
+                    [loading]="ocupado() === sitio.id"
+                    [disabled]="ocupado() === sitio.id"
+                    (click)="anadir(sitio)"
+                  >
+                    {{ s.anadirAMis }}
+                  </button>
                 }
               </app-tarjeta-sitio>
             }
@@ -116,7 +168,9 @@ export class ListadoSitiosComponent implements OnInit {
   readonly usuario = signal<UsuarioSesion | null | undefined>(undefined);
   readonly sesionResuelta = computed(() => !this.config().catalogo || this.usuario() !== undefined);
   /** En el catálogo base solo gestiona un ADMIN; en la lista propia, el usuario. */
-  readonly puedeGestionar = computed(() => !this.config().catalogo || this.usuario()?.rol === 'ADMIN');
+  readonly puedeGestionar = computed(
+    () => !this.config().catalogo || this.usuario()?.rol === 'ADMIN',
+  );
   readonly hayFiltro = signal(false);
   /** `undefined`: formulario cerrado; `null`: crear; sitio: editar. */
   readonly enEdicion = signal<Sitio | null | undefined>(undefined);

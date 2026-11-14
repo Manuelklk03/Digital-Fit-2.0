@@ -73,7 +73,11 @@ export class Detalle<T> {
 }
 
 /** Enfoca, tras el siguiente render, el primer elemento que coincida con el selector (por defecto, en todo el documento). */
-export function enfocarTrasRender(injector: Injector, selector: string, raiz: () => ParentNode = () => document): void {
+export function enfocarTrasRender(
+  injector: Injector,
+  selector: string,
+  raiz: () => ParentNode = () => document,
+): void {
   afterNextRender(() => raiz().querySelector<HTMLElement>(selector)?.focus(), { injector });
 }
 
@@ -83,7 +87,13 @@ export function enfocarTrasRender(injector: Injector, selector: string, raiz: ()
  */
 export function ejecutarAccion<T>(
   peticion: Observable<T>,
-  opciones: { aviso: Aviso; exito?: string; error: string; alExito?: (r: T) => void; alTerminar?: () => void },
+  opciones: {
+    aviso: Aviso;
+    exito?: string;
+    error: string;
+    alExito?: (r: T) => void;
+    alTerminar?: () => void;
+  },
 ): void {
   peticion.subscribe({
     next: (r) => {

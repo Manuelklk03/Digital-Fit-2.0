@@ -34,16 +34,30 @@ type Campo = 'nombre' | 'descripcion' | 'duracionEnMinutos';
   template: `
     @let t = i18n.t().entrenamientos;
     <app-card>
-      <form class="formulario" (ngSubmit)="enviar()" novalidate [attr.aria-labelledby]="idPrefijo() + '-titulo'">
+      <form
+        class="formulario"
+        (ngSubmit)="enviar()"
+        novalidate
+        [attr.aria-labelledby]="idPrefijo() + '-titulo'"
+      >
         <h2 class="titulo" [id]="idPrefijo() + '-titulo'">{{ titulo() }}</h2>
 
         <div class="rejilla">
           <div class="campo campo-ancho">
             <label [for]="idPrefijo() + '-nombre'">{{ t.campoNombre }}</label>
-            <input df-input [id]="idPrefijo() + '-nombre'" name="nombre" maxlength="100" required
-              [(ngModel)]="modelo.nombre" [error]="errores().includes('nombre')"
+            <input
+              df-input
+              [id]="idPrefijo() + '-nombre'"
+              name="nombre"
+              maxlength="100"
+              required
+              [(ngModel)]="modelo.nombre"
+              [error]="errores().includes('nombre')"
               [attr.aria-invalid]="errores().includes('nombre')"
-              [attr.aria-describedby]="errores().includes('nombre') ? idPrefijo() + '-e-nombre' : null" />
+              [attr.aria-describedby]="
+                errores().includes('nombre') ? idPrefijo() + '-e-nombre' : null
+              "
+            />
             @if (errores().includes('nombre')) {
               <p class="error" [id]="idPrefijo() + '-e-nombre'">{{ t.errorNombre }}</p>
             }
@@ -51,7 +65,12 @@ type Campo = 'nombre' | 'descripcion' | 'duracionEnMinutos';
 
           <div class="campo">
             <label [for]="idPrefijo() + '-categoria'">{{ t.campoCategoria }}</label>
-            <select df-input [id]="idPrefijo() + '-categoria'" name="categoria" [(ngModel)]="modelo.categoria">
+            <select
+              df-input
+              [id]="idPrefijo() + '-categoria'"
+              name="categoria"
+              [(ngModel)]="modelo.categoria"
+            >
               @for (c of categorias; track c) {
                 <option [value]="c">{{ t.categorias[c] }}</option>
               }
@@ -69,10 +88,21 @@ type Campo = 'nombre' | 'descripcion' | 'duracionEnMinutos';
 
           <div class="campo">
             <label [for]="idPrefijo() + '-duracion'">{{ t.campoDuracion }}</label>
-            <input df-input [id]="idPrefijo() + '-duracion'" name="duracion" type="number" min="1" inputmode="numeric" required
-              [(ngModel)]="modelo.duracionEnMinutos" [error]="errores().includes('duracionEnMinutos')"
+            <input
+              df-input
+              [id]="idPrefijo() + '-duracion'"
+              name="duracion"
+              type="number"
+              min="1"
+              inputmode="numeric"
+              required
+              [(ngModel)]="modelo.duracionEnMinutos"
+              [error]="errores().includes('duracionEnMinutos')"
               [attr.aria-invalid]="errores().includes('duracionEnMinutos')"
-              [attr.aria-describedby]="errores().includes('duracionEnMinutos') ? idPrefijo() + '-e-duracion' : null" />
+              [attr.aria-describedby]="
+                errores().includes('duracionEnMinutos') ? idPrefijo() + '-e-duracion' : null
+              "
+            />
             @if (errores().includes('duracionEnMinutos')) {
               <p class="error" [id]="idPrefijo() + '-e-duracion'">{{ t.errorDuracion }}</p>
             }
@@ -80,10 +110,20 @@ type Campo = 'nombre' | 'descripcion' | 'duracionEnMinutos';
 
           <div class="campo campo-completo">
             <label [for]="idPrefijo() + '-descripcion'">{{ t.campoDescripcion }}</label>
-            <textarea df-input [id]="idPrefijo() + '-descripcion'" name="descripcion" rows="4" maxlength="1000" required
-              [(ngModel)]="modelo.descripcion" [error]="errores().includes('descripcion')"
+            <textarea
+              df-input
+              [id]="idPrefijo() + '-descripcion'"
+              name="descripcion"
+              rows="4"
+              maxlength="1000"
+              required
+              [(ngModel)]="modelo.descripcion"
+              [error]="errores().includes('descripcion')"
               [attr.aria-invalid]="errores().includes('descripcion')"
-              [attr.aria-describedby]="errores().includes('descripcion') ? idPrefijo() + '-e-descripcion' : null"></textarea>
+              [attr.aria-describedby]="
+                errores().includes('descripcion') ? idPrefijo() + '-e-descripcion' : null
+              "
+            ></textarea>
             @if (errores().includes('descripcion')) {
               <p class="error" [id]="idPrefijo() + '-e-descripcion'">{{ t.errorDescripcion }}</p>
             }
@@ -91,28 +131,79 @@ type Campo = 'nombre' | 'descripcion' | 'duracionEnMinutos';
         </div>
 
         <div class="acciones">
-          <button df-button variant="primary" type="submit" [loading]="guardando()" [disabled]="guardando()">
+          <button
+            df-button
+            variant="primary"
+            type="submit"
+            [loading]="guardando()"
+            [disabled]="guardando()"
+          >
             {{ guardando() ? t.guardando : textoEnviar() }}
           </button>
-          <button df-button variant="ghost" type="button" [disabled]="guardando()" (click)="cancelar.emit()">
+          <button
+            df-button
+            variant="ghost"
+            type="button"
+            [disabled]="guardando()"
+            (click)="cancelar.emit()"
+          >
             {{ inicial() ? t.cancelarEdicion : t.cerrarFormulario }}
           </button>
         </div>
       </form>
     </app-card>
   `,
-  styles: [`
-    .formulario { display: flex; flex-direction: column; gap: 20px; }
-    .titulo { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
-    .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
-    .campo { display: flex; flex-direction: column; gap: 6px; }
-    .campo-ancho { grid-column: span 2; }
-    .campo-completo { grid-column: 1 / -1; }
-    @media (max-width: 480px) { .campo-ancho { grid-column: 1 / -1; } }
-    label { font-size: 13px; font-weight: 600; color: var(--df-text-muted); }
-    .error { margin: 0; font-size: 12px; color: var(--df-danger); }
-    .acciones { display: flex; flex-wrap: wrap; gap: 8px; }
-  `],
+  styles: [
+    `
+      .formulario {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .titulo {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+      .rejilla {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+      }
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .campo-ancho {
+        grid-column: span 2;
+      }
+      .campo-completo {
+        grid-column: 1 / -1;
+      }
+      @media (max-width: 480px) {
+        .campo-ancho {
+          grid-column: 1 / -1;
+        }
+      }
+      label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--df-text-muted);
+      }
+      .error {
+        margin: 0;
+        font-size: 12px;
+        color: var(--df-danger);
+      }
+      .acciones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+    `,
+  ],
 })
 export class FormularioEntrenamientoComponent {
   readonly i18n = inject(I18nService);
@@ -155,7 +246,8 @@ export class FormularioEntrenamientoComponent {
     const errores: Campo[] = [];
     if (!datos.nombre || datos.nombre.length > 100) errores.push('nombre');
     if (!datos.descripcion || datos.descripcion.length > 1000) errores.push('descripcion');
-    if (!Number.isInteger(datos.duracionEnMinutos) || datos.duracionEnMinutos < 1) errores.push('duracionEnMinutos');
+    if (!Number.isInteger(datos.duracionEnMinutos) || datos.duracionEnMinutos < 1)
+      errores.push('duracionEnMinutos');
     this.errores.set(errores);
     if (errores.length === 0) {
       this.guardar.emit(datos);

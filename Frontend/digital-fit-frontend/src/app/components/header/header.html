@@ -1,22 +1,59 @@
 <header class="cabecera">
-
   <div class="cabecera-contenido">
     <a class="logo-enlace" routerLink="/inicio">
-      <img src="img/LOGOFINAL-removebg.png" alt="Digital-FIT">
+      <img src="img/LOGOFINAL-removebg.png" alt="Digital-FIT" />
     </a>
 
     <nav class="menu-navegacion" aria-label="Navegación principal">
       <ul>
-        <li><a routerLink="/inicio" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.inicio }}</a></li>
-        <li><a routerLink="/explorar" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.explorar }}</a></li>
-        <li><a routerLink="/entrenar" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.entrenar }}</a></li>
+        <li>
+          <a routerLink="/inicio" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
+            i18n.t().nav.inicio
+          }}</a>
+        </li>
+        <li>
+          <a routerLink="/explorar" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
+            i18n.t().nav.explorar
+          }}</a>
+        </li>
+        <li>
+          <a routerLink="/entrenar" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
+            i18n.t().nav.entrenar
+          }}</a>
+        </li>
         @if (esAdmin()) {
-        <li><a routerLink="/admin/crear-admin" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.crearAdmin }}</a></li>
+          <li>
+            <a
+              routerLink="/admin/crear-admin"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              >{{ i18n.t().nav.crearAdmin }}</a
+            >
+          </li>
         } @else {
-        <li><a routerLink="/mis-entrenamientos" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.misEntrenamientos }}</a></li>
-        <li><a routerLink="/mis-centros" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.misCentros }}</a></li>
-        <li><a routerLink="/mis-lugares" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.misLugares }}</a></li>
-        <li><a routerLink="/estadisticas" routerLinkActive="activo" ariaCurrentWhenActive="page">{{ i18n.t().nav.progreso }}</a></li>
+          <li>
+            <a
+              routerLink="/mis-entrenamientos"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              >{{ i18n.t().nav.misEntrenamientos }}</a
+            >
+          </li>
+          <li>
+            <a routerLink="/mis-centros" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
+              i18n.t().nav.misCentros
+            }}</a>
+          </li>
+          <li>
+            <a routerLink="/mis-lugares" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
+              i18n.t().nav.misLugares
+            }}</a>
+          </li>
+          <li>
+            <a routerLink="/estadisticas" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
+              i18n.t().nav.progreso
+            }}</a>
+          </li>
         }
       </ul>
     </nav>
@@ -35,37 +72,40 @@
         </button>
 
         @if (desplegableIdiomaAbierto) {
-        <ul class="menu-idiomas" [attr.aria-label]="i18n.t().header.cambiarIdioma">
-          @for (item of i18n.idiomas; track item.codigo) {
-          <li>
-            <button
-              type="button"
-              class="opcion-idioma"
-              [class.activo]="item.codigo === i18n.idiomaActual()"
-              [attr.aria-current]="item.codigo === i18n.idiomaActual() ? 'true' : null"
-              (click)="seleccionarIdioma(item.codigo)"
-            >
-              <span class="nombre-opcion">{{ item.etiqueta }}</span>
-              <span class="abreviatura-opcion">({{ item.abreviatura }})</span>
-            </button>
-          </li>
-          }
-        </ul>
+          <ul class="menu-idiomas" [attr.aria-label]="i18n.t().header.cambiarIdioma">
+            @for (item of i18n.idiomas; track item.codigo) {
+              <li>
+                <button
+                  type="button"
+                  class="opcion-idioma"
+                  [class.activo]="item.codigo === i18n.idiomaActual()"
+                  [attr.aria-current]="item.codigo === i18n.idiomaActual() ? 'true' : null"
+                  (click)="seleccionarIdioma(item.codigo)"
+                >
+                  <span class="nombre-opcion">{{ item.etiqueta }}</span>
+                  <span class="abreviatura-opcion">({{ item.abreviatura }})</span>
+                </button>
+              </li>
+            }
+          </ul>
         }
       </div>
 
       <div class="estado-usuario">
         @if (usuarioActual) {
-        <div class="estado-texto">
-          <span class="estado-linea-superior">{{ usuarioActual.username }}</span>
-          <span class="estado-linea-inferior">{{ usuarioActual.rol }}</span>
-        </div>
-        <button df-button variant="outline" size="sm" type="button" (click)="cerrarSesion()">{{ i18n.t().header.salir }}</button>
+          <div class="estado-texto">
+            <span class="estado-linea-superior">{{ usuarioActual.username }}</span>
+            <span class="estado-linea-inferior">{{ usuarioActual.rol }}</span>
+          </div>
+          <button df-button variant="outline" size="sm" type="button" (click)="cerrarSesion()">
+            {{ i18n.t().header.salir }}
+          </button>
         } @else {
-        <a df-button variant="primary" size="sm" routerLink="/login">{{ i18n.t().header.entrar }}</a>
+          <a df-button variant="primary" size="sm" routerLink="/login">{{
+            i18n.t().header.entrar
+          }}</a>
         }
       </div>
     </div>
   </div>
-
 </header>

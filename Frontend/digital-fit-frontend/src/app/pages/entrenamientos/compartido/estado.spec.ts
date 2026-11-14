@@ -46,7 +46,9 @@ describe('ListadoPaginado', () => {
 });
 
 it('reintenta la página que falló, no la última correcta', () => {
-  const fuente = vi.fn((p: number) => (p === 1 ? throwError(() => new Error('500')) : of(pagina(p, [p]))));
+  const fuente = vi.fn((p: number) =>
+    p === 1 ? throwError(() => new Error('500')) : of(pagina(p, [p])),
+  );
   const listado = TestBed.runInInjectionContext(() => new ListadoPaginado<number>(fuente));
   listado.cargar(0);
   listado.cargar(1);

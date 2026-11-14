@@ -1,24 +1,58 @@
-:host { display: block; }
+:host {
+  display: block;
+}
 
-.mapa { display: flex; flex-direction: column; gap: 10px; }
+.mapa {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-.barra { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.barra input { flex: 1 1 220px; min-width: 0; }
+.barra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.barra input {
+  flex: 1 1 220px;
+  min-width: 0;
+}
 
 .mensaje {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 8px 12px; border: 1px solid var(--df-border); border-radius: 10px;
-  background: var(--df-surface); color: var(--df-text-muted); font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--df-border);
+  border-radius: 10px;
+  background: var(--df-surface);
+  color: var(--df-text-muted);
+  font-size: 13px;
 }
 
 .lienzo {
-  width: 100%; height: 380px; border-radius: 12px; overflow: hidden;
-  border: 1px solid var(--df-border); background: var(--df-surface);
+  width: 100%;
+  height: 380px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--df-border);
+  background: var(--df-surface);
 }
-.lienzo-vista { height: 300px; }
-.lienzo:focus-visible { outline: 2px solid var(--df-border-focus); outline-offset: 2px; }
+.lienzo-vista {
+  height: 300px;
+}
+.lienzo:focus-visible {
+  outline: 2px solid var(--df-border-focus);
+  outline-offset: 2px;
+}
 
 @media (max-width: 600px) {
-  .lienzo { height: 300px; }
-  .barra button { flex: 1 1 auto; }
+  .lienzo {
+    height: 300px;
+  }
+  .barra button {
+    flex: 1 1 auto;
+  }
 }

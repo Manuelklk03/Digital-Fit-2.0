@@ -33,7 +33,7 @@
           df-input
           size="sm"
           [ngModel]="radioFiltroKm()"
-          (ngModelChange)="cambiarRadio(+($event))"
+          (ngModelChange)="cambiarRadio(+$event)"
           aria-label="Filtrar por radio de distancia"
         >
           <option [value]="1">1 km</option>
@@ -140,9 +140,7 @@
               </span>
 
               @if (lugar.distanciaKm !== undefined) {
-                <span class="distancia-chip">
-                  {{ lugar.distanciaKm }} km
-                </span>
+                <span class="distancia-chip"> {{ lugar.distanciaKm }} km </span>
               }
             </div>
 
@@ -179,7 +177,9 @@
           <div class="estado-vacio">
             <p class="vacio-icono">🔍</p>
             <p class="vacio-titulo">No se han encontrado instalaciones</p>
-            <p class="vacio-texto">Prueba a ampliar el radio de búsqueda o a cambiar la categoría de filtro.</p>
+            <p class="vacio-texto">
+              Prueba a ampliar el radio de búsqueda o a cambiar la categoría de filtro.
+            </p>
             <button
               df-button
               variant="secondary"
@@ -198,13 +198,7 @@
     <section class="panel-mapa" aria-label="Mapa interactivo">
       @if (mostrarBotonZona()) {
         <div class="flotante-buscar-zona">
-          <button
-            df-button
-            variant="primary"
-            size="sm"
-            type="button"
-            (click)="buscarEnEstaZona()"
-          >
+          <button df-button variant="primary" size="sm" type="button" (click)="buscarEnEstaZona()">
             🔄 Buscar en esta zona
           </button>
         </div>
@@ -216,4 +210,3 @@
 </main>
 
 <app-footer></app-footer>
-

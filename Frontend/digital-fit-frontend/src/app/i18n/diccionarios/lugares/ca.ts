@@ -50,8 +50,10 @@ export const lugaresCa: DiccionarioLugares = {
   ayudaUbicacion: 'Cerca una adreça o fes clic en el mapa per a marcar la ubicació.',
   autocompletando: "Cercant dades d'eixa ubicació…",
   autocompletadoOk: 'Dades emplenades des d’OpenStreetMap. Escriu el nom i revisa la resta.',
-  autocompletadoSinDatos: "No hi ha dades d'eixa ubicació a OpenStreetMap. Completa els camps a mà.",
-  autocompletadoError: "No s'han pogut consultar les dades de la ubicació. Completa els camps a mà.",
+  autocompletadoSinDatos:
+    "No hi ha dades d'eixa ubicació a OpenStreetMap. Completa els camps a mà.",
+  autocompletadoError:
+    "No s'han pogut consultar les dades de la ubicació. Completa els camps a mà.",
   confirmarBorrado: 'Segur que vols esborrar-lo? Esta acció no es pot desfer.',
   exitoAnadido: 'Afegit a la teua llista.',
   errorAnadir: "No s'ha pogut afegir.",
@@ -81,7 +83,8 @@ export const lugaresCa: DiccionarioLugares = {
   centrosBase: {
     badge: 'Centres privats',
     titulo: 'Catàleg de centres',
-    subtitulo: 'Gimnasos i centres esportius de la Comunitat Valenciana. Afig els que uses a la teua llista.',
+    subtitulo:
+      'Gimnasos i centres esportius de la Comunitat Valenciana. Afig els que uses a la teua llista.',
     vacio: 'Encara no hi ha centres al catàleg.',
     formCrear: 'Nou centre',
     formEditar: 'Editar centre',

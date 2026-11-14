@@ -1,27 +1,52 @@
 <app-header />
 
 <main class="pagina-inicio" id="contenido-principal">
-
   <!-- Panel superior contextual para usuarios con sesión activa -->
   @if (usuarioActual(); as usuario) {
     <section class="max-w-6xl mx-auto mb-6 px-4">
-      <div class="panel-usuario-activo p-4 md:p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div
+        class="panel-usuario-activo p-4 md:p-5 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+      >
         <div class="flex items-center gap-3">
           <div class="usuario-icono-badge" aria-hidden="true">
             @if (esAdmin()) {
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-amber-400">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              <svg
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="w-5 h-5 text-amber-400"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
               </svg>
             } @else {
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5 text-blue-400">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              <svg
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="w-5 h-5 text-blue-400"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
               </svg>
             }
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-xs uppercase font-bold tracking-wider text-emerald-400">Sesión iniciada</span>
-              <span df-badge [variant]="esAdmin() ? 'warning' : 'accent'" badgeStyle="subtle">{{ usuario.rol }}</span>
+              <span class="text-xs uppercase font-bold tracking-wider text-emerald-400"
+                >Sesión iniciada</span
+              >
+              <span df-badge [variant]="esAdmin() ? 'warning' : 'accent'" badgeStyle="subtle">{{
+                usuario.rol
+              }}</span>
             </div>
             <p class="text-sm md:text-base font-semibold text-slate-100 m-0">
               Hola, {{ usuario.username }}. Tu panel de entrenamiento está listo.
@@ -31,10 +56,16 @@
 
         <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
           @if (esAdmin()) {
-            <a df-button routerLink="/admin/crear-admin" variant="secondary" size="sm">{{ i18n.t().nav.crearAdmin }}</a>
+            <a df-button routerLink="/admin/crear-admin" variant="secondary" size="sm">{{
+              i18n.t().nav.crearAdmin
+            }}</a>
           }
-          <a df-button routerLink="/entrenar" variant="primary" size="sm">{{ i18n.t().nav.entrenar }}</a>
-          <a df-button routerLink="/explorar" variant="outline" size="sm">{{ i18n.t().nav.explorar }}</a>
+          <a df-button routerLink="/entrenar" variant="primary" size="sm">{{
+            i18n.t().nav.entrenar
+          }}</a>
+          <a df-button routerLink="/explorar" variant="outline" size="sm">{{
+            i18n.t().nav.explorar
+          }}</a>
         </div>
       </div>
     </section>
@@ -58,17 +89,33 @@
       {{ i18n.t().inicio.heroSubtitulo }}
     </p>
 
-    <div class="anim-hero-cta flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-md mx-auto mb-14">
-      <a df-button routerLink="/entrenar" variant="primary" size="lg" class="w-full sm:w-auto px-7 py-3.5 text-sm font-bold">
+    <div
+      class="anim-hero-cta flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-md mx-auto mb-14"
+    >
+      <a
+        df-button
+        routerLink="/entrenar"
+        variant="primary"
+        size="lg"
+        class="w-full sm:w-auto px-7 py-3.5 text-sm font-bold"
+      >
         {{ i18n.t().inicio.ctaEmpezar }}
       </a>
-      <a df-button routerLink="/explorar" variant="outline" size="lg" class="w-full sm:w-auto px-7 py-3.5 text-sm font-bold">
+      <a
+        df-button
+        routerLink="/explorar"
+        variant="outline"
+        size="lg"
+        class="w-full sm:w-auto px-7 py-3.5 text-sm font-bold"
+      >
         {{ i18n.t().inicio.ctaExplorar }}
       </a>
     </div>
 
     <!-- Indicadores técnicos reales del sistema (sin métricas de marketing inventadas) -->
-    <div class="anim-hero-cta grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto pt-8 border-t border-slate-800">
+    <div
+      class="anim-hero-cta grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto pt-8 border-t border-slate-800"
+    >
       <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-left">
         <div class="text-xl sm:text-2xl font-bold text-white font-mono tnum">10 rutinas</div>
         <div class="text-xs text-slate-400 mt-1">{{ i18n.t().inicio.metricasRutinas }}</div>
@@ -91,7 +138,9 @@
   <!-- ================================================================= -->
   <!-- SECCIÓN 1: ASISTENTE DE ENTRENAR EN DIRECTO                       -->
   <!-- ================================================================= -->
-  <section class="anim-scroll-seccion max-w-6xl mx-auto px-4 py-14 md:py-20 border-t border-slate-800">
+  <section
+    class="anim-scroll-seccion max-w-6xl mx-auto px-4 py-14 md:py-20 border-t border-slate-800"
+  >
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
       <div class="lg:col-span-6 space-y-5 text-left">
         <span df-badge variant="accent" badgeStyle="subtle" [dot]="true">
@@ -101,26 +150,60 @@
           {{ i18n.t().inicio.seccionAsistenteDesc }}
         </h2>
         <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-          Diseñado para el entrenamiento real en gimnasio o al aire libre: controles táctiles de carga,
-          cronómetro regresivo con números tabulares legibles de un vistazo y avance de series sin pasos innecesarios.
+          Diseñado para el entrenamiento real en gimnasio o al aire libre: controles táctiles de
+          carga, cronómetro regresivo con números tabulares legibles de un vistazo y avance de
+          series sin pasos innecesarios.
         </p>
 
         <ul class="space-y-2.5 pt-1 text-slate-300 text-sm">
           <li class="flex items-center gap-2.5">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 text-emerald-400 flex-shrink-0" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7" />
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-4 h-4 text-emerald-400 flex-shrink-0"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.2"
+                d="M5 13l4 4L19 7"
+              />
             </svg>
             <span>Ajuste táctil de peso en saltos de +2.5 kg o repeticiones individuales.</span>
           </li>
           <li class="flex items-center gap-2.5">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 text-emerald-400 flex-shrink-0" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7" />
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-4 h-4 text-emerald-400 flex-shrink-0"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.2"
+                d="M5 13l4 4L19 7"
+              />
             </svg>
             <span>Temporizador regresivo de recuperación activado con un solo toque.</span>
           </li>
           <li class="flex items-center gap-2.5">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 text-emerald-400 flex-shrink-0" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7" />
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-4 h-4 text-emerald-400 flex-shrink-0"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.2"
+                d="M5 13l4 4L19 7"
+              />
             </svg>
             <span>Registro persistente en el historial de tu cuenta sin recargar la página.</span>
           </li>
@@ -138,7 +221,9 @@
         <app-card class="tarjeta-entreno-demo">
           <div class="flex items-center justify-between pb-3.5 border-b border-slate-800">
             <div>
-              <span class="text-xs font-semibold uppercase tracking-wider text-blue-400">{{ i18n.t().inicio.ejercicioActual }}</span>
+              <span class="text-xs font-semibold uppercase tracking-wider text-blue-400">{{
+                i18n.t().inicio.ejercicioActual
+              }}</span>
               <h3 class="text-lg sm:text-xl font-bold text-white m-0">Press de banca plano</h3>
             </div>
             <span df-badge variant="primary" badgeStyle="solid">
@@ -151,7 +236,9 @@
             <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1">
               {{ i18n.t().inicio.descansoEnCurso }}
             </span>
-            <div class="cronometro-digitos text-5xl font-black font-mono text-cyan-400 tracking-wider mb-3">
+            <div
+              class="cronometro-digitos text-5xl font-black font-mono text-cyan-400 tracking-wider mb-3"
+            >
               {{ formatearTiempo(descansoSegundos()) }}
             </div>
 
@@ -159,21 +246,19 @@
             <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-3.5">
               <div
                 class="bg-blue-500 h-full transition-all duration-1000"
-                [style.width.%]="(descansoSegundos() / 90) * 100">
-              </div>
+                [style.width.%]="(descansoSegundos() / 90) * 100"
+              ></div>
             </div>
 
             <div class="flex items-center justify-center gap-2">
-              <button
-                type="button"
-                (click)="toggleDescanso()"
-                class="boton-control-descanso">
+              <button type="button" (click)="toggleDescanso()" class="boton-control-descanso">
                 {{ descansoActivo() ? 'Pausar' : 'Iniciar' }}
               </button>
               <button
                 type="button"
                 (click)="reiniciarDescanso()"
-                class="boton-control-descanso boton-secundario">
+                class="boton-control-descanso boton-secundario"
+              >
                 Reiniciar 90s
               </button>
             </div>
@@ -182,42 +267,52 @@
           <!-- Selectores táctiles de peso y repeticiones -->
           <div class="grid grid-cols-2 gap-3 mb-5">
             <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 text-center">
-              <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1">{{ i18n.t().inicio.peso }}</span>
+              <span
+                class="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1"
+                >{{ i18n.t().inicio.peso }}</span
+              >
               <div class="text-xl font-black font-mono text-white mb-2">{{ pesoActual() }} kg</div>
               <div class="flex items-center justify-center gap-2">
                 <button
                   type="button"
                   (click)="ajustarPeso(-2.5)"
                   class="boton-incremento"
-                  aria-label="Restar 2.5 kilogramos">
+                  aria-label="Restar 2.5 kilogramos"
+                >
                   -
                 </button>
                 <button
                   type="button"
                   (click)="ajustarPeso(+2.5)"
                   class="boton-incremento"
-                  aria-label="Sumar 2.5 kilogramos">
+                  aria-label="Sumar 2.5 kilogramos"
+                >
                   +
                 </button>
               </div>
             </div>
 
             <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800 text-center">
-              <span class="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1">{{ i18n.t().inicio.reps }}</span>
+              <span
+                class="text-xs uppercase tracking-wider text-slate-400 font-semibold block mb-1"
+                >{{ i18n.t().inicio.reps }}</span
+              >
               <div class="text-xl font-black font-mono text-white mb-2">{{ repsActual() }}</div>
               <div class="flex items-center justify-center gap-2">
                 <button
                   type="button"
                   (click)="ajustarReps(-1)"
                   class="boton-incremento"
-                  aria-label="Restar una repetición">
+                  aria-label="Restar una repetición"
+                >
                   -
                 </button>
                 <button
                   type="button"
                   (click)="ajustarReps(+1)"
                   class="boton-incremento"
-                  aria-label="Sumar una repetición">
+                  aria-label="Sumar una repetición"
+                >
                   +
                 </button>
               </div>
@@ -230,7 +325,8 @@
             size="md"
             type="button"
             (click)="completarSerie()"
-            class="w-full">
+            class="w-full"
+          >
             {{ i18n.t().inicio.completarSerie }} ({{ serieActual() }})
           </button>
         </app-card>
@@ -241,13 +337,17 @@
   <!-- ================================================================= -->
   <!-- SECCIÓN 2: RADAR DE LUGARES Y MAPA OPENSTREETMAP                  -->
   <!-- ================================================================= -->
-  <section class="anim-scroll-seccion max-w-6xl mx-auto px-4 py-14 md:py-20 border-t border-slate-800">
+  <section
+    class="anim-scroll-seccion max-w-6xl mx-auto px-4 py-14 md:py-20 border-t border-slate-800"
+  >
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
       <!-- Tarjeta visual con spots de muestra y distancias calculadas -->
       <div class="lg:col-span-6 order-2 lg:order-1">
         <app-card class="tarjeta-mapa-preview">
           <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
-            <span class="text-xs font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2">
+            <span
+              class="text-xs font-bold uppercase tracking-wider text-blue-400 flex items-center gap-2"
+            >
               <span class="radar-dot" aria-hidden="true"></span>
               {{ i18n.t().inicio.seccionRadarTitulo }}
             </span>
@@ -256,59 +356,113 @@
 
           <!-- Lista de lugares con distancias geodésicas -->
           <div class="space-y-2.5">
-            <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between">
+            <div
+              class="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between"
+            >
               <div class="flex items-center gap-2.5">
                 <div class="spot-categoria-icono" aria-hidden="true">
-                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 text-emerald-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                  <svg
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    class="w-4 h-4 text-emerald-400"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 6h16M4 12h16m-7 6h7"
+                    />
                   </svg>
                 </div>
                 <div>
-                  <h4 class="text-sm font-semibold text-white m-0">Parque Calistenia Jardín del Turia</h4>
-                  <p class="text-xs text-slate-400 m-0">{{ i18n.t().inicio.instalacionCalistenia }} • Tramo IX</p>
+                  <h4 class="text-sm font-semibold text-white m-0">
+                    Parque Calistenia Jardín del Turia
+                  </h4>
+                  <p class="text-xs text-slate-400 m-0">
+                    {{ i18n.t().inicio.instalacionCalistenia }} • Tramo IX
+                  </p>
                 </div>
               </div>
-              <span class="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              <span
+                class="text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20"
+              >
                 0.4 km
               </span>
             </div>
 
-            <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between">
+            <div
+              class="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between"
+            >
               <div class="flex items-center gap-2.5">
                 <div class="spot-categoria-icono" aria-hidden="true">
-                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 text-blue-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  <svg
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    class="w-4 h-4 text-blue-400"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                    />
                   </svg>
                 </div>
                 <div>
                   <h4 class="text-sm font-semibold text-white m-0">Fitness Park Valencia Centro</h4>
-                  <p class="text-xs text-slate-400 m-0">{{ i18n.t().inicio.instalacionGimnasio }} • Privado</p>
+                  <p class="text-xs text-slate-400 m-0">
+                    {{ i18n.t().inicio.instalacionGimnasio }} • Privado
+                  </p>
                 </div>
               </div>
-              <span class="text-xs font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+              <span
+                class="text-xs font-mono font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20"
+              >
                 0.8 km
               </span>
             </div>
 
-            <div class="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between">
+            <div
+              class="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 flex items-center justify-between"
+            >
               <div class="flex items-center gap-2.5">
                 <div class="spot-categoria-icono" aria-hidden="true">
-                  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 text-cyan-400">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <svg
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    class="w-4 h-4 text-cyan-400"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
                   </svg>
                 </div>
                 <div>
-                  <h4 class="text-sm font-semibold text-white m-0">Complejo Deportivo La Petxina</h4>
-                  <p class="text-xs text-slate-400 m-0">{{ i18n.t().inicio.instalacionPiscina }} • Municipal</p>
+                  <h4 class="text-sm font-semibold text-white m-0">
+                    Complejo Deportivo La Petxina
+                  </h4>
+                  <p class="text-xs text-slate-400 m-0">
+                    {{ i18n.t().inicio.instalacionPiscina }} • Municipal
+                  </p>
                 </div>
               </div>
-              <span class="text-xs font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
+              <span
+                class="text-xs font-mono font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20"
+              >
                 1.3 km
               </span>
             </div>
           </div>
 
-          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <div
+            class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400"
+          >
             <span>© OpenStreetMap contributors</span>
             <span class="text-slate-300 font-mono">{{ i18n.t().inicio.distanciaHaversine }}</span>
           </div>
@@ -323,27 +477,64 @@
           {{ i18n.t().inicio.seccionRadarDesc }}
         </h2>
         <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-          Usa tu ubicación actual o introduce cualquier dirección en Valencia.
-          El backend consulta Overpass API y fusiona los resultados con la base de datos local,
-          ordenándolos geodésicamente mediante la fórmula Haversine.
+          Usa tu ubicación actual o introduce cualquier dirección en Valencia. El backend consulta
+          Overpass API y fusiona los resultados con la base de datos local, ordenándolos
+          geodésicamente mediante la fórmula Haversine.
         </p>
 
         <ul class="space-y-2.5 pt-1 text-slate-300 text-sm">
           <li class="flex items-center gap-2.5">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 text-blue-400 flex-shrink-0" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7" />
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-4 h-4 text-blue-400 flex-shrink-0"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.2"
+                d="M5 13l4 4L19 7"
+              />
             </svg>
-            <span>Filtro por cuatro categorías: Gimnasio, Calistenia, Polideportivo y Piscina.</span>
+            <span
+              >Filtro por cuatro categorías: Gimnasio, Calistenia, Polideportivo y Piscina.</span
+            >
           </li>
           <li class="flex items-center gap-2.5">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 text-blue-400 flex-shrink-0" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7" />
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-4 h-4 text-blue-400 flex-shrink-0"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.2"
+                d="M5 13l4 4L19 7"
+              />
             </svg>
-            <span>Proxy de geocodificación seguro en backend con rate limiting de 1 req/s (P11).</span>
+            <span
+              >Proxy de geocodificación seguro en backend con rate limiting de 1 req/s (P11).</span
+            >
           </li>
           <li class="flex items-center gap-2.5">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 text-blue-400 flex-shrink-0" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M5 13l4 4L19 7" />
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              class="w-4 h-4 text-blue-400 flex-shrink-0"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.2"
+                d="M5 13l4 4L19 7"
+              />
             </svg>
             <span>Búsqueda dinámica por área con el control «Buscar en esta zona».</span>
           </li>
@@ -361,12 +552,16 @@
   <!-- ================================================================= -->
   <!-- SECCIÓN 3: CAPACIDADES DEL SISTEMA (Sin marketing artificial)    -->
   <!-- ================================================================= -->
-  <section class="anim-scroll-seccion max-w-6xl mx-auto px-4 py-14 md:py-20 border-t border-slate-800 text-center">
+  <section
+    class="anim-scroll-seccion max-w-6xl mx-auto px-4 py-14 md:py-20 border-t border-slate-800 text-center"
+  >
     <div class="max-w-2xl mx-auto mb-12">
       <span df-badge variant="neutral" badgeStyle="subtle" [dot]="true">
         {{ i18n.t().inicio.seccionComunidadTitulo }}
       </span>
-      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight font-sans mt-3 mb-3">
+      <h2
+        class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight font-sans mt-3 mb-3"
+      >
         {{ i18n.t().inicio.seccionComunidadDesc }}
       </h2>
     </div>
@@ -375,7 +570,12 @@
       <app-card [interactive]="true" class="anim-scroll-card tarjeta-capacidad">
         <div class="capacidad-icono" aria-hidden="true">
           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 text-blue-400">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
         </div>
         <h3 class="text-lg font-bold text-white mb-2">{{ i18n.t().inicio.tarjeta1Titulo }}</h3>
@@ -386,9 +586,24 @@
 
       <app-card [interactive]="true" class="anim-scroll-card tarjeta-capacidad">
         <div class="capacidad-icono" aria-hidden="true">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 text-emerald-400">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-6 h-6 text-emerald-400"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+            />
           </svg>
         </div>
         <h3 class="text-lg font-bold text-white mb-2">{{ i18n.t().inicio.tarjeta2Titulo }}</h3>
@@ -399,8 +614,18 @@
 
       <app-card [interactive]="true" class="anim-scroll-card tarjeta-capacidad">
         <div class="capacidad-icono" aria-hidden="true">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6 text-purple-400">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-6 h-6 text-purple-400"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+            />
           </svg>
         </div>
         <h3 class="text-lg font-bold text-white mb-2">{{ i18n.t().inicio.tarjeta3Titulo }}</h3>
@@ -425,24 +650,47 @@
 
       <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
         @if (usuarioActual()) {
-          <a df-button routerLink="/entrenar" variant="primary" size="md" class="w-full sm:w-auto px-6 py-3 font-bold">
+          <a
+            df-button
+            routerLink="/entrenar"
+            variant="primary"
+            size="md"
+            class="w-full sm:w-auto px-6 py-3 font-bold"
+          >
             {{ i18n.t().nav.entrenar }}
           </a>
         } @else {
-          <a df-button routerLink="/register" variant="primary" size="md" class="w-full sm:w-auto px-6 py-3 font-bold">
+          <a
+            df-button
+            routerLink="/register"
+            variant="primary"
+            size="md"
+            class="w-full sm:w-auto px-6 py-3 font-bold"
+          >
             {{ i18n.t().inicio.ctaUnirse }}
           </a>
-          <a df-button routerLink="/login" variant="secondary" size="md" class="w-full sm:w-auto px-6 py-3 font-bold">
+          <a
+            df-button
+            routerLink="/login"
+            variant="secondary"
+            size="md"
+            class="w-full sm:w-auto px-6 py-3 font-bold"
+          >
             {{ i18n.t().header.entrar }}
           </a>
         }
-        <a df-button routerLink="/explorar" variant="outline" size="md" class="w-full sm:w-auto px-6 py-3 font-bold">
+        <a
+          df-button
+          routerLink="/explorar"
+          variant="outline"
+          size="md"
+          class="w-full sm:w-auto px-6 py-3 font-bold"
+        >
           {{ i18n.t().inicio.ctaVerMapa }}
         </a>
       </div>
     </div>
   </section>
-
 </main>
 
 <app-footer />

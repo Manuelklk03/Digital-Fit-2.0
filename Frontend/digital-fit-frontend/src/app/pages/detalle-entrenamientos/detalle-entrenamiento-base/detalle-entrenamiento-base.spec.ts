@@ -6,7 +6,14 @@ import { vi } from 'vitest';
 
 import { DetalleEntrenamientoComponent } from './detalle-entrenamiento-base';
 
-const E = { id: 4, nombre: 'HIIT 20', descripcion: 'Intervalos', categoria: 'HIIT', nivel: 'AVANZADO', duracionEnMinutos: 20 };
+const E = {
+  id: 4,
+  nombre: 'HIIT 20',
+  descripcion: 'Intervalos',
+  categoria: 'HIIT',
+  nivel: 'AVANZADO',
+  duracionEnMinutos: 20,
+};
 
 describe('DetalleEntrenamientoComponent', () => {
   let fixture: ComponentFixture<DetalleEntrenamientoComponent>;
@@ -19,7 +26,10 @@ describe('DetalleEntrenamientoComponent', () => {
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({ id: '4' }) } } },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { paramMap: convertToParamMap({ id: '4' }) } },
+        },
       ],
     }).compileComponents();
     fixture = TestBed.createComponent(DetalleEntrenamientoComponent);
@@ -45,7 +55,9 @@ describe('DetalleEntrenamientoComponent', () => {
     const navegar = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
 
     fixture.nativeElement.querySelector('.acciones button').click();
-    http.expectOne((r) => r.method === 'DELETE' && r.url === '/api/admin/entrenamientos-base/4').flush(null);
+    http
+      .expectOne((r) => r.method === 'DELETE' && r.url === '/api/admin/entrenamientos-base/4')
+      .flush(null);
 
     expect(navegar).toHaveBeenCalledWith(['/entrenamientos']);
   });

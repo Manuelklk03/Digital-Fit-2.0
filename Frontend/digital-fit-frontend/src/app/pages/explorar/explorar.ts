@@ -15,7 +15,13 @@ import { FormsModule } from '@angular/forms';
 import * as L from 'leaflet';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
-import { BadgeComponent, ButtonComponent, CardComponent, InputDirective, SkeletonComponent } from '../../components/ui';
+import {
+  BadgeComponent,
+  ButtonComponent,
+  CardComponent,
+  InputDirective,
+  SkeletonComponent,
+} from '../../components/ui';
 import { I18nService } from '../../i18n/i18n.service';
 import { PrivadosService } from '../../services/centros/privados-service';
 import { PublicosService } from '../../services/publicos/publicos-service';
@@ -118,8 +124,7 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
           !query ||
           lugar.nombre.toLowerCase().includes(query) ||
           lugar.direccion.toLowerCase().includes(query);
-        const coincideRadio =
-          lugar.distanciaKm === undefined || lugar.distanciaKm <= radio;
+        const coincideRadio = lugar.distanciaKm === undefined || lugar.distanciaKm <= radio;
 
         return coincideCat && coincideQuery && coincideRadio;
       })
@@ -237,15 +242,12 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     // Teselas oscuras CartoDB Dark Matter (alto contraste, acorde a Neutral Sport) con atribución
-    L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png',
-      {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        maxZoom: 19,
-        subdomains: 'abcd',
-      },
-    ).addTo(this.map);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      maxZoom: 19,
+      subdomains: 'abcd',
+    }).addTo(this.map);
 
     this.markersLayer = L.layerGroup().addTo(this.map);
 
@@ -332,9 +334,7 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
               iconSize: [20, 20],
               iconAnchor: [10, 10],
             });
-            this.userMarker = L.marker([lat, lng], { icon: userIcon }).addTo(
-              this.map,
-            );
+            this.userMarker = L.marker([lat, lng], { icon: userIcon }).addTo(this.map);
           }
         }
       },
@@ -350,7 +350,12 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!this.map) return;
     const center = this.map.getCenter();
     this.recalcularDistancias(center.lat, center.lng);
-    this.buscarLugaresEnBackend(center.lat, center.lng, this.radioFiltroKm(), this.categoriaFiltro());
+    this.buscarLugaresEnBackend(
+      center.lat,
+      center.lng,
+      this.radioFiltroKm(),
+      this.categoriaFiltro(),
+    );
     this.mostrarBotonZona.set(false);
   }
 
@@ -405,24 +410,14 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.lugares.update((list) =>
       list.map((l) => ({
         ...l,
-        distanciaKm: this.calcularDistanciaKm(
-          origenLat,
-          origenLng,
-          l.latitud,
-          l.longitud,
-        ),
+        distanciaKm: this.calcularDistanciaKm(origenLat, origenLng, l.latitud, l.longitud),
       })),
     );
     this.actualizarMarcadoresEnMapa();
   }
 
   // Fórmula de Haversine para cálculo de distancia geodésica en kilómetros
-  calcularDistanciaKm(
-    lat1: number,
-    lon1: number,
-    lat2: number,
-    lon2: number,
-  ): number {
+  calcularDistanciaKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const R = 6371; // Radio de la Tierra en km
     const dLat = this.deg2rad(lat2 - lat1);
     const dLon = this.deg2rad(lon2 - lon1);
@@ -541,4 +536,3 @@ export class ExplorarComponent implements OnInit, AfterViewInit, OnDestroy {
     ];
   }
 }
-

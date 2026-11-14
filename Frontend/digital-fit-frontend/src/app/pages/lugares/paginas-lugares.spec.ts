@@ -19,14 +19,34 @@ import { DetalleSitioComponent } from './detalle-sitio';
 import { CentroPrivado, LugarPublico, SitioForm } from '../../models/lugar';
 
 const CENTRO: CentroPrivado = {
-  id: 4, nombre: 'Gym Centro', direccion: 'Calle Colón 1', telefono: null, horario: '7-23',
-  descripcion: null, latitud: 39.47, longitud: -0.376, precioMensual: 30,
+  id: 4,
+  nombre: 'Gym Centro',
+  direccion: 'Calle Colón 1',
+  telefono: null,
+  horario: '7-23',
+  descripcion: null,
+  latitud: 39.47,
+  longitud: -0.376,
+  precioMensual: 30,
 };
 const LUGAR: LugarPublico = {
-  id: 4, nombre: 'Parque Turia', direccion: 'Jardín del Turia', telefono: null, horario: null,
-  descripcion: 'Barras', latitud: 39.48, longitud: -0.37, tipo: 'PARQUE_CALISTENIA',
+  id: 4,
+  nombre: 'Parque Turia',
+  direccion: 'Jardín del Turia',
+  telefono: null,
+  horario: null,
+  descripcion: 'Barras',
+  latitud: 39.48,
+  longitud: -0.37,
+  tipo: 'PARQUE_CALISTENIA',
 };
-const pagina = <T>(items: T[]) => ({ content: items, page: 0, size: 12, totalElements: items.length, totalPages: 1 });
+const pagina = <T>(items: T[]) => ({
+  content: items,
+  page: 0,
+  size: 12,
+  totalElements: items.length,
+  totalPages: 1,
+});
 const ADMIN = { username: 'admin1', email: 'a@a.es', rol: 'ADMIN' };
 const USUARIO = { username: 'usuario1', email: 'u@u.es', rol: 'USER' };
 
@@ -44,21 +64,60 @@ interface CasoListado {
 }
 
 const LISTADOS: CasoListado[] = [
-  { nombre: 'Privados', componente: PrivadosComponent, url: '/api/centros-privados', sitio: CENTRO, catalogo: true,
-    crear: '/api/admin/centros-privados-base', actualizar: '/api/admin/centros-privados-base/4',
-    borrar: '/api/admin/centros-privados-base/4', anadir: '/api/mis-centros-privados/centros-app/4' },
-  { nombre: 'Publicos', componente: PublicosComponent, url: '/api/lugares-publicos', sitio: LUGAR, catalogo: true,
-    crear: '/api/admin/lugares-publicos-base', actualizar: '/api/admin/lugares-publicos-base/4',
-    borrar: '/api/admin/lugares-publicos-base/4', anadir: '/api/mis-lugares-publicos/base/4' },
-  { nombre: 'MisCentros', componente: MisCentrosComponent, url: '/api/mis-centros-privados', sitio: CENTRO, catalogo: false,
-    crear: '/api/mis-centros-privados/centros-maps', borrar: '/api/mis-centros-privados/4',
-    autocompletar: '/api/mis-centros-privados/autocompletar' },
-  { nombre: 'MisLugares', componente: MisLugaresComponent, url: '/api/mis-lugares-publicos', sitio: LUGAR, catalogo: false,
-    crear: '/api/mis-lugares-publicos', borrar: '/api/mis-lugares-publicos/4',
-    autocompletar: '/api/mis-lugares-publicos/autocompletar' },
+  {
+    nombre: 'Privados',
+    componente: PrivadosComponent,
+    url: '/api/centros-privados',
+    sitio: CENTRO,
+    catalogo: true,
+    crear: '/api/admin/centros-privados-base',
+    actualizar: '/api/admin/centros-privados-base/4',
+    borrar: '/api/admin/centros-privados-base/4',
+    anadir: '/api/mis-centros-privados/centros-app/4',
+  },
+  {
+    nombre: 'Publicos',
+    componente: PublicosComponent,
+    url: '/api/lugares-publicos',
+    sitio: LUGAR,
+    catalogo: true,
+    crear: '/api/admin/lugares-publicos-base',
+    actualizar: '/api/admin/lugares-publicos-base/4',
+    borrar: '/api/admin/lugares-publicos-base/4',
+    anadir: '/api/mis-lugares-publicos/base/4',
+  },
+  {
+    nombre: 'MisCentros',
+    componente: MisCentrosComponent,
+    url: '/api/mis-centros-privados',
+    sitio: CENTRO,
+    catalogo: false,
+    crear: '/api/mis-centros-privados/centros-maps',
+    borrar: '/api/mis-centros-privados/4',
+    autocompletar: '/api/mis-centros-privados/autocompletar',
+  },
+  {
+    nombre: 'MisLugares',
+    componente: MisLugaresComponent,
+    url: '/api/mis-lugares-publicos',
+    sitio: LUGAR,
+    catalogo: false,
+    crear: '/api/mis-lugares-publicos',
+    borrar: '/api/mis-lugares-publicos/4',
+    autocompletar: '/api/mis-lugares-publicos/autocompletar',
+  },
 ];
 
-const DATOS: SitioForm = { nombre: 'Nuevo', direccion: 'Calle 1', telefono: null, horario: null, descripcion: null, latitud: 39.4, longitud: -0.3, precioMensual: 20 };
+const DATOS: SitioForm = {
+  nombre: 'Nuevo',
+  direccion: 'Calle 1',
+  telefono: null,
+  horario: null,
+  descripcion: null,
+  latitud: 39.4,
+  longitud: -0.3,
+  precioMensual: 20,
+};
 
 describe('Pantallas de lugares', () => {
   let http: HttpTestingController;
@@ -69,7 +128,14 @@ describe('Pantallas de lugares', () => {
         provideRouter([]),
         provideHttpClient(),
         provideHttpClientTesting(),
-        ...(id ? [{ provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({ id }) } } }] : []),
+        ...(id
+          ? [
+              {
+                provide: ActivatedRoute,
+                useValue: { snapshot: { paramMap: convertToParamMap({ id }) } },
+              },
+            ]
+          : []),
       ],
     });
     http = TestBed.inject(HttpTestingController);
@@ -93,7 +159,8 @@ describe('Pantallas de lugares', () => {
         expect(req.request.params.get('size')).toBe('12');
         req.flush(pagina([caso.sitio]));
         fixture.detectChanges();
-        const listado = fixture.debugElement.query(By.directive(ListadoSitiosComponent)).componentInstance as ListadoSitiosComponent;
+        const listado = fixture.debugElement.query(By.directive(ListadoSitiosComponent))
+          .componentInstance as ListadoSitiosComponent;
         return { fixture, listado };
       }
 
@@ -130,7 +197,9 @@ describe('Pantallas de lugares', () => {
         const { listado } = crear(caso.catalogo ? ADMIN : USUARIO);
         vi.spyOn(window, 'confirm').mockReturnValue(true);
         listado.borrar(caso.sitio);
-        http.expectOne(caso.borrar).flush({ detail: 'No permitido' }, { status: 403, statusText: 'Forbidden' });
+        http
+          .expectOne(caso.borrar)
+          .flush({ detail: 'No permitido' }, { status: 403, statusText: 'Forbidden' });
         expect(listado.aviso.actual()).toEqual({ texto: 'No permitido', tipo: 'error' });
       });
 
@@ -180,14 +249,44 @@ describe('Pantallas de lugares', () => {
   }
 
   const DETALLES = [
-    { nombre: 'DetallePrivado', componente: DetallePrivadoComponent, url: '/api/centros-privados/4', sitio: CENTRO,
-      catalogo: true, borrar: '/api/admin/centros-privados-base/4', anadir: '/api/mis-centros-privados/centros-app/4', listado: '/privados' },
-    { nombre: 'DetallePublico', componente: DetallePublicoComponent, url: '/api/lugares-publicos/4', sitio: LUGAR,
-      catalogo: true, borrar: '/api/admin/lugares-publicos-base/4', anadir: '/api/mis-lugares-publicos/base/4', listado: '/publicos' },
-    { nombre: 'DetalleMiCentro', componente: DetalleMiCentroComponent, url: '/api/mis-centros-privados/4', sitio: CENTRO,
-      catalogo: false, borrar: '/api/mis-centros-privados/4', listado: '/mis-centros' },
-    { nombre: 'DetalleMiLugar', componente: DetalleMiLugarComponent, url: '/api/mis-lugares-publicos/4', sitio: LUGAR,
-      catalogo: false, borrar: '/api/mis-lugares-publicos/4', listado: '/mis-lugares' },
+    {
+      nombre: 'DetallePrivado',
+      componente: DetallePrivadoComponent,
+      url: '/api/centros-privados/4',
+      sitio: CENTRO,
+      catalogo: true,
+      borrar: '/api/admin/centros-privados-base/4',
+      anadir: '/api/mis-centros-privados/centros-app/4',
+      listado: '/privados',
+    },
+    {
+      nombre: 'DetallePublico',
+      componente: DetallePublicoComponent,
+      url: '/api/lugares-publicos/4',
+      sitio: LUGAR,
+      catalogo: true,
+      borrar: '/api/admin/lugares-publicos-base/4',
+      anadir: '/api/mis-lugares-publicos/base/4',
+      listado: '/publicos',
+    },
+    {
+      nombre: 'DetalleMiCentro',
+      componente: DetalleMiCentroComponent,
+      url: '/api/mis-centros-privados/4',
+      sitio: CENTRO,
+      catalogo: false,
+      borrar: '/api/mis-centros-privados/4',
+      listado: '/mis-centros',
+    },
+    {
+      nombre: 'DetalleMiLugar',
+      componente: DetalleMiLugarComponent,
+      url: '/api/mis-lugares-publicos/4',
+      sitio: LUGAR,
+      catalogo: false,
+      borrar: '/api/mis-lugares-publicos/4',
+      listado: '/mis-lugares',
+    },
   ];
 
   for (const caso of DETALLES) {
@@ -199,7 +298,8 @@ describe('Pantallas de lugares', () => {
         responderSesion(usuario);
         return {
           fixture,
-          detalle: fixture.debugElement.query(By.directive(DetalleSitioComponent)).componentInstance as DetalleSitioComponent,
+          detalle: fixture.debugElement.query(By.directive(DetalleSitioComponent))
+            .componentInstance as DetalleSitioComponent,
         };
       }
 

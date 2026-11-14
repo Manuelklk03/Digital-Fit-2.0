@@ -25,16 +25,49 @@ import { MigasService } from '../../services/migas';
       </nav>
     }
   `,
-  styles: [`
-    ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 13px; color: var(--df-text-muted); }
-    li { display: inline-flex; align-items: center; gap: 8px; }
-    /* El separador es decorativo: el texto alternativo vacío lo deja fuera del lector de pantalla. */
-    li + li::before { content: '/' / ''; color: var(--df-text-subtle); }
-    a { color: var(--df-text-muted); text-decoration: none; border-radius: var(--df-radius-sm); }
-    a:hover { color: var(--df-text); text-decoration: underline; text-underline-offset: 3px; }
-    a:focus-visible { outline: 2px solid var(--df-border-focus); outline-offset: 2px; }
-    [aria-current='page'] { color: var(--df-text); font-weight: 600; }
-  `],
+  styles: [
+    `
+      ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px 8px;
+        font-size: 13px;
+        color: var(--df-text-muted);
+      }
+      li {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      /* El separador es decorativo: el texto alternativo vacío lo deja fuera del lector de pantalla. */
+      li + li::before {
+        content: '/' / '';
+        color: var(--df-text-subtle);
+      }
+      a {
+        color: var(--df-text-muted);
+        text-decoration: none;
+        border-radius: var(--df-radius-sm);
+      }
+      a:hover {
+        color: var(--df-text);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      a:focus-visible {
+        outline: 2px solid var(--df-border-focus);
+        outline-offset: 2px;
+      }
+      [aria-current='page'] {
+        color: var(--df-text);
+        font-weight: 600;
+      }
+    `,
+  ],
 })
 export class MigasComponent {
   protected readonly migas = inject(MigasService);
