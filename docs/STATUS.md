@@ -1,6 +1,14 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-14**.
+Última actualización: **2026-11-15**.
+
+> **2026-11-15 (Fase 6, Tarea 6.4 — Revisión completa con Codex y corrección de hallazgos; rama `feat/revision-codex-fase6`):**
+> - **Revisión con OpenAI Codex CLI (v0.164.0):** Auditoría estática y de coherencia sobre todos los cambios de la Fase 6 (Playwright E2E, CI, presupuestos de Angular, Prettier y seguridad).
+> - **Hallazgos identificados y corregidos:**
+>   1. *Parada G12 en `docs/HANDOFF.md`:* Corregido el estado de «Resuelta» a «Parcial (LIBRE)», explicitando que la emisión de cookie `XSRF-TOKEN` y las cabeceras perimetrales están verificadas en producción (`https://digital-fit.netlify.app`), mientras que la saturación activa de 429 bajo la cadena de proxies de producción se difiere a una comprobación inocua sin riesgo de bloqueo para la IP de Manuel o evaluadores.
+>   2. *Alcance de Lighthouse en Tarea 6.3:* Ajustado `docs/roadmap.md` para reflejar que la tarea 6.3 cubre presupuestos y bundles de compilación, mientras que la auditoría de Lighthouse queda formalmente agrupada con la tarea 3.9 (SEO y prerender con `@angular/ssr`) asignada a Claude mediante `claude-seo` y `chrome-devtools-mcp`.
+>   3. *Precisión de cabeceras seguras:* Suprimida la mención a CSP en la nota histórica de `docs/HANDOFF.md`, manteniendo exclusivamente las cabeceras implementadas y verificadas (`HSTS`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`).
+> - **Traspaso a Claude:** Fase 6 completada íntegramente. El relevo pasa a Claude para acometer la tarea pendiente 3.9 (SEO, prerender estático con `@angular/ssr` y auditoría final).
 
 > **2026-11-14 (Fase 6, Tarea 6.3 — Revisión de seguridad y de rendimiento; Parada G12 RESUELTA; rama `feat/revision-seguridad-rendimiento`):**
 > - **Rendimiento y presupuestos de bundle:** Ajustados los presupuestos en `angular.json` para reflejar con precisión el tamaño real de la aplicación en modo producción (presupuesto inicial de 1 MB / 1.5 MB; estilos de componente de 8 kB / 12 kB). Configurado `allowedCommonJsDependencies` para `leaflet` y `leaflet-control-geocoder`, eliminando advertencias en compilación. El bundle inicial compila en 881 kB en crudo y se transfiere en ~183 kB comprimido.

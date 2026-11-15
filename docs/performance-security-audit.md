@@ -11,7 +11,7 @@ Este informe documenta la revisión técnica de **rendimiento, tamaño de bundle
 
 - **Rendimiento Frontend:** Tamaño inicial de transferencia comprimido de **183.12 kB** (881.52 kB sin comprimir), dentro de los estándares óptimos para aplicaciones ricas SPA con mapas interactivos y animaciones. Carga diferida (lazy loading) activa en páginas clave y animaciones. Presupuestos de Angular ajustados a la realidad del proyecto sin advertencias de compilación.
 - **Seguridad en Producción:** Protección CSRF activa mediante el patrón SPA oficial de Spring Security, emisión de cookies `XSRF-TOKEN` (`Secure`, `SameSite=Lax`), límite de intentos de login con HTTP 429 y cabecera `Retry-After`, cabeceras HTTP de protección perimetral verificadas en vivo en `https://digital-fit.netlify.app`, y aislamiento estricto de endpoints de diagnóstico y base de datos.
-- **Parada G12:** Resuelta. La verificación empírica contra la URL pública de producción confirma que las cabeceras, cookies seguras y proxy inverso operan conforme al diseño.
+- **Parada G12:** Parcialmente resuelta (no bloqueante para Claude). La verificación empírica contra la URL pública de producción confirma que las cabeceras de seguridad (`HSTS`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`), cookies seguras (`XSRF-TOKEN` con `Secure` y `SameSite=Lax`) y proxy inverso operan conforme al diseño. La prueba de saturación de rate limiting (429) en producción queda diferida a una comprobación inocua sin riesgo de bloqueo de IP real.
 
 ---
 
@@ -83,5 +83,5 @@ Comprobadas directamente en la respuesta HTTP pública servida por Netlify y Ren
 ## 4. Estado de Parada G12
 
 - **Parada:** G12 (Comprobación de CSRF y del límite de intentos en producción).
-- **Estado:** **Resuelta**.
-- **Resultado:** Confirmada la correcta emisión de la cookie de sesión y la cookie `XSRF-TOKEN` sobre HTTPS en `https://digital-fit.netlify.app/api/auth/me`. Todas las cabeceras de endurecimiento de seguridad se encuentran activas en el borde de red.
+- **Estado:** **Parcialmente resuelta (No bloqueante)**.
+- **Resultado:** Confirmada la correcta emisión de la cookie de sesión y la cookie `XSRF-TOKEN` sobre HTTPS en `https://digital-fit.netlify.app/api/auth/me` y cabeceras de seguridad perimetrales activas. La prueba activa de saturación de login con respuesta 429 se reserva para una comprobación aislada que no comprometa la IP real de los evaluadores.

@@ -8,6 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Revisión integral de la Fase 6 con OpenAI Codex CLI (tarea 6.4): ejecución de auditoría de código no interactiva sobre los recorridos E2E, seguridad y configuración de empaquetado, resolviendo 3 hallazgos documentales sobre el estado de la parada G12, la precisión de cabeceras seguras activas y la delimitación de la medición de Lighthouse para la tarea 3.9 de SEO asignada a Claude.
+
 - Auditoría de seguridad y rendimiento de bundles frontend (tarea 6.3): optimización de presupuestos (`budgets`) de compilación en `angular.json` y supresión de advertencias de dependencias CommonJS (`leaflet`, `leaflet-control-geocoder`), reduciendo el paquete inicial a 881 kB en crudo (~183 kB transferidos con compresión Brotli/Gzip); verificación empírica de seguridad y rendimiento en producción (`https://digital-fit.netlify.app`), confirmando protección activa contra CSRF (cookie `XSRF-TOKEN` `Secure` y `SameSite=Lax`), cabeceras HTTP de seguridad (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, HSTS) y cierre de endpoints administrativos y Actuator tras el proxy inverso (resolviendo la parada G12).
 
 - Comprobación de formato de código con Prettier en CI (tarea 6.5): scripts `format` y `format:check` en `Frontend/digital-fit-frontend`, exclusión de directorios de herramientas y artefactos compilados mediante `.prettierignore`, formateo integral del frontend según `.prettierrc` y verificación automática en el flujo de CI.
