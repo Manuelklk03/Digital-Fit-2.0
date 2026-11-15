@@ -37,6 +37,7 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 
 | Fecha | Parada | Estado | Nota |
 |---|---|---|---|
+| 2026-11-15 | Relevo | LIBRE | Antigravity completa la Fase 6 (6.1 a 6.5) y revisión de Codex (6.4). Relevo a Claude para la tarea 3.9 (SEO, prerender con @angular/ssr y auditoría Lighthouse) |
 | 2026-11-14 | G12 | Parcial | Verificación empírica en producción (Netlify + Render): cookie XSRF-TOKEN con Secure y SameSite=Lax, cabeceras HSTS/XFO/nosniff activas y Actuator aislado tras proxy. Límite 429 en producción pendiente de prueba inocua |
 | 2026-11-12 | G12 | BLOQUEADO | Comprobación de CSRF y del límite de intentos en producción (Netlify + Render) pendiente de Claude y Manuel tras el despliegue |
 | 2026-11-12 | G11 | LIBRE | Claude verificó contra feat/backend-seguridad-csrf con docker compose y Chromium que el frontend funciona con CSRF activo (cookie XSRF-TOKEN en 401 de /api/auth/me, header X-XSRF-TOKEN automático). Resueltos hallazgos 2 y 3 de Codex por Antigravity |
