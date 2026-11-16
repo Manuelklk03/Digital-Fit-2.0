@@ -20,10 +20,12 @@
   force = true
   headers = {X-Forwarded-Host = "digital-fit.netlify.app"}
 
-# Soporte para Angular Single Page Application (HTML5 pushState routing)
+# Soporte para Angular Single Page Application (HTML5 pushState routing).
+# /inicio, /login y /register existen como HTML prerenderizado y Netlify los sirve antes que esta regla
+# (sin force). El resto de rutas recibe index.csr.html, la página vacía que Angular pinta en el navegador.
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/index.csr.html"
   status = 200
 
 # Páginas privadas: no se indexan aunque el rastreador no ejecute JavaScript (la etiqueta robots solo la pone Angular).
