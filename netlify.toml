@@ -20,9 +20,28 @@
   force = true
   headers = {X-Forwarded-Host = "digital-fit.netlify.app"}
 
+# Páginas prerenderizadas: sin estas reglas Netlify responde 301 de /inicio a /inicio/ (es una carpeta),
+# y la URL ya no coincidiría con la canónica ni con sitemap.xml. Comprobar con: curl -sI <url>/inicio
+[[redirects]]
+  from = "/inicio"
+  to = "/inicio/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/login"
+  to = "/login/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/register"
+  to = "/register/index.html"
+  status = 200
+  force = true
+
 # Soporte para Angular Single Page Application (HTML5 pushState routing).
-# /inicio, /login y /register existen como HTML prerenderizado y Netlify los sirve antes que esta regla
-# (sin force). El resto de rutas recibe index.csr.html, la página vacía que Angular pinta en el navegador.
+# El resto de rutas recibe index.csr.html, la página vacía que Angular pinta en el navegador.
 [[redirects]]
   from = "/*"
   to = "/index.csr.html"
