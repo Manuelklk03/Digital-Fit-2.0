@@ -83,8 +83,10 @@ Comprobadas directamente en la respuesta HTTP pública servida por Netlify y Ren
 ## 4. Estado de Parada G12
 
 - **Parada:** G12 (Comprobación de CSRF y del límite de intentos en producción).
-- **Estado:** **Parcialmente resuelta (No bloqueante)**.
-- **Resultado:** Confirmada la correcta emisión de la cookie de sesión y la cookie `XSRF-TOKEN` sobre HTTPS en `https://digital-fit.netlify.app/api/auth/me` y cabeceras de seguridad perimetrales activas. La prueba activa de saturación de login con respuesta 429 se reserva para una comprobación aislada que no comprometa la IP real de los evaluadores.
+- **Estado:** **Resuelta**.
+- **Resultado:**
+  1. Emisión de cookie `XSRF-TOKEN` con atributos `Secure` y `SameSite=Lax` en peticiones GET anónimas sobre HTTPS en `https://digital-fit.netlify.app/api/auth/me` y cabeceras perimetrales HSTS, XFO y nosniff activas.
+  2. Comprobación inocua de Rate Limiting realizada en producción (tarea 7.1): mediante un identificador de usuario aislado, los primeros 5 intentos fallidos devuelven 401 Unauthorized y el 6º intento devuelve exactamente HTTP 429 Too Many Requests con cabecera `Retry-After: 60` y formato RFC 7807 ProblemDetail, sin saturar el umbral por IP (20) ni comprometer la conexión de evaluadores.
 
 ---
 
@@ -94,12 +96,15 @@ Lighthouse 13.6.0 con Chrome sin interfaz, perfil móvil simulado por defecto. �
 
 | Página | Rend. | Acces. | Buenas prác. | SEO | FCP | LCP | CLS | TBT |
 |---|---|---|---|---|---|---|---|---|
-| Local `/inicio` | 40 | 95 | 96 | 100 | 5,4 s | 6,4 s | 0 | 1.150 ms |
-| Local `/login` | 52 | 96 | 96 | 100 | 5,3 s | 5,3 s | 0 | 610 ms |
-| Local `/register` | 59 | 96 | 96 | 100 | 5,1 s | 5,1 s | 0,005 | 400 ms |
-| Producción `/inicio` | 55 | 95 | 96 | 100 | 3,5 s | 3,5 s | 0 | 990 ms |
-| Producción `/login` | 68 | 96 | 96 | 100 | 2,9 s | 2,9 s | 0 | 900 ms |
-| Producción `/register` | 68 | 96 | 96 | 100 | 3,2 s | 3,2 s | 0 | 760 ms |
+| Local `/inicio` (sin prerender) | 40 | 95 | 96 | 100 | 5,4 s | 6,4 s | 0 | 1.150 ms |
+| Local `/login` (sin prerender) | 52 | 96 | 96 | 100 | 5,3 s | 5,3 s | 0 | 610 ms |
+| Local `/register` (sin prerender) | 59 | 96 | 96 | 100 | 5,1 s | 5,1 s | 0,005 | 400 ms |
+| Producción previa `/inicio` (sin prerender) | 55 | 95 | 96 | 100 | 3,5 s | 3,5 s | 0 | 990 ms |
+| Producción previa `/login` (sin prerender) | 68 | 96 | 96 | 100 | 2,9 s | 2,9 s | 0 | 900 ms |
+| Producción previa `/register` (sin prerender) | 68 | 96 | 96 | 100 | 3,2 s | 3,2 s | 0 | 760 ms |
+| **Producción final `/inicio` (con prerender)** | **87** | **95** | **96** | **100** | **3,1 s** | **3,1 s** | **0** | **40 ms** |
+| **Producción final `/login` (con prerender)** | **89** | **96** | **96** | **100** | **3,0 s** | **3,0 s** | **0,006** | **20 ms** |
+| **Producción final `/register` (con prerender)** | **89** | **96** | **96** | **100** | **3,0 s** | **3,0 s** | **0,005** | **20 ms** |
 
 **Cómo leerlo:**
 
