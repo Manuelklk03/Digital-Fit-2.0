@@ -33,6 +33,19 @@ describe('App', () => {
     expect(fixture.nativeElement.querySelector('.carga-inicial')).toBeNull();
   });
 
+  it('no muestra el esqueleto si el HTML llega prerenderizado (app-root con contenido)', () => {
+    const prerenderizado = document.createElement('app-root');
+    prerenderizado.innerHTML = '<main>Contenido del build</main>';
+    document.body.appendChild(prerenderizado);
+    try {
+      const fixture = TestBed.createComponent(App);
+      fixture.detectChanges();
+      expect(fixture.nativeElement.querySelector('.carga-inicial')).toBeNull();
+    } finally {
+      prerenderizado.remove();
+    }
+  });
+
   it('con un guard que redirige al login mantiene el esqueleto hasta que termina la navegación al destino', async () => {
     // Igual que authGuard: llama a router.navigate y devuelve false, lo que cancela la primera navegación.
     const guardiaQueRedirige = () => {

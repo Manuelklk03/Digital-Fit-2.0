@@ -85,3 +85,31 @@ Comprobadas directamente en la respuesta HTTP pública servida por Netlify y Ren
 - **Parada:** G12 (Comprobación de CSRF y del límite de intentos en producción).
 - **Estado:** **Parcialmente resuelta (No bloqueante)**.
 - **Resultado:** Confirmada la correcta emisión de la cookie de sesión y la cookie `XSRF-TOKEN` sobre HTTPS en `https://digital-fit.netlify.app/api/auth/me` y cabeceras de seguridad perimetrales activas. La prueba activa de saturación de login con respuesta 429 se reserva para una comprobación aislada que no comprometa la IP real de los evaluadores.
+
+---
+
+## 5. Lighthouse (tarea 3.9, 2026-11-16)
+
+Lighthouse 13.6.0 con Chrome sin interfaz, perfil móvil simulado por defecto. «Local» es la rama `feat/frontend-prerender` servida por el nginx de `docker compose`; «Producción» es `https://digital-fit.netlify.app` antes de desplegar el prerender.
+
+| Página | Rend. | Acces. | Buenas prác. | SEO | FCP | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|---|---|
+| Local `/inicio` | 40 | 95 | 96 | 100 | 5,4 s | 6,4 s | 0 | 1.150 ms |
+| Local `/login` | 52 | 96 | 96 | 100 | 5,3 s | 5,3 s | 0 | 610 ms |
+| Local `/register` | 59 | 96 | 96 | 100 | 5,1 s | 5,1 s | 0,005 | 400 ms |
+| Producción `/inicio` | 55 | 95 | 96 | 100 | 3,5 s | 3,5 s | 0 | 990 ms |
+| Producción `/login` | 68 | 96 | 96 | 100 | 2,9 s | 2,9 s | 0 | 900 ms |
+| Producción `/register` | 68 | 96 | 96 | 100 | 3,2 s | 3,2 s | 0 | 760 ms |
+
+**Cómo leerlo:**
+
+- El rendimiento local y el de producción no son comparables: el nginx de Docker sirve HTML, JS y CSS **sin compresión** (por ejemplo, 37 KB de HTML de `/login` frente a 3 KB con Brotli en Netlify) y Lighthouse simula una red móvil lenta. La medida que vale es la de Netlify después de desplegar (pendiente).
+- Una primera pasada local dio **CLS 0,85** en `/register`: el esqueleto de carga inicial se pintaba encima del HTML prerenderizado. Corregido en `app.ts` antes de cerrar la tarea.
+- Algunas pasadas fallaron con `NO_FCP` (fallo intermitente de Chrome sin interfaz en Windows) y se repitieron.
+
+**Hallazgos sin corregir (fuera del alcance de 3.9):**
+
+1. **Contraste:** texto blanco sobre `--df-primary` (`#3b82f6`), 3,67:1, en botones primarios e insignias. Ya registrado el 2026-11-10 como decisión de diseño pendiente porque afecta a toda la aplicación.
+2. **Fuente bloqueante:** la hoja de Google Fonts (Inter) bloquea el primer pintado unos 850 ms. Opciones: alojar la fuente o cargar la hoja sin bloquear.
+3. **Consola:** cada visita anónima registra dos `401` de `/api/auth/me` (cabecera y guard). Es el comportamiento esperado de la API, pero Lighthouse lo cuenta como error en consola.
+4. **JavaScript sin usar:** 214–289 KiB estimados en la primera carga; el mayor bloque es el chunk compartido de las pantallas privadas.

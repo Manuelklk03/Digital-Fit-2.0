@@ -37,10 +37,10 @@ class NetlifyConfigTest {
         assertTrue(contenido.contains("status = 200"),
                 "El proxy debe devolver status 200 (rewrite transparente)");
 
-        // 3. Debe incluir redirección SPA a /index.html
+        // 3. Debe incluir redirección SPA a /index.csr.html (con prerender, Angular genera ese archivo para las rutas de cliente)
         assertTrue(contenido.contains("from = \"/*\""),
                 "Debe definir fallback SPA para rutas de Angular");
-        assertTrue(contenido.contains("to = \"/index.html\""),
-                "Debe reenviar las rutas no coincidentes a /index.html");
+        assertTrue(contenido.contains("to = \"/index.csr.html\""),
+                "Debe reenviar las rutas no coincidentes a /index.csr.html");
     }
 }

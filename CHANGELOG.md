@@ -8,6 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Prerender estático con `@angular/ssr` de `/inicio`, `/login` y `/register` (tarea 3.9): llegan como HTML con su contenido y sus metadatos aunque el rastreador no ejecute JavaScript; el resto de rutas se pinta en el navegador desde `index.csr.html`. Las rutas con mapa se cargan en diferido y el bundle inicial baja de 882 kB a 693 kB. Auditoría con Lighthouse documentada en `docs/performance-security-audit.md`.
+
 - Revisión integral de la Fase 6 con OpenAI Codex CLI (tarea 6.4): ejecución de auditoría de código no interactiva sobre los recorridos E2E, seguridad y configuración de empaquetado, resolviendo 3 hallazgos documentales sobre el estado de la parada G12, la precisión de cabeceras seguras activas y la delimitación de la medición de Lighthouse para la tarea 3.9 de SEO asignada a Claude.
 
 - Auditoría de seguridad y rendimiento de bundles frontend (tarea 6.3): optimización de presupuestos (`budgets`) de compilación en `angular.json` y supresión de advertencias de dependencias CommonJS (`leaflet`, `leaflet-control-geocoder`), reduciendo el paquete inicial a 881 kB en crudo (~183 kB transferidos con compresión Brotli/Gzip); verificación empírica de seguridad y rendimiento en producción (`https://digital-fit.netlify.app`), confirmando protección activa contra CSRF (cookie `XSRF-TOKEN` `Secure` y `SameSite=Lax`), cabeceras HTTP de seguridad (`X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, HSTS) y cierre de endpoints administrativos y Actuator tras el proxy inverso (resolviendo la parada G12).

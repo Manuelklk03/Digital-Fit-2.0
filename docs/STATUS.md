@@ -1,6 +1,18 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-15**.
+Última actualización: **2026-11-16**.
+
+> **2026-11-16 (Tarea 3.9 cerrada — prerender estático y auditoría Lighthouse; rama `feat/frontend-prerender`, en automático):**
+> - **Prerender con `@angular/ssr`** (`outputMode: "static"`): `/inicio`, `/login` y `/register` se generan como HTML en el build, con título, descripción, `robots`, canónica, Open Graph y contenido visibles sin JavaScript. El resto de rutas sigue renderizándose en el navegador desde `index.csr.html`. Hidratación activada (`provideClientHydration(withEventReplay())`).
+> - **Cambios necesarios para que el build del servidor funcione:** `AuthService.me()` no llama a la API fuera del navegador (en el build no hay backend: se pinta como visitante); las 9 rutas con mapa (`/explorar`, centros, lugares y sus detalles) pasan a carga diferida porque Leaflet usa `window` al importarse. Efecto secundario: el bundle inicial baja de 882 kB a 693 kB.
+> - **Corregido al verificar:** (1) la canónica, `og:url` y `BreadcrumbList` salían como `http://ng-localhost/...` al prerenderizar; ahora usan siempre `https://digital-fit.netlify.app` (`ORIGEN_PUBLICO` en `seo.ts`); (2) el esqueleto de carga inicial aparecía encima del HTML prerenderizado y lo desplazaba (CLS 0,85 en `/register`); ya no se muestra si `app-root` llega con contenido; (3) en Docker, `/` servía la página de bienvenida de nginx (la imagen base trae su `index.html`): el build se copia ahora a `/usr/share/nginx/digital-fit`.
+> - **Despliegue:** `netlify.toml`, `nginx.conf` y el `Dockerfile` del frontend usan `index.csr.html` como respaldo; `NetlifyConfigTest` (backend) actualizado.
+> - **Verificaciones:** `ng build` con «Prerendered 3 static routes», 56 suites y 255 tests en verde (+2), 0 errores ESLint (4 avisos previos), Prettier y `NetlifyConfigTest` en verde. `docker compose up --build` con E2E de Playwright **5/5**. Chromium contra Docker: `/inicio`, `/login` y `/register` llegan con su `<h1>`; `/`, `/mis-centros` y rutas inexistentes reciben `index.csr.html`; sin errores de hidratación (NG05xx) en 10 escenarios, también con el idioma guardado en inglés y con sesión iniciada en `/login` (redirige a `/inicio`), `/explorar` y `/mis-centros`.
+> - **Lighthouse 13.6** (móvil simulado), detalle en [performance-security-audit.md](performance-security-audit.md#5-lighthouse-tarea-39-2026-11-16): SEO 100, accesibilidad 95–96 y buenas prácticas 96 en las tres páginas; CLS 0–0,005 tras el arreglo. El rendimiento local (40–59) no es comparable con producción (55–68, todavía sin prerender) porque el nginx de Docker sirve sin compresión. **Sin medir:** el rendimiento real con prerender en Netlify (hasta desplegar).
+> - **Revisión de Codex** (CLI 0.164.0, solo lectura sobre `main..HEAD`): sin hallazgos. Comprobó tipos, lint, el `dist` y la precedencia de archivos sobre el rewrite de Netlify; no ejecutó build ni navegador.
+> - **Vista previa de Netlify** (`deploy-preview-87`): al principio `/inicio`, `/login` y `/register` respondían `301` hacia `/inicio/` (Netlify trata la carpeta como directorio) y no coincidían con la canónica ni el sitemap; corregido con reescrituras `force` en `netlify.toml`. Verificado: las tres dan `200` con su `<h1>` y `/`, `/mis-centros` reciben `index.csr.html`. **SonarQube:** el Quality Gate pedía 80 % de cobertura nueva; añadidos `app.routes.server.spec.ts` (prerender = rutas con `data.seo`) y `app.routes.spec.ts` (cada ruta diferida resuelve su componente) y excluido de la cobertura el arranque del servidor, como `main.ts`.
+> - **Pendiente tras desplegar en producción:** repetir las comprobaciones con `curl` y Lighthouse en `https://digital-fit.netlify.app`. Hallazgos no corregidos (fuera de alcance): contraste del texto blanco sobre `--df-primary` (3,67:1, ya registrado el 2026-11-10), fuente de Google Fonts que bloquea el render (~850 ms) y los 401 de `/api/auth/me` en consola para visitantes.
+> - **Relevo:** tarea 3.9 cerrada; Claude no tiene más tareas asignadas. Pasa a Antigravity (fase 7: 7.1 y 7.2). Ver `docs/HANDOFF.md`.
 
 > **2026-11-15 (Fase 6, Tarea 6.4 — Revisión completa con Codex y corrección de hallazgos; rama `feat/revision-codex-fase6`):**
 > - **Revisión con OpenAI Codex CLI (v0.164.0):** Auditoría estática y de coherencia sobre todos los cambios de la Fase 6 (Playwright E2E, CI, presupuestos de Angular, Prettier y seguridad).
@@ -251,12 +263,12 @@
 
 ## Resumen
 
-- **Fase activa:** 5 — Renovación del frontend por recorridos (los 5 recorridos completados; fase 5 cerrada). Fase 4 (Backend, API y datos) completada al 100% (tareas 4.1 a 4.10 cerradas).
+- **Fase activa:** 7 — Publicación y versión estable 2.0 (7.0 hecha; 7.1 y 7.2 de Antigravity; 7.3 con orden de Manuel). Fases 3 (con la 3.9 cerrada el 2026-11-16), 4, 5 y 6 completadas.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 156 tests unitarios en verde.
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` configurado.
 - **Versión publicada:** `v1.0.0` (tag anotado). `v2.0.0` se publicará al completar la fase 7.
-- **Despliegue público:** Pendiente de configuración en 2.3/2.4 y 7.1. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`).
-- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Antigravity en parada G5 (BLOQUEADO en espera de que Claude complete las pantallas de la Fase 5 para poder acometer la suite E2E 6.2 y CI 6.1).
+- **Despliegue público:** `https://digital-fit.netlify.app` (Netlify) con la API en Render y la base de datos en Neon, verificado en 2.4. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`).
+- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Parada G13 LIBRE: Antigravity puede hacer 7.1 y 7.2.
 
 ## Versión original `v1.0.0`
 
@@ -313,9 +325,9 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **Frontend (Claude):** fase 5 cerrada. Queda la parte de frontend de la tarea 7.0 (CSRF) cuando Antigravity la habilite, y las mejoras opcionales anotadas en el roadmap.
-2. **Backend y DevOps (Antigravity):** G5 (E2E 6.2 y CI 6.1), G6 (Prettier 6.5) y G9 (fallos de backend) LIBRES.
-3. **Despliegue (Fases 2.3/2.4 y 7.1):** Pendiente de que Manuel provisione las cuentas/secretos (parada G4) antes de la release final `v2.0.0`.
+1. **Antigravity (G13 LIBRE):** 7.1, despliegue final y verificación en producción, incluidas las comprobaciones del prerender anotadas en `docs/HANDOFF.md` y repetir Lighthouse en Netlify; 7.2, README de portfolio. Sigue abierta la prueba inocua del 429 en producción (G12).
+2. **Claude:** sin tareas asignadas. Mejoras opcionales en el roadmap y hallazgos de Lighthouse sin corregir en `docs/performance-security-audit.md` (sección 5), si Manuel los pide.
+3. **Manuel:** decidir el ping contra el arranque en frío de Render (G10, punto 2), el contraste de `--df-primary` y dar la orden de 7.3 (tag `v2.0.0`, G7).
 
 ## Cómo actualizar este archivo
 

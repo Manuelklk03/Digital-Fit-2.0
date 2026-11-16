@@ -11,14 +11,16 @@ COPY . .
 
 RUN npm run build
 
-RUN mkdir -p /nginx-build && cp -r "$(dirname "$(find /app/dist -name index.html | head -n 1)")"/* /nginx-build/
+# index.csr.html es único (el resto de index.html son páginas prerenderizadas en subcarpetas).
+RUN mkdir -p /nginx-build && cp -r "$(dirname "$(find /app/dist -name index.csr.html | head -n 1)")"/* /nginx-build/
 
 # Variante oficial de nginx que no se ejecuta como root; por eso escucha en 8080 y no en 80.
 FROM nginxinc/nginx-unprivileged:alpine
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY --from=build /nginx-build /usr/share/nginx/html
+# Carpeta propia: /usr/share/nginx/html trae un index.html de bienvenida que se serviría en «/».
+COPY --from=build /nginx-build /usr/share/nginx/digital-fit
 
 EXPOSE 8080
 

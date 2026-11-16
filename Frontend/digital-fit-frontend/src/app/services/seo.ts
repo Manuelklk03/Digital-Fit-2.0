@@ -19,8 +19,14 @@ export interface DatosSeo {
 const MARCA = 'Digital-FIT';
 
 /**
+ * Dominio público, igual que en `sitemap.xml` e `index.html`. No se usa `location.origin` porque al
+ * prerenderizar en el build no hay dominio real, y la canónica de una vista previa debe señalar a producción.
+ */
+export const ORIGEN_PUBLICO = 'https://digital-fit.netlify.app';
+
+/**
  * Título, descripción, `robots`, canónica y Open Graph según la ruta activa y el idioma.
- * shortcut: se aplica en el cliente con JavaScript (Googlebot lo ejecuta); un prerender estático (`@angular/ssr`) lo serviría ya en el HTML.
+ * `/inicio`, `/login` y `/register` se prerenderizan en el build (`app.routes.server.ts`), así que llegan ya en el HTML.
  */
 @Injectable({ providedIn: 'root' })
 export class SeoService {
@@ -77,7 +83,7 @@ export class SeoService {
           ? `${delCamino} · ${MARCA}`
           : MARCA);
     const descripcion = pagina?.descripcion ?? t.seo.inicio.descripcion;
-    const url = `${this.doc.location.origin}${this.router.url.split(/[?#]/)[0]}`;
+    const url = `${ORIGEN_PUBLICO}${this.router.url.split(/[?#]/)[0]}`;
 
     this.titulo.setTitle(titulo);
     this.meta.updateTag({ name: 'description', content: descripcion });
@@ -121,7 +127,6 @@ export class SeoService {
     if (urlActual === null || migas.length < 2) {
       return;
     }
-    const origen = this.doc.location.origin;
     const script = this.doc.createElement('script');
     script.id = id;
     script.type = 'application/ld+json';
@@ -132,7 +137,7 @@ export class SeoService {
         '@type': 'ListItem',
         position: i + 1,
         name: m.texto,
-        item: m.ruta ? `${origen}${m.ruta}` : urlActual,
+        item: m.ruta ? `${ORIGEN_PUBLICO}${m.ruta}` : urlActual,
       })),
     });
     this.doc.head.appendChild(script);

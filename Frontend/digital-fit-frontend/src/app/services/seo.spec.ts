@@ -3,7 +3,7 @@ import { provideRouter, Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { Meta, Title } from '@angular/platform-browser';
 
-import { SeoService } from './seo';
+import { ORIGEN_PUBLICO, SeoService } from './seo';
 import { I18nService } from '../i18n/i18n.service';
 
 describe('SeoService', () => {
@@ -65,8 +65,9 @@ describe('SeoService', () => {
     expect(contenido('name="robots"')).toBe('index, follow');
     expect(contenido('property="og:title"')).toBe(i18n.t().seo.inicio.titulo);
     expect(doc.head.querySelectorAll('link[rel="canonical"]').length).toBe(1);
-    expect(doc.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href).toContain(
-      '/inicio',
+    // Siempre el dominio público: al prerenderizar no hay un origen real (saldría http://ng-localhost).
+    expect(doc.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href).toBe(
+      `${ORIGEN_PUBLICO}/inicio`,
     );
   });
 
@@ -116,7 +117,7 @@ describe('SeoService', () => {
       [1, 'Inicio'],
       [2, 'Iniciar sesión'],
     ]);
-    expect(ld.itemListElement[0].item).toBe(`${doc.location.origin}/inicio`);
+    expect(ld.itemListElement[0].item).toBe(`${ORIGEN_PUBLICO}/inicio`);
     expect(ld.itemListElement[1].item).toContain('/login');
   });
 
