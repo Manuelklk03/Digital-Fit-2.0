@@ -1,6 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
 import { UsuarioSesion } from '../models/entrenamiento';
 
 /** Cuerpo de `POST /api/auth/registro`. */
@@ -15,6 +16,7 @@ export interface RegistroUsuario {
 })
 export class AuthService {
   private http = inject(HttpClient);
+  private platformId = inject(PLATFORM_ID);
   private apiUrl = '/api/auth';
 
   private usuarioSubject = new BehaviorSubject<UsuarioSesion | null>(null);
@@ -44,6 +46,10 @@ export class AuthService {
   }
 
   me(): Observable<UsuarioSesion> {
+    // Al prerenderizar en el build no hay backend ni cookie: se pinta como visitante anónimo.
+    if (!isPlatformBrowser(this.platformId)) {
+      return throwError(() => new Error('Sin sesión al prerenderizar'));
+    }
     return this.http
       .get<UsuarioSesion>(`${this.apiUrl}/me`, {
         withCredentials: true,
