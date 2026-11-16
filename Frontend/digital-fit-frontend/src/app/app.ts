@@ -1,4 +1,5 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import {
   NavigationCancel,
   NavigationCancellationCode,
@@ -22,8 +23,13 @@ import { SeoService } from './services/seo';
 export class App {
   protected readonly title = signal('digital-fit-frontend');
   protected readonly i18n = inject(I18nService);
-  /** Verdadero hasta que termina la primera navegación: los guards esperan a `/api/auth/me`, que tarda si el backend está dormido. */
-  protected readonly primeraCarga = signal(true);
+  /**
+   * Verdadero hasta que termina la primera navegación: los guards esperan a `/api/auth/me`, que tarda si el backend está dormido.
+   * Si el HTML ya trae la página prerenderizada (/inicio, /login, /register), no se tapa con el esqueleto: desplazaría el contenido (CLS).
+   */
+  protected readonly primeraCarga = signal(
+    !inject(DOCUMENT).querySelector('app-root')?.childElementCount,
+  );
 
   constructor() {
     inject(SeoService); // empieza a aplicar título, descripción y robots por ruta
