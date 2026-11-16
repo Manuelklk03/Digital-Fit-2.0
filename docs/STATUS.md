@@ -2,6 +2,23 @@
 
 Última actualización: **2026-11-16**.
 
+> **2026-11-16 (Fase 7, Tareas 7.1 y 7.2 — Despliegue final, verificación en producción, parada G12 resuelta y README de portfolio; rama `feat/despliegue-verificacion-readme`):**
+> - **Verificación empírica del prerender en Netlify (`https://digital-fit.netlify.app`):**
+>   - Páginas públicas (`/inicio`, `/login`, `/register`): contienen exactamente un `<h1>` visible en el HTML descargado por curl (sin ejecutar JS) y etiqueta canónica correspondiente apuntando a `https://digital-fit.netlify.app/<ruta>`. Respuesta HTTP 200 sin redirecciones espurias.
+>   - Rutas privadas (`/mis-centros`) y 404: servidas desde `index.csr.html` (sin `<h1>` estático en crudo) y con cabecera de seguridad perimetral `X-Robots-Tag: noindex, nofollow` emitida por Netlify.
+> - **Recorrido completo 2.4 en producción (cero datos residuales):**
+>   - Anónimo: `GET /api/auth/me` responde 401 Unauthorized y emite la cookie `XSRF-TOKEN`. `POST /api/admin/crear-admin` anónimo responde 401.
+>   - `usuario1` (rol `USER`): Login 200 con credenciales documentadas (`Usuario123!`) y cabecera `X-XSRF-TOKEN`; `GET /api/auth/me` devuelve rol `USER`; intento en ruta administrativa (`POST /api/admin/crear-admin`) responde 403 Forbidden. Creación de rutina personalizada en `POST /api/mis-entrenamientos` responde 201 Created; comprobación de persistencia con GET y posterior borrado con `DELETE /api/mis-entrenamientos/{id}` (204 No Content), quedando excluida de listados sin dejar datos nuevos en producción. Cierre de sesión correcto con 200.
+>   - `admin1` (rol `ADMIN`): Login 200 con `Admin123!`; `GET /api/auth/me` confirma rol `ADMIN`; acceso autorizado a controladores administrativos (rechazo por validación 400 ante DTO vacío en lugar de 401/403). Cierre de sesión con 200.
+> - **Parada G12 Resuelta (Rate Limiting en producción):** Comprobación inocua ejecutada con éxito utilizando un identificador de usuario aislado. Los 5 primeros intentos fallidos devuelven 401; al 6º intento el backend responde `429 Too Many Requests` con cabecera `Retry-After: 60` y formato RFC 7807 ProblemDetail, sin aproximarse al umbral por IP (20) ni bloquear la conexión de evaluadores.
+> - **Auditoría móvil Lighthouse en producción con prerender:**
+>   - `/inicio`: Rendimiento **87**, Accesibilidad **95**, Buenas prácticas **96**, SEO **100** (FCP 3,1 s, LCP 3,1 s, CLS 0, TBT 40 ms).
+>   - `/login`: Rendimiento **89**, Accesibilidad **96**, Buenas prácticas **96**, SEO **100** (FCP 3,0 s, LCP 3,0 s, CLS 0,006, TBT 20 ms).
+>   - `/register`: Rendimiento **89**, Accesibilidad **96**, Buenas prácticas **96**, SEO **100** (FCP 3,0 s, LCP 3,0 s, CLS 0,005, TBT 20 ms).
+>   - Los tiempos de bloqueo de hilo principal (TBT) se redujeron de ~900 ms a solo 20–40 ms gracias al prerenderizado e hidratación.
+> - **README de portfolio profesional (Tarea 7.2):** Rediseñado íntegramente con enlace en vivo (`https://digital-fit.netlify.app`), 4 capturas reales de producción en alta resolución tomadas con Chromium headless (`docs/img/`), credenciales de evaluación (`usuario1` / `admin1`), diagrama de arquitectura cloud distribuida (Netlify + Render + Neon), stack y guía de ejecución local con Docker Compose sin prometer funciones no implementadas.
+> - **Estado para release:** Tareas 7.1 y 7.2 cerradas. Queda únicamente la tarea 7.3 (tag `v2.0.0` y GitHub Release), condicionada a la orden expresa de Manuel (parada G7).
+
 > **2026-11-16 (Tarea 3.9 cerrada — prerender estático y auditoría Lighthouse; rama `feat/frontend-prerender`, en automático):**
 > - **Prerender con `@angular/ssr`** (`outputMode: "static"`): `/inicio`, `/login` y `/register` se generan como HTML en el build, con título, descripción, `robots`, canónica, Open Graph y contenido visibles sin JavaScript. El resto de rutas sigue renderizándose en el navegador desde `index.csr.html`. Hidratación activada (`provideClientHydration(withEventReplay())`).
 > - **Cambios necesarios para que el build del servidor funcione:** `AuthService.me()` no llama a la API fuera del navegador (en el build no hay backend: se pinta como visitante); las 9 rutas con mapa (`/explorar`, centros, lugares y sus detalles) pasan a carga diferida porque Leaflet usa `window` al importarse. Efecto secundario: el bundle inicial baja de 882 kB a 693 kB.

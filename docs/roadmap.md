@@ -121,8 +121,8 @@ Dependencias: fase 6.
 | ID | Tarea |
 |---|---|
 | 7.0 [P] | Revisión de seguridad antes de publicar (pedida por Manuel, 2026-11-09). La autenticación usa **sesión de servidor con cookie `JSESSIONID`** (`HttpOnly`, `SameSite=Lax`, `Secure` por entorno desde 4.1), no JWT. Activado CSRF con `CookieCsrfTokenRepository.withHttpOnlyFalse()` y patrón SPA de Spring Security 6/7, límite de login en memoria con respuesta 429 y cabecera Retry-After, cabeceras seguras (X-Content-Type-Options, Referrer-Policy, Permissions-Policy, HSTS) y Actuator cerrado salvo health sin detalles | **Hecha (2026-11-11)** |
-| 7.1 [P] | Despliegue final con la configuración de la fase 2 y verificación en producción |
-| 7.2 [P] | README de portfolio con URL, capturas reales y credenciales de demostración |
+| 7.1 [P] | Despliegue final con la configuración de la fase 2 y verificación en producción (prerender en Netlify, recorrido 2.4 de usuarios y permisos, rate limit 429 inocuo, y auditoría Lighthouse) | **Hecha (2026-11-16)** |
+| 7.2 [P] | README de portfolio con URL, capturas reales y credenciales de demostración (`usuario1` / `admin1`) | **Hecha (2026-11-16)** |
 | 7.3 [P] | CHANGELOG `[2.0.0]`, tag `v2.0.0` y GitHub Release (con indicación de Manuel) |
 
 ## Después de 2.0 [+]
