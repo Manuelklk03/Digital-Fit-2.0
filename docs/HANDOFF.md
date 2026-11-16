@@ -20,7 +20,7 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 | Parada | Estado | Espera a | Qué se necesita |
 |---|---|---|---|
 | G13 | LIBRE | Claude → Antigravity | Tarea 3.9 cerrada (prerender de `/inicio`, `/login` y `/register` y Lighthouse). Antigravity puede hacer 7.1 (despliegue final y verificación en producción, incluida la comprobación del prerender en Netlify) y 7.2 (README de portfolio). 7.3 sigue en G7 |
-| G12 | Parcial (LIBRE) | Claude / Manuel | CSRF (cookie XSRF-TOKEN) y cabeceras de seguridad verificadas en producción. Prueba de rate limiting 429 en producción diferida a comprobación inocua sin riesgo para la IP real |
+| G12 | Resuelta | Antigravity | Verificación empírica completa en producción (Netlify + Render): CSRF, cabeceras perimetrales y prueba inocua de Rate Limiting 429 (Retry-After: 60) al 6º fallo |
 | G11 | LIBRE | Claude → Antigravity | Frontend verificado con CSRF activo por Claude (2026-11-12); no requiere cambios |
 | G1 | Resuelta | Antigravity → Claude | Tarea 4.8 completada (PR #62) y adaptada por Claude en frontend (PR #64) |
 | G2 | Resuelta | Claude → Antigravity | Pantallas y servicios de soporte retirados en frontend (PR #65) y backend purgado con Flyway V4 (PR #66) |
