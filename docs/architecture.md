@@ -109,7 +109,7 @@ Paquete `com.example.digital_fit`, organizado por capas y, dentro de cada una, p
 | P7 | ~~`any` en servicios y modelos del frontend~~ **Resuelto (2026-11-09):** modelos en `src/app/models` y cero `any` en el código de producción | `src/app/services` | 5 |
 | P10 | `show-sql=true` y logs DEBUG por defecto | `application.properties` | Resuelto en 4.7 (perfiles dev y prod) |
 | P11 | Búsqueda Nominatim desde el navegador sin limitación ni atribución revisada | `mapa-selector` | Resuelto en 3.7 (proxy en backend) |
-| P12 | ~~Imágenes sueltas o sin uso aparente (`public/img/.png`, `e.ico`, `e2.ico`)~~ **Resuelto (2026-11-17):** retiradas 19 imágenes sin referencias; en `public/img` solo queda el logo | `public/` | 5 |
+| P12 | ~~Imágenes sueltas o sin uso aparente (`public/img/.png`, `e.ico`, `e2.ico`)~~ **Resuelto (2026-11-17):** retiradas 20 imágenes sin referencias; en `public/img` solo queda el logo | `public/` | 5 |
 | P13 | Endpoint duplicado `/api/auth/yo` y `/me` | `AuthController` | Resuelto en 4.1 (eliminado `/yo`) |
 
 ## 3. Arquitectura objetivo (2.0)
