@@ -19,7 +19,7 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 
 | Parada | Estado | Espera a | Qué se necesita |
 |---|---|---|---|
-| G13 | LIBRE | Claude → Antigravity | Tarea 3.9 cerrada (prerender de `/inicio`, `/login` y `/register` y Lighthouse). Antigravity puede hacer 7.1 (despliegue final y verificación en producción, incluida la comprobación del prerender en Netlify) y 7.2 (README de portfolio). 7.3 sigue en G7 |
+| G13 | Resuelta | Claude → Antigravity | Tarea 3.9 cerrada (prerender de `/inicio`, `/login` y `/register` y Lighthouse). Antigravity puede hacer 7.1 (despliegue final y verificación en producción, incluida la comprobación del prerender en Netlify) y 7.2 (README de portfolio). 7.3 sigue en G7 |
 | G12 | Resuelta | Antigravity | Verificación empírica completa en producción (Netlify + Render): CSRF, cabeceras perimetrales y prueba inocua de Rate Limiting 429 (Retry-After: 60) al 6º fallo |
 | G11 | LIBRE | Claude → Antigravity | Frontend verificado con CSRF activo por Claude (2026-11-12); no requiere cambios |
 | G1 | Resuelta | Antigravity → Claude | Tarea 4.8 completada (PR #62) y adaptada por Claude en frontend (PR #64) |
@@ -28,7 +28,7 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 | G4 | Resuelta | Manuel → Antigravity | Cuentas y secretos de Netlify, Render y Neon creados por Manuel; recorrido real de la 2.4 verificado por Claude el 2026-11-11 (ver registro) |
 | G5 | LIBRE | Claude → Antigravity | Fase 5 cerrada: Antigravity puede hacer 6.2 (E2E) y 6.1 (CI) |
 | G6 | LIBRE | Claude → Antigravity | Claude no tiene ramas abiertas tras fusionar `feat/recorrido-progreso`: Antigravity puede hacer 6.5 (Prettier) |
-| G7 | Pendiente | Manuel → Antigravity | 7.3 (tag `v2.0.0`) solo con orden expresa de Manuel |
+| G7 | Resuelta | Manuel → Antigravity | 7.3 hecha con orden de Manuel: tag anotado y GitHub Release `v2.0.0` (2026-11-17) |
 | G9 | Resuelta | Antigravity | Resueltos los fallos de backend (V6 longitud 1500, @Valid en valoraciones, @Size(min=6) en passwords admin/registro, y búsqueda q en mis-valoraciones) |
 | G8 | Resuelta | Antigravity | Resueltos los 3 fallos de backend (migración Flyway V5 para usuarios demo, 404 NoResourceFoundException y parámetro q en historial) |
 
@@ -38,6 +38,7 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 
 | Fecha | Parada | Estado | Nota |
 |---|---|---|---|
+| 2026-11-17 | G7 y G13 | Resuelta | Antigravity cerró 7.1, 7.2 (PR #88) y 7.3 (tag y GitHub Release `v2.0.0`). Claude registra el cierre al retomar las mejoras de frontend posteriores a 2.0 en `feat/frontend-comunes-a11y` (worktree `df-claude`) |
 | 2026-11-16 | G13 | LIBRE | Claude cierra la 3.9 en `feat/frontend-prerender`. **Cambia el despliegue:** el build ya no genera `index.html` en la raíz sino `index.csr.html` (respaldo para rutas de cliente) e `inicio/`, `login/` y `register/` con su `index.html`; `netlify.toml`, `nginx.conf` y el `Dockerfile` del frontend ya están adaptados y `NetlifyConfigTest` comprueba el nuevo respaldo. Tras desplegar, en 7.1: `curl -s https://digital-fit.netlify.app/inicio \| grep -c '<h1'` debe dar 1, `curl -sI .../inicio` debe dar 200 sin redirigir a `/inicio/` (ya verificado en la vista previa), `curl -s .../mis-centros` debe devolver `index.csr.html` y sigue la cabecera `X-Robots-Tag` en las privadas. Repetir Lighthouse sobre Netlify (resultados locales en `docs/performance-security-audit.md`, sección 5) |
 | 2026-11-15 | Relevo | LIBRE | Antigravity completa la Fase 6 (6.1 a 6.5) y revisión de Codex (6.4). Relevo a Claude para la tarea 3.9 (SEO, prerender con @angular/ssr y auditoría Lighthouse) |
 | 2026-11-14 | G12 | Parcial | Verificación empírica en producción (Netlify + Render): cookie XSRF-TOKEN con Secure y SameSite=Lax, cabeceras HSTS/XFO/nosniff activas y Actuator aislado tras proxy. Límite 429 en producción pendiente de prueba inocua |

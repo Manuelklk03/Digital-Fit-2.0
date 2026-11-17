@@ -1,6 +1,15 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-16**.
+Última actualización: **2026-11-17**.
+
+> **2026-11-17 (Mejoras de frontend y accesibilidad posteriores a 2.0; rama `feat/frontend-comunes-a11y`, worktree `df-claude`, en automático):**
+> - **Carpeta común:** estado, estados de listado, encabezado, paginador y `pagina.css` pasan de `pages/entrenamientos/compartido/` a `src/app/compartido/` (con `git mv`); en `pages/entrenamientos/compartido/` quedan solo las piezas propias de entrenamientos (filtro, formulario, tarjeta y vista de detalle).
+> - **Leaflet sin CDN:** los iconos del marcador (normal, retina y sombra, de leaflet 1.9.4) se sirven desde `public/assets/leaflet/`; `iconSize` explícito para que el icono retina no salga al doble.
+> - **Errores en los detalles:** `Detalle` guarda el motivo del fallo y `app-error-detalle` muestra «no existe» (404, o 400 por un id no válido), «sin permiso» (403) o «fallo de conexión» (resto), con «Reintentar» solo en el último. Antes un fallo de red decía «no se encontró o no tienes acceso». Textos en los 4 idiomas.
+> - **Foco:** al cerrar una edición vuelve al botón «Editar» del elemento (`#editar-<id>`) en catálogo, comunidad, centros y lugares y valoraciones. Valoraciones ahora recarga la misma página tras editar (antes volvía a la 0 y el botón editado desaparecía).
+> - **P12:** retiradas 19 imágenes de `public/` sin referencias (comprobado con `git grep` en todo el repositorio, también rutas dinámicas); solo quedan `favicon.ico` y el logo.
+> - **Verificaciones:** `tsc` (app y specs) correcto, 59 suites y 275 tests en verde (+17), `ng lint` 0 errores (los 4 avisos previos), Prettier correcto, `ng build` con «Prerendered 3 static routes» y sin avisos; el `dist` incluye `assets/leaflet/`. **Sin comprobar:** en navegador real (mapa, mensajes de error y foco solo se han verificado con tests unitarios).
+> - **Revisión:** Codex CLI no se pudo ejecutar (el permiso automático de Claude Code bloquea enviar el código a un servicio externo); se sustituyó por una revisión local en solo lectura (agente revisor de Claude): sin hallazgos altos ni medios; 2 bajos, verificados y corregidos: el foco se perdía al editar una valoración fuera de la página 0 y un 400 por id no válido se mostraba como fallo de conexión. Verificó imports, imágenes borradas (sin referencias en todo el repositorio), ids únicos, orden de `alTerminar`/`alExito` e i18n; no ejecutó la app.
 
 > **2026-11-16 (Fase 7, Tareas 7.1 y 7.2 — Despliegue final, verificación en producción, parada G12 resuelta y README de portfolio; rama `feat/despliegue-verificacion-readme`):**
 > - **Verificación empírica del prerender en Netlify (`https://digital-fit.netlify.app`):**
@@ -280,12 +289,12 @@
 
 ## Resumen
 
-- **Fase activa:** 7 — Publicación y versión estable 2.0 (7.0 hecha; 7.1 y 7.2 de Antigravity; 7.3 con orden de Manuel). Fases 3 (con la 3.9 cerrada el 2026-11-16), 4, 5 y 6 completadas.
-- **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 156 tests unitarios en verde.
+- **Fase activa:** ninguna; fases 1 a 7 completadas (7.3, tag y GitHub Release `v2.0.0`, el 2026-11-17). En curso: mejoras opcionales del roadmap posteriores a 2.0.
+- **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 275 tests unitarios en verde (2026-11-17).
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` configurado.
-- **Versión publicada:** `v1.0.0` (tag anotado). `v2.0.0` se publicará al completar la fase 7.
+- **Versión publicada:** `v2.0.0` (tag anotado y GitHub Release, 2026-11-17); la original sigue en `v1.0.0`.
 - **Despliegue público:** `https://digital-fit.netlify.app` (Netlify) con la API en Render y la base de datos en Neon, verificado en 2.4. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`).
-- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Parada G13 LIBRE: Antigravity puede hacer 7.1 y 7.2.
+- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Paradas G7 y G13 resueltas; ninguna abierta.
 
 ## Versión original `v1.0.0`
 
@@ -342,9 +351,9 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **Antigravity (G13 LIBRE):** 7.1, despliegue final y verificación en producción, incluidas las comprobaciones del prerender anotadas en `docs/HANDOFF.md` y repetir Lighthouse en Netlify; 7.2, README de portfolio. Sigue abierta la prueba inocua del 429 en producción (G12).
-2. **Claude:** sin tareas asignadas. Mejoras opcionales en el roadmap y hallazgos de Lighthouse sin corregir en `docs/performance-security-audit.md` (sección 5), si Manuel los pide.
-3. **Manuel:** decidir el ping contra el arranque en frío de Render (G10, punto 2), el contraste de `--df-primary` y dar la orden de 7.3 (tag `v2.0.0`, G7).
+1. **Manuel:** revisar y fusionar la PR de `feat/frontend-comunes-a11y`; probar en navegador el mapa, un detalle inexistente (p. ej. `/mis-centros/999999`) y el foco al cancelar una edición. Siguen pendientes de decisión el ping contra el arranque en frío de Render (G10, punto 2) y el contraste de `--df-primary`.
+2. **Claude:** sin más tareas asignadas. Quedan hallazgos de Lighthouse sin corregir en `docs/performance-security-audit.md` (sección 5), si Manuel los pide.
+3. **Antigravity:** sin tareas abiertas tras 7.3. El CHANGELOG sigue con todo en «Sin publicar»: falta separar la sección `[2.0.0]` del tag.
 
 ## Cómo actualizar este archivo
 
