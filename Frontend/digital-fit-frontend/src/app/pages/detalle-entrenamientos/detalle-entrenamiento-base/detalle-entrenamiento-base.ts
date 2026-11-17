@@ -16,14 +16,14 @@ import { EntrenamientosService } from '../../../services/entrenamientos/entrenam
 import { MisEntrenamientosService } from '../../../services/entrenamientos/mis-entrenamientos-service';
 import { AdminEntrenamientosBaseService } from '../../../services/admin/admin-entrenamiento-base';
 import { AuthService } from '../../../services/auth-service';
-import { Aviso, Detalle, ejecutarAccion } from '../../entrenamientos/compartido/estado';
+import { Aviso, Detalle, ejecutarAccion } from '../../../compartido/estado';
 import { DetalleVistaComponent } from '../../entrenamientos/compartido/detalle-vista';
 
 @Component({
   selector: 'app-detalle-entrenamiento-base',
   imports: [HeaderComponent, Footer, AlertComponent, ButtonComponent, DetalleVistaComponent],
   templateUrl: './detalle-entrenamiento-base.html',
-  styleUrl: '../../entrenamientos/compartido/pagina.css',
+  styleUrl: '../../../compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetalleEntrenamientoComponent implements OnInit {

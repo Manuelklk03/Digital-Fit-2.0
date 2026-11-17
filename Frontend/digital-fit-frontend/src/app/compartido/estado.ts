@@ -1,7 +1,7 @@
 import { afterNextRender, computed, DestroyRef, inject, Injector, signal } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { mensajeError, PaginaResponse } from '../../../models/pagina-response';
-import { AlertType } from '../../../components/ui';
+import { mensajeError, PaginaResponse } from '../models/pagina-response';
+import { AlertType } from '../components/ui';
 
 export type EstadoCarga = 'cargando' | 'listo' | 'error';
 

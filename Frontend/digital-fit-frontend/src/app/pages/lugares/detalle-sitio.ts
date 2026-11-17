@@ -22,7 +22,7 @@ import { I18nService } from '../../i18n/i18n.service';
 import { UsuarioSesion } from '../../models/entrenamiento';
 import { coordenadasLegibles, esLugarPublico, Sitio } from '../../models/lugar';
 import { AuthService } from '../../services/auth-service';
-import { Aviso, Detalle, ejecutarAccion } from '../entrenamientos/compartido/estado';
+import { Aviso, Detalle, ejecutarAccion } from '../../compartido/estado';
 import { ConfigDetalle } from './config';
 
 /** Detalle de un centro o lugar: ficha, mapa de solo lectura y acciones según permisos. */
@@ -39,7 +39,7 @@ import { ConfigDetalle } from './config';
     MapaSelectorComponent,
     MigasComponent,
   ],
-  styleUrl: '../entrenamientos/compartido/pagina.css',
+  styleUrl: '../../compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let c = config();

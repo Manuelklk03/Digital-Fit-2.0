@@ -39,14 +39,9 @@ import { PrivadosService } from '../../services/centros/privados-service';
 import { MisCentrosService } from '../../services/centros/mis-centros-service';
 import { PublicosService } from '../../services/publicos/publicos-service';
 import { MisLugaresService } from '../../services/publicos/mis-lugares';
-import {
-  Aviso,
-  ejecutarAccion,
-  enfocarTrasRender,
-  ListadoPaginado,
-} from '../entrenamientos/compartido/estado';
-import { EncabezadoPaginaComponent } from '../entrenamientos/compartido/encabezado-pagina';
-import { EstadoListadoComponent } from '../entrenamientos/compartido/estado-listado';
+import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../../compartido/estado';
+import { EncabezadoPaginaComponent } from '../../compartido/encabezado-pagina';
+import { EstadoListadoComponent } from '../../compartido/estado-listado';
 
 /** Un contenido que se puede valorar, ya con el texto que se muestra en el select. */
 export interface OpcionValoracion {
@@ -76,7 +71,7 @@ interface GrupoOpciones {
     EstadoListadoComponent,
   ],
   templateUrl: './valoraciones.html',
-  styleUrls: ['../entrenamientos/compartido/pagina.css', './valoraciones.css'],
+  styleUrls: ['../../compartido/pagina.css', './valoraciones.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValoracionesComponent implements OnInit {

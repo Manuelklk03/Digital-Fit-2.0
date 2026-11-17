@@ -6,13 +6,13 @@ import { BadgeComponent, ButtonComponent, CardComponent } from '../../../compone
 import { I18nService } from '../../../i18n/i18n.service';
 import { fechaLegible, HistorialEntrenamiento } from '../../../models/entrenamiento';
 import { HistorialEntrenamientosService } from '../../../services/entrenamientos/historial-entrenamientos';
-import { Detalle } from '../../entrenamientos/compartido/estado';
+import { Detalle } from '../../../compartido/estado';
 
 @Component({
   selector: 'app-detalle-historial-entrenamiento',
   imports: [RouterLink, HeaderComponent, Footer, BadgeComponent, ButtonComponent, CardComponent],
   templateUrl: './detalle-historial.html',
-  styleUrl: '../../entrenamientos/compartido/pagina.css',
+  styleUrl: '../../../compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetalleHistorialEntrenamientoComponent implements OnInit {

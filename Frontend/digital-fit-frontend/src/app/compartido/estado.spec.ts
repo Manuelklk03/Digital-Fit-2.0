@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { vi } from 'vitest';
-import { PaginaResponse } from '../../../models/pagina-response';
+import { PaginaResponse } from '../models/pagina-response';
 import { Aviso, ListadoPaginado } from './estado';
 
 const pagina = (page: number, content: number[], totalPages = 3): PaginaResponse<number> => ({

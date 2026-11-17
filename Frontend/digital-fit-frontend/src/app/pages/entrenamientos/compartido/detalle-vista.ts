@@ -4,7 +4,7 @@ import { BadgeComponent, ButtonComponent, CardComponent } from '../../../compone
 import { MigasComponent } from '../../../components/migas/migas';
 import { I18nService } from '../../../i18n/i18n.service';
 import { Entrenamiento } from '../../../models/entrenamiento';
-import { EstadoCarga } from './estado';
+import { EstadoCarga } from '../../../compartido/estado';
 import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
 
 /**
@@ -15,7 +15,7 @@ import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
   selector: 'app-detalle-vista',
   imports: [RouterLink, BadgeComponent, ButtonComponent, CardComponent, MigasComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: './pagina.css',
+  styleUrl: '../../../compartido/pagina.css',
   template: `
     @let t = i18n.t().entrenamientos;
     <app-migas />
