@@ -6,6 +6,7 @@
     volver="/entrenamientos-comunidad"
     [badge]="t.comunidad.badge"
     [estado]="detalle.estado()"
+    [motivoError]="detalle.motivo()"
     [entrenamiento]="detalle.item()"
     [datosExtra]="datosExtra()"
     (reintentar)="detalle.cargar()"

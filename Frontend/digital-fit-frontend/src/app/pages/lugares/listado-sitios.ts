@@ -109,6 +109,7 @@ import { TarjetaSitioComponent } from './tarjeta-sitio';
                       variant="outline"
                       size="sm"
                       type="button"
+                      [id]="'editar-' + sitio.id"
                       [disabled]="guardando()"
                       (click)="enEdicion.set(sitio)"
                     >
@@ -183,8 +184,10 @@ export class ListadoSitiosComponent implements OnInit {
   }
 
   cerrarFormulario(): void {
+    const editado = this.enEdicion();
     this.enEdicion.set(undefined);
-    enfocarTrasRender(this.injector, '#boton-nuevo');
+    // Al cerrar una edición, el foco vuelve a su botón «Editar»; al cerrar una creación, a «Nuevo».
+    enfocarTrasRender(this.injector, editado ? `#editar-${editado.id}` : '#boton-nuevo');
   }
 
   filtrar(filtro: FiltroSitio | null): void {

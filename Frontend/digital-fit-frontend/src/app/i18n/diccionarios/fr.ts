@@ -115,6 +115,9 @@ export const diccionarioFr: DiccionarioTraduccion = {
     volver: 'Retour',
     guardar: 'Enregistrer',
     cancelar: 'Annuler',
+    errorNoEncontrado: 'Introuvable : il a peut-être été supprimé ou le lien est incorrect.',
+    errorSinPermiso: "Vous n'avez pas l'autorisation de voir ce contenu.",
+    errorConexion: 'Chargement impossible. Vérifiez votre connexion et réessayez.',
   },
   auth: {
     loginBadge: 'CONNEXION • DIGITAL-FIT',

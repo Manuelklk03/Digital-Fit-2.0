@@ -23,6 +23,7 @@ import { UsuarioSesion } from '../../models/entrenamiento';
 import { coordenadasLegibles, esLugarPublico, Sitio } from '../../models/lugar';
 import { AuthService } from '../../services/auth-service';
 import { Aviso, Detalle, ejecutarAccion } from '../../compartido/estado';
+import { ErrorDetalleComponent } from '../../compartido/error-detalle';
 import { ConfigDetalle } from './config';
 
 /** Detalle de un centro o lugar: ficha, mapa de solo lectura y acciones según permisos. */
@@ -36,6 +37,7 @@ import { ConfigDetalle } from './config';
     BadgeComponent,
     ButtonComponent,
     CardComponent,
+    ErrorDetalleComponent,
     MapaSelectorComponent,
     MigasComponent,
   ],
@@ -65,12 +67,7 @@ import { ConfigDetalle } from './config';
           </div>
         }
         @case ('error') {
-          <div class="estado estado-error" role="alert">
-            <p>{{ t.errorDetalle }}</p>
-            <button df-button variant="outline" size="sm" type="button" (click)="detalle.cargar()">
-              {{ te.reintentar }}
-            </button>
-          </div>
+          <app-error-detalle [motivo]="detalle.motivo()" (reintentar)="detalle.cargar()" />
         }
         @default {
           @if (detalle.item(); as s) {

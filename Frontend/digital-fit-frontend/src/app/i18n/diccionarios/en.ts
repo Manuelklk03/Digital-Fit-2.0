@@ -114,6 +114,9 @@ export const diccionarioEn: DiccionarioTraduccion = {
     volver: 'Back',
     guardar: 'Save',
     cancelar: 'Cancel',
+    errorNoEncontrado: 'Not found: it may have been deleted or the link may be wrong.',
+    errorSinPermiso: 'You do not have permission to view this content.',
+    errorConexion: 'Could not load. Check your connection and try again.',
   },
   auth: {
     loginBadge: 'SIGN IN • DIGITAL-FIT',

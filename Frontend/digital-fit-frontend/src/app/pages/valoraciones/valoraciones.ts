@@ -150,8 +150,10 @@ export class ValoracionesComponent implements OnInit {
   }
 
   cerrarFormulario(): void {
+    const editado = this.enEdicion();
     this.enEdicion.set(undefined);
-    enfocarTrasRender(this.injector, '#boton-nuevo');
+    // Al cerrar una edición, el foco vuelve a su botón «Editar»; al cerrar una creación, a «Nuevo».
+    enfocarTrasRender(this.injector, editado ? `#editar-${editado.id}` : '#boton-nuevo');
   }
 
   cambiarCategoria(categoria: CategoriaValoracion): void {

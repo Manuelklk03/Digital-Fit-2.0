@@ -6,6 +6,7 @@
     volver="/mis-entrenamientos"
     [badge]="t.mis.badge"
     [estado]="detalle.estado()"
+    [motivoError]="detalle.motivo()"
     [entrenamiento]="detalle.item()"
     (reintentar)="detalle.cargar()"
   >
