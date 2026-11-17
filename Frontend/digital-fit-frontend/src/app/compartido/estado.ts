@@ -53,12 +53,12 @@ export class ListadoPaginado<T> {
   }
 }
 
-/** Por qué falló la carga de un detalle: no existe (404), no es tuyo (403) o cualquier otro fallo (red, servidor). */
+/** Por qué falló la carga de un detalle: no existe (404, o 400 por un id no válido), no es tuyo (403) u otro fallo (red, servidor). */
 export type MotivoError = 'no-encontrado' | 'sin-permiso' | 'conexion';
 
 export function motivoError(err: unknown): MotivoError {
   const status = (err as { status?: unknown } | null)?.status;
-  if (status === 404) return 'no-encontrado';
+  if (status === 404 || status === 400) return 'no-encontrado';
   if (status === 403) return 'sin-permiso';
   return 'conexion';
 }

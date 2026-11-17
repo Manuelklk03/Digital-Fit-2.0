@@ -255,7 +255,12 @@ export class ValoracionesComponent implements OnInit {
         alTerminar: () => this.guardando.set(false),
         alExito: () => {
           this.cerrarFormulario();
-          this.mias.cargar(0);
+          // Al editar se queda en la misma página para que el foco pueda volver a su «Editar».
+          if (editando) {
+            this.mias.recargar();
+          } else {
+            this.mias.cargar(0);
+          }
           this.comunidad.recargar();
         },
       },

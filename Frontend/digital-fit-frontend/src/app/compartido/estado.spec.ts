@@ -76,7 +76,8 @@ describe('Aviso', () => {
 
 describe('Detalle', () => {
   it('traduce el código HTTP del fallo a su motivo', () => {
-    expect([404, 403, 0, 500].map((status) => motivoError({ status }))).toEqual([
+    expect([404, 400, 403, 0, 500].map((status) => motivoError({ status }))).toEqual([
+      'no-encontrado',
       'no-encontrado',
       'sin-permiso',
       'conexion',

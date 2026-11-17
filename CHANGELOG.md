@@ -109,7 +109,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
-- Pantallas de detalle (entrenamientos, historial, centros y lugares): un fallo de conexión ya no se presenta como «no encontrado o sin acceso». Se distingue «no existe» (`404`), «sin permiso» (`403`) y fallo de conexión o del servidor, y solo en este último se ofrece «Reintentar». Textos en los 4 idiomas.
+- Pantallas de detalle (entrenamientos, historial, centros y lugares): un fallo de conexión ya no se presenta como «no encontrado o sin acceso». Se distingue «no existe» (`404`, o `400` por un id no válido), «sin permiso» (`403`) y fallo de conexión o del servidor, y solo en este último se ofrece «Reintentar». Textos en los 4 idiomas.
 - Al cerrar el formulario de edición (catálogo, comunidad, centros y lugares, valoraciones), el foco vuelve al botón «Editar» del elemento editado en lugar de al botón «Nuevo».
 - Login: ante el límite de intentos fallidos (`429`) se avisa de «demasiados intentos», y ante un fallo de conexión, un rechazo de CSRF (`403`) o un error del servidor se avisa de que no se pudo iniciar sesión, en lugar de decir que usuario o contraseña son incorrectos. Solo el `401` culpa a la clave. Textos en los 4 idiomas.
 - El esqueleto de la carga inicial ya no desaparece cuando un guard redirige al login: se mantiene hasta que termina la navegación al destino.
