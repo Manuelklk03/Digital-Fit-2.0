@@ -113,6 +113,9 @@ export interface DiccionarioTraduccion {
     volver: string;
     guardar: string;
     cancelar: string;
+    errorNoEncontrado: string;
+    errorSinPermiso: string;
+    errorConexion: string;
   };
   auth: {
     loginBadge: string;
@@ -216,7 +219,6 @@ export interface DiccionarioEntrenamientos {
   errorGuardar: string;
   errorBorrar: string;
   volverListado: string;
-  errorDetalle: string;
   sinDescripcion: string;
   catalogo: {
     badge: string;
@@ -283,7 +285,6 @@ export interface DiccionarioEntrenamientos {
     sinNotas: string;
     tipoEntrenamiento: string;
     tipoUbicacion: string;
-    errorDetalle: string;
     tituloDetalle: string;
     buscarEtiqueta: string;
     buscarPlaceholder: string;
@@ -342,7 +343,6 @@ export interface DiccionarioLugares {
   exitoBorrado: string;
   errorGuardar: string;
   errorBorrar: string;
-  errorDetalle: string;
   volverListado: string;
   vacioFiltro: string;
   guardar: string;

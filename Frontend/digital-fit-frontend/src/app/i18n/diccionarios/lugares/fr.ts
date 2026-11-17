@@ -61,7 +61,6 @@ export const lugaresFr: DiccionarioLugares = {
   exitoBorrado: 'Supprimé.',
   errorGuardar: "Impossible d'enregistrer.",
   errorBorrar: 'Impossible de supprimer.',
-  errorDetalle: "Introuvable, ou vous n'y avez pas accès.",
   volverListado: 'Retour à la liste',
   vacioFiltro: 'Aucun lieu ne correspond au filtre.',
   guardar: 'Enregistrer',

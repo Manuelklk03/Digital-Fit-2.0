@@ -27,7 +27,7 @@ import {
   TipoLugar,
   TIPOS_LUGAR,
 } from '../../models/lugar';
-import { enfocarTrasRender } from '../entrenamientos/compartido/estado';
+import { enfocarTrasRender } from '../../compartido/estado';
 
 type Campo = 'nombre' | 'direccion' | 'precioMensual' | 'descripcion' | 'ubicacion';
 type EstadoAutocompletado = 'inactivo' | 'buscando' | 'ok' | 'sinDatos' | 'error';

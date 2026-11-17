@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
-import { ButtonComponent } from '../../../components/ui';
-import { I18nService } from '../../../i18n/i18n.service';
+import { ButtonComponent } from '../components/ui';
+import { I18nService } from '../i18n/i18n.service';
 
 /** Controles Anterior / Siguiente. `pagina` empieza en 0, como en el backend. */
 @Component({

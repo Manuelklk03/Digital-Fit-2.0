@@ -78,7 +78,6 @@ export const entrenamientosCa: DiccionarioEntrenamientos = {
   errorGuardar: "No s'ha pogut guardar l'entrenament.",
   errorBorrar: "No s'ha pogut esborrar l'entrenament.",
   volverListado: 'Torna al llistat',
-  errorDetalle: "No s'ha trobat l'entrenament o no hi tens accés.",
   sinDescripcion: 'Sense descripció',
   catalogo: {
     badge: 'CATÀLEG BASE',
@@ -152,7 +151,6 @@ export const entrenamientosCa: DiccionarioEntrenamientos = {
     sinNotas: 'Sense notes',
     tipoEntrenamiento: "Tipus d'entrenament",
     tipoUbicacion: "Tipus d'ubicació",
-    errorDetalle: "No s'ha trobat el registre o no hi tens accés.",
     tituloDetalle: 'Registre de sessió',
     buscarEtiqueta: "Cercar en l'historial",
     buscarPlaceholder: 'Entrenament, lloc o notes',

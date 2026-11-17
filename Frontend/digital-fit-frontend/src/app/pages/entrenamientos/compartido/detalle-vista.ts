@@ -4,7 +4,8 @@ import { BadgeComponent, ButtonComponent, CardComponent } from '../../../compone
 import { MigasComponent } from '../../../components/migas/migas';
 import { I18nService } from '../../../i18n/i18n.service';
 import { Entrenamiento } from '../../../models/entrenamiento';
-import { EstadoCarga } from './estado';
+import { EstadoCarga, MotivoError } from '../../../compartido/estado';
+import { ErrorDetalleComponent } from '../../../compartido/error-detalle';
 import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
 
 /**
@@ -13,9 +14,16 @@ import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
  */
 @Component({
   selector: 'app-detalle-vista',
-  imports: [RouterLink, BadgeComponent, ButtonComponent, CardComponent, MigasComponent],
+  imports: [
+    RouterLink,
+    BadgeComponent,
+    ButtonComponent,
+    CardComponent,
+    ErrorDetalleComponent,
+    MigasComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrl: './pagina.css',
+  styleUrl: '../../../compartido/pagina.css',
   template: `
     @let t = i18n.t().entrenamientos;
     <app-migas />
@@ -32,12 +40,7 @@ import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
         </div>
       }
       @case ('error') {
-        <div class="estado estado-error" role="alert">
-          <p>{{ t.errorDetalle }}</p>
-          <button df-button variant="outline" size="sm" type="button" (click)="reintentar.emit()">
-            {{ t.reintentar }}
-          </button>
-        </div>
+        <app-error-detalle [motivo]="motivoError()" (reintentar)="reintentar.emit()" />
       }
       @default {
         @if (entrenamiento(); as e) {
@@ -78,6 +81,7 @@ import { VARIANTE_NIVEL } from './tarjeta-entrenamiento';
 export class DetalleVistaComponent {
   readonly i18n = inject(I18nService);
   readonly estado = input.required<EstadoCarga>();
+  readonly motivoError = input<MotivoError>('conexion');
   readonly entrenamiento = input.required<Entrenamiento | null>();
   readonly badge = input.required<string>();
   readonly volver = input.required<string>();

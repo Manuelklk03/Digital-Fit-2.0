@@ -116,6 +116,9 @@ export const diccionarioEs: DiccionarioTraduccion = {
     volver: 'Volver',
     guardar: 'Guardar',
     cancelar: 'Cancelar',
+    errorNoEncontrado: 'No se encontró: puede que se haya borrado o que el enlace no sea correcto.',
+    errorSinPermiso: 'No tienes permiso para ver este contenido.',
+    errorConexion: 'No se pudo cargar. Comprueba la conexión e inténtalo de nuevo.',
   },
   auth: {
     loginBadge: 'ACCESO • DIGITAL-FIT',

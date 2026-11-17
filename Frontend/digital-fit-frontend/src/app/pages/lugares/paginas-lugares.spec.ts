@@ -221,6 +221,18 @@ describe('Pantallas de lugares', () => {
           http.expectOne((r) => r.url === caso.url).flush(pagina([caso.sitio]));
           expect(listado.aviso.actual()?.tipo).toBe('exito');
         });
+
+        it('al cerrar la edición, el foco vuelve a su botón «Editar»', async () => {
+          const { fixture, listado } = crear(ADMIN);
+          const editar = () =>
+            fixture.nativeElement.querySelector(`#editar-${caso.sitio.id}`) as HTMLButtonElement;
+          editar().click();
+          fixture.detectChanges();
+          listado.cerrarFormulario();
+          fixture.detectChanges();
+          await fixture.whenStable();
+          expect(document.activeElement).toBe(editar());
+        });
       }
 
       if (caso.anadir) {
@@ -320,6 +332,24 @@ describe('Pantallas de lugares', () => {
         http.expectOne(caso.url).flush(caso.sitio);
         expect(detalle.detalle.estado()).toBe('listo');
       });
+
+      for (const [status, texto, reintenta] of [
+        [404, 'No se encontró', false],
+        [403, 'No tienes permiso', false],
+        [0, 'Comprueba la conexión', true],
+      ] as const) {
+        it(`distingue el error ${status} y solo ofrece reintentar si es de conexión`, () => {
+          const { fixture } = crear(USUARIO);
+          http.expectOne(caso.url).flush(null, { status, statusText: 'Error' });
+          fixture.detectChanges();
+          const alerta = fixture.nativeElement.querySelector('[role="alert"]') as HTMLElement;
+          expect(alerta.textContent).toContain(texto);
+          const boton = alerta.querySelector('button');
+          expect(boton !== null).toBe(reintenta);
+          boton?.click();
+          if (reintenta) http.expectOne(caso.url).flush(caso.sitio);
+        });
+      }
 
       it('borra tras confirmar y vuelve al listado', () => {
         const { detalle } = crear(ADMIN);

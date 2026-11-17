@@ -47,10 +47,10 @@ describe('DetalleHistorialEntrenamientoComponent', () => {
     expect(texto).toContain('Sin notas');
   });
 
-  it('muestra el error y reintenta', () => {
+  it('muestra el error de conexión y reintenta', () => {
     http
       .expectOne('/api/entrenamientos/mi-historial/2')
-      .flush(null, { status: 404, statusText: 'Not Found' });
+      .flush(null, { status: 0, statusText: 'Unknown Error' });
     fixture.detectChanges();
 
     fixture.nativeElement.querySelector('.estado-error button').click();

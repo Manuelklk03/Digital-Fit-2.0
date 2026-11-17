@@ -17,9 +17,14 @@ import {
   FiltroEntrenamiento,
 } from '../../../models/entrenamiento';
 import { MisEntrenamientosService } from '../../../services/entrenamientos/mis-entrenamientos-service';
-import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../compartido/estado';
-import { EncabezadoPaginaComponent } from '../compartido/encabezado-pagina';
-import { EstadoListadoComponent } from '../compartido/estado-listado';
+import {
+  Aviso,
+  ejecutarAccion,
+  enfocarTrasRender,
+  ListadoPaginado,
+} from '../../../compartido/estado';
+import { EncabezadoPaginaComponent } from '../../../compartido/encabezado-pagina';
+import { EstadoListadoComponent } from '../../../compartido/estado-listado';
 import { FiltroEntrenamientosComponent } from '../compartido/filtro-entrenamientos';
 import { FormularioEntrenamientoComponent } from '../compartido/formulario-entrenamiento';
 import { TarjetaEntrenamientoComponent } from '../compartido/tarjeta-entrenamiento';
@@ -39,7 +44,7 @@ import { TarjetaEntrenamientoComponent } from '../compartido/tarjeta-entrenamien
     TarjetaEntrenamientoComponent,
   ],
   templateUrl: './mis-entrenamientos.html',
-  styleUrl: '../compartido/pagina.css',
+  styleUrl: '../../../compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MisEntrenamientosComponent implements OnInit {

@@ -16,14 +16,9 @@ import { I18nService } from '../../i18n/i18n.service';
 import { UsuarioSesion } from '../../models/entrenamiento';
 import { FiltroSitio, Sitio, SitioForm } from '../../models/lugar';
 import { AuthService } from '../../services/auth-service';
-import {
-  Aviso,
-  ejecutarAccion,
-  enfocarTrasRender,
-  ListadoPaginado,
-} from '../entrenamientos/compartido/estado';
-import { EncabezadoPaginaComponent } from '../entrenamientos/compartido/encabezado-pagina';
-import { EstadoListadoComponent } from '../entrenamientos/compartido/estado-listado';
+import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../../compartido/estado';
+import { EncabezadoPaginaComponent } from '../../compartido/encabezado-pagina';
+import { EstadoListadoComponent } from '../../compartido/estado-listado';
 import { ConfigListado } from './config';
 import { FiltroSitiosComponent } from './filtro-sitios';
 import { FormularioSitioComponent } from './formulario-sitio';
@@ -44,7 +39,7 @@ import { TarjetaSitioComponent } from './tarjeta-sitio';
     FormularioSitioComponent,
     TarjetaSitioComponent,
   ],
-  styleUrl: '../entrenamientos/compartido/pagina.css',
+  styleUrl: '../../compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let c = config();
@@ -114,6 +109,7 @@ import { TarjetaSitioComponent } from './tarjeta-sitio';
                       variant="outline"
                       size="sm"
                       type="button"
+                      [id]="'editar-' + sitio.id"
                       [disabled]="guardando()"
                       (click)="enEdicion.set(sitio)"
                     >
@@ -188,8 +184,10 @@ export class ListadoSitiosComponent implements OnInit {
   }
 
   cerrarFormulario(): void {
+    const editado = this.enEdicion();
     this.enEdicion.set(undefined);
-    enfocarTrasRender(this.injector, '#boton-nuevo');
+    // Al cerrar una edición, el foco vuelve a su botón «Editar»; al cerrar una creación, a «Nuevo».
+    enfocarTrasRender(this.injector, editado ? `#editar-${editado.id}` : '#boton-nuevo');
   }
 
   filtrar(filtro: FiltroSitio | null): void {

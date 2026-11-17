@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import { ButtonComponent } from '../../../components/ui';
-import { I18nService } from '../../../i18n/i18n.service';
+import { ButtonComponent } from '../components/ui';
+import { I18nService } from '../i18n/i18n.service';
 import { ListadoPaginado } from './estado';
 import { PaginadorComponent } from './paginador';
 

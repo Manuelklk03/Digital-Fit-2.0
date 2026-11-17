@@ -79,6 +79,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Cambiado
 
+- Piezas genéricas de página (estado de carga y avisos, estados de listado, encabezado, paginador y `pagina.css`) movidas de `pages/entrenamientos/compartido/` a `src/app/compartido/`, porque ya las usaban lugares, valoraciones, estadísticas y administración. Sin cambios de comportamiento.
+- Los iconos del marcador del mapa (normal, retina y sombra) se sirven desde `public/assets/leaflet/` en lugar de `unpkg.com`: el mapa ya no depende de una CDN externa para pintar el marcador.
 - Footer rehecho con el sistema Neutral Sport / Industrial: navegación, enlace al código y a la licencia de OpenStreetMap, año actual y textos en los 4 idiomas. Retirados el símbolo «®» y los estilos globales v1 del pie.
 - Cabecera rehecha con el sistema Neutral Sport / Industrial: superficie plana, enlace activo señalado con `aria-current`, botones del sistema, menú deslizable en móvil y selector de idioma accesible (Escape y cierre al pulsar fuera) sin banderas emoji. Retirados los estilos globales v1 de cabecera, menú y estado de usuario.
 - Retirada del sistema de tickets de soporte en el frontend (decisión de la tarea 3.1): pantallas, rutas, servicios, enlaces y textos en los 4 idiomas. El backend de tickets se retira aparte.
@@ -91,6 +93,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Eliminado
 
+- 20 imágenes de `public/` sin ninguna referencia (P12): fotos y logos de la v1 en `public/img/` (incluidos un `favicon.ico` duplicado y un `.png` sin nombre) y `e.ico` y `e2.ico`. Solo se conservan `favicon.ico` y el logo de la cabecera y el pie.
 - Backend completo de tickets de soporte: eliminados controladores (`SoporteRestController`, `SoporteAdminRestController`), servicio `SoporteService`, entidades `Soporte` y `MensajeSoporte`, enum `EstadoSoporte`, repositorios y DTOs asociados. Incorporada migración Flyway `V4__eliminar_soporte.sql` para eliminar las tablas `mensajes_soporte` y `soporte` de la base de datos (decisión D13).
 - Dependencias no utilizadas `spring-boot-starter-thymeleaf` y `spring-boot-starter-thymeleaf-test` en `Backend/digital-fit/pom.xml`, preservando `spring-boot-starter-actuator` para las sondas de salud `/actuator/health` en Docker Compose (tarea 4.9).
 - Tests del frontend: 51/51 en verde (los specs usaban nombres de clase inexistentes y no daban router ni `HttpClient`).
@@ -107,6 +110,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
+- Pantallas de detalle (entrenamientos, historial, centros y lugares): un fallo de conexión ya no se presenta como «no encontrado o sin acceso». Se distingue «no existe» (`404`, o `400` por un id no válido), «sin permiso» (`403`) y fallo de conexión o del servidor, y solo en este último se ofrece «Reintentar». Textos en los 4 idiomas.
+- Al cerrar el formulario de edición (catálogo, comunidad, centros y lugares, valoraciones), el foco vuelve al botón «Editar» del elemento editado en lugar de al botón «Nuevo».
 - Login: ante el límite de intentos fallidos (`429`) se avisa de «demasiados intentos», y ante un fallo de conexión, un rechazo de CSRF (`403`) o un error del servidor se avisa de que no se pudo iniciar sesión, en lugar de decir que usuario o contraseña son incorrectos. Solo el `401` culpa a la clave. Textos en los 4 idiomas.
 - El esqueleto de la carga inicial ya no desaparece cuando un guard redirige al login: se mantiene hasta que termina la navegación al destino.
 - Explorar: el aviso de carga se anuncia al lector de pantalla (sin `aria-busy` en su contenedor).

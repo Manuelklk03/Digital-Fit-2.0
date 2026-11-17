@@ -19,7 +19,7 @@ import {
 import { AuthService } from '../../../../services/auth-service';
 import { EntrenamientosComunidadService } from '../../../../services/entrenamientos/entrenamiento-comunidad-service';
 import { MisEntrenamientosService } from '../../../../services/entrenamientos/mis-entrenamientos-service';
-import { Aviso, Detalle, ejecutarAccion } from '../../../entrenamientos/compartido/estado';
+import { Aviso, Detalle, ejecutarAccion } from '../../../../compartido/estado';
 import { DetalleVistaComponent } from '../../../entrenamientos/compartido/detalle-vista';
 
 @Component({
@@ -33,7 +33,7 @@ import { DetalleVistaComponent } from '../../../entrenamientos/compartido/detall
     DetalleVistaComponent,
   ],
   templateUrl: './detalle-entrenamiento-comunidad.html',
-  styleUrl: '../../../entrenamientos/compartido/pagina.css',
+  styleUrl: '../../../../compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetalleEntrenamientoComunidadComponent implements OnInit {

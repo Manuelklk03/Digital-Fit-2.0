@@ -7,7 +7,7 @@ import { I18nService } from '../../../i18n/i18n.service';
 import { EntrenamientoUsuario } from '../../../models/entrenamiento';
 import { MisEntrenamientosService } from '../../../services/entrenamientos/mis-entrenamientos-service';
 import { HistorialEntrenamientosService } from '../../../services/entrenamientos/historial-entrenamientos';
-import { Aviso, Detalle, ejecutarAccion } from '../../entrenamientos/compartido/estado';
+import { Aviso, Detalle, ejecutarAccion } from '../../../compartido/estado';
 import { DetalleVistaComponent } from '../../entrenamientos/compartido/detalle-vista';
 
 @Component({
@@ -21,7 +21,7 @@ import { DetalleVistaComponent } from '../../entrenamientos/compartido/detalle-v
     DetalleVistaComponent,
   ],
   templateUrl: './detalle-mis-entrenamientos.html',
-  styleUrl: '../../entrenamientos/compartido/pagina.css',
+  styleUrl: '../../../compartido/pagina.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetalleMiEntrenamientoComponent implements OnInit {

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { vi } from 'vitest';
-import { PaginaResponse } from '../../../models/pagina-response';
-import { Aviso, ListadoPaginado } from './estado';
+import { PaginaResponse } from '../models/pagina-response';
+import { Aviso, Detalle, ListadoPaginado, motivoError } from './estado';
 
 const pagina = (page: number, content: number[], totalPages = 3): PaginaResponse<number> => ({
   content,
@@ -71,5 +71,28 @@ describe('Aviso', () => {
     vi.advanceTimersByTime(5000);
     expect(aviso.actual()?.texto).toBe('mal');
     vi.useRealTimers();
+  });
+});
+
+describe('Detalle', () => {
+  it('traduce el código HTTP del fallo a su motivo', () => {
+    expect([404, 400, 403, 0, 500].map((status) => motivoError({ status }))).toEqual([
+      'no-encontrado',
+      'no-encontrado',
+      'sin-permiso',
+      'conexion',
+      'conexion',
+    ]);
+    expect(motivoError(null)).toBe('conexion');
+  });
+
+  it('guarda el motivo del error y lo limpia al cargar con éxito', () => {
+    let fallar = true;
+    const detalle = new Detalle(() => (fallar ? throwError(() => ({ status: 403 })) : of('ok')));
+    detalle.cargar();
+    expect([detalle.estado(), detalle.motivo()]).toEqual(['error', 'sin-permiso']);
+    fallar = false;
+    detalle.cargar();
+    expect([detalle.estado(), detalle.item()]).toEqual(['listo', 'ok']);
   });
 });

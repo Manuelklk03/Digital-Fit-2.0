@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonComponent, CardComponent, InputDirective } from '../../../components/ui';
 import { I18nService } from '../../../i18n/i18n.service';
 import { CATEGORIAS, EntrenamientoForm, NIVELES } from '../../../models/entrenamiento';
-import { enfocarTrasRender } from './estado';
+import { enfocarTrasRender } from '../../../compartido/estado';
 
 const VACIO: EntrenamientoForm = {
   nombre: '',

@@ -98,9 +98,9 @@ Recorridos, en este orden: **acceso** (login, registro, sesión — **Hecho 2026
 
 Para cada recorrido [P]: modelos tipados sin `any` (P7), interceptor HTTP común, estados de carga/error/vacío/éxito, accesibilidad, revisión antislop y de UI, tests de lo que tenga lógica.
 
-Pendientes anotados en el recorrido de lugares [+]: mover las piezas genéricas de `pages/entrenamientos/compartido/` (estado, listado, encabezado, paginador, `pagina.css`) a una carpeta común; iconos del marcador de Leaflet servidos desde `assets` en lugar de unpkg; distinguir 404/403 de un fallo de red en los detalles; devolver el foco al botón «Editar» al cerrar una edición.
+Pendientes anotados en el recorrido de lugares [+]: mover las piezas genéricas de `pages/entrenamientos/compartido/` (estado, listado, encabezado, paginador, `pagina.css`) a una carpeta común — **Hecho 2026-11-17**, en `src/app/compartido/`; iconos del marcador de Leaflet servidos desde `assets` en lugar de unpkg — **Hecho 2026-11-17**, en `public/assets/leaflet/`; distinguir 404/403 de un fallo de red en los detalles — **Hecho 2026-11-17**; devolver el foco al botón «Editar» al cerrar una edición — **Hecho 2026-11-17**.
 
-Además: proxy de desarrollo para `ng serve` (P1) [P] — **Hecho**, `lang="es"` [P] — **Hecho**, carga diferida de rutas [+], limpieza de `public/img` (P12) [+]. Límite conocido: los selectores de contenido (valoraciones, historial) cargan como mucho 100 elementos por lista; con más haría falta búsqueda en servidor.
+Además: proxy de desarrollo para `ng serve` (P1) [P] — **Hecho**, `lang="es"` [P] — **Hecho**, carga diferida de rutas [+], limpieza de `public/img` (P12) [+] — **Hecho 2026-11-17**. Límite conocido: los selectores de contenido (valoraciones, historial) cargan como mucho 100 elementos por lista; con más haría falta búsqueda en servidor.
 
 ## Fase 6 — Integración, depuración y pruebas
 
