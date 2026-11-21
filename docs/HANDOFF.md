@@ -19,7 +19,7 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 
 | Parada | Estado | Espera a | Qué se necesita |
 |---|---|---|---|
-| G13 | LIBRE | Claude → Antigravity | Tarea 3.9 cerrada (prerender de `/inicio`, `/login` y `/register` y Lighthouse). Antigravity puede hacer 7.1 (despliegue final y verificación en producción, incluida la comprobación del prerender en Netlify) y 7.2 (README de portfolio). 7.3 sigue en G7 |
+| G13 | Resuelta | Antigravity | Tareas 7.1 (despliegue final y verificación en producción) y 7.2 (README de portfolio) completadas y fusionadas (PR #88, 2026-11-16). 7.3 sigue en G7 |
 | G12 | Resuelta | Antigravity | Verificación empírica completa en producción (Netlify + Render): CSRF, cabeceras perimetrales y prueba inocua de Rate Limiting 429 (Retry-After: 60) al 6º fallo |
 | G11 | LIBRE | Claude → Antigravity | Frontend verificado con CSRF activo por Claude (2026-11-12); no requiere cambios |
 | G1 | Resuelta | Antigravity → Claude | Tarea 4.8 completada (PR #62) y adaptada por Claude en frontend (PR #64) |
@@ -38,6 +38,7 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 
 | Fecha | Parada | Estado | Nota |
 |---|---|---|---|
+| 2026-11-16 | G13 | Resuelta | Antigravity completó 7.1 (despliegue final, verificación de prerender y recorrido 2.4 en producción, rate limit 429 inocuo y Lighthouse) y 7.2 (README de portfolio profesional) en PR #88. G12 resuelta. Queda únicamente 7.3 en G7 |
 | 2026-11-16 | G13 | LIBRE | Claude cierra la 3.9 en `feat/frontend-prerender`. **Cambia el despliegue:** el build ya no genera `index.html` en la raíz sino `index.csr.html` (respaldo para rutas de cliente) e `inicio/`, `login/` y `register/` con su `index.html`; `netlify.toml`, `nginx.conf` y el `Dockerfile` del frontend ya están adaptados y `NetlifyConfigTest` comprueba el nuevo respaldo. Tras desplegar, en 7.1: `curl -s https://digital-fit.netlify.app/inicio \| grep -c '<h1'` debe dar 1, `curl -sI .../inicio` debe dar 200 sin redirigir a `/inicio/` (ya verificado en la vista previa), `curl -s .../mis-centros` debe devolver `index.csr.html` y sigue la cabecera `X-Robots-Tag` en las privadas. Repetir Lighthouse sobre Netlify (resultados locales en `docs/performance-security-audit.md`, sección 5) |
 | 2026-11-15 | Relevo | LIBRE | Antigravity completa la Fase 6 (6.1 a 6.5) y revisión de Codex (6.4). Relevo a Claude para la tarea 3.9 (SEO, prerender con @angular/ssr y auditoría Lighthouse) |
 | 2026-11-14 | G12 | Parcial | Verificación empírica en producción (Netlify + Render): cookie XSRF-TOKEN con Secure y SameSite=Lax, cabeceras HSTS/XFO/nosniff activas y Actuator aislado tras proxy. Límite 429 en producción pendiente de prueba inocua |
