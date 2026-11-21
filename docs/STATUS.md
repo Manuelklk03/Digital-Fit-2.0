@@ -2,6 +2,11 @@
 
 Última actualización: **2026-11-21**.
 
+> **2026-11-21 (Fase 7 — Coherencia documental de cierre de tareas 7.1, 7.2 y paradas; rama `docs/coherencia-documental-fase7`):**
+> - **Coherencia documental y paradas:** En [docs/HANDOFF.md](HANDOFF.md), parada G13 pasada a Resuelta (7.1 y 7.2 completadas y fusionadas en PR #88); paradas G11, G5 y G6 consolidadas como Resueltas. Única parada pendiente: G7 (orden de Manuel para 7.3).
+> - **Alineación de estado:** En [docs/STATUS.md](STATUS.md), corregidos los apartados «Resumen» y «Siguiente paso» eliminando las menciones que daban 7.1 y 7.2 como pendientes; actualizada la fecha de última actualización a 2026-11-21.
+> - **Preparación para release:** Elaborada la propuesta técnica para G10 punto 2 (arranque en frío de Render) y redactados los borradores de la entrada `[2.0.0]` de CHANGELOG y notas de GitHub Release a la espera de la orden de Manuel (parada G7).
+
 > **2026-11-16 (Fase 7, Tareas 7.1 y 7.2 — Despliegue final, verificación en producción, parada G12 resuelta y README de portfolio; rama `feat/despliegue-verificacion-readme`):**
 > - **Verificación empírica del prerender en Netlify (`https://digital-fit.netlify.app`):**
 >   - Páginas públicas (`/inicio`, `/login`, `/register`): contienen exactamente un `<h1>` visible en el HTML descargado por curl (sin ejecutar JS) y etiqueta canónica correspondiente apuntando a `https://digital-fit.netlify.app/<ruta>`. Respuesta HTTP 200 sin redirecciones espurias.
