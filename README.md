@@ -129,6 +129,10 @@ Netlify CDN (https://digital-fit.netlify.app)
 - **Render:** Ejecución del contenedor backend compilado y firmado en Docker Hub (`manuelklk03/digital-fit-backend`).
 - **Neon:** Base de datos PostgreSQL 17 gestionada con migraciones versionadas mediante Flyway.
 
+> [!NOTE]
+> **Arranque en frío (*Cold Start*) en el nivel gratuito de Render:**  
+> En el plan gratuito de Render, el contenedor entra en suspensión automática tras 15 minutos sin tráfico para no agotar las 750 horas mensuales de la cuenta. Si el servicio lleva un tiempo inactivo, la primera petición puede tardar entre 30 y 45 segundos en arrancar el backend de Spring Boot (en ocasiones el proxy perimetral de Netlify devuelve un `504` provisional en ese primer contacto); una vez despierto, un reintento a los pocos segundos responde con normalidad y las peticiones subsiguientes operan con fluidez.
+
 Guía completa de configuración de entornos en [docs/deployment.md](docs/deployment.md).
 
 ---

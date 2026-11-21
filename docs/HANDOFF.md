@@ -92,7 +92,7 @@ curl -b cookies.txt -H "X-XSRF-TOKEN: $XSRF" -d "username=usuario1&password=Usua
 ## Fallos de backend para Antigravity (G10, 2026-11-11)
 
 1. **405 como 500 (Resuelto):** Añadido manejador para `HttpRequestMethodNotSupportedException` en `GlobalExceptionHandler` que responde `405 Method Not Allowed` con `ProblemDetail` (RFC 7807, `urn:problem-type:metodo-no-permitido`) y la cabecera HTTP `Allow` con los métodos admitidos. Cubierto con tests unitarios en `GlobalExceptionHandlerTest` y test WebMvc en `AdminRutasPermisosSecurityTest` verificando que `GET /api/admin/entrenamientos-base` con rol `ADMIN` responde 405 con cabecera `Allow`.
-2. **Arranque en frío y proxy de Netlify (Pendiente de decisión):** Con Render dormido (se duerme a los 15 min), la primera petición tarda más que el tiempo de espera del proxy de Netlify y responde `504`; un reintento a los segundos funciona (login en 5,6 s). Valorar un ping periódico (p. ej. un workflow programado de GitHub Actions a `/actuator/health` cada 10 min) o documentar el límite. Es de infraestructura: lo decide Manuel.
+2. **Arranque en frío y proxy de Netlify (Resuelto por decisión de Manuel, 2026-11-21):** Con Render dormido (se duerme a los 15 min de inactividad), la primera petición puede superar el tiempo de espera del proxy de Netlify y responder `504`; un reintento a los segundos funciona con normalidad. Manuel optó por la Opción B (documentar el límite en `README.md` y `docs/deployment.md`): preserva las 750 horas mensuales gratuitas de Render sin riesgo de suspensión de cuenta a fin de mes ni consumo innecesario de minutos de CI.
 
 ## Requisitos para desbloquear la Parada G4 (Manuel)
 
