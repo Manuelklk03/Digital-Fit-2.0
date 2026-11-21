@@ -6,6 +6,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ## Sin publicar
 
+## [2.0.0] — 2026-11-21
+
+Renovación profesional integral de la plataforma Digital-Fit (evolución desde el proyecto final de DAW hacia estándares de producción para portfolio). Migración tecnológica completa: Angular 22 + TypeScript 6.0 (frontend), Spring Boot 4 + Java 25 (backend), PostgreSQL 17 relacional con Flyway, arquitectura de despliegue cloud distribuida (Netlify + Render + Neon) y automatización de calidad con CI/CD, SonarQube Cloud y suite E2E en Playwright.
+
 ### Añadido
 
 - Despliegue final y verificación en producción (tarea 7.1): verificación empírica del prerender estático en Netlify (`https://digital-fit.netlify.app`) confirmando existencia de `<h1>` y URLs canónicas en `/inicio`, `/login` y `/register`, junto con respuesta SPA `index.csr.html` y cabecera `X-Robots-Tag: noindex, nofollow` en rutas privadas; comprobación del recorrido 2.4 con autenticación de `usuario1` (rol `USER`) y `admin1` (rol `ADMIN`), aislamiento de permisos 401/403, creación y borrado de recursos sin residuos en base de datos; verificación inocua de Rate Limiting en producción (parada G12) con respuesta HTTP 429 (`Retry-After: 60`) al 6º intento fallido con usuario aislado; y auditoría móvil de Lighthouse en producción con prerender: Rendimiento 87–89, Accesibilidad 95–96, Buenas prácticas 96, SEO 100 y TBT de 20–40 ms.

@@ -28,7 +28,7 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 | G4 | Resuelta | Manuel → Antigravity | Cuentas y secretos de Netlify, Render y Neon creados por Manuel; recorrido real de la 2.4 verificado por Claude el 2026-11-11 (ver registro) |
 | G5 | Resuelta | Antigravity | E2E con Playwright (6.2) y job en CI (6.1) completados y fusionados (PR #83) |
 | G6 | Resuelta | Antigravity | Prettier integrado como check en CI (6.5) y base de código formateada (PR #84) |
-| G7 | Pendiente | Manuel → Antigravity | 7.3 (tag `v2.0.0`) solo con orden expresa de Manuel |
+| G7 | Resuelta | Manuel & Antigravity | Tarea 7.3 completada: entrada `[2.0.0]` en CHANGELOG, tag anotado `v2.0.0` y GitHub Release oficial publicados el 2026-11-21 |
 | G9 | Resuelta | Antigravity | Resueltos los fallos de backend (V6 longitud 1500, @Valid en valoraciones, @Size(min=6) en passwords admin/registro, y búsqueda q en mis-valoraciones) |
 | G8 | Resuelta | Antigravity | Resueltos los 3 fallos de backend (migración Flyway V5 para usuarios demo, 404 NoResourceFoundException y parámetro q en historial) |
 
@@ -38,6 +38,7 @@ Añade aquí cada `BLOQUEADO` y `LIBRE` con fecha.
 
 | Fecha | Parada | Estado | Nota |
 |---|---|---|---|
+| 2026-11-21 | G7 | Resuelta | Manuel autoriza la release oficial v2.0.0 y la Opción B de G10 punto 2 (límite de Render documentado). Entrada [2.0.0] publicada en CHANGELOG, tag anotado v2.0.0 y GitHub Release |
 | 2026-11-16 | G13 | Resuelta | Antigravity completó 7.1 (despliegue final, verificación de prerender y recorrido 2.4 en producción, rate limit 429 inocuo y Lighthouse) y 7.2 (README de portfolio profesional) en PR #88. G12 resuelta. Queda únicamente 7.3 en G7 |
 | 2026-11-16 | G13 | LIBRE | Claude cierra la 3.9 en `feat/frontend-prerender`. **Cambia el despliegue:** el build ya no genera `index.html` en la raíz sino `index.csr.html` (respaldo para rutas de cliente) e `inicio/`, `login/` y `register/` con su `index.html`; `netlify.toml`, `nginx.conf` y el `Dockerfile` del frontend ya están adaptados y `NetlifyConfigTest` comprueba el nuevo respaldo. Tras desplegar, en 7.1: `curl -s https://digital-fit.netlify.app/inicio \| grep -c '<h1'` debe dar 1, `curl -sI .../inicio` debe dar 200 sin redirigir a `/inicio/` (ya verificado en la vista previa), `curl -s .../mis-centros` debe devolver `index.csr.html` y sigue la cabecera `X-Robots-Tag` en las privadas. Repetir Lighthouse sobre Netlify (resultados locales en `docs/performance-security-audit.md`, sección 5) |
 | 2026-11-15 | Relevo | LIBRE | Antigravity completa la Fase 6 (6.1 a 6.5) y revisión de Codex (6.4). Relevo a Claude para la tarea 3.9 (SEO, prerender con @angular/ssr y auditoría Lighthouse) |
@@ -92,7 +93,7 @@ curl -b cookies.txt -H "X-XSRF-TOKEN: $XSRF" -d "username=usuario1&password=Usua
 ## Fallos de backend para Antigravity (G10, 2026-11-11)
 
 1. **405 como 500 (Resuelto):** Añadido manejador para `HttpRequestMethodNotSupportedException` en `GlobalExceptionHandler` que responde `405 Method Not Allowed` con `ProblemDetail` (RFC 7807, `urn:problem-type:metodo-no-permitido`) y la cabecera HTTP `Allow` con los métodos admitidos. Cubierto con tests unitarios en `GlobalExceptionHandlerTest` y test WebMvc en `AdminRutasPermisosSecurityTest` verificando que `GET /api/admin/entrenamientos-base` con rol `ADMIN` responde 405 con cabecera `Allow`.
-2. **Arranque en frío y proxy de Netlify (Pendiente de decisión):** Con Render dormido (se duerme a los 15 min), la primera petición tarda más que el tiempo de espera del proxy de Netlify y responde `504`; un reintento a los segundos funciona (login en 5,6 s). Valorar un ping periódico (p. ej. un workflow programado de GitHub Actions a `/actuator/health` cada 10 min) o documentar el límite. Es de infraestructura: lo decide Manuel.
+2. **Arranque en frío y proxy de Netlify (Resuelto por decisión de Manuel, 2026-11-21):** Con Render dormido (se duerme a los 15 min de inactividad), la primera petición puede superar el tiempo de espera del proxy de Netlify y responder `504`; un reintento a los segundos funciona con normalidad. Manuel optó por la Opción B (documentar el límite en `README.md` y `docs/deployment.md`): preserva las 750 horas mensuales gratuitas de Render sin riesgo de suspensión de cuenta a fin de mes ni consumo innecesario de minutos de CI.
 
 ## Requisitos para desbloquear la Parada G4 (Manuel)
 

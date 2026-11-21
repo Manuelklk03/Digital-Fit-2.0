@@ -1,6 +1,6 @@
 # Despliegue — Digital-Fit
 
-Estado: **solo ejecución local**. No hay despliegue público. Netlify + Render + Neon es la propuesta documental para una prueba futura; staging y producción se prepararán antes del despliegue ([roadmap.md](roadmap.md#fase-2--viabilidad-del-despliegue-gratuito)).
+Estado: **despliegue en producción activo**. URL pública: `https://digital-fit.netlify.app`. La arquitectura distribuida Netlify (frontend estático + proxy inverso `/api/*`) + Render (Spring Boot en contenedor Docker) + Neon (Serverless PostgreSQL 17) está verificada en vivo con sesiones HttpOnly, protección CSRF y prerender estático ([roadmap.md](roadmap.md#fase-7--publicación-y-versión-estable-20)).
 
 ## 1. Ejecución local con Docker (recomendada)
 
@@ -145,7 +145,7 @@ Puntos que condicionan la elección:
 
 - **Memoria**: Spring Boot con Java 25 necesita normalmente varios cientos de MB; hay que medirlo con la configuración real.
 - **Sesión por cookie**: el proxy `/api/*` propuesto permite que el navegador llame al origen del frontend. Hay que comprobar que transmite `Set-Cookie` y que la cookie de primera parte funciona; CSRF debe activarse antes de publicar (decisión D2). Si se prescinde del proxy y el navegador llama a otro dominio, habrá que rediseñar la configuración de cookies y CORS.
-- **Suspensión**: un backend que se duerme tarda en responder a la primera petición; la interfaz debe mostrar un estado de carga honesto.
+- **Suspensión y arranque en frío (*cold start*)**: En el plan gratuito de Render, el backend entra en suspensión tras 15 minutos sin peticiones. La primera llamada puede tardar ~35–45 segundos en levantar el contenedor, provocando en ocasiones un `504 Gateway Timeout` provisional en el proxy de Netlify; un reintento a los pocos segundos responde de inmediato (200 OK en ~5 s). Se optó conscientemente por documentar este límite técnico en lugar de configurar pings periódicos artificiales para preservar las 750 horas mensuales gratuitas de Render y evitar suspensiones de cuenta a final de mes.
 
 ### 4.1 Matriz de entornos dev, staging y prod (Tarea 2.3)
 

@@ -2,6 +2,11 @@
 
 Última actualización: **2026-11-21**.
 
+> **2026-11-21 (Fase 7, Tarea 7.3 — Publicación de la Release oficial `v2.0.0` y resolución de G10 punto 2; rama `chore/release-v2.0.0`):**
+> - **Resolución de G10 punto 2:** Adoptada la Opción B autorizada por Manuel, documentando formalmente en `README.md` y `docs/deployment.md` el comportamiento de arranque en frío (*cold start*) del nivel gratuito de Render (15 min de inactividad &rarr; ~35–45 s de inicio de contenedor). Se preserva la cuota mensual de 750 horas gratuitas de Render sin riesgo de suspensión a fin de mes ni consumo innecesario de minutos de CI.
+> - **Publicación de la versión 2.0.0 (Tarea 7.3, Parada G7 Resuelta):** Generada la entrada `## [2.0.0] — 2026-11-21` en `CHANGELOG.md` resumiendo toda la renovación tecnológica. Creado el tag anotado `v2.0.0` y publicada la Release oficial en GitHub con notas técnicas, credenciales de demo y enlaces en vivo.
+> - **Cierre de Fase 7:** Todas las fases del roadmap (1 a 7) y todas las paradas de coordinación (G1 a G13) quedan concluidas con éxito.
+
 > **2026-11-21 (Fase 7 — Coherencia documental de cierre de tareas 7.1, 7.2 y paradas; rama `docs/coherencia-documental-fase7`):**
 > - **Coherencia documental y paradas:** En [docs/HANDOFF.md](HANDOFF.md), parada G13 pasada a Resuelta (7.1 y 7.2 completadas y fusionadas en PR #88); paradas G11, G5 y G6 consolidadas como Resueltas. Única parada pendiente: G7 (orden de Manuel para 7.3).
 > - **Alineación de estado:** En [docs/STATUS.md](STATUS.md), corregidos los apartados «Resumen» y «Siguiente paso» eliminando las menciones que daban 7.1 y 7.2 como pendientes; actualizada la fecha de última actualización a 2026-11-21.
@@ -285,12 +290,12 @@
 
 ## Resumen
 
-- **Fase activa:** 7 — Publicación y versión estable 2.0 (7.0, 7.1 y 7.2 completadas y fusionadas; 7.3 tag `v2.0.0` y release condicionada a la orden expresa de Manuel). Fases 1 a 6 y tareas 7.0–7.2 completadas.
+- **Fase activa:** Ninguna (Fases 1 a 7 completadas al 100%). Versión 2.0.0 publicada oficialmente.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 156 tests unitarios en verde.
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` configurado.
-- **Versión publicada:** `v1.0.0` (tag anotado). `v2.0.0` se publicará al completar la fase 7 (tarea 7.3 con orden de Manuel).
+- **Versión publicada:** `v2.0.0` (tag anotado y GitHub Release oficial). Versión original `v1.0.0` preservada.
 - **Despliegue público:** `https://digital-fit.netlify.app` (Netlify) con la API en Render y la base de datos en Neon, verificado en 2.4 y 7.1. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`).
-- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Paradas G12 y G13 Resueltas (7.1, 7.2 y rate limit 429 en producción verificados y fusionados en PR #88). Única parada pendiente: G7 (orden expresa de Manuel para 7.3).
+- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Todas las paradas (G1 a G13, incluida G7) están **Resueltas**.
 
 ## Versión original `v1.0.0`
 
@@ -347,9 +352,8 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **Manuel:** dar la orden expresa para la tarea 7.3 (tag `v2.0.0`, GitHub Release y entrada `[2.0.0]` del CHANGELOG, parada G7) cuando lo decida; resolver la decisión sobre el arranque en frío de Render (G10 punto 2: ping programado vs. documentar el límite).
-2. **Antigravity:** a la espera de la orden de Manuel para 7.3 (G7); borrador de Release y CHANGELOG preparados; propuesta de G10 punto 2 documentada para decisión.
-3. **Claude:** sin tareas asignadas para la versión 2.0. Disponible para posibles mejoras posteriores [2.0+] anotadas en el roadmap.
+1. **Digital-Fit 2.0 completado:** El proyecto ha sido renovado al 100%, verificado en CI/CD con SonarQube Cloud y Playwright E2E, desplegado en producción (`https://digital-fit.netlify.app`), documentado en README de portfolio y publicado como Release oficial `v2.0.0`.
+2. **Mejoras posteriores [2.0+]:** Cualquier función adicional opcional (PWA, analíticas avanzadas, internacionalización extendida) queda anotada para el futuro y bajo nueva petición de Manuel.
 
 ## Cómo actualizar este archivo
 
