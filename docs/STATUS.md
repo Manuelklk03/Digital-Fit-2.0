@@ -1,6 +1,6 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-16**.
+Última actualización: **2026-11-21**.
 
 > **2026-11-16 (Fase 7, Tareas 7.1 y 7.2 — Despliegue final, verificación en producción, parada G12 resuelta y README de portfolio; rama `feat/despliegue-verificacion-readme`):**
 > - **Verificación empírica del prerender en Netlify (`https://digital-fit.netlify.app`):**
@@ -280,12 +280,12 @@
 
 ## Resumen
 
-- **Fase activa:** 7 — Publicación y versión estable 2.0 (7.0 hecha; 7.1 y 7.2 de Antigravity; 7.3 con orden de Manuel). Fases 3 (con la 3.9 cerrada el 2026-11-16), 4, 5 y 6 completadas.
+- **Fase activa:** 7 — Publicación y versión estable 2.0 (7.0, 7.1 y 7.2 completadas y fusionadas; 7.3 tag `v2.0.0` y release condicionada a la orden expresa de Manuel). Fases 1 a 6 y tareas 7.0–7.2 completadas.
 - **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 156 tests unitarios en verde.
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` configurado.
-- **Versión publicada:** `v1.0.0` (tag anotado). `v2.0.0` se publicará al completar la fase 7.
-- **Despliegue público:** `https://digital-fit.netlify.app` (Netlify) con la API en Render y la base de datos en Neon, verificado en 2.4. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`).
-- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Parada G13 LIBRE: Antigravity puede hacer 7.1 y 7.2.
+- **Versión publicada:** `v1.0.0` (tag anotado). `v2.0.0` se publicará al completar la fase 7 (tarea 7.3 con orden de Manuel).
+- **Despliegue público:** `https://digital-fit.netlify.app` (Netlify) con la API en Render y la base de datos en Neon, verificado en 2.4 y 7.1. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`).
+- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Paradas G12 y G13 Resueltas (7.1, 7.2 y rate limit 429 en producción verificados y fusionados en PR #88). Única parada pendiente: G7 (orden expresa de Manuel para 7.3).
 
 ## Versión original `v1.0.0`
 
@@ -342,9 +342,9 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **Antigravity (G13 LIBRE):** 7.1, despliegue final y verificación en producción, incluidas las comprobaciones del prerender anotadas en `docs/HANDOFF.md` y repetir Lighthouse en Netlify; 7.2, README de portfolio. Sigue abierta la prueba inocua del 429 en producción (G12).
-2. **Claude:** sin tareas asignadas. Mejoras opcionales en el roadmap y hallazgos de Lighthouse sin corregir en `docs/performance-security-audit.md` (sección 5), si Manuel los pide.
-3. **Manuel:** decidir el ping contra el arranque en frío de Render (G10, punto 2), el contraste de `--df-primary` y dar la orden de 7.3 (tag `v2.0.0`, G7).
+1. **Manuel:** dar la orden expresa para la tarea 7.3 (tag `v2.0.0`, GitHub Release y entrada `[2.0.0]` del CHANGELOG, parada G7) cuando lo decida; resolver la decisión sobre el arranque en frío de Render (G10 punto 2: ping programado vs. documentar el límite).
+2. **Antigravity:** a la espera de la orden de Manuel para 7.3 (G7); borrador de Release y CHANGELOG preparados; propuesta de G10 punto 2 documentada para decisión.
+3. **Claude:** sin tareas asignadas para la versión 2.0. Disponible para posibles mejoras posteriores [2.0+] anotadas en el roadmap.
 
 ## Cómo actualizar este archivo
 
