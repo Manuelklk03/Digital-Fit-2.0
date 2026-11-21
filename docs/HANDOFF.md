@@ -21,13 +21,13 @@ Formato de cada línea: `Parada | Estado | Espera a | Qué se necesita | Fecha`.
 |---|---|---|---|
 | G13 | Resuelta | Antigravity | Tareas 7.1 (despliegue final y verificación en producción) y 7.2 (README de portfolio) completadas y fusionadas (PR #88, 2026-11-16). 7.3 sigue en G7 |
 | G12 | Resuelta | Antigravity | Verificación empírica completa en producción (Netlify + Render): CSRF, cabeceras perimetrales y prueba inocua de Rate Limiting 429 (Retry-After: 60) al 6º fallo |
-| G11 | LIBRE | Claude → Antigravity | Frontend verificado con CSRF activo por Claude (2026-11-12); no requiere cambios |
+| G11 | Resuelta | Claude → Antigravity | Frontend verificado con CSRF activo por Claude (2026-11-12) y fusionado (PR #81 y #82) |
 | G1 | Resuelta | Antigravity → Claude | Tarea 4.8 completada (PR #62) y adaptada por Claude en frontend (PR #64) |
 | G2 | Resuelta | Claude → Antigravity | Pantallas y servicios de soporte retirados en frontend (PR #65) y backend purgado con Flyway V4 (PR #66) |
 | G3 | Resuelta | Claude → Antigravity | Confirmado: cero referencias residuales a soporte o tickets en frontend y backend |
 | G4 | Resuelta | Manuel → Antigravity | Cuentas y secretos de Netlify, Render y Neon creados por Manuel; recorrido real de la 2.4 verificado por Claude el 2026-11-11 (ver registro) |
-| G5 | LIBRE | Claude → Antigravity | Fase 5 cerrada: Antigravity puede hacer 6.2 (E2E) y 6.1 (CI) |
-| G6 | LIBRE | Claude → Antigravity | Claude no tiene ramas abiertas tras fusionar `feat/recorrido-progreso`: Antigravity puede hacer 6.5 (Prettier) |
+| G5 | Resuelta | Antigravity | E2E con Playwright (6.2) y job en CI (6.1) completados y fusionados (PR #83) |
+| G6 | Resuelta | Antigravity | Prettier integrado como check en CI (6.5) y base de código formateada (PR #84) |
 | G7 | Pendiente | Manuel → Antigravity | 7.3 (tag `v2.0.0`) solo con orden expresa de Manuel |
 | G9 | Resuelta | Antigravity | Resueltos los fallos de backend (V6 longitud 1500, @Valid en valoraciones, @Size(min=6) en passwords admin/registro, y búsqueda q en mis-valoraciones) |
 | G8 | Resuelta | Antigravity | Resueltos los 3 fallos de backend (migración Flyway V5 para usuarios demo, 404 NoResourceFoundException y parámetro q en historial) |
