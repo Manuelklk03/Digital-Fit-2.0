@@ -1,8 +1,8 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-17**.
+Última actualización: **2026-11-23**.
 
-> **2026-11-17 (Mejoras de frontend y accesibilidad posteriores a 2.0; rama `feat/frontend-comunes-a11y`, worktree `df-claude`, en automático):**
+> **2026-11-23 (Mejoras de frontend y accesibilidad posteriores a 2.0; rama `feat/frontend-comunes-a11y`, worktree `df-claude`, en automático):**
 > - **Carpeta común:** estado, estados de listado, encabezado, paginador y `pagina.css` pasan de `pages/entrenamientos/compartido/` a `src/app/compartido/` (con `git mv`); en `pages/entrenamientos/compartido/` quedan solo las piezas propias de entrenamientos (filtro, formulario, tarjeta y vista de detalle).
 > - **Leaflet sin CDN:** los iconos del marcador (normal, retina y sombra, de leaflet 1.9.4) se sirven desde `public/assets/leaflet/`; `iconSize` explícito para que el icono retina no salga al doble.
 > - **Errores en los detalles:** `Detalle` guarda el motivo del fallo y `app-error-detalle` muestra «no existe» (404, o 400 por un id no válido), «sin permiso» (403) o «fallo de conexión» (resto), con «Reintentar» solo en el último. Antes un fallo de red decía «no se encontró o no tienes acceso». Textos en los 4 idiomas.
@@ -11,6 +11,15 @@
 > - **Verificaciones:** `tsc` (app y specs) correcto, 59 suites y 275 tests en verde (+17), `ng lint` 0 errores (los 4 avisos previos), Prettier correcto, `ng build` con «Prerendered 3 static routes» y sin avisos; el `dist` incluye `assets/leaflet/`. **Sin comprobar:** en navegador real (mapa, mensajes de error y foco solo se han verificado con tests unitarios).
 > - **Revisión de Codex** (CLI 0.164.0, solo lectura sobre `main...HEAD`, a petición de Manuel): 1 hallazgo bajo, verificado y corregido: quedaba `public/img/.png` (archivo oculto de 1,3 MB sin referencias) aunque la documentación daba P12 por cerrado. Comprobó imports y `styleUrl`, consumidores de `Detalle.motivo`, i18n, imágenes borradas, assets de Leaflet, ids de edición y orden de foco y recarga; no ejecutó build ni navegador.
 > - **Revisión local previa** (antes de poder usar Codex): revisión en solo lectura (agente revisor de Claude): sin hallazgos altos ni medios; 2 bajos, verificados y corregidos: el foco se perdía al editar una valoración fuera de la página 0 y un 400 por id no válido se mostraba como fallo de conexión. Verificó imports, imágenes borradas (sin referencias en todo el repositorio), ids únicos, orden de `alTerminar`/`alExito` e i18n; no ejecutó la app.
+> **2026-11-21 (Fase 7, Tarea 7.3 — Publicación de la Release oficial `v2.0.0` y resolución de G10 punto 2; rama `chore/release-v2.0.0`):**
+> - **Resolución de G10 punto 2:** Adoptada la Opción B autorizada por Manuel, documentando formalmente en `README.md` y `docs/deployment.md` el comportamiento de arranque en frío (*cold start*) del nivel gratuito de Render (15 min de inactividad &rarr; ~35–45 s de inicio de contenedor). Se preserva la cuota mensual de 750 horas gratuitas de Render sin riesgo de suspensión a fin de mes ni consumo innecesario de minutos de CI.
+> - **Publicación de la versión 2.0.0 (Tarea 7.3, Parada G7 Resuelta):** Generada la entrada `## [2.0.0] — 2026-11-21` en `CHANGELOG.md` resumiendo toda la renovación tecnológica. Creado el tag anotado `v2.0.0` y publicada la Release oficial en GitHub con notas técnicas, credenciales de demo y enlaces en vivo.
+> - **Cierre de Fase 7:** Todas las fases del roadmap (1 a 7) y todas las paradas de coordinación (G1 a G13) quedan concluidas con éxito.
+
+> **2026-11-21 (Fase 7 — Coherencia documental de cierre de tareas 7.1, 7.2 y paradas; rama `docs/coherencia-documental-fase7`):**
+> - **Coherencia documental y paradas:** En [docs/HANDOFF.md](HANDOFF.md), parada G13 pasada a Resuelta (7.1 y 7.2 completadas y fusionadas en PR #88); paradas G11, G5 y G6 consolidadas como Resueltas. Única parada pendiente: G7 (orden de Manuel para 7.3).
+> - **Alineación de estado:** En [docs/STATUS.md](STATUS.md), corregidos los apartados «Resumen» y «Siguiente paso» eliminando las menciones que daban 7.1 y 7.2 como pendientes; actualizada la fecha de última actualización a 2026-11-21.
+> - **Preparación para release:** Elaborada la propuesta técnica para G10 punto 2 (arranque en frío de Render) y redactados los borradores de la entrada `[2.0.0]` de CHANGELOG y notas de GitHub Release a la espera de la orden de Manuel (parada G7).
 
 > **2026-11-16 (Fase 7, Tareas 7.1 y 7.2 — Despliegue final, verificación en producción, parada G12 resuelta y README de portfolio; rama `feat/despliegue-verificacion-readme`):**
 > - **Verificación empírica del prerender en Netlify (`https://digital-fit.netlify.app`):**
@@ -290,12 +299,12 @@
 
 ## Resumen
 
-- **Fase activa:** ninguna; fases 1 a 7 completadas (7.3, tag y GitHub Release `v2.0.0`, el 2026-11-17). En curso: mejoras opcionales del roadmap posteriores a 2.0.
-- **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 275 tests unitarios en verde (2026-11-17).
+- **Fase activa:** Ninguna (Fases 1 a 7 completadas al 100%). Versión 2.0.0 publicada oficialmente.
+- **CI:** `.github/workflows/ci.yml`. **Checks obligatorios en `main`** desde 1B.3, más `SonarQube` desde 1B.4 (Quality Gate *Sonar way*) y `Docker (compose)` desde 1B.5; publicación de imágenes en Docker Hub en cada merge (`latest`, SHA corto y tag de versión) con deploy hook condicional para Render. Backend con 108 tests unitarios/integración en verde; frontend con 156 tests unitarios en verde.
 - **SonarQube Cloud:** organización `manuelklk03`, proyecto `Manuelklk03_Digital-Fit-Proyecto`, secreto `SONAR_TOKEN` configurado.
-- **Versión publicada:** `v2.0.0` (tag anotado y GitHub Release, 2026-11-17); la original sigue en `v1.0.0`.
-- **Despliegue público:** `https://digital-fit.netlify.app` (Netlify) con la API en Render y la base de datos en Neon, verificado en 2.4. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`).
-- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Paradas G7 y G13 resueltas; ninguna abierta.
+- **Versión publicada:** `v2.0.0` (tag anotado y GitHub Release oficial). Versión original `v1.0.0` preservada.
+- **Despliegue público:** `https://digital-fit.netlify.app` (Netlify) con la API en Render y la base de datos en Neon, verificado en 2.4 y 7.1. Imágenes publicadas en Docker Hub (`manuelklk03/digital-fit-backend` y `manuelklk03/digital-fit-frontend`).
+- **Modo de trabajo y coordinación:** Coordinación Claude / Antigravity según [HANDOFF.md](HANDOFF.md). Todas las paradas (G1 a G13, incluida G7) están **Resueltas**.
 
 ## Versión original `v1.0.0`
 
@@ -352,9 +361,9 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 ## Siguiente paso
 
-1. **Manuel:** revisar y fusionar la PR de `feat/frontend-comunes-a11y`; probar en navegador el mapa, un detalle inexistente (p. ej. `/mis-centros/999999`) y el foco al cancelar una edición. Siguen pendientes de decisión el ping contra el arranque en frío de Render (G10, punto 2) y el contraste de `--df-primary`.
-2. **Claude:** sin más tareas asignadas. Quedan hallazgos de Lighthouse sin corregir en `docs/performance-security-audit.md` (sección 5), si Manuel los pide.
-3. **Antigravity:** sin tareas abiertas tras 7.3. El CHANGELOG sigue con todo en «Sin publicar»: falta separar la sección `[2.0.0]` del tag.
+1. **Digital-Fit 2.0 completado:** El proyecto ha sido renovado al 100%, verificado en CI/CD con SonarQube Cloud y Playwright E2E, desplegado en producción (`https://digital-fit.netlify.app`), documentado en README de portfolio y publicado como Release oficial `v2.0.0`.
+2. **Mejoras posteriores [2.0+]:** Cualquier función adicional opcional (PWA, analíticas avanzadas, internacionalización extendida) queda anotada para el futuro y bajo nueva petición de Manuel.
+3. **Manuel:** probar en navegador las mejoras posteriores a 2.0 (PR #89): el mapa con los iconos locales, un detalle inexistente (p. ej. `/mis-centros/999999`) y el foco al cancelar una edición. Sigue pendiente de decisión el contraste de `--df-primary`.
 
 ## Cómo actualizar este archivo
 

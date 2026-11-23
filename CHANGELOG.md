@@ -6,6 +6,24 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ## Sin publicar
 
+### Cambiado
+
+- Piezas genéricas de página (estado de carga y avisos, estados de listado, encabezado, paginador y `pagina.css`) movidas de `pages/entrenamientos/compartido/` a `src/app/compartido/`, porque ya las usaban lugares, valoraciones, estadísticas y administración. Sin cambios de comportamiento.
+- Los iconos del marcador del mapa (normal, retina y sombra) se sirven desde `public/assets/leaflet/` en lugar de `unpkg.com`: el mapa ya no depende de una CDN externa para pintar el marcador.
+
+### Eliminado
+
+- 20 imágenes de `public/` sin ninguna referencia (P12): fotos y logos de la v1 en `public/img/` (incluidos un `favicon.ico` duplicado y un `.png` sin nombre) y `e.ico` y `e2.ico`. Solo se conservan `favicon.ico` y el logo de la cabecera y el pie.
+
+### Corregido
+
+- Pantallas de detalle (entrenamientos, historial, centros y lugares): un fallo de conexión ya no se presenta como «no encontrado o sin acceso». Se distingue «no existe» (`404`, o `400` por un id no válido), «sin permiso» (`403`) y fallo de conexión o del servidor, y solo en este último se ofrece «Reintentar». Textos en los 4 idiomas.
+- Al cerrar el formulario de edición (catálogo, comunidad, centros y lugares, valoraciones), el foco vuelve al botón «Editar» del elemento editado en lugar de al botón «Nuevo».
+
+## [2.0.0] — 2026-11-21
+
+Renovación profesional integral de la plataforma Digital-Fit (evolución desde el proyecto final de DAW hacia estándares de producción para portfolio). Migración tecnológica completa: Angular 22 + TypeScript 6.0 (frontend), Spring Boot 4 + Java 25 (backend), PostgreSQL 17 relacional con Flyway, arquitectura de despliegue cloud distribuida (Netlify + Render + Neon) y automatización de calidad con CI/CD, SonarQube Cloud y suite E2E en Playwright.
+
 ### Añadido
 
 - Despliegue final y verificación en producción (tarea 7.1): verificación empírica del prerender estático en Netlify (`https://digital-fit.netlify.app`) confirmando existencia de `<h1>` y URLs canónicas en `/inicio`, `/login` y `/register`, junto con respuesta SPA `index.csr.html` y cabecera `X-Robots-Tag: noindex, nofollow` en rutas privadas; comprobación del recorrido 2.4 con autenticación de `usuario1` (rol `USER`) y `admin1` (rol `ADMIN`), aislamiento de permisos 401/403, creación y borrado de recursos sin residuos en base de datos; verificación inocua de Rate Limiting en producción (parada G12) con respuesta HTTP 429 (`Retry-After: 60`) al 6º intento fallido con usuario aislado; y auditoría móvil de Lighthouse en producción con prerender: Rendimiento 87–89, Accesibilidad 95–96, Buenas prácticas 96, SEO 100 y TBT de 20–40 ms.
@@ -79,8 +97,6 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Cambiado
 
-- Piezas genéricas de página (estado de carga y avisos, estados de listado, encabezado, paginador y `pagina.css`) movidas de `pages/entrenamientos/compartido/` a `src/app/compartido/`, porque ya las usaban lugares, valoraciones, estadísticas y administración. Sin cambios de comportamiento.
-- Los iconos del marcador del mapa (normal, retina y sombra) se sirven desde `public/assets/leaflet/` en lugar de `unpkg.com`: el mapa ya no depende de una CDN externa para pintar el marcador.
 - Footer rehecho con el sistema Neutral Sport / Industrial: navegación, enlace al código y a la licencia de OpenStreetMap, año actual y textos en los 4 idiomas. Retirados el símbolo «®» y los estilos globales v1 del pie.
 - Cabecera rehecha con el sistema Neutral Sport / Industrial: superficie plana, enlace activo señalado con `aria-current`, botones del sistema, menú deslizable en móvil y selector de idioma accesible (Escape y cierre al pulsar fuera) sin banderas emoji. Retirados los estilos globales v1 de cabecera, menú y estado de usuario.
 - Retirada del sistema de tickets de soporte en el frontend (decisión de la tarea 3.1): pantallas, rutas, servicios, enlaces y textos en los 4 idiomas. El backend de tickets se retira aparte.
@@ -93,7 +109,6 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Eliminado
 
-- 20 imágenes de `public/` sin ninguna referencia (P12): fotos y logos de la v1 en `public/img/` (incluidos un `favicon.ico` duplicado y un `.png` sin nombre) y `e.ico` y `e2.ico`. Solo se conservan `favicon.ico` y el logo de la cabecera y el pie.
 - Backend completo de tickets de soporte: eliminados controladores (`SoporteRestController`, `SoporteAdminRestController`), servicio `SoporteService`, entidades `Soporte` y `MensajeSoporte`, enum `EstadoSoporte`, repositorios y DTOs asociados. Incorporada migración Flyway `V4__eliminar_soporte.sql` para eliminar las tablas `mensajes_soporte` y `soporte` de la base de datos (decisión D13).
 - Dependencias no utilizadas `spring-boot-starter-thymeleaf` y `spring-boot-starter-thymeleaf-test` en `Backend/digital-fit/pom.xml`, preservando `spring-boot-starter-actuator` para las sondas de salud `/actuator/health` en Docker Compose (tarea 4.9).
 - Tests del frontend: 51/51 en verde (los specs usaban nombres de clase inexistentes y no daban router ni `HttpClient`).
@@ -110,8 +125,6 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
-- Pantallas de detalle (entrenamientos, historial, centros y lugares): un fallo de conexión ya no se presenta como «no encontrado o sin acceso». Se distingue «no existe» (`404`, o `400` por un id no válido), «sin permiso» (`403`) y fallo de conexión o del servidor, y solo en este último se ofrece «Reintentar». Textos en los 4 idiomas.
-- Al cerrar el formulario de edición (catálogo, comunidad, centros y lugares, valoraciones), el foco vuelve al botón «Editar» del elemento editado en lugar de al botón «Nuevo».
 - Login: ante el límite de intentos fallidos (`429`) se avisa de «demasiados intentos», y ante un fallo de conexión, un rechazo de CSRF (`403`) o un error del servidor se avisa de que no se pudo iniciar sesión, en lugar de decir que usuario o contraseña son incorrectos. Solo el `401` culpa a la clave. Textos en los 4 idiomas.
 - El esqueleto de la carga inicial ya no desaparece cuando un guard redirige al login: se mantiene hasta que termina la navegación al destino.
 - Explorar: el aviso de carga se anuncia al lector de pantalla (sin `aria-busy` en su contenedor).
