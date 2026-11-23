@@ -78,7 +78,6 @@ export const entrenamientosEs: DiccionarioEntrenamientos = {
   errorGuardar: 'No se pudo guardar el entrenamiento.',
   errorBorrar: 'No se pudo borrar el entrenamiento.',
   volverListado: 'Volver al listado',
-  errorDetalle: 'No se encontró el entrenamiento o no tienes acceso a él.',
   sinDescripcion: 'Sin descripción',
   catalogo: {
     badge: 'CATÁLOGO BASE',
@@ -152,7 +151,6 @@ export const entrenamientosEs: DiccionarioEntrenamientos = {
     sinNotas: 'Sin notas',
     tipoEntrenamiento: 'Tipo de entrenamiento',
     tipoUbicacion: 'Tipo de ubicación',
-    errorDetalle: 'No se encontró el registro o no tienes acceso a él.',
     tituloDetalle: 'Registro de sesión',
     buscarEtiqueta: 'Buscar en el historial',
     buscarPlaceholder: 'Entrenamiento, lugar o notas',

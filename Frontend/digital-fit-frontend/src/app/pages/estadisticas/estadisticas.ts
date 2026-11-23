@@ -5,15 +5,15 @@ import { Footer } from '../../components/footer/footer';
 import { ButtonComponent } from '../../components/ui';
 import { I18nService } from '../../i18n/i18n.service';
 import { EstadisticasService } from '../../services/estadisticas/estadisticas-service';
-import { Detalle } from '../entrenamientos/compartido/estado';
-import { EncabezadoPaginaComponent } from '../entrenamientos/compartido/encabezado-pagina';
+import { Detalle } from '../../compartido/estado';
+import { EncabezadoPaginaComponent } from '../../compartido/encabezado-pagina';
 import { EstadisticaUsuario } from '../../models/progreso';
 
 /** Resumen del historial del usuario: sesiones, minutos, media, sitios distintos y entrenamiento más repetido. */
 @Component({
   selector: 'app-estadisticas',
   imports: [RouterLink, HeaderComponent, Footer, ButtonComponent, EncabezadoPaginaComponent],
-  styleUrls: ['../entrenamientos/compartido/pagina.css', './estadisticas.css'],
+  styleUrls: ['../../compartido/pagina.css', './estadisticas.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let t = i18n.t().progreso.estadisticas;

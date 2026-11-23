@@ -78,7 +78,6 @@ export const entrenamientosFr: DiccionarioEntrenamientos = {
   errorGuardar: "Impossible d'enregistrer l'entraînement.",
   errorBorrar: "Impossible de supprimer l'entraînement.",
   volverListado: 'Retour à la liste',
-  errorDetalle: 'Entraînement introuvable ou accès non autorisé.',
   sinDescripcion: 'Sans description',
   catalogo: {
     badge: 'CATALOGUE DE BASE',
@@ -154,7 +153,6 @@ export const entrenamientosFr: DiccionarioEntrenamientos = {
     sinNotas: 'Sans notes',
     tipoEntrenamiento: "Type d'entraînement",
     tipoUbicacion: 'Type de lieu',
-    errorDetalle: 'Séance introuvable ou accès non autorisé.',
     tituloDetalle: 'Séance enregistrée',
     buscarEtiqueta: "Rechercher dans l'historique",
     buscarPlaceholder: 'Entraînement, lieu ou notes',

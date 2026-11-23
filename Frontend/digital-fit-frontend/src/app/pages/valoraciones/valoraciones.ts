@@ -39,14 +39,9 @@ import { PrivadosService } from '../../services/centros/privados-service';
 import { MisCentrosService } from '../../services/centros/mis-centros-service';
 import { PublicosService } from '../../services/publicos/publicos-service';
 import { MisLugaresService } from '../../services/publicos/mis-lugares';
-import {
-  Aviso,
-  ejecutarAccion,
-  enfocarTrasRender,
-  ListadoPaginado,
-} from '../entrenamientos/compartido/estado';
-import { EncabezadoPaginaComponent } from '../entrenamientos/compartido/encabezado-pagina';
-import { EstadoListadoComponent } from '../entrenamientos/compartido/estado-listado';
+import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../../compartido/estado';
+import { EncabezadoPaginaComponent } from '../../compartido/encabezado-pagina';
+import { EstadoListadoComponent } from '../../compartido/estado-listado';
 
 /** Un contenido que se puede valorar, ya con el texto que se muestra en el select. */
 export interface OpcionValoracion {
@@ -76,7 +71,7 @@ interface GrupoOpciones {
     EstadoListadoComponent,
   ],
   templateUrl: './valoraciones.html',
-  styleUrls: ['../entrenamientos/compartido/pagina.css', './valoraciones.css'],
+  styleUrls: ['../../compartido/pagina.css', './valoraciones.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ValoracionesComponent implements OnInit {
@@ -155,8 +150,10 @@ export class ValoracionesComponent implements OnInit {
   }
 
   cerrarFormulario(): void {
+    const editado = this.enEdicion();
     this.enEdicion.set(undefined);
-    enfocarTrasRender(this.injector, '#boton-nuevo');
+    // Al cerrar una edición, el foco vuelve a su botón «Editar»; al cerrar una creación, a «Nuevo».
+    enfocarTrasRender(this.injector, editado ? `#editar-${editado.id}` : '#boton-nuevo');
   }
 
   cambiarCategoria(categoria: CategoriaValoracion): void {
@@ -258,7 +255,12 @@ export class ValoracionesComponent implements OnInit {
         alTerminar: () => this.guardando.set(false),
         alExito: () => {
           this.cerrarFormulario();
-          this.mias.cargar(0);
+          // Al editar se queda en la misma página para que el foco pueda volver a su «Editar».
+          if (editando) {
+            this.mias.recargar();
+          } else {
+            this.mias.cargar(0);
+          }
           this.comunidad.recargar();
         },
       },

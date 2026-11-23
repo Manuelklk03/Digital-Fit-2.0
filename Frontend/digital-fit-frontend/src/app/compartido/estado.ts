@@ -1,7 +1,7 @@
 import { afterNextRender, computed, DestroyRef, inject, Injector, signal } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { mensajeError, PaginaResponse } from '../../../models/pagina-response';
-import { AlertType } from '../../../components/ui';
+import { mensajeError, PaginaResponse } from '../models/pagina-response';
+import { AlertType } from '../components/ui';
 
 export type EstadoCarga = 'cargando' | 'listo' | 'error';
 
@@ -53,10 +53,21 @@ export class ListadoPaginado<T> {
   }
 }
 
-/** Estado de una pantalla de detalle: carga un elemento y expone carga, error y dato. */
+/** Por qué falló la carga de un detalle: no existe (404, o 400 por un id no válido), no es tuyo (403) u otro fallo (red, servidor). */
+export type MotivoError = 'no-encontrado' | 'sin-permiso' | 'conexion';
+
+export function motivoError(err: unknown): MotivoError {
+  const status = (err as { status?: unknown } | null)?.status;
+  if (status === 404 || status === 400) return 'no-encontrado';
+  if (status === 403) return 'sin-permiso';
+  return 'conexion';
+}
+
+/** Estado de una pantalla de detalle: carga un elemento y expone carga, error (con su motivo) y dato. */
 export class Detalle<T> {
   readonly item = signal<T | null>(null);
   readonly estado = signal<EstadoCarga>('cargando');
+  readonly motivo = signal<MotivoError>('conexion');
 
   constructor(private readonly fuente: () => Observable<T>) {}
 
@@ -67,7 +78,10 @@ export class Detalle<T> {
         this.item.set(r);
         this.estado.set('listo');
       },
-      error: () => this.estado.set('error'),
+      error: (err: unknown) => {
+        this.motivo.set(motivoError(err));
+        this.estado.set('error');
+      },
     });
   }
 }

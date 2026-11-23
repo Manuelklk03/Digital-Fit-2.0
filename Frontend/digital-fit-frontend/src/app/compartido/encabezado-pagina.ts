@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { BadgeComponent } from '../../../components/ui';
-import { MigasComponent } from '../../../components/migas/migas';
+import { BadgeComponent } from '../components/ui';
+import { MigasComponent } from '../components/migas/migas';
 
 /** Cabecera de página: etiqueta, título, subtítulo y acciones proyectadas a la derecha. */
 @Component({

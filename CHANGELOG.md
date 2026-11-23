@@ -6,6 +6,20 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ## Sin publicar
 
+### Cambiado
+
+- Piezas genéricas de página (estado de carga y avisos, estados de listado, encabezado, paginador y `pagina.css`) movidas de `pages/entrenamientos/compartido/` a `src/app/compartido/`, porque ya las usaban lugares, valoraciones, estadísticas y administración. Sin cambios de comportamiento.
+- Los iconos del marcador del mapa (normal, retina y sombra) se sirven desde `public/assets/leaflet/` en lugar de `unpkg.com`: el mapa ya no depende de una CDN externa para pintar el marcador.
+
+### Eliminado
+
+- 20 imágenes de `public/` sin ninguna referencia (P12): fotos y logos de la v1 en `public/img/` (incluidos un `favicon.ico` duplicado y un `.png` sin nombre) y `e.ico` y `e2.ico`. Solo se conservan `favicon.ico` y el logo de la cabecera y el pie.
+
+### Corregido
+
+- Pantallas de detalle (entrenamientos, historial, centros y lugares): un fallo de conexión ya no se presenta como «no encontrado o sin acceso». Se distingue «no existe» (`404`, o `400` por un id no válido), «sin permiso» (`403`) y fallo de conexión o del servidor, y solo en este último se ofrece «Reintentar». Textos en los 4 idiomas.
+- Al cerrar el formulario de edición (catálogo, comunidad, centros y lugares, valoraciones), el foco vuelve al botón «Editar» del elemento editado en lugar de al botón «Nuevo».
+
 ## [2.0.0] — 2026-11-21
 
 Renovación profesional integral de la plataforma Digital-Fit (evolución desde el proyecto final de DAW hacia estándares de producción para portfolio). Migración tecnológica completa: Angular 22 + TypeScript 6.0 (frontend), Spring Boot 4 + Java 25 (backend), PostgreSQL 17 relacional con Flyway, arquitectura de despliegue cloud distribuida (Netlify + Render + Neon) y automatización de calidad con CI/CD, SonarQube Cloud y suite E2E en Playwright.

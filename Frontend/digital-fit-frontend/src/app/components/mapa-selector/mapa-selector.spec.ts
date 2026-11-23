@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { vi } from 'vitest';
+import * as L from 'leaflet';
 
 import { MapaSelectorComponent } from './mapa-selector';
 
@@ -90,5 +91,14 @@ describe('MapaSelector', () => {
     fixture.detectChanges();
     expect(() => component.volverAMarcador()).not.toThrow();
     expect(() => component.volverAValencia()).not.toThrow();
+  });
+
+  it('sirve los iconos del marcador desde assets, no desde una CDN', () => {
+    const opciones = (L.Marker.prototype.options.icon as L.Icon).options;
+    expect([opciones.iconUrl, opciones.iconRetinaUrl, opciones.shadowUrl]).toEqual([
+      'assets/leaflet/marker-icon.png',
+      'assets/leaflet/marker-icon-2x.png',
+      'assets/leaflet/marker-shadow.png',
+    ]);
   });
 });

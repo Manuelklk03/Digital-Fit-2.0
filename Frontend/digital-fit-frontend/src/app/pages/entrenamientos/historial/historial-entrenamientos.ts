@@ -33,9 +33,14 @@ import { PrivadosService } from '../../../services/centros/privados-service';
 import { MisCentrosService } from '../../../services/centros/mis-centros-service';
 import { PublicosService } from '../../../services/publicos/publicos-service';
 import { MisLugaresService } from '../../../services/publicos/mis-lugares';
-import { Aviso, ejecutarAccion, enfocarTrasRender, ListadoPaginado } from '../compartido/estado';
-import { EncabezadoPaginaComponent } from '../compartido/encabezado-pagina';
-import { EstadoListadoComponent } from '../compartido/estado-listado';
+import {
+  Aviso,
+  ejecutarAccion,
+  enfocarTrasRender,
+  ListadoPaginado,
+} from '../../../compartido/estado';
+import { EncabezadoPaginaComponent } from '../../../compartido/encabezado-pagina';
+import { EstadoListadoComponent } from '../../../compartido/estado-listado';
 
 /** Lo mínimo que el formulario necesita de un centro o lugar (sus modelos se tipan en el recorrido de lugares). */
 interface OpcionUbicacion {
@@ -78,7 +83,7 @@ const CAMPO_POR_PREFIJO = {
     EstadoListadoComponent,
   ],
   templateUrl: './historial-entrenamientos.html',
-  styleUrls: ['../compartido/pagina.css', './historial-entrenamientos.css'],
+  styleUrls: ['../../../compartido/pagina.css', './historial-entrenamientos.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistorialEntrenamientosComponent implements OnInit {

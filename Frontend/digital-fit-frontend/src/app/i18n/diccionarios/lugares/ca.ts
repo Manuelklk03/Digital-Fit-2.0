@@ -62,7 +62,6 @@ export const lugaresCa: DiccionarioLugares = {
   exitoBorrado: 'Esborrat correctament.',
   errorGuardar: "No s'ha pogut guardar.",
   errorBorrar: "No s'ha pogut esborrar.",
-  errorDetalle: "No s'ha trobat o no hi tens accés.",
   volverListado: 'Tornar al llistat',
   vacioFiltro: 'Cap lloc coincideix amb el filtre.',
   guardar: 'Guardar',

@@ -115,6 +115,9 @@ export const diccionarioCa: DiccionarioTraduccion = {
     volver: 'Tornar',
     guardar: 'Guardar',
     cancelar: 'Cancel·lar',
+    errorNoEncontrado: "No s'ha trobat: potser s'ha esborrat o l'enllaç no és correcte.",
+    errorSinPermiso: 'No tens permís per a veure aquest contingut.',
+    errorConexion: "No s'ha pogut carregar. Comprova la connexió i torna-ho a provar.",
   },
   auth: {
     loginBadge: 'ACCÉS • DIGITAL-FIT',

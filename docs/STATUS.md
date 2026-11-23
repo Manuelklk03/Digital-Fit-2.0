@@ -1,7 +1,16 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-21**.
+Última actualización: **2026-11-23**.
 
+> **2026-11-23 (Mejoras de frontend y accesibilidad posteriores a 2.0; rama `feat/frontend-comunes-a11y`, worktree `df-claude`, en automático):**
+> - **Carpeta común:** estado, estados de listado, encabezado, paginador y `pagina.css` pasan de `pages/entrenamientos/compartido/` a `src/app/compartido/` (con `git mv`); en `pages/entrenamientos/compartido/` quedan solo las piezas propias de entrenamientos (filtro, formulario, tarjeta y vista de detalle).
+> - **Leaflet sin CDN:** los iconos del marcador (normal, retina y sombra, de leaflet 1.9.4) se sirven desde `public/assets/leaflet/`; `iconSize` explícito para que el icono retina no salga al doble.
+> - **Errores en los detalles:** `Detalle` guarda el motivo del fallo y `app-error-detalle` muestra «no existe» (404, o 400 por un id no válido), «sin permiso» (403) o «fallo de conexión» (resto), con «Reintentar» solo en el último. Antes un fallo de red decía «no se encontró o no tienes acceso». Textos en los 4 idiomas.
+> - **Foco:** al cerrar una edición vuelve al botón «Editar» del elemento (`#editar-<id>`) en catálogo, comunidad, centros y lugares y valoraciones. Valoraciones ahora recarga la misma página tras editar (antes volvía a la 0 y el botón editado desaparecía).
+> - **P12:** retiradas 20 imágenes de `public/` sin referencias (comprobado con `git grep` en todo el repositorio, también rutas dinámicas); solo quedan `favicon.ico` y el logo.
+> - **Verificaciones:** `tsc` (app y specs) correcto, 59 suites y 275 tests en verde (+17), `ng lint` 0 errores (los 4 avisos previos), Prettier correcto, `ng build` con «Prerendered 3 static routes» y sin avisos; el `dist` incluye `assets/leaflet/`. **Sin comprobar:** en navegador real (mapa, mensajes de error y foco solo se han verificado con tests unitarios).
+> - **Revisión de Codex** (CLI 0.164.0, solo lectura sobre `main...HEAD`, a petición de Manuel): 1 hallazgo bajo, verificado y corregido: quedaba `public/img/.png` (archivo oculto de 1,3 MB sin referencias) aunque la documentación daba P12 por cerrado. Comprobó imports y `styleUrl`, consumidores de `Detalle.motivo`, i18n, imágenes borradas, assets de Leaflet, ids de edición y orden de foco y recarga; no ejecutó build ni navegador.
+> - **Revisión local previa** (antes de poder usar Codex): revisión en solo lectura (agente revisor de Claude): sin hallazgos altos ni medios; 2 bajos, verificados y corregidos: el foco se perdía al editar una valoración fuera de la página 0 y un 400 por id no válido se mostraba como fallo de conexión. Verificó imports, imágenes borradas (sin referencias en todo el repositorio), ids únicos, orden de `alTerminar`/`alExito` e i18n; no ejecutó la app.
 > **2026-11-21 (Fase 7, Tarea 7.3 — Publicación de la Release oficial `v2.0.0` y resolución de G10 punto 2; rama `chore/release-v2.0.0`):**
 > - **Resolución de G10 punto 2:** Adoptada la Opción B autorizada por Manuel, documentando formalmente en `README.md` y `docs/deployment.md` el comportamiento de arranque en frío (*cold start*) del nivel gratuito de Render (15 min de inactividad &rarr; ~35–45 s de inicio de contenedor). Se preserva la cuota mensual de 750 horas gratuitas de Render sin riesgo de suspensión a fin de mes ni consumo innecesario de minutos de CI.
 > - **Publicación de la versión 2.0.0 (Tarea 7.3, Parada G7 Resuelta):** Generada la entrada `## [2.0.0] — 2026-11-21` en `CHANGELOG.md` resumiendo toda la renovación tecnológica. Creado el tag anotado `v2.0.0` y publicada la Release oficial en GitHub con notas técnicas, credenciales de demo y enlaces en vivo.
@@ -354,6 +363,7 @@ Sin hallazgos en rutas de la API, seguridad, CORS/CSRF, `data.sql`, Compose, ver
 
 1. **Digital-Fit 2.0 completado:** El proyecto ha sido renovado al 100%, verificado en CI/CD con SonarQube Cloud y Playwright E2E, desplegado en producción (`https://digital-fit.netlify.app`), documentado en README de portfolio y publicado como Release oficial `v2.0.0`.
 2. **Mejoras posteriores [2.0+]:** Cualquier función adicional opcional (PWA, analíticas avanzadas, internacionalización extendida) queda anotada para el futuro y bajo nueva petición de Manuel.
+3. **Manuel:** probar en navegador las mejoras posteriores a 2.0 (PR #89): el mapa con los iconos locales, un detalle inexistente (p. ej. `/mis-centros/999999`) y el foco al cancelar una edición. Sigue pendiente de decisión el contraste de `--df-primary`.
 
 ## Cómo actualizar este archivo
 

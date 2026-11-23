@@ -81,8 +81,11 @@ export class MapaSelectorComponent implements AfterViewInit, OnDestroy {
 
   private configurarIconosLeaflet(): void {
     L.Marker.prototype.options.icon = L.icon({
-      iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-      shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+      // Copias de node_modules/leaflet/dist/images (1.9.4) servidas desde public/: sin depender de unpkg.
+      iconUrl: 'assets/leaflet/marker-icon.png',
+      iconRetinaUrl: 'assets/leaflet/marker-icon-2x.png',
+      shadowUrl: 'assets/leaflet/marker-shadow.png',
+      iconSize: [25, 41],
       iconAnchor: [12, 41],
       popupAnchor: [1, -34],
       shadowSize: [41, 41],

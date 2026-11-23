@@ -78,7 +78,6 @@ export const entrenamientosEn: DiccionarioEntrenamientos = {
   errorGuardar: 'Could not save the workout.',
   errorBorrar: 'Could not delete the workout.',
   volverListado: 'Back to the list',
-  errorDetalle: 'The workout was not found or you do not have access to it.',
   sinDescripcion: 'No description',
   catalogo: {
     badge: 'BASE CATALOG',
@@ -151,7 +150,6 @@ export const entrenamientosEn: DiccionarioEntrenamientos = {
     sinNotas: 'No notes',
     tipoEntrenamiento: 'Workout type',
     tipoUbicacion: 'Location type',
-    errorDetalle: 'The entry was not found or you do not have access to it.',
     tituloDetalle: 'Session entry',
     buscarEtiqueta: 'Search history',
     buscarPlaceholder: 'Workout, place or notes',

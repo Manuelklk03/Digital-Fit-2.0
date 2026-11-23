@@ -17,8 +17,8 @@ import {
 } from '../../../components/ui';
 import { I18nService } from '../../../i18n/i18n.service';
 import { AdminService } from '../../../services/admin/admin-service';
-import { Aviso, ejecutarAccion, enfocarTrasRender } from '../../entrenamientos/compartido/estado';
-import { EncabezadoPaginaComponent } from '../../entrenamientos/compartido/encabezado-pagina';
+import { Aviso, ejecutarAccion, enfocarTrasRender } from '../../../compartido/estado';
+import { EncabezadoPaginaComponent } from '../../../compartido/encabezado-pagina';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 type Campo = 'username' | 'email' | 'password';
@@ -36,7 +36,7 @@ type Campo = 'username' | 'email' | 'password';
     InputDirective,
     EncabezadoPaginaComponent,
   ],
-  styleUrls: ['../../entrenamientos/compartido/pagina.css', './crear-admin.css'],
+  styleUrls: ['../../../compartido/pagina.css', './crear-admin.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @let t = i18n.t().admin;

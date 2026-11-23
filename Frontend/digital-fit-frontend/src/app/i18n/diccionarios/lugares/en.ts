@@ -61,7 +61,6 @@ export const lugaresEn: DiccionarioLugares = {
   exitoBorrado: 'Deleted.',
   errorGuardar: 'Could not save.',
   errorBorrar: 'Could not delete.',
-  errorDetalle: 'Not found, or you do not have access.',
   volverListado: 'Back to list',
   vacioFiltro: 'Nothing matches the filter.',
   guardar: 'Save',

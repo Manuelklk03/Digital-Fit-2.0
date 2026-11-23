@@ -62,7 +62,6 @@ export const lugaresEs: DiccionarioLugares = {
   exitoBorrado: 'Borrado correctamente.',
   errorGuardar: 'No se pudo guardar.',
   errorBorrar: 'No se pudo borrar.',
-  errorDetalle: 'No se encontró o no tienes acceso.',
   volverListado: 'Volver al listado',
   vacioFiltro: 'Ningún sitio coincide con el filtro.',
   guardar: 'Guardar',
