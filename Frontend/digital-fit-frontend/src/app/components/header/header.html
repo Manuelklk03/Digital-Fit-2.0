@@ -1,6 +1,6 @@
 <header class="cabecera">
   <div class="cabecera-contenido">
-    <a class="logo-enlace" routerLink="/inicio">
+    <a class="logo-enlace" [routerLink]="usuarioActual?.rol === 'USER' ? '/dashboard' : '/inicio'">
       <img src="img/LOGOFINAL-removebg.png" alt="Digital-FIT" />
     </a>
 
@@ -21,15 +21,6 @@
       [attr.aria-label]="i18n.t().footer.navegacion"
     >
       <ul>
-        <li>
-          <a
-            routerLink="/inicio"
-            routerLinkActive="activo"
-            ariaCurrentWhenActive="page"
-            (click)="cerrarMenuNavegacion()"
-            >{{ i18n.t().nav.inicio }}</a
-          >
-        </li>
         @if (usuarioActual?.rol === 'USER') {
           <li>
             <a
@@ -40,25 +31,55 @@
               >{{ i18n.t().nav.dashboard }}</a
             >
           </li>
+          <li>
+            <a
+              routerLink="/entrenar"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
+              >{{ i18n.t().nav.entrenar }}</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/explorar"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
+              >{{ i18n.t().nav.explorar }}</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/progreso"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
+              >{{ i18n.t().nav.progreso }}</a
+            >
+          </li>
         }
-        <li>
-          <a
-            routerLink="/explorar"
-            routerLinkActive="activo"
-            ariaCurrentWhenActive="page"
-            (click)="cerrarMenuNavegacion()"
-            >{{ i18n.t().nav.explorar }}</a
-          >
-        </li>
-        <li>
-          <a
-            routerLink="/entrenar"
-            routerLinkActive="activo"
-            ariaCurrentWhenActive="page"
-            (click)="cerrarMenuNavegacion()"
-            >{{ i18n.t().nav.entrenar }}</a
-          >
-        </li>
+        @if (usuarioActual) {
+          <li>
+            <a
+              routerLink="/perfil"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
+              >{{ i18n.t().nav.perfil }}</a
+            >
+          </li>
+        } @else {
+          <li>
+            <a
+              routerLink="/inicio"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
+              >{{ i18n.t().nav.inicio }}</a
+            >
+          </li>
+        }
         @if (esAdmin()) {
           <li>
             <a
@@ -67,43 +88,6 @@
               ariaCurrentWhenActive="page"
               (click)="cerrarMenuNavegacion()"
               >{{ i18n.t().nav.crearAdmin }}</a
-            >
-          </li>
-        } @else {
-          <li>
-            <a
-              routerLink="/mis-entrenamientos"
-              routerLinkActive="activo"
-              ariaCurrentWhenActive="page"
-              (click)="cerrarMenuNavegacion()"
-              >{{ i18n.t().nav.misEntrenamientos }}</a
-            >
-          </li>
-          <li>
-            <a
-              routerLink="/mis-centros"
-              routerLinkActive="activo"
-              ariaCurrentWhenActive="page"
-              (click)="cerrarMenuNavegacion()"
-              >{{ i18n.t().nav.misCentros }}</a
-            >
-          </li>
-          <li>
-            <a
-              routerLink="/mis-lugares"
-              routerLinkActive="activo"
-              ariaCurrentWhenActive="page"
-              (click)="cerrarMenuNavegacion()"
-              >{{ i18n.t().nav.misLugares }}</a
-            >
-          </li>
-          <li>
-            <a
-              routerLink="/estadisticas"
-              routerLinkActive="activo"
-              ariaCurrentWhenActive="page"
-              (click)="cerrarMenuNavegacion()"
-              >{{ i18n.t().nav.progreso }}</a
             >
           </li>
         }

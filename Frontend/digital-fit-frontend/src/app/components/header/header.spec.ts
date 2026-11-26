@@ -130,7 +130,7 @@ describe('HeaderComponent', () => {
   it('muestra el acceso al Dashboard solo a usuarios normales', () => {
     fixture.detectChanges();
     const http = TestBed.inject(HttpTestingController);
-    const enlaces = () => fixture.nativeElement.querySelectorAll('a[href="/dashboard"]');
+    const enlaces = () => fixture.nativeElement.querySelectorAll('nav a[href="/dashboard"]');
     expect(enlaces().length).toBe(0);
 
     http.expectOne('/api/auth/me').flush({
@@ -148,5 +148,27 @@ describe('HeaderComponent', () => {
     fixture.changeDetectorRef.markForCheck();
     fixture.detectChanges(false);
     expect(enlaces().length).toBe(0);
+  });
+
+  it('muestra las cinco vistas a USER y solo administración y perfil a ADMIN', () => {
+    fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    http.expectOne('/api/auth/me').flush({
+      username: 'deportista',
+      email: 'user@example.test',
+      rol: 'USER',
+    });
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges(false);
+    const rutas = () =>
+      Array.from(
+        fixture.nativeElement.querySelectorAll('nav a') as NodeListOf<HTMLAnchorElement>,
+      ).map((a) => a.getAttribute('href'));
+    expect(rutas()).toEqual(['/dashboard', '/entrenar', '/explorar', '/progreso', '/perfil']);
+
+    component.usuarioActual = { username: 'admin', email: 'admin@example.test', rol: 'ADMIN' };
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges(false);
+    expect(rutas()).toEqual(['/perfil', '/admin/crear-admin']);
   });
 });
