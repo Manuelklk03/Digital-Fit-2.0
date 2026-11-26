@@ -8,10 +8,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Vistas privadas `/entrenar`, `/progreso` y `/perfil`: acceso a rutinas existentes, resumen real de actividad, datos de cuenta e idioma de la interfaz en cuatro idiomas.
 - Dashboard privado con accesos a funciones existentes y resumen de actividad real, con estados de carga, error y vacío, diseño adaptable y traducciones en los cuatro idiomas de la aplicación.
 
 ### Cambiado
 
+- La navegación principal de usuarios reúne Dashboard, Entrenar, Explorar, Progreso y Perfil; tras iniciar sesión, el usuario entra en el Dashboard.
 - Piezas genéricas de página (estado de carga y avisos, estados de listado, encabezado, paginador y `pagina.css`) movidas de `pages/entrenamientos/compartido/` a `src/app/compartido/`, porque ya las usaban lugares, valoraciones, estadísticas y administración. Sin cambios de comportamiento.
 - Los iconos del marcador del mapa (normal, retina y sombra) se sirven desde `public/assets/leaflet/` en lugar de `unpkg.com`: el mapa ya no depende de una CDN externa para pintar el marcador.
 
