@@ -1,6 +1,14 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-23**.
+Última actualización: **2026-11-26**.
+
+> **2026-11-26 (Dashboard inicial y navegación móvil del rediseño; rama `feature/dashboard-accesos`):**
+> - Ruta privada `/dashboard` para cuentas `USER`, con accesos a Explorar, catálogo de entrenamientos, Progreso, entrenamientos propios e historial. El acceso al catálogo sustituye al enlace a `/entrenar`, que todavía usa datos de demostración.
+> - Resumen de actividad con los totales reales de `GET /api/estadisticas` y estados de carga, error con reintento y vacío. La API no proporciona datos semanales ni sesiones programadas; el Dashboard no muestra esas cifras.
+> - Textos del Dashboard en español, valenciano, inglés y francés; diseño adaptable a móvil y escritorio, foco visible y fondo oscuro coherente con los tokens de contraste.
+> - Encabezado compartido: botón «Menú» en móvil y anchuras intermedias, enlaces completos en una o dos columnas, cierre con Escape y devolución del foco. Las cuentas `USER` tienen acceso a «Mi espacio»; el texto del botón y del enlace está en los cuatro idiomas.
+> - Comprobaciones: 60 suites y 283 tests correctos; lint sin errores y con 4 avisos previos; Prettier y build correctos. Revisión en Chromium con API simulada: Dashboard a 1440 y 390 px, menú a 320 y 390 px, y solapamiento comprobado a 1150, 1280, 1361 y 1440 px (español y francés). Escape cierra el menú y devuelve el foco. No se ha probado contra el backend real.
+> - Siguiente bloque: navegación final de cinco vistas, Perfil y guía inicial opcional. `/entrenar` y otros enlaces heredados siguen llevando a una pantalla de demostración; la programación de sesiones y las métricas semanales requieren funciones y contratos nuevos.
 
 > **2026-11-23 (Mejoras de frontend y accesibilidad posteriores a 2.0; rama `feat/frontend-comunes-a11y`, worktree `df-claude`, en automático):**
 > - **Carpeta común:** estado, estados de listado, encabezado, paginador y `pagina.css` pasan de `pages/entrenamientos/compartido/` a `src/app/compartido/` (con `git mv`); en `pages/entrenamientos/compartido/` quedan solo las piezas propias de entrenamientos (filtro, formulario, tarjeta y vista de detalle).

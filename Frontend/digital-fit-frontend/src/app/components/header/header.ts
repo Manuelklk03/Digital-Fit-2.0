@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit {
 
   usuarioActual: UsuarioSesion | null = null;
   desplegableIdiomaAbierto = false;
+  menuNavegacionAbierto = false;
 
   ngOnInit(): void {
     this.authService.usuario$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((usuario) => {
@@ -49,6 +50,20 @@ export class HeaderComponent implements OnInit {
 
   alternarDesplegableIdioma(): void {
     this.desplegableIdiomaAbierto = !this.desplegableIdiomaAbierto;
+    if (this.desplegableIdiomaAbierto) this.cerrarMenuNavegacion();
+  }
+
+  alternarMenuNavegacion(): void {
+    this.menuNavegacionAbierto = !this.menuNavegacionAbierto;
+    if (this.menuNavegacionAbierto) this.cerrarDesplegableIdioma();
+  }
+
+  cerrarMenuNavegacion(devolverFoco = false): void {
+    if (!this.menuNavegacionAbierto) return;
+    this.menuNavegacionAbierto = false;
+    if (devolverFoco) {
+      this.elemento.nativeElement.querySelector<HTMLElement>('.boton-menu')?.focus();
+    }
   }
 
   /** Cierra el menú de idiomas; con Escape devuelve el foco al botón que lo abrió. */
@@ -64,16 +79,20 @@ export class HeaderComponent implements OnInit {
 
   @HostListener('keydown.escape')
   alPulsarEscape(): void {
+    this.cerrarMenuNavegacion(true);
     this.cerrarDesplegableIdioma(true);
   }
 
   @HostListener('document:click', ['$event'])
   cerrarAlPulsarFuera(evento: Event): void {
+    const destino = evento.target as Node;
     if (
-      !this.elemento.nativeElement
-        .querySelector('.selector-idioma')
-        ?.contains(evento.target as Node)
+      !this.elemento.nativeElement.querySelector('.boton-menu')?.contains(destino) &&
+      !this.elemento.nativeElement.querySelector('.menu-navegacion')?.contains(destino)
     ) {
+      this.cerrarMenuNavegacion();
+    }
+    if (!this.elemento.nativeElement.querySelector('.selector-idioma')?.contains(destino)) {
       this.cerrarDesplegableIdioma();
     }
   }
