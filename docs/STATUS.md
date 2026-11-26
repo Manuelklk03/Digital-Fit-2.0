@@ -7,6 +7,7 @@
 > - Resumen de actividad con los totales reales de `GET /api/estadisticas` y estados de carga, error con reintento y vacío. La API no proporciona datos semanales ni sesiones programadas; el Dashboard no muestra esas cifras.
 > - Textos del Dashboard en español, valenciano, inglés y francés; diseño adaptable a móvil y escritorio, foco visible y fondo oscuro coherente con los tokens de contraste.
 > - Encabezado compartido: botón «Menú» en móvil y anchuras intermedias, enlaces completos en una o dos columnas, cierre con Escape y devolución del foco. Las cuentas `USER` tienen acceso a «Mi espacio»; el texto del botón y del enlace está en los cuatro idiomas.
+> - Las pruebas del Dashboard limpian la preferencia de idioma de `localStorage` entre suites; las E2E de catálogo y permisos abren el menú adaptable antes de comprobar los enlaces.
 > - Comprobaciones: 60 suites y 283 tests correctos; lint sin errores y con 4 avisos previos; Prettier y build correctos. Revisión en Chromium con API simulada: Dashboard a 1440 y 390 px, menú a 320 y 390 px, y solapamiento comprobado a 1150, 1280, 1361 y 1440 px (español y francés). Escape cierra el menú y devuelve el foco. No se ha probado contra el backend real.
 > - Siguiente bloque: navegación final de cinco vistas, Perfil y guía inicial opcional. `/entrenar` y otros enlaces heredados siguen llevando a una pantalla de demostración; la programación de sesiones y las métricas semanales requieren funciones y contratos nuevos.
 

@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { loginViaUI } from './helpers/auth.js';
+import { abrirNavegacionSiColapsada } from './helpers/navigation.js';
 
 test.describe('Catálogo y Mis Entrenamientos', () => {
   test('navegar por el catálogo base, añadir rutina a mis entrenamientos y eliminarla', async ({ page }) => {
@@ -19,6 +20,7 @@ test.describe('Catálogo y Mis Entrenamientos', () => {
     await expect(page.getByText('Añadido a tus entrenamientos.')).toBeVisible({ timeout: 10000 });
 
     // 5. Navegar a Mis Entrenamientos a través del enlace de navegación
+    await abrirNavegacionSiColapsada(page);
     await page.getByRole('link', { name: 'Mis entrenamientos' }).click();
     await expect(page).toHaveURL(/.*\/mis-entrenamientos/, { timeout: 10000 });
     await expect(page.getByRole('heading', { name: 'Mis entrenamientos', level: 1 })).toBeVisible();

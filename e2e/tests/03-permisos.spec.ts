@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { loginViaUI, logoutViaUI } from './helpers/auth.js';
+import { abrirNavegacionSiColapsada } from './helpers/navigation.js';
 
 test.describe('Control de Acceso y Permisos por Rol', () => {
   test('usuario anónimo no accede a rutas protegidas y recibe 401 en endpoints admin', async ({ page, request }) => {
@@ -22,6 +23,7 @@ test.describe('Control de Acceso y Permisos por Rol', () => {
     await loginViaUI(page, 'usuario1', 'Usuario123!');
 
     // 2. La navegación principal no muestra la opción de 'Crear admin'
+    await abrirNavegacionSiColapsada(page);
     await expect(page.getByRole('link', { name: 'Crear admin' })).not.toBeVisible();
     await expect(page.getByRole('link', { name: 'Mis entrenamientos' })).toBeVisible();
 
