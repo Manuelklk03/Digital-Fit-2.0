@@ -1,0 +1,49 @@
+@let t = i18n.t().vistas.perfil;
+<app-header />
+<main class="vista" id="contenido-principal">
+  <h1>{{ t.titulo }}</h1>
+  <p class="vista-intro">{{ t.descripcion }}</p>
+  <section aria-labelledby="datos-cuenta">
+    <h2 id="datos-cuenta">{{ t.cuenta }}</h2>
+    @switch (cuenta.estado()) {
+      @case ('cargando') {
+        <p role="status">{{ t.cargando }}</p>
+      }
+      @case ('error') {
+        <div role="alert">
+          <p>{{ t.error }}</p>
+          <button type="button" (click)="cuenta.cargar()">{{ t.reintentar }}</button>
+        </div>
+      }
+      @case ('listo') {
+        @if (cuenta.item(); as usuario) {
+          <dl class="vista-datos">
+            <div>
+              <dt>{{ t.usuario }}</dt>
+              <dd>{{ usuario.username }}</dd>
+            </div>
+            <div>
+              <dt>{{ t.correo }}</dt>
+              <dd>{{ usuario.email }}</dd>
+            </div>
+          </dl>
+        }
+      }
+    }
+  </section>
+  <section aria-labelledby="idioma-perfil">
+    <h2 id="idioma-perfil">{{ t.idioma }}</h2>
+    <div class="vista-idiomas" role="group" [attr.aria-label]="t.idioma">
+      @for (idioma of i18n.idiomas; track idioma.codigo) {
+        <button
+          type="button"
+          [attr.aria-pressed]="i18n.idiomaActual() === idioma.codigo"
+          (click)="cambiarIdioma(idioma.codigo)"
+        >
+          {{ idioma.etiqueta }}
+        </button>
+      }
+    </div>
+  </section>
+</main>
+<app-footer />

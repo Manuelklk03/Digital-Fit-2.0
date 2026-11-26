@@ -49,8 +49,18 @@ export const routes: Routes = [
   {
     path: 'entrenar',
     component: EntrenarComponent,
-    canActivate: [authGuard],
+    canActivate: [userGuard],
     data: { tituloNav: 'entrenar' },
+  },
+  {
+    path: 'progreso',
+    loadComponent: () => import('./pages/progreso/progreso').then((m) => m.ProgresoComponent),
+    canActivate: [userGuard],
+  },
+  {
+    path: 'perfil',
+    loadComponent: () => import('./pages/perfil/perfil').then((m) => m.PerfilComponent),
+    canActivate: [authGuard],
   },
   {
     path: 'explorar',

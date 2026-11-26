@@ -1,0 +1,110 @@
+:host {
+  display: block;
+  background: var(--df-bg);
+}
+.vista {
+  box-sizing: border-box;
+  width: min(100%, 72rem);
+  min-height: 60vh;
+  margin-inline: auto;
+  padding: var(--df-space-xl) var(--df-space-md) var(--df-space-2xl);
+  color: var(--df-text);
+}
+.vista h1 {
+  margin: 0 0 var(--df-space-sm);
+}
+.vista h2 {
+  margin: var(--df-space-xl) 0 var(--df-space-md);
+}
+.vista-intro {
+  max-width: 65ch;
+  color: var(--df-text-muted);
+  line-height: 1.6;
+}
+.vista-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--df-space-md);
+  list-style: none;
+  padding: 0;
+}
+.vista-tarjetas a {
+  display: flex;
+  flex-direction: column;
+  gap: var(--df-space-sm);
+  min-height: 8rem;
+  box-sizing: border-box;
+  padding: var(--df-space-lg);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-radius-lg);
+  background: var(--df-surface);
+  color: var(--df-text);
+  text-decoration: none;
+}
+.vista-tarjetas a:hover {
+  border-color: var(--df-primary);
+  background: var(--df-surface-hover);
+}
+.vista-tarjetas span {
+  color: var(--df-text-muted);
+  line-height: 1.5;
+}
+.vista-datos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--df-space-md);
+}
+.vista-datos > div {
+  overflow-wrap: anywhere;
+  padding: var(--df-space-lg);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-radius-lg);
+  background: var(--df-surface);
+}
+.vista-datos dt {
+  color: var(--df-text-muted);
+}
+.vista-datos dd {
+  margin: var(--df-space-sm) 0 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.vista-idiomas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--df-space-sm);
+}
+.vista button {
+  min-height: 44px;
+  padding: var(--df-space-sm) var(--df-space-md);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-radius-sm);
+  background: var(--df-surface);
+  color: var(--df-text);
+  font: inherit;
+  cursor: pointer;
+}
+.vista button:hover,
+.vista button[aria-pressed='true'] {
+  border-color: var(--df-primary);
+  background: var(--df-surface-hover);
+}
+.vista button:focus-visible,
+.vista-tarjetas a:focus-visible {
+  outline: 2px solid var(--df-border-focus);
+  outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .vista-tarjetas,
+  .vista-datos {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vista *,
+  .vista *::before,
+  .vista *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

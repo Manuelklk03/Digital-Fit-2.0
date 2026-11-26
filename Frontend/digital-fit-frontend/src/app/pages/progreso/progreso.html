@@ -1,0 +1,63 @@
+@let t = i18n.t().vistas.progreso;
+<app-header />
+<main class="vista" id="contenido-principal">
+  <h1>{{ t.titulo }}</h1>
+  <p class="vista-intro">{{ t.descripcion }}</p>
+
+  <section aria-labelledby="resumen-progreso">
+    <h2 id="resumen-progreso">{{ t.resumen }}</h2>
+    @switch (estadisticas.estado()) {
+      @case ('cargando') {
+        <p role="status">{{ t.cargando }}</p>
+      }
+      @case ('error') {
+        <div role="alert">
+          <p>{{ t.error }}</p>
+          <button type="button" (click)="estadisticas.cargar()">{{ t.reintentar }}</button>
+        </div>
+      }
+      @case ('listo') {
+        @if (estadisticas.item(); as datos) {
+          @if (datos.entrenamientosRealizados === 0) {
+            <p>{{ t.vacio }}</p>
+          } @else {
+            <dl class="vista-datos">
+              <div>
+                <dt>{{ t.sesiones }}</dt>
+                <dd>{{ datos.entrenamientosRealizados }}</dd>
+              </div>
+              <div>
+                <dt>{{ t.minutos }}</dt>
+                <dd>{{ datos.minutosEntrenados }}</dd>
+              </div>
+            </dl>
+          }
+        }
+      }
+    }
+  </section>
+
+  <nav [attr.aria-label]="t.navegacion">
+    <ul class="vista-tarjetas">
+      <li>
+        <a routerLink="/historial-entrenamientos"
+          ><strong>{{ t.historial }}</strong
+          ><span>{{ t.historialDescripcion }}</span></a
+        >
+      </li>
+      <li>
+        <a routerLink="/estadisticas"
+          ><strong>{{ t.estadisticas }}</strong
+          ><span>{{ t.estadisticasDescripcion }}</span></a
+        >
+      </li>
+      <li>
+        <a routerLink="/valoraciones"
+          ><strong>{{ t.valoraciones }}</strong
+          ><span>{{ t.valoracionesDescripcion }}</span></a
+        >
+      </li>
+    </ul>
+  </nav>
+</main>
+<app-footer />

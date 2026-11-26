@@ -28,6 +28,7 @@ export interface DiccionarioTraduccion {
     misCentros: string;
     misLugares: string;
     progreso: string;
+    perfil: string;
     crearAdmin: string;
   };
   header: {
@@ -192,6 +193,48 @@ export interface DiccionarioTraduccion {
     continuarNav: string;
     misEntrenamientos: string;
     historial: string;
+  };
+  vistas: {
+    entrenar: {
+      titulo: string;
+      descripcion: string;
+      navegacion: string;
+      base: string;
+      baseDescripcion: string;
+      propios: string;
+      propiosDescripcion: string;
+      comunidad: string;
+      comunidadDescripcion: string;
+    };
+    progreso: {
+      titulo: string;
+      descripcion: string;
+      resumen: string;
+      cargando: string;
+      error: string;
+      reintentar: string;
+      vacio: string;
+      sesiones: string;
+      minutos: string;
+      navegacion: string;
+      historial: string;
+      historialDescripcion: string;
+      estadisticas: string;
+      estadisticasDescripcion: string;
+      valoraciones: string;
+      valoracionesDescripcion: string;
+    };
+    perfil: {
+      titulo: string;
+      descripcion: string;
+      cuenta: string;
+      cargando: string;
+      error: string;
+      reintentar: string;
+      usuario: string;
+      correo: string;
+      idioma: string;
+    };
   };
   entrenamientos: DiccionarioEntrenamientos;
   lugares: DiccionarioLugares;
