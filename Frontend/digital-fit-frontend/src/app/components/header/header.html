@@ -4,22 +4,60 @@
       <img src="img/LOGOFINAL-removebg.png" alt="Digital-FIT" />
     </a>
 
-    <nav class="menu-navegacion" aria-label="Navegación principal">
+    <button
+      type="button"
+      class="boton-menu"
+      aria-controls="menu-principal"
+      [attr.aria-expanded]="menuNavegacionAbierto"
+      (click)="alternarMenuNavegacion()"
+    >
+      {{ i18n.t().header.menu }}
+    </button>
+
+    <nav
+      id="menu-principal"
+      class="menu-navegacion"
+      [class.abierto]="menuNavegacionAbierto"
+      [attr.aria-label]="i18n.t().footer.navegacion"
+    >
       <ul>
         <li>
-          <a routerLink="/inicio" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
-            i18n.t().nav.inicio
-          }}</a>
+          <a
+            routerLink="/inicio"
+            routerLinkActive="activo"
+            ariaCurrentWhenActive="page"
+            (click)="cerrarMenuNavegacion()"
+            >{{ i18n.t().nav.inicio }}</a
+          >
+        </li>
+        @if (usuarioActual?.rol === 'USER') {
+          <li>
+            <a
+              routerLink="/dashboard"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
+              >{{ i18n.t().nav.dashboard }}</a
+            >
+          </li>
+        }
+        <li>
+          <a
+            routerLink="/explorar"
+            routerLinkActive="activo"
+            ariaCurrentWhenActive="page"
+            (click)="cerrarMenuNavegacion()"
+            >{{ i18n.t().nav.explorar }}</a
+          >
         </li>
         <li>
-          <a routerLink="/explorar" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
-            i18n.t().nav.explorar
-          }}</a>
-        </li>
-        <li>
-          <a routerLink="/entrenar" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
-            i18n.t().nav.entrenar
-          }}</a>
+          <a
+            routerLink="/entrenar"
+            routerLinkActive="activo"
+            ariaCurrentWhenActive="page"
+            (click)="cerrarMenuNavegacion()"
+            >{{ i18n.t().nav.entrenar }}</a
+          >
         </li>
         @if (esAdmin()) {
           <li>
@@ -27,6 +65,7 @@
               routerLink="/admin/crear-admin"
               routerLinkActive="activo"
               ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
               >{{ i18n.t().nav.crearAdmin }}</a
             >
           </li>
@@ -36,23 +75,36 @@
               routerLink="/mis-entrenamientos"
               routerLinkActive="activo"
               ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
               >{{ i18n.t().nav.misEntrenamientos }}</a
             >
           </li>
           <li>
-            <a routerLink="/mis-centros" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
-              i18n.t().nav.misCentros
-            }}</a>
+            <a
+              routerLink="/mis-centros"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
+              >{{ i18n.t().nav.misCentros }}</a
+            >
           </li>
           <li>
-            <a routerLink="/mis-lugares" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
-              i18n.t().nav.misLugares
-            }}</a>
+            <a
+              routerLink="/mis-lugares"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
+              >{{ i18n.t().nav.misLugares }}</a
+            >
           </li>
           <li>
-            <a routerLink="/estadisticas" routerLinkActive="activo" ariaCurrentWhenActive="page">{{
-              i18n.t().nav.progreso
-            }}</a>
+            <a
+              routerLink="/estadisticas"
+              routerLinkActive="activo"
+              ariaCurrentWhenActive="page"
+              (click)="cerrarMenuNavegacion()"
+              >{{ i18n.t().nav.progreso }}</a
+            >
           </li>
         }
       </ul>

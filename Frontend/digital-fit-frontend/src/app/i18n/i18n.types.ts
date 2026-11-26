@@ -21,6 +21,7 @@ export const IDIOMAS_DISPONIBLES: readonly InfoIdioma[] = [
 export interface DiccionarioTraduccion {
   nav: {
     inicio: string;
+    dashboard: string;
     explorar: string;
     entrenar: string;
     misEntrenamientos: string;
@@ -30,6 +31,7 @@ export interface DiccionarioTraduccion {
     crearAdmin: string;
   };
   header: {
+    menu: string;
     sesionNoIniciada: string;
     accedeParaContinuar: string;
     entrar: string;
@@ -165,6 +167,31 @@ export interface DiccionarioTraduccion {
     errorUsuario: string;
     emailPlaceholder: string;
     ayudaContrasena: string;
+  };
+  dashboard: {
+    titulo: string;
+    accionesTitulo: string;
+    accionesNav: string;
+    explorarTitulo: string;
+    explorarDescripcion: string;
+    progresoTitulo: string;
+    progresoDescripcion: string;
+    entrenamientosTitulo: string;
+    entrenamientosDescripcion: string;
+    actividadTitulo: string;
+    actividadDescripcion: string;
+    cargando: string;
+    error: string;
+    reintentar: string;
+    vacio: string;
+    entrenamientosCompletados: string;
+    minutosEntrenados: string;
+    verEstadisticas: string;
+    continuarTitulo: string;
+    continuarDescripcion: string;
+    continuarNav: string;
+    misEntrenamientos: string;
+    historial: string;
   };
   entrenamientos: DiccionarioEntrenamientos;
   lugares: DiccionarioLugares;

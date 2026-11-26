@@ -1,0 +1,89 @@
+@let t = i18n.t().dashboard;
+<app-header />
+
+<main class="dashboard-contenido" id="contenido-principal">
+  <h1>{{ t.titulo }}</h1>
+
+  <section class="dashboard-acciones" aria-labelledby="dashboard-acciones-titulo">
+    <h2 id="dashboard-acciones-titulo">{{ t.accionesTitulo }}</h2>
+
+    <nav [attr.aria-label]="t.accionesNav">
+      <ul class="dashboard-acciones-lista">
+        <li>
+          <a routerLink="/explorar" class="dashboard-accion">
+            <span class="dashboard-accion-titulo">{{ t.explorarTitulo }}</span>
+            <span class="dashboard-accion-descripcion">{{ t.explorarDescripcion }}</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/estadisticas" class="dashboard-accion">
+            <span class="dashboard-accion-titulo">{{ t.progresoTitulo }}</span>
+            <span class="dashboard-accion-descripcion">{{ t.progresoDescripcion }}</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/entrenamientos" class="dashboard-accion">
+            <span class="dashboard-accion-titulo">{{ t.entrenamientosTitulo }}</span>
+            <span class="dashboard-accion-descripcion">{{ t.entrenamientosDescripcion }}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </section>
+
+  <section class="dashboard-actividad" aria-labelledby="dashboard-actividad-titulo">
+    <h2 id="dashboard-actividad-titulo">{{ t.actividadTitulo }}</h2>
+    <p>{{ t.actividadDescripcion }}</p>
+
+    @switch (estadisticas.estado()) {
+      @case ('cargando') {
+        <p role="status">{{ t.cargando }}</p>
+      }
+
+      @case ('error') {
+        <div role="alert">
+          <p>{{ t.error }}</p>
+          <button type="button" (click)="estadisticas.cargar()">{{ t.reintentar }}</button>
+        </div>
+      }
+
+      @case ('listo') {
+        @if (estadisticas.item(); as resumen) {
+          @if (resumen.entrenamientosRealizados === 0) {
+            <p>{{ t.vacio }}</p>
+          } @else {
+            <dl class="dashboard-actividad-datos">
+              <div>
+                <dt>{{ t.entrenamientosCompletados }}</dt>
+                <dd>{{ resumen.entrenamientosRealizados }}</dd>
+              </div>
+              <div>
+                <dt>{{ t.minutosEntrenados }}</dt>
+                <dd>{{ resumen.minutosEntrenados }}</dd>
+              </div>
+            </dl>
+
+            <a routerLink="/estadisticas">{{ t.verEstadisticas }}</a>
+          }
+        }
+      }
+    }
+  </section>
+
+  <section class="dashboard-continuar" aria-labelledby="dashboard-continuar-titulo">
+    <h2 id="dashboard-continuar-titulo">{{ t.continuarTitulo }}</h2>
+    <p>{{ t.continuarDescripcion }}</p>
+    <nav [attr.aria-label]="t.continuarNav">
+      <ul class="dashboard-continuar-lista">
+        <li>
+          <a routerLink="/mis-entrenamientos">{{ t.misEntrenamientos }}</a>
+        </li>
+        <li>
+          <a routerLink="/historial-entrenamientos">{{ t.historial }}</a>
+        </li>
+      </ul>
+    </nav>
+  </section>
+</main>
+
+<app-footer />

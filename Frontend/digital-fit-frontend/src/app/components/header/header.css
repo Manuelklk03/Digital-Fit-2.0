@@ -37,6 +37,19 @@
   min-width: 0;
 }
 
+.boton-menu {
+  display: none;
+  padding: 8px 12px;
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-radius-sm);
+  background-color: transparent;
+  color: var(--df-text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .menu-navegacion ul {
   margin: 0;
   padding: 0;
@@ -72,6 +85,7 @@
 }
 
 .logo-enlace:focus-visible,
+.boton-menu:focus-visible,
 .menu-navegacion a:focus-visible,
 .boton-idioma:focus-visible,
 .opcion-idioma:focus-visible {
@@ -192,22 +206,32 @@
   color: var(--df-text-muted);
 }
 
-/* Tableta y móvil: logo y acciones en una fila; el menú pasa debajo y se desliza en horizontal sin romper la página. */
-@media (max-width: 1100px) {
+/* Tableta y móvil: el botón abre todos los enlaces debajo de la primera fila. */
+@media (max-width: 1360px) {
   .cabecera-contenido {
     flex-wrap: wrap;
     gap: 10px 16px;
   }
+  .boton-menu {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
   .acciones-cabecera {
     margin-left: auto;
   }
-  /* El padding evita que el overflow recorte el contorno del foco. */
   .menu-navegacion {
+    display: none;
     order: 3;
     flex-basis: 100%;
-    overflow-x: auto;
-    scrollbar-width: thin;
-    padding: 4px;
+  }
+  .menu-navegacion.abierto {
+    display: block;
+  }
+  .menu-navegacion ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
   }
 }
 
@@ -232,5 +256,8 @@
   }
   .menu-navegacion a {
     display: flex;
+  }
+  .menu-navegacion ul {
+    grid-template-columns: 1fr;
   }
 }

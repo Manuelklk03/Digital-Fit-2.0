@@ -6,6 +6,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ## Sin publicar
 
+### Añadido
+
+- Dashboard privado con accesos a funciones existentes y resumen de actividad real, con estados de carga, error y vacío, diseño adaptable y traducciones en los cuatro idiomas de la aplicación.
+
 ### Cambiado
 
 - Piezas genéricas de página (estado de carga y avisos, estados de listado, encabezado, paginador y `pagina.css`) movidas de `pages/entrenamientos/compartido/` a `src/app/compartido/`, porque ya las usaban lugares, valoraciones, estadísticas y administración. Sin cambios de comportamiento.
@@ -17,6 +21,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Corregido
 
+- El encabezado muestra todos los enlaces en un menú desplegable en móvil y anchuras intermedias, con control mediante teclado y acceso al Dashboard para cuentas de usuario.
 - Pantallas de detalle (entrenamientos, historial, centros y lugares): un fallo de conexión ya no se presenta como «no encontrado o sin acceso». Se distingue «no existe» (`404`, o `400` por un id no válido), «sin permiso» (`403`) y fallo de conexión o del servidor, y solo en este último se ofrece «Reintentar». Textos en los 4 idiomas.
 - Al cerrar el formulario de edición (catálogo, comunidad, centros y lugares, valoraciones), el foco vuelve al botón «Editar» del elemento editado en lugar de al botón «Nuevo».
 

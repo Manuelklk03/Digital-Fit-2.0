@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { describe, expect, it, beforeEach } from 'vitest';
 
 import { HeaderComponent } from './header';
@@ -92,5 +92,61 @@ describe('HeaderComponent', () => {
 
     document.body.click();
     expect(component.desplegableIdiomaAbierto).toBe(false);
+  });
+
+  it('abre el menú de navegación y actualiza aria-expanded', () => {
+    fixture.detectChanges();
+    const boton = fixture.nativeElement.querySelector('.boton-menu') as HTMLButtonElement;
+    expect(boton.getAttribute('aria-expanded')).toBe('false');
+
+    boton.click();
+    fixture.detectChanges();
+    expect(boton.getAttribute('aria-expanded')).toBe('true');
+    expect(fixture.nativeElement.querySelector('.menu-navegacion.abierto')).not.toBeNull();
+
+    component.cerrarMenuNavegacion();
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges(false);
+    expect(boton.getAttribute('aria-expanded')).toBe('false');
+  });
+
+  it('cierra el menú de navegación con Escape y devuelve el foco al botón', () => {
+    document.body.appendChild(fixture.nativeElement);
+    fixture.detectChanges();
+    const boton = fixture.nativeElement.querySelector('.boton-menu') as HTMLButtonElement;
+    boton.click();
+    fixture.detectChanges();
+
+    fixture.nativeElement
+      .querySelector('.menu-navegacion a')
+      .dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    fixture.detectChanges();
+
+    expect(component.menuNavegacionAbierto).toBe(false);
+    expect(document.activeElement).toBe(boton);
+    fixture.nativeElement.remove();
+  });
+
+  it('muestra el acceso al Dashboard solo a usuarios normales', () => {
+    fixture.detectChanges();
+    const http = TestBed.inject(HttpTestingController);
+    const enlaces = () => fixture.nativeElement.querySelectorAll('a[href="/dashboard"]');
+    expect(enlaces().length).toBe(0);
+
+    http.expectOne('/api/auth/me').flush({
+      username: 'manuel',
+      email: 'manuel@example.test',
+      rol: 'USER',
+    });
+    expect(component.usuarioActual?.rol).toBe('USER');
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges(false);
+    expect(fixture.nativeElement.textContent).toContain('Mi espacio');
+    expect(enlaces().length).toBe(1);
+
+    component.usuarioActual = { username: 'admin', email: 'admin@example.test', rol: 'ADMIN' };
+    fixture.changeDetectorRef.markForCheck();
+    fixture.detectChanges(false);
+    expect(enlaces().length).toBe(0);
   });
 });
