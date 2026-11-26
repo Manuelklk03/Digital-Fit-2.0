@@ -21,6 +21,7 @@ describe('DashboardComponent', () => {
   let i18n: I18nService;
 
   beforeEach(async () => {
+    localStorage.removeItem('digitalfit_lang');
     await TestBed.configureTestingModule({
       imports: [DashboardComponent],
       providers: [provideRouter([]), provideHttpClient(), provideHttpClientTesting()],
@@ -34,7 +35,10 @@ describe('DashboardComponent', () => {
     http.expectOne('/api/auth/me').flush(null, { status: 401, statusText: 'Unauthorized' });
   });
 
-  afterEach(() => http.verify());
+  afterEach(() => {
+    localStorage.removeItem('digitalfit_lang');
+    http.verify();
+  });
 
   const actividad = () =>
     fixture.nativeElement.querySelector('.dashboard-actividad') as HTMLElement;
