@@ -1,0 +1,37 @@
+.no-encontrado {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.no-encontrado-codigo {
+  margin: 0 0 var(--df-space-sm);
+  color: var(--df-primary);
+  font-size: clamp(3rem, 12vw, 6rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.no-encontrado-enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--df-space-lg);
+  padding: var(--df-space-sm) var(--df-space-md);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-radius-sm);
+  background: var(--df-surface);
+  color: var(--df-text);
+  text-decoration: none;
+}
+
+.no-encontrado-enlace:hover {
+  border-color: var(--df-primary);
+  background: var(--df-surface-hover);
+}
+
+.no-encontrado-enlace:focus-visible {
+  outline: 2px solid var(--df-border-focus);
+  outline-offset: 3px;
+}

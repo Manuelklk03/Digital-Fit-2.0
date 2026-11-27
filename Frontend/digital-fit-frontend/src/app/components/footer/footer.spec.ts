@@ -5,6 +5,8 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { Footer } from './footer';
 import { I18nService } from '../../i18n/i18n.service';
+import { AuthService } from '../../services/auth-service';
+import { HttpTestingController } from '@angular/common/http/testing';
 
 describe('Footer', () => {
   let fixture: ComponentFixture<Footer>;
@@ -36,9 +38,33 @@ describe('Footer', () => {
       (a) => a.getAttribute('href'),
     );
 
-    expect(hrefs).toEqual(expect.arrayContaining(['/inicio', '/explorar', '/entrenar']));
+    expect(hrefs).toEqual(expect.arrayContaining(['/inicio', '/login']));
+    expect(hrefs).not.toContain('/entrenar');
     expect(hrefs).toContain('https://github.com/Manuelklk03/Digital-Fit-2.0');
     expect(hrefs).toContain('https://www.openstreetmap.org/copyright');
+  });
+
+  it('muestra las cinco vistas a USER y las opciones administrativas a ADMIN', () => {
+    const auth = TestBed.inject(AuthService);
+    const http = TestBed.inject(HttpTestingController);
+    auth.me().subscribe();
+    http
+      .expectOne('/api/auth/me')
+      .flush({ username: 'ana', email: 'ana@example.test', rol: 'USER' });
+    fixture.detectChanges();
+    const rutas = () =>
+      Array.from<HTMLAnchorElement>(fixture.nativeElement.querySelectorAll('nav a')).map((a) =>
+        a.getAttribute('href'),
+      );
+    expect(rutas()).toEqual(['/dashboard', '/entrenar', '/explorar', '/progreso', '/perfil']);
+
+    auth.me().subscribe();
+    http
+      .expectOne('/api/auth/me')
+      .flush({ username: 'admin', email: 'admin@example.test', rol: 'ADMIN' });
+    fixture.detectChanges();
+    expect(rutas()).toEqual(['/perfil', '/admin/crear-admin']);
+    http.verify();
   });
 
   it('muestra el año actual y no usa el símbolo ®', () => {

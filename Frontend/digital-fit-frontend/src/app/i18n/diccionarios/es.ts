@@ -67,6 +67,7 @@ export const diccionarioEs: DiccionarioTraduccion = {
     detalle: 'Detalle',
     login: 'Iniciar sesión',
     registro: 'Crear cuenta',
+    noEncontrado: 'Página no encontrada',
   },
   inicio: {
     badge: 'PROYECTO OPEN SOURCE • VALENCIA & COMUNIDAD',
@@ -213,6 +214,11 @@ export const diccionarioEs: DiccionarioTraduccion = {
     perfilTitulo: 'Guía de inicio',
     perfilDescripcion: 'Recupera los accesos para empezar cuando los necesites.',
     perfilBoton: 'Abrir guía en mi espacio',
+  },
+  noEncontrado: {
+    titulo: 'No encontramos esta página',
+    descripcion: 'Comprueba la dirección o vuelve al inicio para seguir navegando.',
+    volver: 'Volver al inicio',
   },
   vistas: {
     entrenar: {

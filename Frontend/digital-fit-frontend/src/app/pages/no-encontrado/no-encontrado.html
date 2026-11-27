@@ -1,0 +1,9 @@
+@let t = i18n.t().noEncontrado;
+<app-header />
+<main class="vista no-encontrado" id="contenido-principal">
+  <p class="no-encontrado-codigo" aria-hidden="true">404</p>
+  <h1>{{ t.titulo }}</h1>
+  <p class="vista-intro">{{ t.descripcion }}</p>
+  <a class="no-encontrado-enlace" routerLink="/inicio">{{ t.volver }}</a>
+</main>
+<app-footer />
