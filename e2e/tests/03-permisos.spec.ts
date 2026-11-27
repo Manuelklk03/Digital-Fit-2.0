@@ -14,6 +14,7 @@ test.describe("Control de Acceso y Permisos por Rol", () => {
     // 2. Intentar acceder a Mis Entrenamientos sin autenticar redirige a /login
     await page.goto("/mis-entrenamientos");
     await expect(page).toHaveURL(/.*\/login/, { timeout: 10000 });
+    await expect(page).toHaveURL(/returnUrl=%2Fmis-entrenamientos/);
 
     // 3. En la cabecera no existen enlaces administrativos ni sesión iniciada
     await expect(

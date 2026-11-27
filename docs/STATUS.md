@@ -2,6 +2,12 @@
 
 Última actualización: **2026-11-27**.
 
+> **2026-11-27 (Entrada, retorno seguro y rutas inexistentes; rama `feat/entrada-rutas-recuperacion`):**
+> - Los guards devuelven al router un destino de login con `returnUrl` al entrar sin sesión en una ruta privada. Login y registro conservan ese destino; al autenticar se acepta solo una ruta interna y se descartan destinos externos, bucles de login y rutas administrativas para `USER`.
+> - `**` muestra una página 404 no indexable en lugar de llevar a login. El pie muestra Inicio y Entrar sin sesión, cinco vistas para `USER` y Perfil y administración para `ADMIN`.
+> - Traducciones en cuatro idiomas. Comprobaciones locales: build correcto, 65 suites y 301 tests frontend correctos, lint sin errores y con 3 avisos previos; Playwright reconoce 7 E2E. La ejecución E2E integrada y la inspección visual manual están pendientes.
+> - Siguiente bloque funcional: contratos para sitios OSM y «Mis sitios» de 8.M2; los alias antiguos se mantienen hasta definir su migración.
+
 > **2026-11-27 (Guía inicial opcional; rama `feat/guia-inicial-opcional`):**
 > - Dashboard muestra tres primeros pasos enlazados a funciones existentes. La guía se puede omitir y volver a mostrar desde el propio Dashboard o desde Perfil, sin bloquear el uso normal de la aplicación.
 > - La preferencia se guarda por nombre de cuenta en el navegador. Si el almacenamiento está bloqueado, la opción funciona mientras la pestaña permanezca abierta. No se guarda en el servidor ni se sincroniza entre dispositivos.
