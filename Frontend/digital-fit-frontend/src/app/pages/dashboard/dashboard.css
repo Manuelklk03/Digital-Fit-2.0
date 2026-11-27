@@ -15,6 +15,60 @@
   margin: 0 0 var(--df-space-xl);
 }
 
+.dashboard-guia {
+  margin-bottom: var(--df-space-xl);
+  padding: var(--df-space-lg);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-radius-lg);
+  background-color: var(--df-surface);
+}
+
+.dashboard-guia-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--df-space-sm);
+}
+
+.dashboard-guia h2 {
+  margin: 0;
+}
+.dashboard-guia p {
+  color: var(--df-text-muted);
+  line-height: 1.5;
+}
+.dashboard-guia ol {
+  display: grid;
+  gap: var(--df-space-sm);
+  padding-left: var(--df-space-lg);
+}
+.dashboard-guia a {
+  color: var(--df-text);
+  text-underline-offset: 3px;
+}
+.dashboard-guia button {
+  min-height: 44px;
+  padding: var(--df-space-sm) var(--df-space-md);
+  border: 1px solid var(--df-border);
+  border-radius: var(--df-radius-sm);
+  background: var(--df-bg);
+  color: var(--df-text);
+  font: inherit;
+  cursor: pointer;
+}
+.dashboard-guia button:hover {
+  border-color: var(--df-primary);
+}
+.dashboard-guia a:focus-visible,
+.dashboard-guia button:focus-visible {
+  outline: 2px solid var(--df-border-focus);
+  outline-offset: 3px;
+}
+.dashboard-guia-nota {
+  margin-bottom: 0;
+}
+
 .dashboard-acciones h2 {
   margin: 0 0 var(--df-space-lg);
 }

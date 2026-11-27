@@ -1,8 +1,42 @@
 @let t = i18n.t().dashboard;
+@let g = i18n.t().guia;
 <app-header />
 
 <main class="dashboard-contenido" id="contenido-principal">
   <h1>{{ t.titulo }}</h1>
+
+  @if (usuarioDisponible()) {
+    <section class="dashboard-guia" aria-labelledby="dashboard-guia-titulo">
+      <div class="dashboard-guia-cabecera">
+        <h2 id="dashboard-guia-titulo">{{ g.titulo }}</h2>
+        <button
+          type="button"
+          aria-controls="dashboard-guia-contenido"
+          [attr.aria-expanded]="mostrarGuia()"
+          (click)="alternarGuia()"
+        >
+          {{ mostrarGuia() ? g.omitir : g.mostrar }}
+        </button>
+      </div>
+      <div id="dashboard-guia-contenido" [hidden]="!mostrarGuia()">
+        <p>{{ g.descripcion }}</p>
+        <nav [attr.aria-label]="g.navegacion">
+          <ol>
+            <li>
+              <a routerLink="/explorar">{{ g.explorar }}</a>
+            </li>
+            <li>
+              <a routerLink="/entrenamientos">{{ g.rutina }}</a>
+            </li>
+            <li>
+              <a routerLink="/progreso">{{ g.progreso }}</a>
+            </li>
+          </ol>
+        </nav>
+        <p class="dashboard-guia-nota">{{ g.recuperable }}</p>
+      </div>
+    </section>
+  }
 
   <section class="dashboard-acciones" aria-labelledby="dashboard-acciones-titulo">
     <h2 id="dashboard-acciones-titulo">{{ t.accionesTitulo }}</h2>

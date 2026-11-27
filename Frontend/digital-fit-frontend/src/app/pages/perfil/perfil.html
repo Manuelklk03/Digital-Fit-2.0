@@ -45,5 +45,12 @@
       }
     </div>
   </section>
+  @if (cuenta.item()?.rol === 'USER') {
+    <section aria-labelledby="guia-perfil">
+      <h2 id="guia-perfil">{{ i18n.t().guia.perfilTitulo }}</h2>
+      <p class="vista-intro">{{ i18n.t().guia.perfilDescripcion }}</p>
+      <button type="button" (click)="recuperarGuia()">{{ i18n.t().guia.perfilBoton }}</button>
+    </section>
+  }
 </main>
 <app-footer />
