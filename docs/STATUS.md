@@ -2,11 +2,17 @@
 
 Última actualización: **2026-11-27**.
 
+> **2026-11-27 (Guía inicial opcional; rama `feat/guia-inicial-opcional`):**
+> - Dashboard muestra tres primeros pasos enlazados a funciones existentes. La guía se puede omitir y volver a mostrar desde el propio Dashboard o desde Perfil, sin bloquear el uso normal de la aplicación.
+> - La preferencia se guarda por nombre de cuenta en el navegador. Si el almacenamiento está bloqueado, la opción funciona mientras la pestaña permanezca abierta. No se guarda en el servidor ni se sincroniza entre dispositivos.
+> - Textos en los cuatro idiomas, botón con `aria-expanded` y foco estable, enlaces a rutas reales y presentación adaptable. No se ofrecen metas o actividades favoritas porque esas funciones aún no existen.
+> - Comprobaciones locales: build correcto, 63 suites y 285 tests frontend correctos, lint con 0 errores y 4 avisos previos; Playwright reconoce 6 E2E. La E2E integrada ampliada y la inspección visual manual están pendientes.
+
 > **2026-11-27 (Cinco vistas principales del rediseño; rama `feat/cinco-vistas-redisenio`):**
 > - `/entrenar` deja de presentar una sesión ficticia y reúne los catálogos base, propio y de comunidad ya disponibles. `/progreso` muestra los totales reales y enlaza al historial, estadísticas y valoraciones. `/perfil` muestra usuario y correo de la sesión y permite elegir idioma.
 > - La cabecera de `USER` muestra Dashboard, Entrenar, Explorar, Progreso y Perfil; `ADMIN` solo ve Perfil y su acceso administrativo. Tras el login, `USER` llega al Dashboard. Rutas privadas protegidas con los guards existentes.
 > - Textos en español, valenciano, inglés y francés. Las nuevas vistas tienen diseño adaptable, foco visible y estados de carga, error, vacío y reintento donde consultan la API.
-> - Comprobaciones: build frontend correcto; 62 suites y 280 tests correctos; lint con 0 errores y 4 avisos preexistentes. CI de la PR #93: frontend, backend, Docker, SonarQube y cinco E2E correctos; se añade una sexta E2E para comprobar el recorrido móvil de las vistas (pendiente de CI). La herramienta de navegador local no se pudo conectar, así que contraste, movimiento reducido y apariencia visual no se han inspeccionado manualmente.
+> - Comprobaciones: build frontend correcto; 62 suites y 280 tests correctos; lint con 0 errores y 4 avisos preexistentes. CI de la PR #93: frontend, backend, Docker, SonarQube y seis E2E correctos. La herramienta de navegador local no se pudo conectar, así que contraste, movimiento reducido y apariencia visual no se han inspeccionado manualmente.
 > - Pendiente: guía inicial opcional; asistente de sesiones real; metas, retos, privacidad, tema y gestión de sesiones requieren contratos y funciones nuevas. Las rutas heredadas siguen accesibles para enlaces directos.
 
 > **2026-11-26 (Dashboard inicial y navegación móvil del rediseño; rama `feature/dashboard-accesos`):**

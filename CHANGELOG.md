@@ -8,6 +8,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y 
 
 ### Añadido
 
+- Guía inicial opcional en el Dashboard, con accesos a Explorar, catálogo de rutinas y Progreso; se puede omitir y recuperar desde Dashboard o Perfil. La preferencia se guarda por cuenta en el navegador.
 - Vistas privadas `/entrenar`, `/progreso` y `/perfil`: acceso a rutinas existentes, resumen real de actividad, datos de cuenta e idioma de la interfaz en cuatro idiomas.
 - Dashboard privado con accesos a funciones existentes y resumen de actividad real, con estados de carga, error y vacío, diseño adaptable y traducciones en los cuatro idiomas de la aplicación.
 
