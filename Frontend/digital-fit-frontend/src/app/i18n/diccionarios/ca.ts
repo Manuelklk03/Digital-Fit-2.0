@@ -199,6 +199,20 @@ export const diccionarioCa: DiccionarioTraduccion = {
     misEntrenamientos: 'Els meus entrenaments',
     historial: 'Historial d’entrenaments',
   },
+  guia: {
+    titulo: 'Primers passos',
+    descripcion: 'Pots començar per qualsevol d’estes accions. La guia és opcional.',
+    navegacion: 'Accions per a començar',
+    explorar: 'Descobreix llocs per a entrenar',
+    rutina: 'Tria una rutina del catàleg',
+    progreso: 'Consulta el teu progrés',
+    omitir: 'Ometre guia',
+    mostrar: 'Mostrar guia',
+    recuperable: 'Pots tornar a obrir esta guia des d’ací o des de Perfil.',
+    perfilTitulo: 'Guia d’inici',
+    perfilDescripcion: 'Recupera els accessos per a començar quan els necessites.',
+    perfilBoton: 'Obrir guia en el meu espai',
+  },
   vistas: {
     entrenar: {
       titulo: 'Entrenar',

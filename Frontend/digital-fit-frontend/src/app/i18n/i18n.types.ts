@@ -194,6 +194,20 @@ export interface DiccionarioTraduccion {
     misEntrenamientos: string;
     historial: string;
   };
+  guia: {
+    titulo: string;
+    descripcion: string;
+    navegacion: string;
+    explorar: string;
+    rutina: string;
+    progreso: string;
+    omitir: string;
+    mostrar: string;
+    recuperable: string;
+    perfilTitulo: string;
+    perfilDescripcion: string;
+    perfilBoton: string;
+  };
   vistas: {
     entrenar: {
       titulo: string;

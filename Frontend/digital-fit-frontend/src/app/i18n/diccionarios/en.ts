@@ -197,6 +197,20 @@ export const diccionarioEn: DiccionarioTraduccion = {
     misEntrenamientos: 'My workouts',
     historial: 'Workout history',
   },
+  guia: {
+    titulo: 'Getting started',
+    descripcion: 'Start with any of these actions. This guide is optional.',
+    navegacion: 'Ways to get started',
+    explorar: 'Find places to train',
+    rutina: 'Choose a routine from the catalogue',
+    progreso: 'View your progress',
+    omitir: 'Skip guide',
+    mostrar: 'Show guide',
+    recuperable: 'You can reopen this guide here or from Profile.',
+    perfilTitulo: 'Getting started guide',
+    perfilDescripcion: 'Open these starting points whenever you need them.',
+    perfilBoton: 'Open guide in my space',
+  },
   vistas: {
     entrenar: {
       titulo: 'Workout',

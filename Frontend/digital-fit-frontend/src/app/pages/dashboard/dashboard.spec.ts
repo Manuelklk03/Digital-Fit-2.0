@@ -5,6 +5,7 @@ import { provideRouter } from '@angular/router';
 import { I18nService } from '../../i18n/i18n.service';
 import { EstadisticaUsuario } from '../../models/progreso';
 import { DashboardComponent } from './dashboard';
+import { AuthService } from '../../services/auth-service';
 
 const DATOS: EstadisticaUsuario = {
   entrenamientosRealizados: 12,
@@ -37,6 +38,7 @@ describe('DashboardComponent', () => {
 
   afterEach(() => {
     localStorage.removeItem('digitalfit_lang');
+    localStorage.removeItem('digitalfit_guia_inicial_v1:ana');
     http.verify();
   });
 
@@ -96,5 +98,35 @@ describe('DashboardComponent', () => {
     fixture.detectChanges();
     expect(actividad().textContent).toContain('Your activity');
     expect(actividad().textContent).toContain('Workouts completed');
+  });
+
+  it('muestra la guía opcional a USER y permite omitirla y recuperarla', () => {
+    http.expectOne('/api/estadisticas').flush(DATOS);
+    TestBed.inject(AuthService).me().subscribe();
+    http
+      .expectOne('/api/auth/me')
+      .flush({ username: 'ana', email: 'ana@example.test', rol: 'USER' });
+    fixture.detectChanges();
+
+    const guia = fixture.nativeElement.querySelector('.dashboard-guia') as HTMLElement;
+    const boton = guia.querySelector('button') as HTMLButtonElement;
+    const contenido = guia.querySelector('#dashboard-guia-contenido') as HTMLElement;
+    expect(boton.getAttribute('aria-expanded')).toBe('true');
+    expect(contenido.hidden).toBe(false);
+    expect(Array.from(contenido.querySelectorAll('a')).map((a) => a.getAttribute('href'))).toEqual([
+      '/explorar',
+      '/entrenamientos',
+      '/progreso',
+    ]);
+
+    boton.click();
+    fixture.detectChanges();
+    expect(contenido.hidden).toBe(true);
+    expect(boton.getAttribute('aria-expanded')).toBe('false');
+
+    boton.click();
+    fixture.detectChanges();
+    expect(contenido.hidden).toBe(false);
+    expect(boton.getAttribute('aria-expanded')).toBe('true');
   });
 });

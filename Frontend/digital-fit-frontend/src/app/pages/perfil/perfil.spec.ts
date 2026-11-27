@@ -1,8 +1,10 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
+import { vi } from 'vitest';
 import { I18nService } from '../../i18n/i18n.service';
+import { GuiaInicialService } from '../../services/guia-inicial.service';
 import { PerfilComponent } from './perfil';
 
 describe('PerfilComponent', () => {
@@ -14,7 +16,7 @@ describe('PerfilComponent', () => {
     }).compileComponents();
   });
 
-  afterEach(() => localStorage.removeItem('digitalfit_lang'));
+  afterEach(() => localStorage.clear());
 
   it('muestra los datos de la sesión y cambia el idioma', () => {
     const fixture = TestBed.createComponent(PerfilComponent);
@@ -35,6 +37,43 @@ describe('PerfilComponent', () => {
     expect(TestBed.inject(I18nService).idiomaActual()).toBe('en');
     expect(main.querySelector('h1')?.textContent).toBe('Profile');
     expect(ingles?.getAttribute('aria-pressed')).toBe('true');
+    http.verify();
+  });
+
+  it('recupera la guía desde Perfil y abre el Dashboard', () => {
+    const fixture = TestBed.createComponent(PerfilComponent);
+    const http = TestBed.inject(HttpTestingController);
+    fixture.detectChanges();
+    for (const peticion of http.match('/api/auth/me')) {
+      peticion.flush({ username: 'ana', email: 'ana@example.test', rol: 'USER' });
+    }
+    fixture.detectChanges();
+
+    const guia = TestBed.inject(GuiaInicialService);
+    guia.establecerVisible('ana', false);
+    const navegar = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    const boton = Array.from(
+      fixture.nativeElement.querySelectorAll('main button') as NodeListOf<HTMLButtonElement>,
+    ).find((item) => item.textContent?.includes('Abrir guía'));
+    expect(boton).toBeDefined();
+    boton?.click();
+    expect(guia.estaVisible('ana')).toBe(true);
+    expect(navegar).toHaveBeenCalledWith(['/dashboard']);
+    http.verify();
+  });
+
+  it('no ofrece la guía de usuario a una cuenta ADMIN', () => {
+    const fixture = TestBed.createComponent(PerfilComponent);
+    const http = TestBed.inject(HttpTestingController);
+    fixture.detectChanges();
+    for (const peticion of http.match('/api/auth/me')) {
+      peticion.flush({ username: 'admin', email: 'admin@example.test', rol: 'ADMIN' });
+    }
+    fixture.detectChanges();
+
+    const main = fixture.nativeElement.querySelector('main') as HTMLElement;
+    expect(main.textContent).toContain('admin@example.test');
+    expect(main.querySelector('#guia-perfil')).toBeNull();
     http.verify();
   });
 });

@@ -199,6 +199,20 @@ export const diccionarioFr: DiccionarioTraduccion = {
     misEntrenamientos: 'Mes entraînements',
     historial: 'Historique des entraînements',
   },
+  guia: {
+    titulo: 'Premiers pas',
+    descripcion: 'Commencez par l’une de ces actions. Ce guide est facultatif.',
+    navegacion: 'Actions pour commencer',
+    explorar: 'Découvrir des lieux pour s’entraîner',
+    rutina: 'Choisir un programme dans le catalogue',
+    progreso: 'Consulter vos progrès',
+    omitir: 'Ignorer le guide',
+    mostrar: 'Afficher le guide',
+    recuperable: 'Vous pouvez rouvrir ce guide ici ou depuis votre profil.',
+    perfilTitulo: 'Guide de démarrage',
+    perfilDescripcion: 'Retrouvez ces accès pour commencer quand vous en avez besoin.',
+    perfilBoton: 'Ouvrir le guide dans mon espace',
+  },
   vistas: {
     entrenar: {
       titulo: 'S’entraîner',

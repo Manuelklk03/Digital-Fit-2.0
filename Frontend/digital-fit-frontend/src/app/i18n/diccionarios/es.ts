@@ -200,6 +200,20 @@ export const diccionarioEs: DiccionarioTraduccion = {
     misEntrenamientos: 'Mis entrenamientos',
     historial: 'Historial de entrenamientos',
   },
+  guia: {
+    titulo: 'Primeros pasos',
+    descripcion: 'Puedes empezar por cualquiera de estas acciones. La guía es opcional.',
+    navegacion: 'Acciones para empezar',
+    explorar: 'Descubre sitios para entrenar',
+    rutina: 'Elige una rutina del catálogo',
+    progreso: 'Consulta tu progreso',
+    omitir: 'Omitir guía',
+    mostrar: 'Mostrar guía',
+    recuperable: 'Puedes volver a abrir esta guía desde aquí o desde Perfil.',
+    perfilTitulo: 'Guía de inicio',
+    perfilDescripcion: 'Recupera los accesos para empezar cuando los necesites.',
+    perfilBoton: 'Abrir guía en mi espacio',
+  },
   vistas: {
     entrenar: {
       titulo: 'Entrenar',

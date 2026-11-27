@@ -14,7 +14,7 @@ Fuentes de la comprobación local: [`app.routes.ts`](../Frontend/digital-fit-fro
 
 ## 2. Mapa de rutas
 
-La «ruta nueva» es el destino final propuesto; `/dashboard` ya existe como primer incremento, pero las demás rutas propuestas aún no. `?pestaña=...` indica estado de la vista; una subvista de detalle debe conservar un identificador estable y admitir enlace directo. Los identificadores antiguos son IDs de base de datos local, no necesariamente IDs de OSM: las redirecciones de detalle necesitarán un resolvedor de compatibilidad durante la transición. No se debe convertir un `:id` local en `osmId` por simple sustitución. Manuel quiere **conservar temporalmente las pantallas y enlaces antiguos** hasta completar la migración; por ello los destinos de la tabla describen la meta final, no una redirección que deba activarse en el primer incremento.
+La «ruta nueva» es el destino final propuesto. Las cinco rutas principales ya existen como entradas estructurales; varias funciones de sus recorridos siguen pendientes. `?pestaña=...` indica estado de la vista; una subvista de detalle debe conservar un identificador estable y admitir enlace directo. Los identificadores antiguos son IDs de base de datos local, no necesariamente IDs de OSM: las redirecciones de detalle necesitarán un resolvedor de compatibilidad durante la transición. No se debe convertir un `:id` local en `osmId` por simple sustitución. Manuel quiere **conservar temporalmente las pantallas y enlaces antiguos** hasta completar la migración; por ello los destinos de la tabla describen la meta final, no una redirección que deba activarse en el primer incremento.
 
 | Ruta actual | Ruta nueva o destino | Acción | Redirección o compatibilidad necesaria |
 |---|---|---|---|
