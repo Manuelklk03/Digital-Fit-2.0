@@ -61,4 +61,19 @@ describe('PerfilComponent', () => {
     expect(navegar).toHaveBeenCalledWith(['/dashboard']);
     http.verify();
   });
+
+  it('no ofrece la guía de usuario a una cuenta ADMIN', () => {
+    const fixture = TestBed.createComponent(PerfilComponent);
+    const http = TestBed.inject(HttpTestingController);
+    fixture.detectChanges();
+    for (const peticion of http.match('/api/auth/me')) {
+      peticion.flush({ username: 'admin', email: 'admin@example.test', rol: 'ADMIN' });
+    }
+    fixture.detectChanges();
+
+    const main = fixture.nativeElement.querySelector('main') as HTMLElement;
+    expect(main.textContent).toContain('admin@example.test');
+    expect(main.querySelector('#guia-perfil')).toBeNull();
+    http.verify();
+  });
 });

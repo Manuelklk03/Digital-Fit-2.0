@@ -6,7 +6,7 @@
 > - Dashboard muestra tres primeros pasos enlazados a funciones existentes. La guía se puede omitir y volver a mostrar desde el propio Dashboard o desde Perfil, sin bloquear el uso normal de la aplicación.
 > - La preferencia se guarda por nombre de cuenta en el navegador. Si el almacenamiento está bloqueado, la opción funciona mientras la pestaña permanezca abierta. No se guarda en el servidor ni se sincroniza entre dispositivos.
 > - Textos en los cuatro idiomas, botón con `aria-expanded` y foco estable, enlaces a rutas reales y presentación adaptable. No se ofrecen metas o actividades favoritas porque esas funciones aún no existen.
-> - Comprobaciones locales: build correcto, 63 suites y 285 tests frontend correctos, lint con 0 errores y 4 avisos previos; Playwright reconoce 6 E2E. La E2E integrada ampliada y la inspección visual manual están pendientes.
+> - Comprobaciones: build correcto, 63 suites y 286 tests frontend correctos, lint con 0 errores y 4 avisos previos. La PR #94 pasó frontend, backend, Docker, SonarQube y 6 E2E en CI, incluida omisión, persistencia y recuperación de la guía en móvil. La inspección visual manual de contraste y apariencia sigue pendiente porque la herramienta de navegador local no pudo conectarse.
 
 > **2026-11-27 (Cinco vistas principales del rediseño; rama `feat/cinco-vistas-redisenio`):**
 > - `/entrenar` deja de presentar una sesión ficticia y reúne los catálogos base, propio y de comunidad ya disponibles. `/progreso` muestra los totales reales y enlaza al historial, estadísticas y valoraciones. `/perfil` muestra usuario y correo de la sesión y permite elegir idioma.
