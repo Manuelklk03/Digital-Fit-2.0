@@ -66,13 +66,13 @@ export class LoginComponent {
     this.authService.login(usuarioLimpio, passwordLimpia).subscribe({
       next: () => {
         this.authService.me().subscribe({
-          next: () => {
+          next: (usuario) => {
             this.mostrarAlerta(this.i18n.t().auth.exitoLogin, 'exito');
             this.cargando = false;
             this.cdr.markForCheck();
 
             setTimeout(() => {
-              this.router.navigate(['/inicio']);
+              this.router.navigate([usuario.rol === 'USER' ? '/dashboard' : '/inicio']);
             }, 600);
           },
           error: () => {

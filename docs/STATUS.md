@@ -1,6 +1,13 @@
 # Estado actual — Digital-Fit
 
-Última actualización: **2026-11-26**.
+Última actualización: **2026-11-27**.
+
+> **2026-11-27 (Cinco vistas principales del rediseño; rama `feat/cinco-vistas-redisenio`):**
+> - `/entrenar` deja de presentar una sesión ficticia y reúne los catálogos base, propio y de comunidad ya disponibles. `/progreso` muestra los totales reales y enlaza al historial, estadísticas y valoraciones. `/perfil` muestra usuario y correo de la sesión y permite elegir idioma.
+> - La cabecera de `USER` muestra Dashboard, Entrenar, Explorar, Progreso y Perfil; `ADMIN` solo ve Perfil y su acceso administrativo. Tras el login, `USER` llega al Dashboard. Rutas privadas protegidas con los guards existentes.
+> - Textos en español, valenciano, inglés y francés. Las nuevas vistas tienen diseño adaptable, foco visible y estados de carga, error, vacío y reintento donde consultan la API.
+> - Comprobaciones: build frontend correcto; 62 suites y 280 tests correctos; lint con 0 errores y 4 avisos preexistentes. CI de la PR #93: frontend, backend, Docker, SonarQube y cinco E2E correctos; se añade una sexta E2E para comprobar el recorrido móvil de las vistas (pendiente de CI). La herramienta de navegador local no se pudo conectar, así que contraste, movimiento reducido y apariencia visual no se han inspeccionado manualmente.
+> - Pendiente: guía inicial opcional; asistente de sesiones real; metas, retos, privacidad, tema y gestión de sesiones requieren contratos y funciones nuevas. Las rutas heredadas siguen accesibles para enlaces directos.
 
 > **2026-11-26 (Dashboard inicial y navegación móvil del rediseño; rama `feature/dashboard-accesos`):**
 > - Ruta privada `/dashboard` para cuentas `USER`, con accesos a Explorar, catálogo de entrenamientos, Progreso, entrenamientos propios e historial. El acceso al catálogo sustituye al enlace a `/entrenar`, que todavía usa datos de demostración.

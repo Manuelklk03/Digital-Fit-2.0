@@ -83,8 +83,8 @@ describe('DashboardComponent', () => {
     const enlaces = Array.from(
       fixture.nativeElement.querySelectorAll('main a') as NodeListOf<HTMLAnchorElement>,
     );
-    expect(enlaces.some((enlace) => enlace.getAttribute('href') === '/entrenamientos')).toBe(true);
-    expect(enlaces.some((enlace) => enlace.getAttribute('href') === '/entrenar')).toBe(false);
+    expect(enlaces.some((enlace) => enlace.getAttribute('href') === '/entrenar')).toBe(true);
+    expect(enlaces.some((enlace) => enlace.getAttribute('href') === '/progreso')).toBe(true);
     expect(enlaces.some((enlace) => enlace.getAttribute('href') === '/mis-entrenamientos')).toBe(
       true,
     );

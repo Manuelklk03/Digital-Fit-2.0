@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
@@ -51,6 +51,8 @@ describe('LoginComponent', () => {
   });
 
   it('debe gestionar el inicio de sesión exitoso', () => {
+    vi.useFakeTimers();
+    const navegar = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
     vi.spyOn(authService, 'login').mockReturnValue(of('ok'));
     vi.spyOn(authService, 'me').mockReturnValue(
       of({ username: 'usuario1', email: 'u@u.es', rol: 'USER' }),
@@ -62,6 +64,9 @@ describe('LoginComponent', () => {
 
     expect(authService.login).toHaveBeenCalledWith('usuario1', 'Usuario123!');
     expect(component.alerta()?.tipo).toBe('exito');
+    vi.runAllTimers();
+    expect(navegar).toHaveBeenCalledWith(['/dashboard']);
+    vi.useRealTimers();
   });
 
   it('debe mostrar error de credenciales si login falla', () => {
