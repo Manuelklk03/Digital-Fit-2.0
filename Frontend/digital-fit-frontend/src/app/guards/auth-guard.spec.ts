@@ -1,5 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, provideRouter, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  provideRouter,
+  Router,
+  RouterStateSnapshot,
+  UrlTree,
+} from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Observable } from 'rxjs';
@@ -22,21 +28,26 @@ describe('authGuard', () => {
 
   const ejecutar = () =>
     TestBed.runInInjectionContext(() =>
-      authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
-    ) as Observable<boolean>;
+      authGuard(
+        {} as ActivatedRouteSnapshot,
+        { url: '/mis-entrenamientos' } as RouterStateSnapshot,
+      ),
+    ) as Observable<boolean | UrlTree>;
 
   // /api/auth/yo se retiró en la tarea 4.1: el guard debe usar /api/auth/me.
   it('deja pasar con sesión válida en /api/auth/me', () => {
-    let resultado: boolean | undefined;
+    let resultado: boolean | UrlTree | undefined;
     ejecutar().subscribe((r) => (resultado = r));
     http.expectOne('/api/auth/me').flush({ username: 'u', email: 'u@x.es', rol: 'USER' });
     expect(resultado).toBe(true);
   });
 
   it('bloquea sin sesión', () => {
-    let resultado: boolean | undefined;
+    let resultado: boolean | UrlTree | undefined;
     ejecutar().subscribe((r) => (resultado = r));
     http.expectOne('/api/auth/me').flush(null, { status: 401, statusText: 'Unauthorized' });
-    expect(resultado).toBe(false);
+    expect(TestBed.inject(Router).serializeUrl(resultado as UrlTree)).toBe(
+      '/login?returnUrl=%2Fmis-entrenamientos',
+    );
   });
 });

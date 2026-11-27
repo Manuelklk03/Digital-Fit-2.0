@@ -98,7 +98,12 @@
       <footer class="pie-registro">
         <p class="texto-pie">
           {{ i18n.t().auth.conCuenta }}
-          <a routerLink="/login" class="enlace-login">{{ i18n.t().auth.enlaceLogin }}</a>
+          <a
+            routerLink="/login"
+            [queryParams]="retornoSolicitado ? { returnUrl: retornoSolicitado } : {}"
+            class="enlace-login"
+            >{{ i18n.t().auth.enlaceLogin }}</a
+          >
         </p>
       </footer>
     </app-card>

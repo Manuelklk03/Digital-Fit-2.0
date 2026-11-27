@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import {
@@ -19,6 +19,7 @@ import {
 } from '../../components/ui';
 import { AuthService } from '../../services/auth-service';
 import { I18nService } from '../../i18n/i18n.service';
+import { destinoTrasLogin } from '../../guards/retorno-login';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +42,9 @@ export class LoginComponent {
   readonly i18n = inject(I18nService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly cdr = inject(ChangeDetectorRef);
+  readonly retornoSolicitado = this.route.snapshot.queryParamMap.get('returnUrl');
 
   username = '';
   password = '';
@@ -72,7 +75,7 @@ export class LoginComponent {
             this.cdr.markForCheck();
 
             setTimeout(() => {
-              this.router.navigate([usuario.rol === 'USER' ? '/dashboard' : '/inicio']);
+              void this.router.navigateByUrl(destinoTrasLogin(this.retornoSolicitado, usuario.rol));
             }, 600);
           },
           error: () => {

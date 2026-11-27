@@ -122,7 +122,12 @@
       <footer class="pie-login">
         <p class="texto-pie">
           {{ i18n.t().auth.sinCuenta }}
-          <a routerLink="/register" class="enlace-registro">{{ i18n.t().auth.enlaceRegistro }}</a>
+          <a
+            routerLink="/register"
+            [queryParams]="retornoSolicitado ? { returnUrl: retornoSolicitado } : {}"
+            class="enlace-registro"
+            >{{ i18n.t().auth.enlaceRegistro }}</a
+          >
         </p>
       </footer>
     </app-card>
