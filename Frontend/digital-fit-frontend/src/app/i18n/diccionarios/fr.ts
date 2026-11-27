@@ -67,6 +67,7 @@ export const diccionarioFr: DiccionarioTraduccion = {
     detalle: 'Détail',
     login: 'Se connecter',
     registro: 'Créer un compte',
+    noEncontrado: 'Page introuvable',
   },
   inicio: {
     badge: 'PROJET OPEN SOURCE • VALENCE ET COMMUNAUTÉ',
@@ -212,6 +213,11 @@ export const diccionarioFr: DiccionarioTraduccion = {
     perfilTitulo: 'Guide de démarrage',
     perfilDescripcion: 'Retrouvez ces accès pour commencer quand vous en avez besoin.',
     perfilBoton: 'Ouvrir le guide dans mon espace',
+  },
+  noEncontrado: {
+    titulo: 'Cette page est introuvable',
+    descripcion: 'Vérifiez l’adresse ou revenez à l’accueil pour continuer.',
+    volver: 'Retour à l’accueil',
   },
   vistas: {
     entrenar: {

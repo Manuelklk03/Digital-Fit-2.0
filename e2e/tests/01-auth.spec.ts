@@ -10,8 +10,11 @@ test.describe("Flujo de Autenticación", () => {
   test("registro de nuevo usuario, login y logout completos", async ({
     page,
   }) => {
-    // 1. Navegar a registro
-    await page.goto("/register");
+    // 1. Una ruta privada conserva el destino durante login y registro
+    await page.goto("/mis-entrenamientos");
+    await expect(page).toHaveURL(/\/login\?returnUrl=%2Fmis-entrenamientos/);
+    await page.getByRole("link", { name: "Crear cuenta" }).click();
+    await expect(page).toHaveURL(/\/register\?returnUrl=%2Fmis-entrenamientos/);
     await expect(
       page.getByRole("heading", { name: "Crear cuenta" }),
     ).toBeVisible();
@@ -24,11 +27,13 @@ test.describe("Flujo de Autenticación", () => {
     // 3. Enviar registro
     await page.getByRole("button", { name: "Registrarse" }).click();
 
-    // 4. Verificar alerta de éxito y redirección automática a /login
+    // 4. Verificar alerta de éxito y retorno a login con el destino conservado
     await expect(page.getByText("Cuenta creada correctamente")).toBeVisible({
       timeout: 10000,
     });
-    await expect(page).toHaveURL(/.*\/login/, { timeout: 10000 });
+    await expect(page).toHaveURL(/\/login\?returnUrl=%2Fmis-entrenamientos/, {
+      timeout: 10000,
+    });
 
     // 5. Iniciar sesión con el usuario recién creado
     await page.getByLabel("Nombre de usuario").fill(testUser);
@@ -42,7 +47,7 @@ test.describe("Flujo de Autenticación", () => {
     await expect(page.locator(".estado-linea-superior")).toContainText(
       testUser,
     );
-    await expect(page).toHaveURL(/\/dashboard$/, { timeout: 10000 });
+    await expect(page).toHaveURL(/\/mis-entrenamientos$/, { timeout: 10000 });
 
     // 7. Cerrar sesión
     await logoutViaUI(page);

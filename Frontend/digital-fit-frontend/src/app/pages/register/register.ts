@@ -6,7 +6,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import {
@@ -42,7 +42,9 @@ export class RegisterComponent {
   readonly i18n = inject(I18nService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly cdr = inject(ChangeDetectorRef);
+  readonly retornoSolicitado = this.route.snapshot.queryParamMap.get('returnUrl');
 
   username = '';
   email = '';
@@ -93,7 +95,9 @@ export class RegisterComponent {
         this.cdr.markForCheck();
 
         setTimeout(() => {
-          this.router.navigate(['/login']);
+          void this.router.navigate(['/login'], {
+            queryParams: this.retornoSolicitado ? { returnUrl: this.retornoSolicitado } : {},
+          });
         }, 800);
       },
       error: () => {

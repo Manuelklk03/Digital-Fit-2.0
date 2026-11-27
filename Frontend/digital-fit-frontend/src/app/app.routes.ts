@@ -206,5 +206,10 @@ export const routes: Routes = [
     data: { tituloNav: 'crearAdmin', migas: ['crearAdmin'] },
   },
 
-  { path: '**', redirectTo: 'login' },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./pages/no-encontrado/no-encontrado').then((m) => m.NoEncontradoComponent),
+    data: { migas: ['noEncontrado'] },
+  },
 ];

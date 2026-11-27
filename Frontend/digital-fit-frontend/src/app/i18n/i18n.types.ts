@@ -70,6 +70,7 @@ export interface DiccionarioTraduccion {
     detalle: string;
     login: string;
     registro: string;
+    noEncontrado: string;
   };
   inicio: {
     badge: string;
@@ -207,6 +208,11 @@ export interface DiccionarioTraduccion {
     perfilTitulo: string;
     perfilDescripcion: string;
     perfilBoton: string;
+  };
+  noEncontrado: {
+    titulo: string;
+    descripcion: string;
+    volver: string;
   };
   vistas: {
     entrenar: {

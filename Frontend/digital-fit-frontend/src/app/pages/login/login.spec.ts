@@ -3,7 +3,7 @@ import { provideRouter, Router } from '@angular/router';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LoginComponent } from './login';
 import { AuthService } from '../../services/auth-service';
@@ -24,6 +24,8 @@ describe('LoginComponent', () => {
     authService = TestBed.inject(AuthService);
     await fixture.whenStable();
   });
+
+  afterEach(() => vi.useRealTimers());
 
   it('debe crearse correctamente', () => {
     expect(component).toBeTruthy();
@@ -52,7 +54,7 @@ describe('LoginComponent', () => {
 
   it('debe gestionar el inicio de sesión exitoso', () => {
     vi.useFakeTimers();
-    const navegar = vi.spyOn(TestBed.inject(Router), 'navigate').mockResolvedValue(true);
+    const navegar = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
     vi.spyOn(authService, 'login').mockReturnValue(of('ok'));
     vi.spyOn(authService, 'me').mockReturnValue(
       of({ username: 'usuario1', email: 'u@u.es', rol: 'USER' }),
@@ -65,8 +67,7 @@ describe('LoginComponent', () => {
     expect(authService.login).toHaveBeenCalledWith('usuario1', 'Usuario123!');
     expect(component.alerta()?.tipo).toBe('exito');
     vi.runAllTimers();
-    expect(navegar).toHaveBeenCalledWith(['/dashboard']);
-    vi.useRealTimers();
+    expect(navegar).toHaveBeenCalledWith('/dashboard');
   });
 
   it('debe mostrar error de credenciales si login falla', () => {

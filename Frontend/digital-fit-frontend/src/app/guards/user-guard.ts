@@ -3,7 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth-service';
 import { map, catchError, of } from 'rxjs';
 
-export const userGuard: CanActivateFn = () => {
+export const userGuard: CanActivateFn = (_ruta, estado) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
@@ -13,12 +13,10 @@ export const userGuard: CanActivateFn = () => {
         return true;
       }
 
-      router.navigate(['/inicio']);
-      return false;
+      return router.parseUrl('/inicio');
     }),
-    catchError(() => {
-      router.navigate(['/login']);
-      return of(false);
-    }),
+    catchError(() =>
+      of(router.createUrlTree(['/login'], { queryParams: { returnUrl: estado.url } })),
+    ),
   );
 };

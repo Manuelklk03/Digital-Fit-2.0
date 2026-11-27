@@ -10,7 +10,7 @@ Las pantallas funcionales se organizan en **Dashboard, Entrenar, Explorar, Progr
 
 El mapa deja de crear lugares verificados mediante un clic. Explorar ofrece sitios de OSM cercanos al usuario con su permiso. «Añadir» busca una dirección, muestra sitios OSM de esa zona y permite guardar una referencia en «Mis sitios». **Decisión posterior de Manuel:** si un sitio falta en OSM, la persona podrá comunicarlo desde Digital-Fit con el mínimo de pasos. El aviso será visible para todos, pero marcado **«Sin verificar»** y separado de los sitios OSM. La administración lo revisará y decidirá si envía una nota pública a OSM o edita allí el lugar. No se publicarán objetos OSM automáticamente ni se presentará el aviso como sitio verificado. Se retiran el selector de coordenadas por clic y los formularios actuales de alta de centros y lugares. **No se eliminan datos existentes en esta propuesta.**
 
-Fuentes de la comprobación local: [`app.routes.ts`](../Frontend/digital-fit-frontend/src/app/app.routes.ts), [`header.html`](../Frontend/digital-fit-frontend/src/app/components/header/header.html), [`ExploracionOsmService.java`](../Backend/digital-fit/src/main/java/com/example/digital_fit/service/Explorar/ExploracionOsmService.java), [`ExploracionRestController.java`](../Backend/digital-fit/src/main/java/com/example/digital_fit/controller/Explorar/ExploracionRestController.java). Hay **26 definiciones** en el array de rutas: 25 entradas concretas, contando la redirección de `/`, y el comodín `**`. El enum [`TipoLugarPublico`](../Backend/digital-fit/src/main/java/com/example/digital_fit/model/Enums/TipoLugarPublico.java) contiene **22** constantes actualmente, no 21.
+Fuentes de la comprobación local: [`app.routes.ts`](../Frontend/digital-fit-frontend/src/app/app.routes.ts), [`header.html`](../Frontend/digital-fit-frontend/src/app/components/header/header.html), [`ExploracionOsmService.java`](../Backend/digital-fit/src/main/java/com/example/digital_fit/service/Explorar/ExploracionOsmService.java), [`ExploracionRestController.java`](../Backend/digital-fit/src/main/java/com/example/digital_fit/controller/Explorar/ExploracionRestController.java). Hay **29 definiciones** en el array de rutas: 28 entradas concretas, contando la redirección de `/`, y el comodín `**`. El enum [`TipoLugarPublico`](../Backend/digital-fit/src/main/java/com/example/digital_fit/model/Enums/TipoLugarPublico.java) contiene **22** constantes actualmente, no 21.
 
 ## 2. Mapa de rutas
 
@@ -44,7 +44,7 @@ La «ruta nueva» es el destino final propuesto. Las cinco rutas principales ya 
 | `/valoraciones` | `/progreso?pestaña=valoraciones` | Pasa a pestaña | Alias temporal; verificar relaciones con lugares antes de migrar. |
 | `/admin/crear-admin` | `/perfil/admin/crear-admin` | Pasa a subvista restringida | Alias con guard `ADMIN` en frontend y backend. |
 
-El comodín `**` actual redirige a `/login`. Se propone revisar los 404 y el retorno tras autenticar para no convertir cualquier URL mal escrita en una pantalla de acceso. Esta es la **definición 26**, fuera de la tabla de 25 entradas concretas. Los alias y pantallas antiguas solo se retirarían tras comprobar enlaces entrantes, favoritos, datos legados y E2E. Los detalles nuevos requieren identificadores tipados: un ID local de centro, uno de lugar, un objeto OSM y un aviso pendiente no son intercambiables.
+El comodín `**` muestra ahora una página 404 no indexable y el login recupera una ruta privada interna solicitada. Los alias y pantallas antiguas solo se retirarían tras comprobar enlaces entrantes, favoritos, datos legados y E2E. Los detalles nuevos requieren identificadores tipados: un ID local de centro, uno de lugar, un objeto OSM y un aviso pendiente no son intercambiables.
 
 ## 3. Las cinco vistas y sus recorridos
 
@@ -76,7 +76,7 @@ La interfaz puede tener pestañas y detalles, pero la navegación principal pres
 - **Con sesión:** entrada prevista a Dashboard y retorno seguro a enlaces privados solicitados. Administración solo aparece para `ADMIN`, con controles reales en backend. Se muestran estados de carga, error, vacío y éxito. Teclado, foco visible y movimiento reducido se comprueban en las tres estructuras.
 - **Apariencia:** se replantea de forma completa después de definir estructura y funciones, con tema claro y oscuro según sistema y opción de cambio. La vista determina si predominan acciones, datos o mapa. La interfaz ofrece información suficiente para actuar rápido y puede plegar controles avanzados. La prioridad visual declarada por Manuel no autoriza a adelantar una implementación visual sin cerrar la estructura.
 
-Hoy `header.html` muestra Inicio, Explorar, Entrenar y, según rol, Mi espacio y las vistas privadas o Crear admin. En móvil se abre mediante un botón de menú accesible. Esta cabecera **todavía no** implementa la navegación final de cinco vistas.
+La cabecera y el pie muestran las cinco entradas estructurales a `USER`; los contenidos futuros de cada vista siguen el calendario de implementación. En móvil, la cabecera se abre mediante un botón de menú accesible.
 
 ## 5. Rediseño del mapa
 

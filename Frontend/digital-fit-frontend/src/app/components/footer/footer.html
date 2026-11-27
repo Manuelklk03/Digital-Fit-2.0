@@ -11,15 +11,37 @@
     <nav class="pie-columna" [attr.aria-label]="t.navegacion">
       <h2 class="pie-titulo">{{ t.navegacion }}</h2>
       <ul>
-        <li>
-          <a routerLink="/inicio">{{ i18n.t().nav.inicio }}</a>
-        </li>
-        <li>
-          <a routerLink="/explorar">{{ i18n.t().nav.explorar }}</a>
-        </li>
-        <li>
-          <a routerLink="/entrenar">{{ i18n.t().nav.entrenar }}</a>
-        </li>
+        @if (usuario()?.rol === 'USER') {
+          <li>
+            <a routerLink="/dashboard">{{ i18n.t().nav.dashboard }}</a>
+          </li>
+          <li>
+            <a routerLink="/entrenar">{{ i18n.t().nav.entrenar }}</a>
+          </li>
+          <li>
+            <a routerLink="/explorar">{{ i18n.t().nav.explorar }}</a>
+          </li>
+          <li>
+            <a routerLink="/progreso">{{ i18n.t().nav.progreso }}</a>
+          </li>
+          <li>
+            <a routerLink="/perfil">{{ i18n.t().nav.perfil }}</a>
+          </li>
+        } @else if (usuario()?.rol === 'ADMIN') {
+          <li>
+            <a routerLink="/perfil">{{ i18n.t().nav.perfil }}</a>
+          </li>
+          <li>
+            <a routerLink="/admin/crear-admin">{{ i18n.t().nav.crearAdmin }}</a>
+          </li>
+        } @else {
+          <li>
+            <a routerLink="/inicio">{{ i18n.t().nav.inicio }}</a>
+          </li>
+          <li>
+            <a routerLink="/login">{{ i18n.t().header.entrar }}</a>
+          </li>
+        }
       </ul>
     </nav>
 
